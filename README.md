@@ -8,5 +8,6 @@ I'm a software engineer and I run a company called Gerunda, inc. I really enjoy 
 ## Notes
 
 - tech
-  - [tech-vim](note/tech-vim.md)
+  - [tech-ubuntu](notes/tech-ubuntu.md)
+  - [tech-vim](notes/tech-vim.md)
 
