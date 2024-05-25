@@ -9,4 +9,3 @@ Neovimでcoc-volarを使う際には[watchman](https://facebook.github.io/watchm
 ## Nuxt
 
 https://nuxt.com/
-
