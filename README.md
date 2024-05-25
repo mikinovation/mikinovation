@@ -8,6 +8,11 @@ I'm a software engineer and I run a company called Gerunda, inc. I really enjoy 
 ## Notes
 
 - tech
+  - [tech-cli](notes/tech-cli.md)
+  - [tech-git](notes/tech-git.md)
+  - [tech-java](notes/tech-java.md)
+  - [tech-javascript](notes/tech-javascript.md)
   - [tech-ubuntu](notes/tech-ubuntu.md)
   - [tech-vim](notes/tech-vim.md)
+  - [tech-vue](notes/tech-vue.md)
 
