@@ -30,4 +30,3 @@ My account: [mikinovation](https://zenn.dev/mikinovation)
   - [tech-ubuntu](notes/tech-ubuntu.md)
   - [tech-vim](notes/tech-vim.md)
   - [tech-vue](notes/tech-vue.md)
-
