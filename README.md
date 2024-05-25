@@ -22,6 +22,7 @@ My account: [mikinovation](https://zenn.dev/mikinovation)
 ## Notes
 
 - tech
+  - [tech-book](notes/tech-book.md)
   - [tech-cli](notes/tech-cli.md)
   - [tech-git](notes/tech-git.md)
   - [tech-java](notes/tech-java.md)
