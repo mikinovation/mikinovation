@@ -128,3 +128,128 @@ sudo vim ~/.ssh/config
 Host *
   ServerAliveInterval 60
 ```
+
+# パッケージのインストール
+
+## 必須パッケージのインストール
+
+gitがインストールされているか確認
+
+```bash
+sudo apt-get install build-essential procps curl file git unzip zip tmux
+```
+
+## zshのインストール
+
+```bash
+sudo apt install zsh
+```
+
+さくらのVPSにはデフォルトでインストールされていた
+
+## dockerのインストール
+
+dockerがインストールされているか確認
+
+```bash
+docker
+```
+
+dockerがインストールされていなかったので、以下を参照してインストール
+
+https://docs.docker.com/engine/install/ubuntu/
+
+## Linux Homebrew
+
+Macと同じようにbrewが使えると何かと便利なので入れとく
+
+https://docs.brew.sh/Homebrew-on-Linux
+
+## Pythonのインストール
+
+```bash
+brew install python3
+pip3 install -U neovim
+```
+
+## nvimのインストール
+
+Pythonのサポートされたnvimをインストールする必要がある
+
+```bash
+sudo add-apt-repository ppa:neovim-ppa/stable
+sudo apt-get update
+sudo apt-get install neovim
+```
+
+ただこれだとnvimが最新バージョンでなかった。
+
+```bash
+# 一度削除
+sudo apt remove neovim
+#appimageをダウンロード
+cd ~/Downloads
+curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+chmod u+x nvim.appimage
+# ファイルを展開
+./nvim.appimage --appimage-extract
+# ディレクトリを移動してシンボリックを貼る
+sudo mv squashfs-root /
+sudo ln -s /squashfs-root/AppRun /usr/bin/nvim
+```
+
+これでpythonのサポートされたnvimが使えるようになる
+
+```bash
+nvim
+```
+
+## denoの導入
+
+vimのパッケージ管理でdpp.vimを使用するために必要
+
+https://zenn.dev/mikinovation/articles/20230930-install-deno-on-ubuntu
+
+## Nodejs(volta)の導入
+
+https://volta.sh/
+
+## pnpmの導入
+
+```bash
+volta install pnpm
+```
+
+## gituiをインストール
+
+brewを使ってgituiをインストール
+
+https://github.com/extrawurst/gitui
+
+## ripgrepのインストール
+
+brewを使ってripgrepのインストール
+vimで全体検索をできるようにする
+
+https://github.com/BurntSushi/ripgrep
+
+# 開発環境のportを開ける
+
+自分のIPアドレスを調べる
+https://www.cman.jp/network/support/go_access.cgi
+
+```bash
+sudo ufw allow from xxx.xxx.xxx.xxx to any port 3000
+```
+
+これで開発環境にもhttp接続できるようになる
+
+# 各言語やツールの環境構築
+
+- [CLI](./tech-cli.md)
+- [Vim](./tech-vim.md)
+- [Java](./tech-java.md)
+- [JavaScript](./tech-javascript.md)
+- [Vue](./tech-vue.md)
+- [Python](./tech-python.md)
+- [PostgreSQL](./tech-postgresql.md)
