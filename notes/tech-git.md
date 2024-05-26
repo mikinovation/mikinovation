@@ -30,6 +30,28 @@ Neovim上で使ってみたかったので以下のライブラリを自作
 
 ## Github
 
+### Repositoryを作成したら最初にやること
+
+- 環境構築
+  - .gitignore
+  - README.md
+  - LICENSE
+- プルリクエストのテンプレート作成
+- CIの設定
+  - Github ActionsであればActionsタブから設定
+  - 最初はcheckoutだけでもOK
+- CDの設定
+- ブランチの保護
+  - CIが通ったらマージできるようにする
+  - mainブランチには直接pushできないようにする
+- CodeRabbitの設定
+- Dependabotの設定
+- Renovateの設定
+  - [Github App](https://github.com/apps/renovate)からインストール
+  - リポジトリを許可したらプルリクが作成されるのでマージする
+- lintとformatterの設定(各言語のnoteを参照)
+- テストの設定(各言語のnoteを参照)
+
 ### ssh接続の設定
 
 Github CLIを使ってssh接続の設定を行う
