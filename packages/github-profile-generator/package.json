@@ -1,7 +1,12 @@
 {
   "name": "github-profile-generator",
-  "module": "index.ts",
+  "scripts": {
+    "gen": "src/index.ts"
+  },
   "type": "module",
+  "bin": {
+    "gh-profile-gen": "./dist/gh-profile-gen.mjs"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
@@ -9,6 +14,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "citty": "^0.1.6",
     "markdown-it": "^14.1.0"
   }
 }
