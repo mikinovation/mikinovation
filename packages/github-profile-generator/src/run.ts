@@ -1,30 +1,21 @@
 import { writeFileSync } from "fs";
 import markdownit from "markdown-it";
-import { runCommand as _runCommand, runMain as _runMain } from "citty";
+import {
+  runCommand as _runCommand,
+  runMain as _runMain,
+  defineCommand,
+} from "citty";
 
 const md = markdownit({
   html: false,
   linkify: true,
 });
 
-const generateMarkdown = (
+export const generateMarkdown = (
   title: string,
-  items: string[],
-  boldText: string,
 ): string => {
-  return `
-  # ${title}
-
-  これはMarkdownのサンプルです。
-
-  ${items.map((item) => `- ${item}`).join("\n")}
-
-  **${boldText}**
-  `;
+  return `# ${title}`
 };
-
-const items = ["項目1", "項目2", "項目3"];
-const boldText = "太字のテキスト";
 
 const main = defineCommand({
   meta: {
@@ -45,7 +36,7 @@ const main = defineCommand({
   },
   run({ args }) {
     try {
-      const markdownContent = generateMarkdown(args.title, items, boldText);
+      const markdownContent = generateMarkdown(args.title);
       const result = md.render(markdownContent);
       writeFileSync("output.md", result);
       console.log("Generated output.md");
@@ -56,4 +47,4 @@ const main = defineCommand({
   },
 });
 
-export const runMain = _runMain(main);
+export const runMain = () => _runMain(main);
