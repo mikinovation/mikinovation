@@ -11,10 +11,8 @@ const md = markdownit({
   linkify: true,
 });
 
-export const generateMarkdown = (
-  title: string,
-): string => {
-  return `# ${title}`
+export const generateMarkdown = (title: string): string => {
+  return `# ${title}`;
 };
 
 const main = defineCommand({
