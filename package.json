@@ -16,7 +16,7 @@
   "lint-staged": {
     "**/*.{md,yml}": [
       "bun format",
-      "git add"
+      "git add ."
     ]
   }
 }
