@@ -7,5 +7,8 @@
   },
   "keywords": [],
   "author": "mikinovation",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "zod": "^3.23.8"
+  }
 }
