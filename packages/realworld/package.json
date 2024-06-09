@@ -1,0 +1,27 @@
+{
+  "name": "realworld",
+  "version": "1.0.0",
+  "description": "RealWorld example app",
+  "author": "mikinovation",
+  "keywords": [
+    "realworld",
+    "hono",
+    "nuxt"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "resolutions": {
+    "@realworld/core": "workspace:*",
+    "@realworld/api": "workspace:*",
+    "@realworld/front": "workspace:*"
+  },
+  "packageManager": "pnpm@9.0.6",
+  "engines": {
+    "node": ">= 20.12.2",
+    "npm": "please use pnpm",
+    "yarn": "please use pnpm",
+    "pnpm": ">= 9.0.6"
+  },
+  "license": "MIT"
+}
