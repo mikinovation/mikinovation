@@ -1,0 +1,17 @@
+[package]
+name = "realworld"
+version = "1.0.0"
+edition = "2021"
+
+[workspace]
+members = ["api"]
+
+[workspace.package]
+version = "1.0.0"
+authors = ["Mikihiro Saito"]
+description = "RealWorld Example"
+license = "MIT"
+
+[[bin]]
+name = "api"
+
