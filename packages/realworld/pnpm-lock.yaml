@@ -30,7 +30,7 @@ importers:
         version: 3.4.35(typescript@5.4.5)
       vue-router:
         specifier: ^4.3.2
-        version: 4.3.3(vue@3.4.35(typescript@5.4.5))
+        version: 4.4.0(vue@3.4.35(typescript@5.4.5))
 
 packages:
 
@@ -3337,11 +3337,6 @@ packages:
 
   vue-devtools-stub@0.1.0:
     resolution: {integrity: sha512-RutnB7X8c5hjq39NceArgXg28WZtZpGc3+J16ljMiYnFhKvd8hITxSWQSQ5bvldxMDU6gG5mkxl1MTQLXckVSQ==}
-
-  vue-router@4.3.3:
-    resolution: {integrity: sha512-8Q+u+WP4N2SXY38FDcF2H1dUEbYVHVPtPCPZj/GTZx8RCbiB8AtJP9+YIxn4Vs0svMTNQcLIzka4GH7Utkx9xQ==}
-    peerDependencies:
-      vue: ^3.2.0
 
   vue-router@4.4.0:
     resolution: {integrity: sha512-HB+t2p611aIZraV2aPSRNXf0Z/oLZFrlygJm+sZbdJaW6lcFqEDQwnzUBXn+DApw+/QzDU/I9TeWx9izEjTmsA==}
@@ -6977,11 +6972,6 @@ snapshots:
       ufo: 1.5.4
 
   vue-devtools-stub@0.1.0: {}
-
-  vue-router@4.3.3(vue@3.4.35(typescript@5.4.5)):
-    dependencies:
-      '@vue/devtools-api': 6.6.3
-      vue: 3.4.35(typescript@5.4.5)
 
   vue-router@4.4.0(vue@3.4.35(typescript@5.4.5)):
     dependencies:
