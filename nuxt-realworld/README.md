@@ -4,72 +4,42 @@ Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introdu
 
 ## Setup
 
-Make sure to install the dependencies:
+packageのインストール
 
 ```bash
-# npm
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+## 開発サーバーの立ち上げ
 
 ```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+## 技術選定
 
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+- バック
+  - DB
+    - Postgres
+  - ORM
+    - drizzle
+- フロント
+  - Vue
+    - Composition API
+    - script setup
+  - Graphql
+    - urql(@urql/vue)
+      - https://github.com/urql-graphql/urql
+      - キャッシュをうまく利用したい
+  - CSSは基本的にありものを使わせてもらう
+    - CSSファイルから読みこみ
+    - 実際のプロダクトではスコープドもしくは、TailwindCSS等のライブラリを利用する
+- バック、フロント共通
+  - Nuxt3(Nuxt4にアップデート予定)
+    - APIサーバーを利用
+    - サーバーコンポーネント
+  - TypeScript
+  - neverthrow
+    - https://github.com/supermacro/neverthrow
+    - 関数型プログラミングの考え方を取り入れてエラーハンドリングを行う
+    - 基本的にフロント、バックエンドともに例外を投げないようにしたい

@@ -1,8 +1,7 @@
 {
   "name": "mikinovation",
   "scripts": {
-    "format": "prettier . --write",
-    "prepare": "husky"
+    "format": "prettier . --write"
   },
   "devDependencies": {
     "@types/bun": "latest",
@@ -12,11 +11,5 @@
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
-  },
-  "lint-staged": {
-    "**/*.{md,yml}": [
-      "bun format",
-      "git add ."
-    ]
   }
 }

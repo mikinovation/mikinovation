@@ -52,4 +52,7 @@ My account: [mikinovation](https://zenn.dev/mikinovation)
 ## 今日のissue
 
 - [ ] 技術選定 Nuxt4
-- [ ] Nuxt4のセットアップ
+
+## 明日の作業
+
+- [ ] リポジトリを移動してgithub actionsの設定をする
