@@ -16,7 +16,7 @@
     "@realworld/api": "workspace:*",
     "@realworld/front": "workspace:*"
   },
-  "packageManager": "pnpm@9.6.0",
+  "packageManager": "pnpm@9.15.5",
   "engines": {
     "node": ">= 20.12.2",
     "npm": "please use pnpm",
