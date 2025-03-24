@@ -3,26 +3,19 @@ mod application;
 mod domain;
 mod infrastructure;
 
-use std::{env, sync::Arc};
 use axum::{
-    routing::{get, post, put, delete},
+    routing::{delete, get, post, put},
     Router,
 };
+use std::{env, sync::Arc};
 use tower_http::{
-    trace::{TraceLayer, DefaultMakeSpan, DefaultOnResponse},
-    cors::{CorsLayer, Any},
+    cors::{Any, CorsLayer},
+    trace::{DefaultMakeSpan, DefaultOnResponse, TraceLayer},
 };
-use tracing::{Level, info};
+use tracing::{info, Level};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
-use api::handler::{
-    health_check,
-    create_todo,
-    get_todos,
-    get_todo,
-    update_todo,
-    delete_todo,
-};
+use api::handler::{create_todo, delete_todo, get_todo, get_todos, health_check, update_todo};
 use infrastructure::data_access::init_db_pool;
 
 #[tokio::main]
@@ -37,7 +30,8 @@ async fn main() -> anyhow::Result<()> {
 
     info!("Starting mikinovation-api server...");
 
-    let database_url = env::var("DATABASE_URL").unwrap_or_else(|_| "sqlite:mikinovation.db".to_string());
+    let database_url =
+        env::var("DATABASE_URL").unwrap_or_else(|_| "sqlite:mikinovation.db".to_string());
     let db_pool = init_db_pool(&database_url).await?;
     let db_pool = Arc::new(db_pool);
 
