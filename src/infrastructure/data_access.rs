@@ -3,7 +3,7 @@ use anyhow::Result;
 use uuid::Uuid;
 use chrono::{DateTime, Utc};
 
-use crate::domain::model::{Todo, TodoId, TodoTitle, Completed};
+use crate::domain::model::{Todo, TodoId, Completed};
 
 #[derive(Debug, thiserror::Error)]
 pub enum DataAccessError {

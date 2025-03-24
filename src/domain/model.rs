@@ -1,4 +1,6 @@
 use serde::{Serialize, Deserialize};
+use uuid::Uuid;
+use chrono::{DateTime, Utc};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct TodoId(pub Uuid);
@@ -28,6 +30,10 @@ impl TodoTitle {
         }
         Ok(Self(title))
     }
+}
+
+pub fn validate_title(title: String) -> Result<TodoTitle, String> {
+    TodoTitle::create(title)
 }
 
 #[derive(Debug, Clone)]
