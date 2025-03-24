@@ -2,5 +2,5 @@ target
 .env
 .sqlx
 mikinovation.db
-miknovation.db-wal
+mikinovation.db-wal
 mikinovation.db-shm
