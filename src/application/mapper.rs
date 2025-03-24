@@ -2,7 +2,7 @@ use anyhow::Result;
 use uuid::Uuid;
 
 use crate::domain::model::{
-    Todo, TodoId, TodoTitle, Completed, 
+    Todo, TodoId, Completed, 
     CreateTodoInput, UpdateTodoInput, TodoOutput, validate_title
 };
 use crate::application::dto::{
@@ -25,7 +25,6 @@ pub fn serialize_to_json<T: serde::Serialize>(dto: &T) -> Result<JsonString, Ser
         .map_err(|e| SerializationError::Serialize(e.to_string()))
 }
 
-// DTO <-> ドメインモデル変換関数
 pub fn create_todo_dto_to_domain(dto: CreateTodoDto) -> Result<CreateTodoInput, SerializationError> {
     let title = validate_title(dto.title)
         .map_err(|e| SerializationError::Validation(e))?;
@@ -34,11 +33,9 @@ pub fn create_todo_dto_to_domain(dto: CreateTodoDto) -> Result<CreateTodoInput, 
 }
 
 pub fn update_todo_dto_to_domain(id_str: &str, dto: UpdateTodoDto) -> Result<UpdateTodoInput, SerializationError> {
-    // UUIDの解析
     let uuid = Uuid::parse_str(id_str)
         .map_err(|_| SerializationError::Validation("Invalid UUID format".to_string()))?;
     
-    // タイトルの変換（存在する場合）
     let title = if let Some(title_str) = dto.title {
         Some(validate_title(title_str)
             .map_err(|e| SerializationError::Validation(e))?)
@@ -46,7 +43,6 @@ pub fn update_todo_dto_to_domain(id_str: &str, dto: UpdateTodoDto) -> Result<Upd
         None
     };
     
-    // 完了状態の変換（存在する場合）
     let completed = dto.completed.map(|c| Completed(c));
     
     Ok(UpdateTodoInput {
@@ -62,7 +58,6 @@ pub fn string_to_todo_id(id_str: &str) -> Result<TodoId, SerializationError> {
         .map_err(|_| SerializationError::Validation("Invalid UUID format".to_string()))
 }
 
-// ドメインモデル <-> DTO変換関数
 pub fn todo_to_dto(todo: &Todo) -> TodoDto {
     TodoDto {
         id: todo.id.0,
@@ -79,7 +74,6 @@ pub fn todos_to_dto(todos: &[Todo]) -> TodoListDto {
     }
 }
 
-// ドメイン出力 <-> レスポンス変換関数
 pub fn output_to_response(output: TodoOutput) -> Result<(axum::http::StatusCode, serde_json::Value), SerializationError> {
     use axum::http::StatusCode;
     
