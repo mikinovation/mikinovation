@@ -24,28 +24,7 @@ pub async fn init_db_pool(database_url: &str) -> Result<Pool<Sqlite>, DataAccess
         .await
         .map_err(|e| DataAccessError::Database(e.to_string()))?;
     
-    create_tables(&pool).await?;
-    
     Ok(pool)
-}
-
-pub async fn create_tables(pool: &Pool<Sqlite>) -> Result<(), DataAccessError> {
-    sqlx::query(
-        r#"
-        CREATE TABLE IF NOT EXISTS todos (
-            id TEXT PRIMARY KEY,
-            title TEXT NOT NULL,
-            completed BOOLEAN NOT NULL DEFAULT 0,
-            created_at TIMESTAMP NOT NULL,
-            updated_at TIMESTAMP NOT NULL
-        )
-        "#,
-    )
-    .execute(pool)
-    .await
-    .map_err(|e| DataAccessError::Database(e.to_string()))?;
-    
-    Ok(())
 }
 
 pub struct TodoRow {
@@ -73,14 +52,21 @@ pub fn row_to_domain(row: TodoRow) -> Result<Todo, DataAccessError> {
 }
 
 pub async fn find_todo_by_id(pool: &Pool<Sqlite>, id: &TodoId) -> Result<Option<Todo>, DataAccessError> {
+    let id_str = id.0.to_string();
+
     let row = sqlx::query_as!(
         TodoRow,
         r#"
-        SELECT id, title, completed, created_at as "created_at: DateTime<Utc>", updated_at as "updated_at: DateTime<Utc>"
-        FROM todos
+        SELECT 
+           id as "id!: String", 
+           title as "title!: String", 
+           completed, 
+           created_at as "created_at: DateTime<Utc>", 
+           updated_at as "updated_at: DateTime<Utc>"
+        FROM todo
         WHERE id = ?
         "#,
-        id.0.to_string()
+        id_str
     )
     .fetch_optional(pool)
     .await
@@ -96,8 +82,13 @@ pub async fn find_all_todos(pool: &Pool<Sqlite>) -> Result<Vec<Todo>, DataAccess
     let rows = sqlx::query_as!(
         TodoRow,
         r#"
-        SELECT id, title, completed, created_at as "created_at: DateTime<Utc>", updated_at as "updated_at: DateTime<Utc>"
-        FROM todos
+        SELECT 
+           id as "id!: String", 
+           title as "title!: String", 
+           completed, 
+           created_at as "created_at: DateTime<Utc>", 
+           updated_at as "updated_at: DateTime<Utc>"
+        FROM todo
         ORDER BY created_at DESC
         "#
     )
@@ -120,7 +111,7 @@ pub async fn save_todo(pool: &Pool<Sqlite>, todo: &Todo) -> Result<(), DataAcces
     if existing.is_none() {
         sqlx::query(
             r#"
-            INSERT INTO todos (id, title, completed, created_at, updated_at)
+            INSERT INTO todo (id, title, completed, created_at, updated_at)
             VALUES (?, ?, ?, ?, ?)
             "#,
         )
@@ -135,7 +126,7 @@ pub async fn save_todo(pool: &Pool<Sqlite>, todo: &Todo) -> Result<(), DataAcces
     } else {
         sqlx::query(
             r#"
-            UPDATE todos
+            UPDATE todo
             SET title = ?, completed = ?, updated_at = ?
             WHERE id = ?
             "#,
@@ -155,7 +146,7 @@ pub async fn save_todo(pool: &Pool<Sqlite>, todo: &Todo) -> Result<(), DataAcces
 pub async fn delete_todo_by_id(pool: &Pool<Sqlite>, id: &TodoId) -> Result<(), DataAccessError> {
     let result = sqlx::query(
         r#"
-        DELETE FROM todos
+        DELETE FROM todo
         WHERE id = ?
         "#,
     )

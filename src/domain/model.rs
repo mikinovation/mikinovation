@@ -56,10 +56,7 @@ pub enum TodoOutput {
     Found(Todo),
     NotFound(TodoId),
     List(Vec<Todo>),
-    Error(String),
 }
-
-pub type TodoWorkflow<I, O> = fn(I) -> O;
 
 pub fn create_todo(input: CreateTodoInput) -> TodoOutput {
     let now = Utc::now();

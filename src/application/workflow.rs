@@ -37,10 +37,9 @@ pub async fn update_todo_workflow(
         TodoOutput::Updated(todo) => {
             save_todo(pool, todo).await?;
         },
-        _ => {}, // 他のケースは処理不要
+        _ => {},
     }
     
-    // 4. 出力を返す
     Ok(output)
 }
 
@@ -81,12 +80,4 @@ pub async fn list_todos_workflow(
     let output = list_todos(todos);
     
     Ok(output)
-}
-
-pub async fn with_error_handling<T, E, F, Fut>(f: F) -> Result<T, E>
-where
-    F: FnOnce() -> Fut,
-    Fut: std::future::Future<Output = Result<T, E>>,
-{
-    f().await
 }
