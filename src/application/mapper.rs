@@ -20,11 +20,6 @@ pub fn deserialize_update_todo(json: &JsonString) -> Result<UpdateTodoDto, Seria
         .map_err(|e| SerializationError::Deserialize(e.to_string()))
 }
 
-pub fn serialize_to_json<T: serde::Serialize>(dto: &T) -> Result<JsonString, SerializationError> {
-    serde_json::to_string(dto)
-        .map_err(|e| SerializationError::Serialize(e.to_string()))
-}
-
 pub fn create_todo_dto_to_domain(dto: CreateTodoDto) -> Result<CreateTodoInput, SerializationError> {
     let title = validate_title(dto.title)
         .map_err(|e| SerializationError::Validation(e))?;
@@ -111,12 +106,6 @@ pub fn output_to_response(output: TodoOutput) -> Result<(axum::http::StatusCode,
             let json = serde_json::to_value(dto)
                 .map_err(|e| SerializationError::Serialize(e.to_string()))?;
             Ok((StatusCode::NOT_FOUND, json))
-        },
-        TodoOutput::Error(message) => {
-            let dto = ErrorDto { error: message };
-            let json = serde_json::to_value(dto)
-                .map_err(|e| SerializationError::Serialize(e.to_string()))?;
-            Ok((StatusCode::INTERNAL_SERVER_ERROR, json))
         },
     }
 }

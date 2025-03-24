@@ -27,7 +27,6 @@ use infrastructure::data_access::init_db_pool;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    // Initialize tracing
     tracing_subscriber::registry()
         .with(
             tracing_subscriber::EnvFilter::try_from_default_env()
@@ -38,25 +37,22 @@ async fn main() -> anyhow::Result<()> {
 
     info!("Starting mikinovation-api server...");
 
-    // Database configuration
     let database_url = env::var("DATABASE_URL").unwrap_or_else(|_| "sqlite:mikinovation.db".to_string());
     let db_pool = init_db_pool(&database_url).await?;
     let db_pool = Arc::new(db_pool);
 
-    // CORS configuration
     let cors = CorsLayer::new()
         .allow_origin(Any)
         .allow_methods(Any)
         .allow_headers(Any);
 
-    // Define routes
     let app = Router::new()
         .route("/api/health", get(health_check))
         .route("/api/todos", get(get_todos))
         .route("/api/todos", post(create_todo))
-        .route("/api/todos/:id", get(get_todo))
-        .route("/api/todos/:id", put(update_todo))
-        .route("/api/todos/:id", delete(delete_todo))
+        .route("/api/todos/{id}", get(get_todo))
+        .route("/api/todos/{id}", put(update_todo))
+        .route("/api/todos/{id}", delete(delete_todo))
         .with_state(db_pool)
         .layer(
             TraceLayer::new_for_http()
@@ -65,7 +61,6 @@ async fn main() -> anyhow::Result<()> {
         )
         .layer(cors);
 
-    // Start server
     let port = env::var("PORT").unwrap_or_else(|_| "3000".to_string());
     let addr = format!("0.0.0.0:{}", port);
     info!("Server listening on {}", addr);

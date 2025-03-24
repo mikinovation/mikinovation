@@ -51,6 +51,36 @@ clean:
 	@echo "Cleaning project..."
 	@cargo clean
 
+.PHONY: db-create
+db-create:
+	@echo "Creating database..."
+	@sqlx database create
+
+.PHONY: db-drop
+db-drop:
+	@echo "Dropping database..."
+	@sqlx database drop -y
+
+.PHONY: migrate-add
+migrate-add:
+	@read -p "Migration name: " name; \
+	sqlx migrate add -r $$name
+
+.PHONY: migrate
+migrate:
+	@echo "Running migrations..."
+	@sqlx migrate run
+
+.PHONY: migrate-revert
+migrate-revert:
+	@echo "Reverting latest migration..."
+	@sqlx migrate revert
+
+.PHONY: prepare
+prepare:
+	@echo "Preparing SQLx metadata..."
+	@cargo sqlx prepare
+
 # Display target descriptions
 .PHONY: help
 help:
@@ -63,6 +93,15 @@ help:
 	@echo "  make lint         - Run linter"
 	@echo "  make build        - Build release binary"
 	@echo "  make clean        - Clean project"
+	@echo ""
+	@echo "SQLx Database Commands:"
+	@echo "  make db-create    - Create database from DATABASE_URL"
+	@echo "  make db-drop      - Drop database"
+	@echo "  make migrate-add  - Add a new migration (will prompt for name)"
+	@echo "  make migrate      - Run all pending migrations"
+	@echo "  make migrate-revert - Revert the latest migration"
+	@echo "  make prepare      - Generate SQLx metadata for offline development"
+	@echo ""
 	@echo "  make help         - Display this help message"
 
 # Default target
