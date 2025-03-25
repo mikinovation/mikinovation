@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use uuid::Uuid;
 use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct TodoId(pub Uuid);
@@ -67,7 +67,7 @@ pub fn create_todo(input: CreateTodoInput) -> TodoOutput {
         created_at: now,
         updated_at: now,
     };
-    
+
     TodoOutput::Created(todo)
 }
 
@@ -81,7 +81,7 @@ pub fn update_todo(input: UpdateTodoInput, existing_todo: Option<Todo>) -> TodoO
                 created_at: todo.created_at,
                 updated_at: Utc::now(),
             };
-            
+
             TodoOutput::Updated(updated_todo)
         }
         None => TodoOutput::NotFound(input.id),

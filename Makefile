@@ -27,17 +27,17 @@ test-watch:
 	@echo "Running tests in watch mode..."
 	@cargo watch -x test
 
-# Format code
-.PHONY: fmt
-fmt:
-	@echo "Formatting code..."
-	@cargo fmt
-
 # Run linter
 .PHONY: lint
 lint:
 	@echo "Linting code..."
 	@cargo clippy -- -D warnings
+
+# Format code
+.PHONY: fmt
+fmt:
+	@echo "Formatting code..."
+	@cargo fmt
 
 # Build release binary
 .PHONY: build
@@ -89,8 +89,8 @@ help:
 	@echo "  make run-release  - Run application in release mode"
 	@echo "  make test         - Run tests"
 	@echo "  make test-watch   - Run tests in watch mode"
-	@echo "  make fmt          - Format code"
 	@echo "  make lint         - Run linter"
+	@echo "  make fmt          - Format code"
 	@echo "  make build        - Build release binary"
 	@echo "  make clean        - Clean project"
 	@echo ""

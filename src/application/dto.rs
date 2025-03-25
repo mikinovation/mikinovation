@@ -1,6 +1,6 @@
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
-use chrono::{DateTime, Utc};
 
 pub type JsonString = String;
 
@@ -43,10 +43,10 @@ pub struct SuccessDto {
 pub enum SerializationError {
     #[error("Failed to deserialize: {0}")]
     Deserialize(String),
-    
+
     #[error("Failed to serialize: {0}")]
     Serialize(String),
-    
+
     #[error("Validation error: {0}")]
     Validation(String),
 }

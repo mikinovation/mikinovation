@@ -1,0 +1,61 @@
+name: API CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  CARGO_TERM_COLOR: always
+  DATABASE_URL: sqlite:mikinovation.db
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - name: Cache dependencies
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install SQLx CLI
+        run: cargo install sqlx-cli --no-default-features --features sqlite
+
+      - name: Create database
+        run: make db-create
+
+      - name: Run migrations
+        run: make migrate
+
+      - name: Format check
+        run: cargo fmt --all -- --check
+
+      - name: Clippy check
+        run: cargo clippy -- -D warnings
+
+      - name: Run tests
+        run: cargo test
+
+  # TODO: CI build step
+  # build:
+  #  name: Build
+  #  runs-on: ubuntu-latest
+  # needs: check
+  # steps:
+  #    - uses: actions/checkout@v4
+
+  #    - name: Install Rust toolchain
+  #      uses: dtolnay/rust-toolchain@stable
+
+  #   - name: Cache dependencies
+  #  uses: Swatinem/rust-cache@v2
+
+  #- name: Build
+  #  run: cargo build --release
