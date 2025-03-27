@@ -1,0 +1,6 @@
+target
+.env
+.sqlx
+mikinovation.db
+mikinovation.db-wal
+mikinovation.db-shm
