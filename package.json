@@ -1,0 +1,10 @@
+{
+  "name": "mikinovation",
+  "version": "1.0.0",
+  "workspaces": [
+    "packages/web"
+  ],
+  "engines": {
+    "node": "22.14.0"
+  }
+}

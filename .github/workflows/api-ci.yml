@@ -3,12 +3,20 @@ name: API CI
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'packages/api/**'
+      - '.github/workflows/api-ci.yml'
   pull_request:
     branches: [ main ]
+    paths:
+      - 'packages/api/**'
+      - '.github/workflows/api-ci.yml'
 
 env:
   CARGO_TERM_COLOR: always
-  DATABASE_URL: sqlite:mikinovation.db
+  DATABASE_URL: sqlite:./packages/api/mikinovation.db
+  WORKING_DIRECTORY: ./packages/api
+  SQLX_OFFLINE: true
 
 jobs:
   check:
@@ -24,23 +32,22 @@ jobs:
 
       - name: Cache dependencies
         uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: ${{ env.WORKING_DIRECTORY }}
 
       - name: Install SQLx CLI
         run: cargo install sqlx-cli --no-default-features --features sqlite
 
-      - name: Create database
-        run: make db-create
-
-      - name: Run migrations
-        run: make migrate
-
       - name: Format check
+        working-directory: ${{ env.WORKING_DIRECTORY }}
         run: cargo fmt --all -- --check
 
       - name: Clippy check
+        working-directory: ${{ env.WORKING_DIRECTORY }}
         run: cargo clippy -- -D warnings
 
       - name: Run tests
+        working-directory: ${{ env.WORKING_DIRECTORY }}
         run: cargo test
 
   # TODO: CI build step
@@ -56,6 +63,9 @@ jobs:
 
   #   - name: Cache dependencies
   #  uses: Swatinem/rust-cache@v2
+  #      with:
+  #        workspaces: ${{ env.WORKING_DIRECTORY }}
 
   #- name: Build
+  #  working-directory: ${{ env.WORKING_DIRECTORY }}
   #  run: cargo build --release
