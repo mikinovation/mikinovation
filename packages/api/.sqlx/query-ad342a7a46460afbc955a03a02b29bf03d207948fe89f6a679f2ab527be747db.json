@@ -1,0 +1,44 @@
+{
+  "db_name": "SQLite",
+  "query": "\n        SELECT \n           id as \"id!: String\", \n           title as \"title!: String\", \n           completed, \n           created_at as \"created_at: DateTime<Utc>\", \n           updated_at as \"updated_at: DateTime<Utc>\"\n        FROM todo\n        WHERE id = ?\n        ",
+  "describe": {
+    "columns": [
+      {
+        "name": "id!: String",
+        "ordinal": 0,
+        "type_info": "Text"
+      },
+      {
+        "name": "title!: String",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "completed",
+        "ordinal": 2,
+        "type_info": "Bool"
+      },
+      {
+        "name": "created_at: DateTime<Utc>",
+        "ordinal": 3,
+        "type_info": "Datetime"
+      },
+      {
+        "name": "updated_at: DateTime<Utc>",
+        "ordinal": 4,
+        "type_info": "Datetime"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      true,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "ad342a7a46460afbc955a03a02b29bf03d207948fe89f6a679f2ab527be747db"
+}
