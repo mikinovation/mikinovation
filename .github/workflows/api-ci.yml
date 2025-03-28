@@ -16,6 +16,7 @@ env:
   CARGO_TERM_COLOR: always
   DATABASE_URL: sqlite:./packages/api/mikinovation.db
   WORKING_DIRECTORY: ./packages/api
+  SQLX_OFFLINE: true
 
 jobs:
   check:
@@ -36,12 +37,6 @@ jobs:
 
       - name: Install SQLx CLI
         run: cargo install sqlx-cli --no-default-features --features sqlite
-
-      - name: Create database
-        run: sqlx database create --database-url ${{ env.DATABASE_URL }}
-
-      - name: Run migrations
-        run: sqlx migrate run --database-url ${{ env.DATABASE_URL }} --source ${{ env.WORKING_DIRECTORY }}/migrations
 
       - name: Format check
         working-directory: ${{ env.WORKING_DIRECTORY }}

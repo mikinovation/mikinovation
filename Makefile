@@ -180,4 +180,4 @@ migrate-revert:
 .PHONY: prepare
 prepare:
 	@echo "Preparing SQLx metadata..."
-	@cd $(API_DIR) && DATABASE_URL=$(DATABASE_URL) cargo sqlx prepare
+	@cd $(API_DIR) && DATABASE_URL=$(DATABASE_URL) cargo sqlx prepare -- --lib
