@@ -39,6 +39,7 @@ jobs:
         run: cargo install sqlx-cli --no-default-features --features sqlite
 
       - name: Sqlx Prepare
+        working-directory: ${{ env.WORKING_DIRECTORY }}
         run: cargo sqlx prepare
 
       - name: Format check
