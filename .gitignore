@@ -1,6 +1,28 @@
-target
+# Root
+node_modules
 .env
-.sqlx
-mikinovation.db
-mikinovation.db-wal
-mikinovation.db-shm
+.DS_Store
+.idea
+.vscode
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# api
+packages/api/target
+packages/api/.env
+packages/api/.sqlx
+packages/api/mikinovation.db
+packages/api/mikinovation.db-wal
+packages/api/mikinovation.db-shm
+
+# web
+packages/web/node_modules
+packages/web/.nuxt
+packages/web/.output
+packages/web/dist
+packages/web/.env
+packages/web/.cache
+
