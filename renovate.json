@@ -46,12 +46,6 @@
       "addLabels": ["github-actions"]
     },
     {
-      "description": "Update SQLx to avoid offline mode issues",
-      "matchPackageNames": ["sqlx"],
-      "extends": ["schedule:monthly"],
-      "automerge": false
-    },
-    {
       "description": "Group Axum ecosystem packages",
       "matchPackagePatterns": ["^axum", "tower-http"],
       "groupName": "Axum ecosystem"
