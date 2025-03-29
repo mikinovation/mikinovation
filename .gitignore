@@ -25,3 +25,6 @@ packages/web/dist
 packages/web/.env
 packages/web/.cache
 
+# ui
+packages/ui/dist
+packages/ui/node_modules

@@ -1,0 +1,38 @@
+{
+  "name": "@mikinovation/ui",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build",
+    "typecheck": "vue-tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
+  },
+  "peerDependencies": {
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.13.14",
+    "@vitejs/plugin-vue": "5.2.3",
+    "sass": "1.86.0",
+    "typescript": "5.8.2",
+    "vite": "6.2.3",
+    "vite-plugin-dts": "4.5.3",
+    "vue": "3.5.13",
+    "vue-tsc": "2.2.8"
+  }
+}
