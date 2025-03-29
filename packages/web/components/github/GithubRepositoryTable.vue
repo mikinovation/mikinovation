@@ -1,28 +1,12 @@
 <script setup lang="ts">
 import { useGithubRepositories } from '@/composables/useGetGithubRepositories';
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 
-const props = defineProps({
-  username: {
-    type: String,
-    default: 'mikinovation'
-  },
-  initialPerPage: {
-    type: Number,
-    default: 10
-  },
-  initialSort: {
-    type: String,
-    default: 'updated'
-  },
-  initialDirection: {
-    type: String,
-    default: 'desc'
-  }
-});
-
-const perPage = ref(props.initialPerPage);
-const sortOption = ref(`${props.initialSort}:${props.initialDirection}`);
+/**
+ * Refs
+ */
+const perPage = ref<number>(10);
+const sortOption = ref(`updated:desc`);
 
 const {
   repositories,
@@ -36,14 +20,13 @@ const {
   nextPage,
   prevPage,
 } = useGithubRepositories({
-  username: props.username,
   perPage: perPage.value,
-  sort: props.initialSort as any,
-  direction: props.initialDirection as any
+  sort: 'updated',
 });
 
 const handleSortChange = () => {
   const [sort, direction] = sortOption.value.split(':');
+  // OPTIMIZE: type assertion
   updateParams({
     sort: sort as any, 
     direction: direction as any,
@@ -78,15 +61,6 @@ const formatDate = (dateString: string): string => {
     });
   }
 };
-
-watch(() => props.username, (newUsername) => {
-  if (newUsername !== params.value.username) {
-    updateParams({
-      username: newUsername,
-      page: 1
-    });
-  }
-}, { immediate: true });
 </script>
 
 <template>
@@ -131,7 +105,7 @@ watch(() => props.username, (newUsername) => {
     </div>
     
     <div v-else-if="repositories.length === 0" class="empty-state">
-      No repositories found for {{ params.username }}
+      No repositories found
     </div>
     
     <table v-else class="repository-table">
