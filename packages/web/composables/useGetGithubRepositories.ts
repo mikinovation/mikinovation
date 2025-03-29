@@ -2,29 +2,55 @@ import { ref, computed } from 'vue'
 import type { components } from '@/types/github-api'
 import type { RepositoriesResponse } from '@/server/api/github/repository'
 
-export type GithubRepositoryParams = {
-  username?: string;
-  page?: number;
-  perPage?: number;
-  sort?: 'created' | 'updated' | 'pushed' | 'full_name';
-  direction?: 'asc' | 'desc';
+/**
+ * Constants
+ */ 
+const SORTED_BY = {
+  CREATED: 'created',
+  UPDATED: 'updated',
+  PUSHED: 'pushed',
+  FULL_NAME: 'full_name'
+} as const
+
+const SORT_ORDER = {
+  ASC: 'asc',
+  DESC: 'desc'
+} as const
+
+/**
+ * Types
+ */ 
+type SortedBy = typeof SORTED_BY[keyof typeof SORTED_BY]
+
+type SortOrder = typeof SORT_ORDER[keyof typeof SORT_ORDER]
+
+type GithubRepositoryParams = {
+  page: number;
+  perPage: number;
+  sort: SortedBy;
+  direction: SortOrder;
 }
 
-export const useGithubRepositories = (initialParams: GithubRepositoryParams = {}) => {
+export const useGithubRepositories = (initialParams: Partial<GithubRepositoryParams> = {}) => {
+  /**
+   * Refs
+   */
   const params = ref<GithubRepositoryParams>({
-    username: initialParams.username || 'mikinovation',
     page: initialParams.page || 1,
     perPage: initialParams.perPage || 10,
     sort: initialParams.sort || 'updated',
     direction: initialParams.direction || 'desc'
   })
   
+  /**
+   * Composables
+   */ 
   const { data, error, status, refresh } = useFetch<RepositoriesResponse>(
     '/api/github/repository',
     {
       method: 'GET',
       params: computed(() => ({
-        username: params.value.username,
+        username: 'mikinovation',
         page: params.value.page,
         per_page: params.value.perPage,
         sort: params.value.sort,
@@ -33,6 +59,9 @@ export const useGithubRepositories = (initialParams: GithubRepositoryParams = {}
     }
   )
   
+  /**
+   * Computed
+   */
   const repositories = computed<components['schemas']['repository'][]>(() => 
     data.value?.repositories || []
   )
@@ -46,7 +75,10 @@ export const useGithubRepositories = (initialParams: GithubRepositoryParams = {}
   const itemsPerPage = computed(() => data.value?.perPage || 10)
   
   const hasNextPage = computed(() => data.value?.hasMore || false)
-  
+
+  /**
+   * Methods
+   */
   const updateParams = (newParams: Partial<GithubRepositoryParams>) => {
     params.value = {
       ...params.value,
@@ -71,10 +103,10 @@ export const useGithubRepositories = (initialParams: GithubRepositoryParams = {}
     }
   }
   
-  const changeSort = (sort: 'created' | 'updated' | 'pushed' | 'full_name', direction?: 'asc' | 'desc') => {
+  const changeSort = (sort: SortedBy, direction: SortOrder): void => {
     updateParams({ 
       sort, 
-      direction: direction || params.value.direction,
+      direction,
       page: 1
     })
   }

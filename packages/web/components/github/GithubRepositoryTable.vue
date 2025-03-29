@@ -21,8 +21,11 @@ const props = defineProps({
   }
 });
 
-const perPage = ref(props.initialPerPage);
-const sortOption = ref(`${props.initialSort}:${props.initialDirection}`);
+/**
+ * Refs
+ */
+const perPage = ref<number>(10);
+const sortOption = ref(`updated:desc`);
 
 const {
   repositories,
@@ -36,17 +39,15 @@ const {
   nextPage,
   prevPage,
 } = useGithubRepositories({
-  username: props.username,
   perPage: perPage.value,
-  sort: props.initialSort as any,
-  direction: props.initialDirection as any
+  sort: 'updated',
 });
 
 const handleSortChange = () => {
   const [sort, direction] = sortOption.value.split(':');
   updateParams({
-    sort: sort as any, 
-    direction: direction as any,
+    sort: sort, 
+    direction: direction,
     page: 1
   });
 };
