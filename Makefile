@@ -13,7 +13,7 @@ DATABASE_URL ?= sqlite:./$(API_DIR)/mikinovation.db
 #
 .PHONY: help
 help:
-	@echo "Mikinovation Monorepo Commands:"
+	@echo "Mikinovation Commands:"
 	@echo "  make setup             - Set up both API and Web projects"
 	@echo "  make dev               - Run both API and Web in development mode"
 	@echo "  make build             - Build both API and Web for production"
