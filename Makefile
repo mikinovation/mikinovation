@@ -10,7 +10,7 @@ DATABASE_URL ?= sqlite:./$(API_DIR)/mikinovation.db
 #
 # commands
 #
-#
+
 .PHONY: help
 help:
 	@echo "Mikinovation Monorepo Commands:"
@@ -40,6 +40,7 @@ help:
 	@echo "  make dev-web           - Start Web development server"
 	@echo "  make build-web         - Build Web for production"
 	@echo "  make lint-web          - Run Web linter"
+	@echo "  make codegen           - Generate types from GitHub OpenAPI schema"
 	@echo ""
 	@echo "  make help              - Display this help message"
 
@@ -57,6 +58,9 @@ setup-api: db-create migrate
 setup-web:
 	@echo "Setting up Web..."
 	@cd $(WEB_DIR) && pnpm install
+	@echo "Generating GitHub API types from OpenAPI schema..."
+	@mkdir -p $(WEB_DIR)/types
+	@cd $(WEB_DIR) && pnpm codegen
 
 #
 # Development commands
@@ -145,6 +149,16 @@ clean-web:
 .PHONY: clean
 clean: clean-api clean-web
 	@echo "Cleaned all projects."
+
+#
+# Type generation commands
+#
+
+.PHONY: codegen
+codegen:
+	@echo "Generating GitHub API types from OpenAPI schema..."
+	@mkdir -p $(WEB_DIR)/types
+	@cd $(WEB_DIR) && pnpm codegen
 
 #
 # Database commands
