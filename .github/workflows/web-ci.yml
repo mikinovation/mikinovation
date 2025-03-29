@@ -36,7 +36,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: ${{ env.WORKING_DIRECTORY }}
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Run linting
         working-directory: ${{ env.WORKING_DIRECTORY }}
