@@ -20,7 +20,7 @@ export const useGithubRepositories = (initialParams: GithubRepositoryParams = {}
   })
   
   const { data, error, status, refresh } = useFetch<RepositoriesResponse>(
-    '/api/github/repositories',
+    '/api/github/repository',
     {
       method: 'GET',
       params: computed(() => ({
