@@ -23,21 +23,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.7.0
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 10.7.0
-          run_install: false
-
       - name: Install dependencies
         working-directory: ${{ env.WORKING_DIRECTORY }}
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Run linting
         working-directory: ${{ env.WORKING_DIRECTORY }}
