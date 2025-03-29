@@ -1,25 +1,6 @@
 <script setup lang="ts">
 import { useGithubRepositories } from '@/composables/useGetGithubRepositories';
-import { ref, watch } from 'vue';
-
-const props = defineProps({
-  username: {
-    type: String,
-    default: 'mikinovation'
-  },
-  initialPerPage: {
-    type: Number,
-    default: 10
-  },
-  initialSort: {
-    type: String,
-    default: 'updated'
-  },
-  initialDirection: {
-    type: String,
-    default: 'desc'
-  }
-});
+import { ref } from 'vue';
 
 /**
  * Refs
@@ -45,9 +26,10 @@ const {
 
 const handleSortChange = () => {
   const [sort, direction] = sortOption.value.split(':');
+  // OPTIMIZE: type assertion
   updateParams({
-    sort: sort, 
-    direction: direction,
+    sort: sort as any, 
+    direction: direction as any,
     page: 1
   });
 };
@@ -79,15 +61,6 @@ const formatDate = (dateString: string): string => {
     });
   }
 };
-
-watch(() => props.username, (newUsername) => {
-  if (newUsername !== params.value.username) {
-    updateParams({
-      username: newUsername,
-      page: 1
-    });
-  }
-}, { immediate: true });
 </script>
 
 <template>
@@ -132,7 +105,7 @@ watch(() => props.username, (newUsername) => {
     </div>
     
     <div v-else-if="repositories.length === 0" class="empty-state">
-      No repositories found for {{ params.username }}
+      No repositories found
     </div>
     
     <table v-else class="repository-table">
