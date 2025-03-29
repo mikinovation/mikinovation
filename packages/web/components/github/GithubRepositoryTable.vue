@@ -13,7 +13,6 @@ const {
   total,
   loading,
   error,
-  params,
   currentPage,
   hasNextPage,
   updateParams,
@@ -28,7 +27,9 @@ const handleSortChange = () => {
   const [sort, direction] = sortOption.value.split(':');
   // OPTIMIZE: type assertion
   updateParams({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     sort: sort as any, 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     direction: direction as any,
     page: 1
   });

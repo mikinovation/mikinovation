@@ -38,8 +38,8 @@ export const useGithubRepositories = (initialParams: Partial<GithubRepositoryPar
   const params = ref<GithubRepositoryParams>({
     page: initialParams.page || 1,
     perPage: initialParams.perPage || 10,
-    sort: initialParams.sort || 'updated',
-    direction: initialParams.direction || 'desc'
+    sort: initialParams.sort || SORTED_BY.UPDATED,
+    direction: initialParams.direction || SORT_ORDER.DESC
   })
   
   /**

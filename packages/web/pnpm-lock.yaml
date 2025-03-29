@@ -34,7 +34,7 @@ importers:
         specifier: 7.6.1
         version: 7.6.1(typescript@5.8.2)
       sass:
-        specifier: ^1.86.0
+        specifier: 1.86.0
         version: 1.86.0
       typescript:
         specifier: 5.8.2

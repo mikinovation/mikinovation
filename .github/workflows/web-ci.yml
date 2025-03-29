@@ -1,0 +1,55 @@
+name: Web CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'packages/web/**'
+      - '.github/workflows/web-ci.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'packages/web/**'
+      - '.github/workflows/web-ci.yml'
+
+env:
+  NODE_VERSION: 22.14.0
+  WORKING_DIRECTORY: ./packages/web
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.7.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: pnpm install
+
+      - name: Run linting
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: pnpm run lint
+
+      - name: Generate GitHub API types
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: pnpm run codegen
+
+      - name: Run type check
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: pnpm run typecheck
+      
+      - name: Build application
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: pnpm run build

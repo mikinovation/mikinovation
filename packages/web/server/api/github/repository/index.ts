@@ -20,7 +20,8 @@ export default defineEventHandler(async (event) => {
     const direction = query.direction as 'asc' | 'desc' || 'desc'
     
     const config = useRuntimeConfig()
-    const token = config.githubApiToken
+    // OPTIMIZE:: fix assert type 
+    const token = config.githubApiToken as string
     
     const repositories = await fetchUserRepositories(username, token, {
       page,
@@ -36,6 +37,7 @@ export default defineEventHandler(async (event) => {
       perPage,
       hasMore: repositories.length === perPage
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error('Error fetching repositories:', error)
     throw createError({
