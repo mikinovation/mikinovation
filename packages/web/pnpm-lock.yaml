@@ -21,7 +21,7 @@ importers:
         specifier: 3.16.1
         version: 3.16.1(@parcel/watcher@2.5.1)(db0@0.3.1)(eslint@9.0.0)(ioredis@5.6.0)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.37.0)(terser@5.39.0)(typescript@5.8.2)(vite@6.2.3(jiti@2.4.2)(terser@5.39.0)(yaml@2.7.0))(yaml@2.7.0)
       openapi-fetch:
-        specifier: ^0.13.5
+        specifier: 0.13.5
         version: 0.13.5
       vue:
         specifier: 3.5.13
@@ -31,10 +31,10 @@ importers:
         version: 4.5.0(vue@3.5.13(typescript@5.8.2))
     devDependencies:
       openapi-typescript:
-        specifier: ^7.6.1
+        specifier: 7.6.1
         version: 7.6.1(typescript@5.8.2)
       typescript:
-        specifier: ^5.8.2
+        specifier: 5.8.2
         version: 5.8.2
 
 packages:
