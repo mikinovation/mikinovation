@@ -2,8 +2,8 @@
   "name": "mikinovation",
   "version": "1.0.0",
   "scripts": {
-    "web": "pnpm -F \"web\"",
-    "ui": "pnpm -F \"ui\""
+    "web": "pnpm -F \"@mikinovation/web\"",
+    "ui": "pnpm -F \"@mikinovation/ui\""
   },
   "engines": {
      "pnpm": "10.7.0",

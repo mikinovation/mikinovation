@@ -1,10 +1,11 @@
 {
-  "name": "nuxt-app",
+  "name": "@mikinovation/web",
   "private": true,
   "type": "module",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "dev:mock": "NUXT_PUBLIC_API_MOCK=true nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
@@ -24,8 +25,14 @@
     "vue-router": "4.5.0"
   },
   "devDependencies": {
+    "msw": "2.7.3",
     "openapi-typescript": "7.6.1",
     "sass": "1.86.0",
     "typescript": "5.8.2"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
