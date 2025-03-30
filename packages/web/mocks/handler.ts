@@ -10,7 +10,7 @@ const owner = createUserMock({
   avatar_url: 'https://github.com/mikinovation.png',
 })
 
-const mockRepositories: components['schemas']['repository'][] = [
+export const mockRepositories: components['schemas']['repository'][] = [
   createRepositoryMock({
     id: 1,
     name: 'mock-repo-1',
@@ -70,17 +70,14 @@ const additionalRepos = createRepositoryMocks(10, {
 // Combine all mock repositories
 const allRepositories = [...mockRepositories, ...additionalRepos];
 
-// Function to return paginated repositories based on query parameters
 const getPaginatedRepositories = (
   page: number = 1, 
   perPage: number = 10,
   sort: string = 'updated',
   direction: string = 'desc'
 ) => {
-  // Clone the array to avoid modifying the original
   const repos = [...allRepositories];
   
-  // Sort repositories based on parameters
   switch (sort) {
     case 'created':
       repos.sort((a, b) => {
