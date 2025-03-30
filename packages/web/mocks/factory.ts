@@ -1,20 +1,12 @@
 import type { components } from '@/types/github-api'
+import { createUserMock } from './factory/github/user'
 
 export const createRepositoryMock = (
   partialRepo: Partial<components['schemas']['repository']>
 ): components['schemas']['repository'] => {
   const id = partialRepo.id || Math.floor(Math.random() * 100000)
   const name = partialRepo.name || `repo-${id}`
-  const owner = partialRepo.owner || {
-    login: 'mikinovation',
-    id: 1,
-    node_id: 'MDQ6VXNlcjE=',
-    avatar_url: 'https://github.com/mikinovation.png',
-    url: 'https://api.github.com/users/mikinovation',
-    html_url: 'https://github.com/mikinovation',
-    type: 'User',
-    site_admin: false
-  }
+  const owner = partialRepo.owner || createUserMock({})
   const fullName = partialRepo.full_name || `${owner.login}/${name}`
   
   const baseApiUrl = `https://api.github.com/repos/${fullName}`
