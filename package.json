@@ -1,10 +1,14 @@
 {
   "name": "mikinovation",
   "version": "1.0.0",
-  "workspaces": [
-    "packages/web"
-  ],
+  "scripts": {
+    "web": "pnpm -F \"web\"",
+    "ui": "pnpm -F \"ui\""
+  },
   "engines": {
-    "node": "22.14.0"
-  }
+     "pnpm": "10.7.0",
+     "npm": "please_use_pnpm_instead",
+     "node": "22.14.0"
+  },
+  "packageManager": "pnpm@10.7.0"
 }
