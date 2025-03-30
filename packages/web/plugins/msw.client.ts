@@ -1,7 +1,8 @@
 import { defineNuxtPlugin } from '#app'
 
 export default defineNuxtPlugin(async () => {
-  const enableMock = process.env.NODE_ENV === 'development' || process.env.NUXT_PUBLIC_API_MOCK === 'true'
+  const config = useRuntimeConfig()
+  const enableMock = !!config.public.apiMock
   
   if (enableMock) {
     try {
@@ -9,10 +10,10 @@ export default defineNuxtPlugin(async () => {
       await worker.start({
         onUnhandledRequest: 'bypass',
       })
-      
-      console.log('[MSW] Mock Service Worker started')
+
+      console.log('[MSW] Client-side mocking enabled')
     } catch (error) {
-      console.error('[MSW] Failed to initialize:', error)
+      console.error('[MSW] Failed to initialize client-side mocking:', error)
     }
   }
 })

@@ -9,6 +9,7 @@ UI_DIR := packages/ui
 DATABASE_URL ?= sqlite:./$(API_DIR)/mikinovation.db
 NODE_VERSION := 22.14.0
 PNPM_VERSION := 10.7.0
+ENABLE_MOCK := NUXT_PUBLIC_API_MOCK=true
 
 #
 # commands
@@ -19,6 +20,7 @@ help:
 	@echo "Mikinovation Commands:"
 	@echo "  make setup             - Set up all projects (API, Web, UI)"
 	@echo "  make dev               - Run API, Web, and UI in development mode"
+	@echo "  make dev-mock          - Run dev with API mocking enabled"
 	@echo "  make build             - Build all projects for production"
 	@echo "  make clean             - Clean all projects"
 	@echo "  make lint              - Lint all projects"
@@ -45,7 +47,11 @@ help:
 	@echo "Web Commands:"
 	@echo "  make setup-web         - Set up Web project"
 	@echo "  make dev-web           - Start Web development server"
+	@echo "  make dev-web-mock      - Start Web development server with API mocking enabled"
 	@echo "  make build-web         - Build Web for production"
+	@echo "  make build-web-mock    - Build Web for production with API mocking enabled"
+	@echo "  make preview-web       - Preview Web production build"
+	@echo "  make preview-web-mock  - Preview Web production build with API mocking enabled"
 	@echo "  make lint-web          - Run Web linter"
 	@echo "  make typecheck-web     - Run type check for Web"
 	@echo "  make codegen           - Generate types from GitHub OpenAPI schema"
@@ -87,6 +93,11 @@ dev:
 	@echo "Starting development servers..."
 	@make -j 3 dev-api dev-web dev-ui
 
+.PHONY: dev-mock
+dev-mock:
+	@echo "Starting development servers with API mocking..."
+	@make -j 2 dev-web-mock dev-ui
+
 .PHONY: dev-api
 dev-api:
 	@echo "Starting API development server..."
@@ -96,6 +107,11 @@ dev-api:
 dev-web:
 	@echo "Starting Web development server..."
 	@pnpm web dev
+
+.PHONY: dev-web-mock
+dev-web-mock:
+	@echo "Starting Web development server with API mocking..."
+	@$(ENABLE_MOCK) pnpm web dev
 
 .PHONY: dev-ui
 dev-ui:
@@ -109,6 +125,9 @@ dev-ui:
 .PHONY: build
 build: build-api build-web build-ui
 
+.PHONY: build-mock
+build-mock: build-api build-web-mock build-ui
+
 .PHONY: build-api
 build-api:
 	@echo "Building API for production..."
@@ -119,10 +138,29 @@ build-web:
 	@echo "Building Web for production..."
 	@pnpm web build
 
+.PHONY: build-web-mock
+build-web-mock:
+	@echo "Building Web for production with API mocking..."
+	@$(ENABLE_MOCK) pnpm web build
+
 .PHONY: build-ui
 build-ui:
 	@echo "Building UI for production..."
 	@pnpm ui build
+
+#
+# Preview commands
+#
+
+.PHONY: preview-web
+preview-web:
+	@echo "Previewing Web production build..."
+	@pnpm web preview
+
+.PHONY: preview-web-mock
+preview-web-mock:
+	@echo "Previewing Web production build with API mocking..."
+	@$(ENABLE_MOCK) pnpm web preview
 
 #
 # Lint commands

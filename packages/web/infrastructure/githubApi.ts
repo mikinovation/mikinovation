@@ -1,5 +1,5 @@
 import createClient from 'openapi-fetch';
-import type { paths, operations } from '~/types/github-api';
+import type { paths, operations } from '@/types/github-api';
 
 export const githubClient = createClient<paths>({
   baseUrl: 'https://api.github.com',
