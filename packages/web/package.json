@@ -5,6 +5,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "dev:mock": "NUXT_PUBLIC_API_MOCK=true nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
@@ -28,5 +29,10 @@
     "openapi-typescript": "7.6.1",
     "sass": "1.86.0",
     "typescript": "5.8.2"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
