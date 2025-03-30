@@ -5,7 +5,10 @@ SHELL := /bin/bash
 # Environment variables
 API_DIR := packages/api
 WEB_DIR := packages/web
+UI_DIR := packages/ui
 DATABASE_URL ?= sqlite:./$(API_DIR)/mikinovation.db
+NODE_VERSION := 22.14.0
+PNPM_VERSION := 10.7.0
 
 #
 # commands
@@ -13,17 +16,20 @@ DATABASE_URL ?= sqlite:./$(API_DIR)/mikinovation.db
 
 .PHONY: help
 help:
-	@echo "Mikinovation Monorepo Commands:"
-	@echo "  make setup             - Set up both API and Web projects"
-	@echo "  make dev               - Run both API and Web in development mode"
-	@echo "  make build             - Build both API and Web for production"
+	@echo "Mikinovation Commands:"
+	@echo "  make setup             - Set up all projects (API, Web, UI)"
+	@echo "  make dev               - Run API, Web, and UI in development mode"
+	@echo "  make build             - Build all projects for production"
+	@echo "  make clean             - Clean all projects"
+	@echo "  make lint              - Lint all projects"
 	@echo ""
 	@echo "API Commands:"
+	@echo "  make setup-api         - Set up API project (create DB and run migrations)"
 	@echo "  make dev-api           - Start API development server with hot reload"
 	@echo "  make run-api-release   - Run API in release mode"
 	@echo "  make test-api          - Run API tests"
 	@echo "  make test-api-watch    - Run API tests in watch mode"
-	@echo "  make lint-api          - Run API linter"
+	@echo "  make lint-api          - Run API linter (clippy)"
 	@echo "  make fmt-api           - Format API code"
 	@echo "  make build-api         - Build API release binary"
 	@echo "  make clean-api         - Clean API project"
@@ -37,10 +43,23 @@ help:
 	@echo "  make prepare           - Generate SQLx metadata for offline development"
 	@echo ""
 	@echo "Web Commands:"
+	@echo "  make setup-web         - Set up Web project"
 	@echo "  make dev-web           - Start Web development server"
 	@echo "  make build-web         - Build Web for production"
 	@echo "  make lint-web          - Run Web linter"
+	@echo "  make typecheck-web     - Run type check for Web"
 	@echo "  make codegen           - Generate types from GitHub OpenAPI schema"
+	@echo "  make clean-web         - Clean Web project"
+	@echo ""
+	@echo "UI Commands:"
+	@echo "  make setup-ui          - Set up UI project"
+	@echo "  make dev-ui            - Start UI development with watch mode"
+	@echo "  make build-ui          - Build UI for production"
+	@echo "  make lint-ui           - Run UI linter"
+	@echo "  make typecheck-ui      - Run type check for UI"
+	@echo "  make storybook         - Run Storybook for UI components"
+	@echo "  make build-storybook   - Build Storybook for UI components"
+	@echo "  make clean-ui          - Clean UI project"
 	@echo ""
 	@echo "  make help              - Display this help message"
 
@@ -49,18 +68,15 @@ help:
 #
 
 .PHONY: setup
-setup: setup-api setup-web
+setup: setup-api setup-node
 
 .PHONY: setup-api
-setup-api: db-create migrate
+setup-api: db-create migrate prepare
 
-.PHONY: setup-web
-setup-web:
-	@echo "Setting up Web..."
-	@cd $(WEB_DIR) && pnpm install
-	@echo "Generating GitHub API types from OpenAPI schema..."
-	@mkdir -p $(WEB_DIR)/types
-	@cd $(WEB_DIR) && pnpm codegen
+.PHONY: setup-node
+setup-node:
+	@echo "Setting up Node.js..."
+	@pnpm install
 
 #
 # Development commands
@@ -69,7 +85,7 @@ setup-web:
 .PHONY: dev
 dev:
 	@echo "Starting development servers..."
-	@make -j 2 dev-api dev-web
+	@make -j 3 dev-api dev-web dev-ui
 
 .PHONY: dev-api
 dev-api:
@@ -79,14 +95,19 @@ dev-api:
 .PHONY: dev-web
 dev-web:
 	@echo "Starting Web development server..."
-	@cd $(WEB_DIR) && pnpm run dev
+	@pnpm web dev
+
+.PHONY: dev-ui
+dev-ui:
+	@echo "Starting UI development with watch mode..."
+	@pnpm ui dev
 
 #
 # Build commands
 #
 
 .PHONY: build
-build: build-api build-web
+build: build-api build-web build-ui
 
 .PHONY: build-api
 build-api:
@@ -96,7 +117,19 @@ build-api:
 .PHONY: build-web
 build-web:
 	@echo "Building Web for production..."
-	@cd $(WEB_DIR) && pnpm run build
+	@pnpm web build
+
+.PHONY: build-ui
+build-ui:
+	@echo "Building UI for production..."
+	@pnpm ui build
+
+#
+# Lint commands
+#
+
+.PHONY: lint
+lint: lint-api lint-web lint-ui
 
 #
 # API specific commands
@@ -139,17 +172,50 @@ clean-api:
 .PHONY: lint-web
 lint-web:
 	@echo "Running Web linting..."
-	@cd $(WEB_DIR) && pnpm run lint
+	@pnpm web lint
+
+.PHONY: typecheck-web
+typecheck-web:
+	@echo "Running Web type check..."
+	@pnpm web typecheck
 
 .PHONY: clean-web
 clean-web:
 	@echo "Cleaning Web build artifacts..."
-	@rm -rf $(WEB_DIR)/.nuxt $(WEB_DIR)/.output $(WEB_DIR)/node_modules
+	@rm -rf $(WEB_DIR)/.nuxt $(WEB_DIR)/.output $(WEB_DIR)/dist $(WEB_DIR)/node_modules
+
+#
+# UI specific commands
+#
+
+.PHONY: lint-ui
+lint-ui:
+	@echo "Running UI linting..."
+	@pnpm ui lint
+
+.PHONY: typecheck-ui
+typecheck-ui:
+	@echo "Running UI type check..."
+	@pnpm ui typecheck
+
+.PHONY: storybook
+storybook:
+	@echo "Starting Storybook for UI components..."
+	@pnpm ui storybook
+
+.PHONY: build-storybook
+build-storybook:
+	@echo "Building Storybook for UI components..."
+	@pnpm ui build-storybook
+
+.PHONY: clean-ui
+clean-ui:
+	@echo "Cleaning UI build artifacts..."
+	@rm -rf $(UI_DIR)/dist $(UI_DIR)/node_modules
 
 .PHONY: clean
-clean: clean-api clean-web
+clean: clean-api clean-web clean-ui
 	@echo "Cleaned all projects."
-
 #
 # Type generation commands
 #
@@ -157,8 +223,7 @@ clean: clean-api clean-web
 .PHONY: codegen
 codegen:
 	@echo "Generating GitHub API types from OpenAPI schema..."
-	@mkdir -p $(WEB_DIR)/types
-	@cd $(WEB_DIR) && pnpm codegen
+	@pnpm web codegen
 
 #
 # Database commands
@@ -167,7 +232,6 @@ codegen:
 .PHONY: db-create
 db-create:
 	@echo "Creating database..."
-	@mkdir -p $(API_DIR)
 	@echo "Using database URL: $(DATABASE_URL)"
 	@sqlx database create --database-url $(DATABASE_URL)
 
