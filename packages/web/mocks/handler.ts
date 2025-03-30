@@ -111,8 +111,7 @@ const getPaginatedRepositories = (
       });
       break;
   }
-  
-  // Calculate pagination
+
   const start = (page - 1) * perPage;
   const paginatedRepos = repos.slice(start, start + perPage);
   
@@ -125,9 +124,7 @@ const getPaginatedRepositories = (
   };
 };
 
-// MSW handlers
 export const handlers = [
-  // Handler for GitHub repositories endpoint
   http.get('/api/github/repository', ({ request }) => {
     const url = new URL(request.url);
     const page = parseInt(url.searchParams.get('page') || '1', 10);
