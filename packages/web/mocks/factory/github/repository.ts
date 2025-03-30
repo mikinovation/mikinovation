@@ -126,7 +126,7 @@ export const createRepositoryMocks = (
       ...baseProperties,
       id: (baseProperties?.id || 1000) + i,
       name: `${baseProperties?.name || 'repo'}-${i + 1}`,
-      updated_at: new Date(Date.now() - i * 86400000).toISOString(), // 1日ずつ古くする
+      updated_at: new Date(Date.now() - i * 86400000).toISOString(),
     });
   });
 }
