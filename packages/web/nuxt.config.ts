@@ -1,6 +1,9 @@
 export default defineNuxtConfig({
-  modules: ['@nuxt/eslint', '@nuxt/test-utils'],
-  // TODO: SSR is disabled because of the API mocking
+  modules: [
+    '@nuxt/test-utils/module',
+    '@nuxt/eslint',
+  ],
+  // TODO: I want to enable ssr even if it's mocked.
   ssr: !process.env.NUXT_PUBLIC_API_MOCK,
   devtools: { enabled: true },
   runtimeConfig: {
