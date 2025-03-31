@@ -3,11 +3,11 @@ import { fetchUserRepositories } from '../../../../infrastructure/githubApi'
 import type { components } from '@/types/github-api'
 
 export type RepositoriesResponse = {
-  repositories: components['schemas']['repository'][];
-  total: number;
-  page: number;
-  perPage: number;
-  hasMore: boolean;
+  repositories: components['schemas']['repository'][]
+  total: number
+  page: number
+  perPage: number
+  hasMore: boolean
 }
 
 export default defineEventHandler(async (event) => {
@@ -18,31 +18,33 @@ export default defineEventHandler(async (event) => {
     const perPage = parseInt(query.per_page as string || '30', 10)
     const sort = query.sort as 'created' | 'updated' | 'pushed' | 'full_name' || 'updated'
     const direction = query.direction as 'asc' | 'desc' || 'desc'
-    
+
     const config = useRuntimeConfig()
-    // OPTIMIZE:: fix assert type 
+    // OPTIMIZE:: fix assert type
     const token = config.githubApiToken as string
-    
+
     const repositories = await fetchUserRepositories(username, token, {
       page,
       per_page: perPage,
       sort,
-      direction
+      direction,
     })
-    
+
     return <RepositoriesResponse>{
       repositories,
       total: repositories.length,
       page,
       perPage,
-      hasMore: repositories.length === perPage
+      hasMore: repositories.length === perPage,
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
+  }
+  // OPTIMIZE:: fix any type
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  catch (error: any) {
     console.error('Error fetching repositories:', error)
     throw createError({
       statusCode: error.statusCode || 500,
-      statusMessage: error.message || 'Failed to fetch repositories'
+      statusMessage: error.message || 'Failed to fetch repositories',
     })
   }
 })

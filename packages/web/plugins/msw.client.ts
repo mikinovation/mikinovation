@@ -3,7 +3,7 @@ import { defineNuxtPlugin } from '#app'
 export default defineNuxtPlugin(async () => {
   const config = useRuntimeConfig()
   const enableMock = !!config.public.apiMock
-  
+
   if (enableMock) {
     try {
       const { worker } = await import('@/mocks/browser')
@@ -12,7 +12,8 @@ export default defineNuxtPlugin(async () => {
       })
 
       console.log('[MSW] Client-side mocking enabled')
-    } catch (error) {
+    }
+    catch (error) {
       console.error('[MSW] Failed to initialize client-side mocking:', error)
     }
   }

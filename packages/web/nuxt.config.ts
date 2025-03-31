@@ -11,6 +11,11 @@ export default defineNuxtConfig({
     githubApiToken: process.env.GITHUB_API_TOKEN,
     public: {
       apiMock: process.env.NUXT_PUBLIC_API_MOCK,
-    }
+    },
+  },
+  eslint: {
+    config: {
+      stylistic: true,
+    },
   },
 })

@@ -23,9 +23,9 @@ export const mockRepositories: components['schemas']['repository'][] = [
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-03-15T00:00:00Z',
     pushed_at: '2024-03-15T00:00:00Z',
-    owner
+    owner,
   }),
-  
+
   createRepositoryMock({
     id: 2,
     name: 'mock-repo-2',
@@ -39,9 +39,9 @@ export const mockRepositories: components['schemas']['repository'][] = [
     created_at: '2024-02-01T00:00:00Z',
     updated_at: '2024-03-10T00:00:00Z',
     pushed_at: '2024-03-10T00:00:00Z',
-    owner
+    owner,
   }),
-  
+
   createRepositoryMock({
     id: 3,
     name: 'mock-repo-3',
@@ -56,81 +56,81 @@ export const mockRepositories: components['schemas']['repository'][] = [
     created_at: '2024-03-01T00:00:00Z',
     updated_at: '2024-03-30T00:00:00Z',
     pushed_at: '2024-03-30T00:00:00Z',
-    owner
+    owner,
   }),
-];
+]
 
 const additionalRepos = createRepositoryMocks(10, {
   id: 100,
   owner,
   stargazers_count: 5,
   language: 'JavaScript',
-});
+})
 
 // Combine all mock repositories
-const allRepositories = [...mockRepositories, ...additionalRepos];
+const allRepositories = [...mockRepositories, ...additionalRepos]
 
 const getPaginatedRepositories = (
-  page: number = 1, 
+  page: number = 1,
   perPage: number = 10,
   sort: string = 'updated',
-  direction: string = 'desc'
+  direction: string = 'desc',
 ) => {
   const repos = [...allRepositories];
   
   switch (sort) {
     case 'created':
       repos.sort((a, b) => {
-        const dateA = new Date(a.created_at || '').getTime();
-        const dateB = new Date(b.created_at || '').getTime();
-        return direction === 'asc' ? dateA - dateB : dateB - dateA;
-      });
-      break;
+        const dateA = new Date(a.created_at || '').getTime()
+        const dateB = new Date(b.created_at || '').getTime()
+        return direction === 'asc' ? dateA - dateB : dateB - dateA
+      })
+      break
     case 'updated':
       repos.sort((a, b) => {
-        const dateA = new Date(a.updated_at || '').getTime();
-        const dateB = new Date(b.updated_at || '').getTime();
-        return direction === 'asc' ? dateA - dateB : dateB - dateA;
-      });
-      break;
+        const dateA = new Date(a.updated_at || '').getTime()
+        const dateB = new Date(b.updated_at || '').getTime()
+        return direction === 'asc' ? dateA - dateB : dateB - dateA
+      })
+      break
     case 'pushed':
       repos.sort((a, b) => {
-        const dateA = new Date(a.pushed_at || '').getTime();
-        const dateB = new Date(b.pushed_at || '').getTime();
-        return direction === 'asc' ? dateA - dateB : dateB - dateA;
-      });
-      break;
+        const dateA = new Date(a.pushed_at || '').getTime()
+        const dateB = new Date(b.pushed_at || '').getTime()
+        return direction === 'asc' ? dateA - dateB : dateB - dateA
+      })
+      break
     case 'full_name':
       repos.sort((a, b) => {
-        return direction === 'asc' 
+        return direction === 'asc'
           ? a.full_name.localeCompare(b.full_name)
-          : b.full_name.localeCompare(a.full_name);
-      });
-      break;
+          : b.full_name.localeCompare(a.full_name)
+      })
+      break
   }
 
-  const start = (page - 1) * perPage;
-  const paginatedRepos = repos.slice(start, start + perPage);
-  
+  const start = (page - 1) * perPage
+  const paginatedRepos = repos.slice(start, start + perPage)
+
   return {
     repositories: paginatedRepos,
     total: allRepositories.length,
     page,
     perPage,
-    hasMore: start + perPage < allRepositories.length
-  };
-};
+    hasMore: start + perPage < allRepositories.length,
+  }
+}
 
 export const handlers = [
   http.get('/api/github/repository', ({ request }) => {
-    const url = new URL(request.url);
-    const page = parseInt(url.searchParams.get('page') || '1', 10);
-    const perPage = parseInt(url.searchParams.get('per_page') || '10', 10);
-    const sort = url.searchParams.get('sort') || 'updated';
-    const direction = url.searchParams.get('direction') || 'desc';
-    
-    const response = getPaginatedRepositories(page, perPage, sort, direction);
-    
-    return HttpResponse.json(response);
+    const url = new URL(request.url)
+    const page = parseInt(url.searchParams.get('page') || '1', 10)
+    const perPage = parseInt(url.searchParams.get('per_page') || '10', 10)
+    const sort = url.searchParams.get('sort') || 'updated'
+    const direction = url.searchParams.get('direction') || 'desc'
+
+    const response = getPaginatedRepositories(page, perPage, sort, direction)
+
+    return HttpResponse.json(response)
   }),
-];
+]
