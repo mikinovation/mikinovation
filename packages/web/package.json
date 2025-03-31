@@ -35,7 +35,7 @@
     "typescript": "5.8.2",
     "vitest": "3.0.9",
     "eslint": "9.23.0",
-    "sass": "1.86.1",
+    "sass": "1.86.1"
   },
   "msw": {
     "workerDirectory": [
