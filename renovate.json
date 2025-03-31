@@ -6,49 +6,79 @@
     ":semanticCommits",
     ":automergeMinor"
   ],
-  "labels": ["dependencies"],
-  "schedule": ["every weekend"],
+  "labels": [
+    "dependencies"
+  ],
+  "schedule": [
+    "every weekend"
+  ],
   "prHourlyLimit": 5,
   "prConcurrentLimit": 10,
   "rangeStrategy": "pin",
   "packageRules": [
     {
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "matchCurrentVersion": "!/^0/",
       "automerge": true
     },
     {
       "description": "Group all non-major Rust dependencies",
-      "matchManagers": ["cargo"],
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchManagers": [
+        "cargo"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "groupName": "Rust dependencies (non-major)",
       "groupSlug": "rust-minor-patch",
-      "addLabels": ["rust"]
+      "addLabels": [
+        "rust"
+      ]
     },
     {
       "description": "Group all non-major JavaScript dependencies",
-      "matchManagers": ["npm"],
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchManagers": [
+        "npm"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "groupName": "JavaScript dependencies (non-major)",
       "groupSlug": "js-minor-patch",
-      "addLabels": ["javascript"]
+      "addLabels": [
+        "javascript"
+      ]
     },
     {
       "description": "Group all DevDependencies",
-      "matchDepTypes": ["devDependencies"],
+      "matchDepTypes": [
+        "devDependencies"
+      ],
       "groupName": "DevDependencies",
       "prPriority": 5
     },
     {
       "description": "Group GitHub Actions",
-      "matchManagers": ["github-actions"],
+      "matchManagers": [
+        "github-actions"
+      ],
       "groupName": "GitHub Actions",
-      "addLabels": ["github-actions"]
+      "addLabels": [
+        "github-actions"
+      ]
     },
     {
       "description": "Group Axum ecosystem packages",
-      "matchPackagePatterns": ["^axum", "tower-http"],
-      "groupName": "Axum ecosystem"
+      "groupName": "Axum ecosystem",
+      "matchPackageNames": [
+        "/^axum/",
+        "/tower-http/"
+      ]
     }
   ],
   "ignoreDeps": [],
@@ -60,6 +90,8 @@
   ],
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": ["before 5am on monday"]
+    "schedule": [
+      "before 5am on monday"
+    ]
   }
 }
