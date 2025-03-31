@@ -1,7 +1,7 @@
 import type { components } from '@/types/github-api'
 
 export const createUserMock = (
-  partialUser: Partial<components['schemas']['simple-user']>
+  partialUser: Partial<components['schemas']['simple-user']>,
 ): components['schemas']['simple-user'] => {
   const login = partialUser.login || 'mikinovation'
   const id = partialUser.id || 1
@@ -31,6 +31,6 @@ export const createUserMock = (
     type: partialUser.type || 'User',
     site_admin: partialUser.site_admin ?? false,
     starred_at: partialUser.starred_at ?? undefined,
-    user_view_type: partialUser.user_view_type ?? 'public'
+    user_view_type: partialUser.user_view_type ?? 'public',
   }
 }

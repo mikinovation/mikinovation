@@ -18,13 +18,13 @@
   "dependencies": {
     "@nuxt/eslint": "1.2.0",
     "@nuxt/test-utils": "3.17.2",
-    "eslint": "9.0.0",
     "nuxt": "3.16.1",
     "openapi-fetch": "0.13.5",
     "vue": "3.5.13",
     "vue-router": "4.5.0"
   },
   "devDependencies": {
+    "eslint": "9.23.0",
     "msw": "2.7.3",
     "openapi-typescript": "7.6.1",
     "sass": "1.86.0",

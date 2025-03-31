@@ -1,18 +1,18 @@
-import type { components } from '@/types/github-api'
 import { createUserMock } from './user'
+import type { components } from '@/types/github-api'
 
 export const createRepositoryMock = (
-  partialRepo: Partial<components['schemas']['repository']>
+  partialRepo: Partial<components['schemas']['repository']>,
 ): components['schemas']['repository'] => {
   const id = partialRepo.id || Math.floor(Math.random() * 100000)
   const name = partialRepo.name || `repo-${id}`
-  
-  const owner = partialRepo.owner 
-    ? partialRepo.owner 
+
+  const owner = partialRepo.owner
+    ? partialRepo.owner
     : createUserMock({ login: 'mikinovation' })
-  
+
   const fullName = partialRepo.full_name || `${owner.login}/${name}`
-  
+
   const baseApiUrl = `https://api.github.com/repos/${fullName}`
   const baseGithubUrl = `https://github.com/${fullName}`
 
@@ -95,7 +95,7 @@ export const createRepositoryMock = (
       maintain: true,
       push: true,
       triage: true,
-      pull: true
+      pull: true,
     },
     allow_rebase_merge: partialRepo.allow_rebase_merge ?? true,
     allow_squash_merge: partialRepo.allow_squash_merge ?? true,
@@ -119,7 +119,7 @@ export const createRepositoryMock = (
 
 export const createRepositoryMocks = (
   count: number,
-  baseProperties?: Partial<components['schemas']['repository']>
+  baseProperties?: Partial<components['schemas']['repository']>,
 ): components['schemas']['repository'][] => {
   return Array.from({ length: count }, (_, i) => {
     return createRepositoryMock({
@@ -127,6 +127,6 @@ export const createRepositoryMocks = (
       id: (baseProperties?.id || 1000) + i,
       name: `${baseProperties?.name || 'repo'}-${i + 1}`,
       updated_at: new Date(Date.now() - i * 86400000).toISOString(),
-    });
-  });
+    })
+  })
 }
