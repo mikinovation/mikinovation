@@ -76,8 +76,8 @@ const getPaginatedRepositories = (
   sort: string = 'updated',
   direction: string = 'desc',
 ) => {
-  const repos = [...allRepositories];
-  
+  const repos = [...allRepositories]
+
   switch (sort) {
     case 'created':
       repos.sort((a, b) => {

@@ -1,3 +1,3 @@
-import GithubRepositoryTable from './GithubRepositoryTable.vue';
+import GithubRepositoryTable from './GithubRepositoryTable.vue'
 
 export { GithubRepositoryTable }
