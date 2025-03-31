@@ -27,7 +27,7 @@
     "eslint": "9.23.0",
     "msw": "2.7.3",
     "openapi-typescript": "7.6.1",
-    "sass": "1.86.0",
+    "sass": "1.86.1",
     "typescript": "5.8.2"
   },
   "msw": {
