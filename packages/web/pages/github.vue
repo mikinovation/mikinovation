@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import GitHubRepositoryTable from '@/components/github/GithubRepositoryTable.vue';
+import GitHubRepositoryTable from '@/components/github/GithubRepositoryTable.vue'
 </script>
 
 <template>
   <div class="github-page">
     <h1>GitHub Repositories</h1>
-    
+
     <GitHubRepositoryTable />
   </div>
 </template>

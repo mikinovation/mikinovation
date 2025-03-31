@@ -24,6 +24,7 @@ packages/web/.output
 packages/web/dist
 packages/web/.env
 packages/web/.cache
+packages/web/types/github-api.ts
 
 # ui
 packages/ui/dist
