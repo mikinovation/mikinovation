@@ -1,23 +1,15 @@
 use anyhow::Result;
 use uuid::Uuid;
 
-use crate::application::dto::{JsonString, todo::{
-    CreateTodoDto,
-    ErrorDto,
-    SerializationError,
-    SuccessDto,
-    TodoDto,
-    TodoListDto,
-    UpdateTodoDto
-}};
+use crate::application::dto::{
+    todo::{
+        CreateTodoDto, ErrorDto, SerializationError, SuccessDto, TodoDto, TodoListDto,
+        UpdateTodoDto,
+    },
+    JsonString,
+};
 use crate::domain::model::{
-    validate_title,
-    Completed,
-    CreateTodoInput,
-    Todo,
-    TodoId,
-    TodoOutput,
-    UpdateTodoInput
+    validate_title, Completed, CreateTodoInput, Todo, TodoId, TodoOutput, UpdateTodoInput,
 };
 
 pub fn deserialize_create_todo(json: &JsonString) -> Result<CreateTodoDto, SerializationError> {
