@@ -8,7 +8,7 @@ use axum::{
 use sqlx::{Pool, Sqlite};
 use std::sync::Arc;
 
-use crate::application::dto::ErrorDto;
+use crate::application::dto::todo::ErrorDto;
 use crate::application::mapper::{
     create_todo_dto_to_domain, deserialize_create_todo, deserialize_update_todo,
     output_to_response, string_to_todo_id, update_todo_dto_to_domain,
