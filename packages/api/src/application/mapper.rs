@@ -1,16 +1,15 @@
 use anyhow::Result;
 use uuid::Uuid;
 
-use crate::application::dto::todo::{
+use crate::application::dto::{JsonString, todo::{
     CreateTodoDto,
     ErrorDto,
-    JsonString,
     SerializationError,
     SuccessDto,
     TodoDto,
     TodoListDto,
     UpdateTodoDto
-};
+}};
 use crate::domain::model::{
     validate_title,
     Completed,

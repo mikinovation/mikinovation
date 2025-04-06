@@ -2,8 +2,6 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-pub type JsonString = String;
-
 #[derive(Debug, Deserialize)]
 pub struct CreateTodoDto {
     pub title: String,

@@ -2,8 +2,8 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-pub type JsonString = String;
-
+// TODO: remove warning
+#[allow(dead_code)]
 #[derive(Debug, Deserialize)]
 pub struct CreateRepositoryDto {
     pub github_id: i64,
@@ -15,6 +15,8 @@ pub struct CreateRepositoryDto {
     pub stargazers_count: i32,
 }
 
+// TODO: remove warning
+#[allow(dead_code)]
 #[derive(Debug, Deserialize)]
 pub struct UpdateRepositoryDto {
     pub name: Option<String>,
