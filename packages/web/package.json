@@ -24,11 +24,11 @@
     "vue-router": "4.5.0"
   },
   "devDependencies": {
-    "eslint": "9.23.0",
+    "eslint": "9.24.0",
     "msw": "2.7.3",
     "openapi-typescript": "7.6.1",
-    "sass": "1.86.2",
-    "typescript": "5.8.2"
+    "sass": "1.86.3",
+    "typescript": "5.8.3"
   },
   "msw": {
     "workerDirectory": [
