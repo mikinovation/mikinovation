@@ -286,7 +286,6 @@ mod tests {
     
     #[test]
     fn test_update_repository() {
-        // First create a repository
         let name = validate_repository_name("test-repo".to_string()).unwrap();
         let full_name = validate_repository_full_name("user/test-repo".to_string()).unwrap();
         let html_url = validate_repository_url("https://github.com/user/test-repo".to_string()).unwrap();
@@ -363,7 +362,6 @@ mod tests {
     
     #[test]
     fn test_delete_repository() {
-        // First create a repository
         let name = validate_repository_name("test-repo".to_string()).unwrap();
         let full_name = validate_repository_full_name("user/test-repo".to_string()).unwrap();
         let html_url = validate_repository_url("https://github.com/user/test-repo".to_string()).unwrap();
@@ -409,7 +407,6 @@ mod tests {
     
     #[test]
     fn test_find_repository() {
-        // First create a repository
         let name = validate_repository_name("test-repo".to_string()).unwrap();
         let full_name = validate_repository_full_name("user/test-repo".to_string()).unwrap();
         let html_url = validate_repository_url("https://github.com/user/test-repo".to_string()).unwrap();
@@ -465,7 +462,6 @@ mod tests {
     
     #[test]
     fn test_list_repositories() {
-        // Create a couple repositories
         let name1 = validate_repository_name("test-repo-1".to_string()).unwrap();
         let full_name1 = validate_repository_full_name("user/test-repo-1".to_string()).unwrap();
         let html_url1 = validate_repository_url("https://github.com/user/test-repo-1".to_string()).unwrap();
