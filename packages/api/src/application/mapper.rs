@@ -2,8 +2,11 @@ use anyhow::Result;
 use uuid::Uuid;
 
 use crate::application::dto::{
-    CreateTodoDto, ErrorDto, JsonString, SerializationError, SuccessDto, TodoDto, TodoListDto,
-    UpdateTodoDto,
+    todo::{
+        CreateTodoDto, ErrorDto, SerializationError, SuccessDto, TodoDto, TodoListDto,
+        UpdateTodoDto,
+    },
+    JsonString,
 };
 use crate::domain::model::{
     validate_title, Completed, CreateTodoInput, Todo, TodoId, TodoOutput, UpdateTodoInput,
