@@ -12,7 +12,7 @@ pub struct CreateRepositoryDto {
     pub description: Option<String>,
     pub language: Option<String>,
     pub html_url: String,
-    pub stargazers_count: i32,
+    pub stargazers_count: i64,
 }
 
 // TODO: remove warning
@@ -29,7 +29,7 @@ pub struct UpdateRepositoryDto {
 #[derive(Debug, Serialize)]
 pub struct RepositoryDto {
     pub id: Uuid,
-    pub github_id: i64,
+    pub github_id: i32,
     pub name: String,
     pub full_name: String,
     pub description: Option<String>,

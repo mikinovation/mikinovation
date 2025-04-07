@@ -8,7 +8,7 @@ use crate::application::dto::{
     },
     JsonString,
 };
-use crate::domain::model::{
+use crate::domain::todo::{
     validate_title, Completed, CreateTodoInput, Todo, TodoId, TodoOutput, UpdateTodoInput,
 };
 
