@@ -142,7 +142,10 @@ pub fn create_repository(input: CreateRepositoryInput) -> RepositoryOutput {
     RepositoryOutput::Created(repository)
 }
 
-pub fn update_repository(input: UpdateRepositoryInput, existing_repository: Option<Repository>) -> RepositoryOutput {
+pub fn update_repository(
+    input: UpdateRepositoryInput,
+    existing_repository: Option<Repository>,
+) -> RepositoryOutput {
     match existing_repository {
         Some(repository) => {
             let updated_repository = Repository {
@@ -153,7 +156,9 @@ pub fn update_repository(input: UpdateRepositoryInput, existing_repository: Opti
                 description: input.description.unwrap_or(repository.description),
                 language: input.language.unwrap_or(repository.language),
                 html_url: input.html_url.unwrap_or(repository.html_url),
-                stargazers_count: input.stargazers_count.unwrap_or(repository.stargazers_count),
+                stargazers_count: input
+                    .stargazers_count
+                    .unwrap_or(repository.stargazers_count),
                 connected_at: repository.connected_at,
                 created_at: repository.created_at,
                 updated_at: Utc::now(),
@@ -165,14 +170,20 @@ pub fn update_repository(input: UpdateRepositoryInput, existing_repository: Opti
     }
 }
 
-pub fn delete_repository(id: RepositoryId, existing_repository: Option<Repository>) -> RepositoryOutput {
+pub fn delete_repository(
+    id: RepositoryId,
+    existing_repository: Option<Repository>,
+) -> RepositoryOutput {
     match existing_repository {
         Some(_) => RepositoryOutput::Deleted(id),
         None => RepositoryOutput::NotFound(id),
     }
 }
 
-pub fn find_repository(id: RepositoryId, existing_repository: Option<Repository>) -> RepositoryOutput {
+pub fn find_repository(
+    id: RepositoryId,
+    existing_repository: Option<Repository>,
+) -> RepositoryOutput {
     match existing_repository {
         Some(repository) => RepositoryOutput::Found(repository),
         None => RepositoryOutput::NotFound(id),
@@ -190,69 +201,79 @@ mod tests {
     #[test]
     fn test_validate_repository_name_with_valid_name() {
         let valid_name = "test-repo".to_string();
-        
+
         let result = validate_repository_name(valid_name.clone());
-        
+
         assert!(result.is_ok());
         assert_eq!(result.unwrap().0, valid_name);
     }
-    
+
     #[test]
     fn test_validate_repository_name_with_empty_name() {
         let empty_name = "".to_string();
-        
+
         let result = validate_repository_name(empty_name);
-        
+
         assert!(result.is_err());
-        assert_eq!(result.unwrap_err(), "Repository name cannot be empty".to_string());
+        assert_eq!(
+            result.unwrap_err(),
+            "Repository name cannot be empty".to_string()
+        );
     }
-    
+
     #[test]
     fn test_validate_repository_full_name_with_valid_name() {
         let valid_name = "user/repo".to_string();
-        
+
         let result = validate_repository_full_name(valid_name.clone());
-        
+
         assert!(result.is_ok());
         assert_eq!(result.unwrap().0, valid_name);
     }
-    
+
     #[test]
     fn test_validate_repository_full_name_without_slash() {
         let invalid_name = "userrepo".to_string();
-        
+
         let result = validate_repository_full_name(invalid_name);
-        
+
         assert!(result.is_err());
-        assert_eq!(result.unwrap_err(), "Repository full name must be in format 'owner/repo'".to_string());
+        assert_eq!(
+            result.unwrap_err(),
+            "Repository full name must be in format 'owner/repo'".to_string()
+        );
     }
-    
+
     #[test]
     fn test_validate_repository_url_with_valid_url() {
         let valid_url = "https://github.com/user/repo".to_string();
-        
+
         let result = validate_repository_url(valid_url.clone());
-        
+
         assert!(result.is_ok());
         assert_eq!(result.unwrap().0, valid_url);
     }
-    
+
     #[test]
     fn test_validate_repository_url_with_invalid_protocol() {
         let invalid_url = "http://github.com/user/repo".to_string();
-        
+
         let result = validate_repository_url(invalid_url);
-        
+
         assert!(result.is_err());
-        assert_eq!(result.unwrap_err(), "Repository URL must be a valid HTTPS URL".to_string());
+        assert_eq!(
+            result.unwrap_err(),
+            "Repository URL must be a valid HTTPS URL".to_string()
+        );
     }
-    
+
     #[test]
     fn test_create_repository() {
         let name = validate_repository_name("test-repo".to_string()).unwrap();
         let full_name = validate_repository_full_name("user/test-repo".to_string()).unwrap();
-        let html_url = validate_repository_url("https://github.com/user/test-repo".to_string()).unwrap();
-        
+        let html_url =
+            validate_repository_url("https://github.com/user/test-repo".to_string()).unwrap();
+
         let input = CreateRepositoryInput {
             github_id: GithubId(123456),
             name,
@@ -262,9 +283,9 @@ mod tests {
             html_url,
             stargazers_count: StargazersCount(42),
         };
-        
+
         let output = create_repository(input);
-        
+
         match output {
             RepositoryOutput::Created(repo) => {
                 assert_eq!(repo.github_id.0, 123456);
@@ -274,22 +295,23 @@ mod tests {
                 assert_eq!(repo.language.0, Some("Rust".to_string()));
                 assert_eq!(repo.html_url.0, "https://github.com/user/test-repo");
                 assert_eq!(repo.stargazers_count.0, 42);
-                
+
                 let now = Utc::now();
                 assert!((now.timestamp() - repo.created_at.timestamp()).abs() < 2);
                 assert!((now.timestamp() - repo.updated_at.timestamp()).abs() < 2);
                 assert!((now.timestamp() - repo.connected_at.timestamp()).abs() < 2);
-            },
+            }
             _ => panic!("Expected RepositoryOutput::Created, got something else"),
         }
     }
-    
+
     #[test]
     fn test_update_repository() {
         let name = validate_repository_name("test-repo".to_string()).unwrap();
         let full_name = validate_repository_full_name("user/test-repo".to_string()).unwrap();
-        let html_url = validate_repository_url("https://github.com/user/test-repo".to_string()).unwrap();
-        
+        let html_url =
+            validate_repository_url("https://github.com/user/test-repo".to_string()).unwrap();
+
         let input = CreateRepositoryInput {
             github_id: GithubId(123456),
             name,
@@ -299,16 +321,16 @@ mod tests {
             html_url,
             stargazers_count: StargazersCount(42),
         };
-        
+
         let created = match create_repository(input) {
             RepositoryOutput::Created(repo) => repo,
             _ => panic!("Failed to create test repository"),
         };
-        
+
         // Now update it
         let new_name = validate_repository_name("updated-repo".to_string()).unwrap();
         let new_stars = StargazersCount(100);
-        
+
         let update_input = UpdateRepositoryInput {
             id: created.id.clone(),
             name: Some(new_name),
@@ -317,9 +339,9 @@ mod tests {
             html_url: None,
             stargazers_count: Some(new_stars),
         };
-        
+
         let output = update_repository(update_input, Some(created.clone()));
-        
+
         match output {
             RepositoryOutput::Updated(repo) => {
                 assert_eq!(repo.id, created.id);
@@ -333,11 +355,11 @@ mod tests {
                 assert_eq!(repo.connected_at, created.connected_at);
                 assert_eq!(repo.created_at, created.created_at);
                 assert!(repo.updated_at > created.updated_at);
-            },
+            }
             _ => panic!("Expected RepositoryOutput::Updated, got something else"),
         }
     }
-    
+
     #[test]
     fn test_update_repository_not_found() {
         let random_id = RepositoryId(Uuid::new_v4());
@@ -349,23 +371,24 @@ mod tests {
             html_url: None,
             stargazers_count: None,
         };
-        
+
         let output = update_repository(update_input, None);
-        
+
         match output {
             RepositoryOutput::NotFound(id) => {
                 assert_eq!(id, random_id);
-            },
+            }
             _ => panic!("Expected RepositoryOutput::NotFound, got something else"),
         }
     }
-    
+
     #[test]
     fn test_delete_repository() {
         let name = validate_repository_name("test-repo".to_string()).unwrap();
         let full_name = validate_repository_full_name("user/test-repo".to_string()).unwrap();
-        let html_url = validate_repository_url("https://github.com/user/test-repo".to_string()).unwrap();
-        
+        let html_url =
+            validate_repository_url("https://github.com/user/test-repo".to_string()).unwrap();
+
         let input = CreateRepositoryInput {
             github_id: GithubId(123456),
             name,
@@ -375,42 +398,43 @@ mod tests {
             html_url,
             stargazers_count: StargazersCount(42),
         };
-        
+
         let created = match create_repository(input) {
             RepositoryOutput::Created(repo) => repo,
             _ => panic!("Failed to create test repository"),
         };
-        
+
         let output = delete_repository(created.id.clone(), Some(created.clone()));
-        
+
         match output {
             RepositoryOutput::Deleted(id) => {
                 assert_eq!(id, created.id);
-            },
+            }
             _ => panic!("Expected RepositoryOutput::Deleted, got something else"),
         }
     }
-    
+
     #[test]
     fn test_delete_repository_not_found() {
         let random_id = RepositoryId(Uuid::new_v4());
-        
+
         let output = delete_repository(random_id.clone(), None);
-        
+
         match output {
             RepositoryOutput::NotFound(id) => {
                 assert_eq!(id, random_id);
-            },
+            }
             _ => panic!("Expected RepositoryOutput::NotFound, got something else"),
         }
     }
-    
+
     #[test]
     fn test_find_repository() {
         let name = validate_repository_name("test-repo".to_string()).unwrap();
         let full_name = validate_repository_full_name("user/test-repo".to_string()).unwrap();
-        let html_url = validate_repository_url("https://github.com/user/test-repo".to_string()).unwrap();
-        
+        let html_url =
+            validate_repository_url("https://github.com/user/test-repo".to_string()).unwrap();
+
         let input = CreateRepositoryInput {
             github_id: GithubId(123456),
             name,
@@ -420,14 +444,14 @@ mod tests {
             html_url,
             stargazers_count: StargazersCount(42),
         };
-        
+
         let created = match create_repository(input) {
             RepositoryOutput::Created(repo) => repo,
             _ => panic!("Failed to create test repository"),
         };
-        
+
         let output = find_repository(created.id.clone(), Some(created.clone()));
-        
+
         match output {
             RepositoryOutput::Found(repo) => {
                 assert_eq!(repo.id, created.id);
@@ -441,31 +465,32 @@ mod tests {
                 assert_eq!(repo.connected_at, created.connected_at);
                 assert_eq!(repo.created_at, created.created_at);
                 assert_eq!(repo.updated_at, created.updated_at);
-            },
+            }
             _ => panic!("Expected RepositoryOutput::Found, got something else"),
         }
     }
-    
+
     #[test]
     fn test_find_repository_not_found() {
         let random_id = RepositoryId(Uuid::new_v4());
-        
+
         let output = find_repository(random_id.clone(), None);
-        
+
         match output {
             RepositoryOutput::NotFound(id) => {
                 assert_eq!(id, random_id);
-            },
+            }
             _ => panic!("Expected RepositoryOutput::NotFound, got something else"),
         }
     }
-    
+
     #[test]
     fn test_list_repositories() {
         let name1 = validate_repository_name("test-repo-1".to_string()).unwrap();
         let full_name1 = validate_repository_full_name("user/test-repo-1".to_string()).unwrap();
-        let html_url1 = validate_repository_url("https://github.com/user/test-repo-1".to_string()).unwrap();
-        
+        let html_url1 =
+            validate_repository_url("https://github.com/user/test-repo-1".to_string()).unwrap();
+
         let input1 = CreateRepositoryInput {
             github_id: GithubId(123456),
             name: name1,
@@ -475,11 +500,12 @@ mod tests {
             html_url: html_url1,
             stargazers_count: StargazersCount(42),
         };
-        
+
         let name2 = validate_repository_name("test-repo-2".to_string()).unwrap();
         let full_name2 = validate_repository_full_name("user/test-repo-2".to_string()).unwrap();
-        let html_url2 = validate_repository_url("https://github.com/user/test-repo-2".to_string()).unwrap();
-        
+        let html_url2 =
+            validate_repository_url("https://github.com/user/test-repo-2".to_string()).unwrap();
+
         let input2 = CreateRepositoryInput {
             github_id: GithubId(654321),
             name: name2,
@@ -489,27 +515,27 @@ mod tests {
             html_url: html_url2,
             stargazers_count: StargazersCount(24),
         };
-        
+
         let created1 = match create_repository(input1) {
             RepositoryOutput::Created(repo) => repo,
             _ => panic!("Failed to create test repository 1"),
         };
-        
+
         let created2 = match create_repository(input2) {
             RepositoryOutput::Created(repo) => repo,
             _ => panic!("Failed to create test repository 2"),
         };
-        
+
         let repos = vec![created1.clone(), created2.clone()];
-        
+
         let output = list_repositories(repos);
-        
+
         match output {
             RepositoryOutput::List(list) => {
                 assert_eq!(list.len(), 2);
                 assert!(list.iter().any(|r| r.id == created1.id));
                 assert!(list.iter().any(|r| r.id == created2.id));
-            },
+            }
             _ => panic!("Expected RepositoryOutput::List, got something else"),
         }
     }

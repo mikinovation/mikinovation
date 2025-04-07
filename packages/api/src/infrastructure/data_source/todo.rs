@@ -1,10 +1,10 @@
+use super::DataAccessError;
 use anyhow::Result;
 use chrono::{DateTime, Utc};
 use sqlx::{Pool, Sqlite};
 use uuid::Uuid;
-use super::DataAccessError;
 
-use crate::domain::todo::{Completed, Todo, TodoId, validate_title};
+use crate::domain::todo::{validate_title, Completed, Todo, TodoId};
 
 pub struct TodoRow {
     pub id: String,
@@ -18,8 +18,7 @@ pub fn row_to_domain(row: TodoRow) -> Result<Todo, DataAccessError> {
     let id = Uuid::parse_str(&row.id)
         .map_err(|_| DataAccessError::InvalidData(format!("Invalid UUID: {}", row.id)))?;
 
-    let title =
-        validate_title(row.title).map_err(DataAccessError::InvalidData)?;
+    let title = validate_title(row.title).map_err(DataAccessError::InvalidData)?;
 
     Ok(Todo {
         id: TodoId(id),
