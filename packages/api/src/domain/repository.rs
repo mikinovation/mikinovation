@@ -42,6 +42,7 @@ pub struct Repository {
 }
 
 impl RepositoryName {
+    #[allow(dead_code)]
     pub fn create(name: String) -> Result<Self, String> {
         if name.trim().is_empty() {
             return Err("Repository name cannot be empty".to_string());
@@ -54,6 +55,7 @@ impl RepositoryName {
 }
 
 impl RepositoryFullName {
+    #[allow(dead_code)]
     pub fn create(full_name: String) -> Result<Self, String> {
         if full_name.trim().is_empty() {
             return Err("Repository full name cannot be empty".to_string());
@@ -69,6 +71,7 @@ impl RepositoryFullName {
 }
 
 impl RepositoryUrl {
+    #[allow(dead_code)]
     pub fn create(url: String) -> Result<Self, String> {
         if url.trim().is_empty() {
             return Err("Repository URL cannot be empty".to_string());
@@ -80,18 +83,22 @@ impl RepositoryUrl {
     }
 }
 
+#[allow(dead_code)]
 pub fn validate_repository_name(name: String) -> Result<RepositoryName, String> {
     RepositoryName::create(name)
 }
 
+#[allow(dead_code)]
 pub fn validate_repository_full_name(full_name: String) -> Result<RepositoryFullName, String> {
     RepositoryFullName::create(full_name)
 }
 
+#[allow(dead_code)]
 pub fn validate_repository_url(url: String) -> Result<RepositoryUrl, String> {
     RepositoryUrl::create(url)
 }
 
+#[allow(dead_code)]
 #[derive(Debug, Clone)]
 pub struct CreateRepositoryInput {
     pub github_id: GithubId,
@@ -103,6 +110,7 @@ pub struct CreateRepositoryInput {
     pub stargazers_count: StargazersCount,
 }
 
+#[allow(dead_code)]
 #[derive(Debug, Clone)]
 pub struct UpdateRepositoryInput {
     pub id: RepositoryId,
@@ -113,6 +121,7 @@ pub struct UpdateRepositoryInput {
     pub stargazers_count: Option<StargazersCount>,
 }
 
+#[allow(dead_code)]
 #[derive(Debug, Clone)]
 pub enum RepositoryOutput {
     Created(Repository),
@@ -123,6 +132,7 @@ pub enum RepositoryOutput {
     List(Vec<Repository>),
 }
 
+#[allow(dead_code)]
 pub fn create_repository(input: CreateRepositoryInput) -> RepositoryOutput {
     let now = Utc::now();
     let repository = Repository {
@@ -142,6 +152,7 @@ pub fn create_repository(input: CreateRepositoryInput) -> RepositoryOutput {
     RepositoryOutput::Created(repository)
 }
 
+#[allow(dead_code)]
 pub fn update_repository(
     input: UpdateRepositoryInput,
     existing_repository: Option<Repository>,
@@ -170,6 +181,7 @@ pub fn update_repository(
     }
 }
 
+#[allow(dead_code)]
 pub fn delete_repository(
     id: RepositoryId,
     existing_repository: Option<Repository>,
@@ -180,6 +192,7 @@ pub fn delete_repository(
     }
 }
 
+#[allow(dead_code)]
 pub fn find_repository(
     id: RepositoryId,
     existing_repository: Option<Repository>,
@@ -190,6 +203,7 @@ pub fn find_repository(
     }
 }
 
+#[allow(dead_code)]
 pub fn list_repositories(repositories: Vec<Repository>) -> RepositoryOutput {
     RepositoryOutput::List(repositories)
 }
