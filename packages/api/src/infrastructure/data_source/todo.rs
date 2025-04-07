@@ -1,31 +1,10 @@
 use anyhow::Result;
 use chrono::{DateTime, Utc};
-use sqlx::{sqlite::SqlitePoolOptions, Pool, Sqlite};
+use sqlx::{Pool, Sqlite};
 use uuid::Uuid;
+use super::DataAccessError;
 
-use crate::domain::model::{Completed, Todo, TodoId};
-
-#[derive(Debug, thiserror::Error)]
-pub enum DataAccessError {
-    #[error("Database error: {0}")]
-    Database(String),
-
-    #[error("Todo with id {0} not found")]
-    NotFound(String),
-
-    #[error("Invalid data: {0}")]
-    InvalidData(String),
-}
-
-pub async fn init_db_pool(database_url: &str) -> Result<Pool<Sqlite>, DataAccessError> {
-    let pool = SqlitePoolOptions::new()
-        .max_connections(5)
-        .connect(database_url)
-        .await
-        .map_err(|e| DataAccessError::Database(e.to_string()))?;
-
-    Ok(pool)
-}
+use crate::domain::todo::{Completed, Todo, TodoId, validate_title};
 
 pub struct TodoRow {
     pub id: String,
@@ -40,7 +19,7 @@ pub fn row_to_domain(row: TodoRow) -> Result<Todo, DataAccessError> {
         .map_err(|_| DataAccessError::InvalidData(format!("Invalid UUID: {}", row.id)))?;
 
     let title =
-        crate::domain::model::validate_title(row.title).map_err(DataAccessError::InvalidData)?;
+        validate_title(row.title).map_err(DataAccessError::InvalidData)?;
 
     Ok(Todo {
         id: TodoId(id),

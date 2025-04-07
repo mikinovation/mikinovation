@@ -24,7 +24,7 @@ pub struct RepositoryLanguage(pub Option<String>);
 pub struct RepositoryUrl(pub String);
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
-pub struct StargazersCount(pub i32);
+pub struct StargazersCount(pub i64);
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Repository {

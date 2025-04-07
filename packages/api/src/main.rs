@@ -16,7 +16,7 @@ use tracing::{info, Level};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 use api::handler::{create_todo, delete_todo, get_todo, get_todos, health_check, update_todo};
-use infrastructure::data_access::init_db_pool;
+use infrastructure::data_source::init_db_pool;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {

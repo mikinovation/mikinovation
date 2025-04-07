@@ -1,12 +1,13 @@
 use anyhow::Result;
 use sqlx::{Pool, Sqlite};
 
-use crate::domain::model::{
+use crate::domain::todo::{
     create_todo, delete_todo, find_todo, list_todos, update_todo, CreateTodoInput, TodoId,
     TodoOutput, UpdateTodoInput,
 };
-use crate::infrastructure::data_access::{
-    delete_todo_by_id, find_all_todos, find_todo_by_id, save_todo, DataAccessError,
+use crate::infrastructure::data_source::{
+    DataAccessError,
+    todo::{delete_todo_by_id, find_all_todos, find_todo_by_id, save_todo, }
 };
 
 pub async fn create_todo_workflow(
