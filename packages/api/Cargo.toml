@@ -5,7 +5,7 @@ edition = "2021"
 
 [dependencies]
 axum = "=0.8.1"
-tokio = { version = "=1.44.1", features = ["full"] }
+tokio = { version = "=1.44.2", features = ["full"] }
 sqlx = { version = "=0.8.3", features = [
 	"runtime-tokio",
 	"tls-rustls",
