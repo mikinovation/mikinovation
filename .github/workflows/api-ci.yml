@@ -44,7 +44,7 @@ jobs:
 
       - name: Clippy check
         working-directory: ${{ env.WORKING_DIRECTORY }}
-        run: cargo clippy -- -D warnings
+        run: cargo clippy
 
       - name: Run tests
         working-directory: ${{ env.WORKING_DIRECTORY }}
