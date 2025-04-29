@@ -1,0 +1,7 @@
+* Nuxt 
+
+** useFetch, useAsyncData
+
+*** 3.17で最適化と破壊的変更があった
+
+- https://nuxt.com/blog/v3-17
