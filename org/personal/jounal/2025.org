@@ -1,2 +1,5 @@
 * 2025-04-29 Tuesday
-** orgmodeの設定
+  - orgmodeの設定
+    - https://github.com/mikinovation/dotfiles/pull/122
+  - NeoTreeがデフォルトで閉じるようにした
+   - https://github.com/mikinovation/dotfiles/pull/122
