@@ -1,4 +1,4 @@
-* Nuxt 
+* Nuxt
 
 ** useFetch, useAsyncData
 
@@ -8,6 +8,7 @@
 最適化された
 - https://nuxt.com/blog/v3-17
 
+
 ** NuxtTime
 
 *** ビルトインコンポーネントの追加
@@ -15,6 +16,7 @@
 [2025-04-29 Tue 10:47]
 新たらしくコンポーネントが追加された
 - https://nuxt.com/blog/v3-17#nuxttime-a-new-component-for-safe-time-display
+
 
 ** NuxtErrorBoundary
 
@@ -24,8 +26,14 @@
 - errorとclearErrorが使えるようになった
 https://nuxt.com/blog/v3-17#enhanced-nuxterrorboundary
 
+
 ** @nuxt/docs
 
 [2025-04-29 Tue 10:47]
 - 公開された
 https://nuxt.com/blog/v3-17#documentation-as-a-package
+
+
+* OrgMode
+
+** ディレクトリの分け方

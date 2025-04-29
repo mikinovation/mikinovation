@@ -3,3 +3,4 @@
     - https://github.com/mikinovation/dotfiles/pull/122
   - NeoTreeがデフォルトで閉じるようにした
    - https://github.com/mikinovation/dotfiles/pull/122
+  - Software Designの5月号を読んだ
