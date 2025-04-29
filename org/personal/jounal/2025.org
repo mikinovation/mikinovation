@@ -4,3 +4,4 @@
   - NeoTreeがデフォルトで閉じるようにした
    - https://github.com/mikinovation/dotfiles/pull/122
   - Software Designの5月号を読んだ
+  - 伝わるコードレビューを25ページまで読んだ
