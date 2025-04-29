@@ -2,3 +2,4 @@
 * coderabbitをtypescriptで設定できるようにしたい
 * mikinovationのアプリをデプロイしたい
 * Chibivueを学ぶ
+* orgmodeで時間を計測できるようにしたい
