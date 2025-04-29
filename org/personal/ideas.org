@@ -1,0 +1,3 @@
+* freeeで見積もりを自動で作成できるようにしたい
+* coderabbitをtypescriptで設定できるようにしたい
+* mikinovationのアプリをデプロイしたい
