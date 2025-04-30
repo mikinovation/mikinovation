@@ -11,3 +11,5 @@
 * TODO Octoを使ったプルリクのレビューフロー・レビュー依頼フローを作成したい
 * TODO NeovimでDBクライアントの設定をしたい
 * TODO チェックリストのテンプレートを作成したい
+* TODO Octoで下書きのプルリクを作成したい
+* TODO neovimで直接orgmodeを編集したい
