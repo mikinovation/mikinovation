@@ -6,3 +6,7 @@
 * TODO orgmodeのキーマップを制限したい
 * TODO useFetchの挙動についてまとめたい
 * TODO Neovimの0.11でLSPの設定をしたい
+* TODO Octoで依頼されているプルリクの一覧が見たい
+* TODO Octoでデフォルトのkeymap設定をオフにしたい
+* TODO Octoを使ったプルリクのレビューフロー・レビュー依頼フローを作成したい
+* TODO NeovimでDBクライアントの設定をしたい
