@@ -1,5 +1,15 @@
-* freeeで見積もりを自動で作成できるようにしたい
-* coderabbitをtypescriptで設定できるようにしたい
-* mikinovationのアプリをデプロイしたい
-* Chibivueを学ぶ
-* orgmodeで時間を計測できるようにしたい
+* TODO freeeで見積もりを自動で作成できるようにしたい
+* TODO coderabbitをtypescriptで設定できるようにしたい
+* TODO mikinovationのアプリをデプロイしたい
+* TODO Chibivueを学ぶ
+* TODO orgmodeでタスクごとに時間を記録したい
+* TODO orgmodeのキーマップを制限したい
+* TODO useFetchの挙動についてまとめたい
+* TODO Neovimの0.11でLSPの設定をしたい
+* TODO Octoで依頼されているプルリクの一覧が見たい
+* TODO Octoでデフォルトのkeymap設定をオフにしたい
+* TODO Octoを使ったプルリクのレビューフロー・レビュー依頼フローを作成したい
+* TODO NeovimでDBクライアントの設定をしたい
+* TODO チェックリストのテンプレートを作成したい
+* TODO Octoで下書きのプルリクを作成したい
+* TODO neovimで直接orgmodeを編集したい

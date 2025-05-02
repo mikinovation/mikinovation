@@ -5,3 +5,8 @@
    - https://github.com/mikinovation/dotfiles/pull/122
   - Software Designの5月号を読んだ
   - 伝わるコードレビューを25ページまで読んだ
+* 2025-04-30 Wednesday
+  - 仕事
+  - 見積の作成
+* 2025-05-01 Thursday
+  - 仕事
