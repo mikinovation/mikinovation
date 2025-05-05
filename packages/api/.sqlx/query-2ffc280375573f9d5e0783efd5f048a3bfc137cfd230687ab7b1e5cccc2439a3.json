@@ -1,39 +1,39 @@
 {
-  "db_name": "SQLite",
+  "db_name": "PostgreSQL",
   "query": "\n        SELECT \n           id as \"id!: String\", \n           title as \"title!: String\", \n           completed, \n           created_at as \"created_at: DateTime<Utc>\", \n           updated_at as \"updated_at: DateTime<Utc>\"\n        FROM todo\n        ORDER BY created_at DESC\n        ",
   "describe": {
     "columns": [
       {
-        "name": "id!: String",
         "ordinal": 0,
+        "name": "id!: String",
         "type_info": "Text"
       },
       {
-        "name": "title!: String",
         "ordinal": 1,
+        "name": "title!: String",
         "type_info": "Text"
       },
       {
-        "name": "completed",
         "ordinal": 2,
+        "name": "completed",
         "type_info": "Bool"
       },
       {
-        "name": "created_at: DateTime<Utc>",
         "ordinal": 3,
-        "type_info": "Datetime"
+        "name": "created_at: DateTime<Utc>",
+        "type_info": "Timestamp"
       },
       {
-        "name": "updated_at: DateTime<Utc>",
         "ordinal": 4,
-        "type_info": "Datetime"
+        "name": "updated_at: DateTime<Utc>",
+        "type_info": "Timestamp"
       }
     ],
     "parameters": {
-      "Right": 0
+      "Left": []
     },
     "nullable": [
-      true,
+      false,
       false,
       false,
       false,

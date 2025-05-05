@@ -5,7 +5,8 @@ use axum::{
     response::IntoResponse,
     Json,
 };
-use sqlx::{Pool, Sqlite};
+use sqlx::Pool;
+use sqlx::Postgres;
 use std::sync::Arc;
 
 use crate::application::dto::todo::ErrorDto;
@@ -17,12 +18,13 @@ use crate::application::workflow::{
     create_todo_workflow, delete_todo_workflow, find_todo_workflow, list_todos_workflow,
     update_todo_workflow,
 };
+use crate::infrastructure::data_source::DbPool;
 
 pub async fn health_check() -> impl IntoResponse {
     StatusCode::OK
 }
 
-pub async fn create_todo(State(pool): State<Arc<Pool<Sqlite>>>, body: Bytes) -> impl IntoResponse {
+pub async fn create_todo(State(pool): State<Arc<DbPool>>, body: Bytes) -> impl IntoResponse {
     let json = String::from_utf8_lossy(&body).to_string();
 
     let result = async {
@@ -51,7 +53,7 @@ pub async fn create_todo(State(pool): State<Arc<Pool<Sqlite>>>, body: Bytes) -> 
     }
 }
 
-pub async fn get_todos(State(pool): State<Arc<Pool<Sqlite>>>) -> impl IntoResponse {
+pub async fn get_todos(State(pool): State<Arc<DbPool>>) -> impl IntoResponse {
     let result = async {
         let output = list_todos_workflow(&pool).await?;
 
@@ -75,7 +77,7 @@ pub async fn get_todos(State(pool): State<Arc<Pool<Sqlite>>>) -> impl IntoRespon
 }
 
 pub async fn get_todo(
-    State(pool): State<Arc<Pool<Sqlite>>>,
+    State(pool): State<Arc<DbPool>>,
     Path(id): Path<String>,
 ) -> impl IntoResponse {
     let result = async {
@@ -103,7 +105,7 @@ pub async fn get_todo(
 }
 
 pub async fn update_todo(
-    State(pool): State<Arc<Pool<Sqlite>>>,
+    State(pool): State<Arc<DbPool>>,
     Path(id): Path<String>,
     body: Bytes,
 ) -> impl IntoResponse {
@@ -136,7 +138,7 @@ pub async fn update_todo(
 }
 
 pub async fn delete_todo(
-    State(pool): State<Arc<Pool<Sqlite>>>,
+    State(pool): State<Arc<DbPool>>,
     Path(id): Path<String>,
 ) -> impl IntoResponse {
     let result = async {
