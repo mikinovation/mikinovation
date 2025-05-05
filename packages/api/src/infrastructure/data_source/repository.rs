@@ -1,7 +1,8 @@
 use chrono::{DateTime, Utc};
-use sqlx::{Pool, Sqlite};
+use sqlx::Postgres;
+use std::sync::Arc;
 
-use super::DataAccessError;
+use super::{DataAccessError, DbPool};
 use crate::domain::repository::{
     GithubId, Repository, RepositoryDescription, RepositoryFullName, RepositoryId,
     RepositoryLanguage, RepositoryName, RepositoryUrl, StargazersCount,
@@ -45,7 +46,7 @@ pub fn row_to_domain(row: RepositoryRow) -> Result<Repository, DataAccessError> 
 }
 
 pub async fn find_repository_by_id(
-    pool: &Pool<Sqlite>,
+    pool: &Arc<DbPool>,
     id: &RepositoryId,
 ) -> Result<Option<Repository>, DataAccessError> {
     let id_str = id.0.to_string();
@@ -55,7 +56,7 @@ pub async fn find_repository_by_id(
         r#"
         SELECT 
            id as "id!: String",
-           github_id as "github_id!: i32", 
+           github_id as "github_id!: i64", 
            name as "name!: String",
            full_name as "full_name!: String",
            description,
@@ -66,7 +67,7 @@ pub async fn find_repository_by_id(
            created_at as "created_at: DateTime<Utc>", 
            updated_at as "updated_at: DateTime<Utc>"
         FROM repository
-        WHERE id = ?
+        WHERE id = $1
         "#,
         id_str
     )
@@ -81,15 +82,15 @@ pub async fn find_repository_by_id(
 }
 
 pub async fn find_repository_by_github_id(
-    pool: &Pool<Sqlite>,
-    github_id: i32,
+    pool: &Arc<DbPool>,
+    github_id: i64,
 ) -> Result<Option<Repository>, DataAccessError> {
     let row = sqlx::query_as!(
         RepositoryRow,
         r#"
         SELECT 
            id as "id!: String",
-           github_id as "github_id!: i32", 
+           github_id as "github_id!: i64", 
            name as "name!: String", 
            full_name as "full_name!: String",
            description,
@@ -100,7 +101,7 @@ pub async fn find_repository_by_github_id(
            created_at as "created_at: DateTime<Utc>", 
            updated_at as "updated_at: DateTime<Utc>"
         FROM repository
-        WHERE github_id = ?
+        WHERE github_id = $1
         "#,
         github_id
     )
@@ -115,14 +116,14 @@ pub async fn find_repository_by_github_id(
 }
 
 pub async fn find_all_repositories(
-    pool: &Pool<Sqlite>,
+    pool: &Arc<DbPool>,
 ) -> Result<Vec<Repository>, DataAccessError> {
     let rows = sqlx::query_as!(
         RepositoryRow,
         r#"
         SELECT 
            id as "id!: String",
-           github_id as "github_id!: i32", 
+           github_id as "github_id!: i64", 
            name as "name!: String", 
            full_name as "full_name!: String",
            description,
@@ -150,7 +151,7 @@ pub async fn find_all_repositories(
 }
 
 pub async fn save_repository(
-    pool: &Pool<Sqlite>,
+    pool: &Arc<DbPool>,
     repository: &Repository,
 ) -> Result<(), DataAccessError> {
     let existing = find_repository_by_id(pool, &repository.id).await?;
@@ -159,7 +160,7 @@ pub async fn save_repository(
         sqlx::query(
             r#"
             INSERT INTO repository (id, github_id, name, full_name, description, language, html_url, stargazers_count, connected_at, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
             "#,
         )
         .bind(repository.id.0.to_string())
@@ -173,15 +174,15 @@ pub async fn save_repository(
         .bind(repository.connected_at)
         .bind(repository.created_at)
         .bind(repository.updated_at)
-        .execute(pool)
+        .execute(pool.as_ref())
         .await
         .map_err(|e| DataAccessError::Database(e.to_string()))?;
     } else {
         sqlx::query(
             r#"
             UPDATE repository
-            SET name = ?, description = ?, language = ?, html_url = ?, stargazers_count = ?, updated_at = ?
-            WHERE id = ?
+            SET name = $1, description = $2, language = $3, html_url = $4, stargazers_count = $5, updated_at = $6
+            WHERE id = $7
             "#,
         )
         .bind(&repository.name.0)
@@ -191,7 +192,7 @@ pub async fn save_repository(
         .bind(repository.stargazers_count.0)
         .bind(repository.updated_at)
         .bind(repository.id.0.to_string())
-        .execute(pool)
+        .execute(pool.as_ref())
         .await
         .map_err(|e| DataAccessError::Database(e.to_string()))?;
     }
@@ -200,17 +201,17 @@ pub async fn save_repository(
 }
 
 pub async fn delete_repository_by_id(
-    pool: &Pool<Sqlite>,
+    pool: &Arc<DbPool>,
     id: &RepositoryId,
 ) -> Result<(), DataAccessError> {
     let result = sqlx::query(
         r#"
         DELETE FROM repository
-        WHERE id = ?
+        WHERE id = $1
         "#,
     )
     .bind(id.0.to_string())
-    .execute(pool)
+    .execute(pool.as_ref())
     .await
     .map_err(|e| DataAccessError::Database(e.to_string()))?;
 

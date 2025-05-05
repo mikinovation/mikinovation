@@ -30,8 +30,13 @@ async fn main() -> anyhow::Result<()> {
 
     info!("Starting mikinovation-api server...");
 
+    // データベースURL（デフォルトはPostgreSQL）
     let database_url =
-        env::var("DATABASE_URL").unwrap_or_else(|_| "sqlite:mikinovation.db".to_string());
+        env::var("DATABASE_URL").unwrap_or_else(|_| "postgres://postgres:postgres@localhost:5432/mikinovation".to_string());
+    
+    info!("Using PostgreSQL database: {}", database_url);
+    
+    // データベース接続プールを初期化
     let db_pool = init_db_pool(&database_url).await?;
     let db_pool = Arc::new(db_pool);
 

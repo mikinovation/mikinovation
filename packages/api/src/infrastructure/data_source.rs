@@ -1,8 +1,11 @@
 use anyhow::Result;
-use sqlx::{sqlite::SqlitePoolOptions, Pool, Sqlite};
+use sqlx::{Pool, Postgres};
+use sqlx::postgres::PgPoolOptions;
 
 pub mod repository;
 pub mod todo;
+
+pub type DbPool = Pool<Postgres>;
 
 #[derive(Debug, thiserror::Error)]
 pub enum DataAccessError {
@@ -16,8 +19,8 @@ pub enum DataAccessError {
     InvalidData(String),
 }
 
-pub async fn init_db_pool(database_url: &str) -> Result<Pool<Sqlite>, DataAccessError> {
-    let pool = SqlitePoolOptions::new()
+pub async fn init_db_pool(database_url: &str) -> Result<DbPool, DataAccessError> {
+    let pool = PgPoolOptions::new()
         .max_connections(5)
         .connect(database_url)
         .await
