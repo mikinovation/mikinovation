@@ -6,7 +6,7 @@ SHELL := /bin/bash
 API_DIR := packages/api
 WEB_DIR := packages/web
 UI_DIR := packages/ui
-DATABASE_URL ?= sqlite:./$(API_DIR)/mikinovation.db
+DATABASE_URL ?= postgres://postgres:postgres@localhost:5432/mikinovation
 NODE_VERSION := 22.14.0
 PNPM_VERSION := 10.7.0
 ENABLE_MOCK := NUXT_PUBLIC_API_MOCK=true
@@ -181,12 +181,12 @@ run-api-release:
 .PHONY: test-api
 test-api:
 	@echo "Running API tests..."
-	@cd $(API_DIR) && cargo test
+	@cd $(API_DIR) && DATABASE_URL=postgres://postgres:postgres@localhost:5432/mikinovation_test cargo test
 
 .PHONY: test-api-watch
 test-api-watch:
 	@echo "Running API tests in watch mode..."
-	@cd $(API_DIR) && cargo watch -x test
+	@cd $(API_DIR) && DATABASE_URL=postgres://postgres:postgres@localhost:5432/mikinovation_test cargo watch -x test
 
 .PHONY: lint-api
 lint-api:
@@ -296,4 +296,4 @@ migrate-revert:
 .PHONY: prepare
 prepare:
 	@echo "Preparing SQLx metadata..."
-	@cd $(API_DIR) && cargo sqlx prepare
+	@cd $(API_DIR) && DATABASE_URL=$(DATABASE_URL) cargo sqlx prepare
