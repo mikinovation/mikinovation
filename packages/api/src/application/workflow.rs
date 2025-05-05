@@ -1,5 +1,7 @@
 use anyhow::Result;
-use sqlx::{Pool, Sqlite};
+use sqlx::Pool;
+use sqlx::Postgres;
+use std::sync::Arc;
 
 use crate::domain::todo::{
     create_todo, delete_todo, find_todo, list_todos, update_todo, CreateTodoInput, TodoId,
@@ -7,11 +9,11 @@ use crate::domain::todo::{
 };
 use crate::infrastructure::data_source::{
     todo::{delete_todo_by_id, find_all_todos, find_todo_by_id, save_todo},
-    DataAccessError,
+    DataAccessError, DbPool,
 };
 
 pub async fn create_todo_workflow(
-    pool: &Pool<Sqlite>,
+    pool: &Arc<DbPool>,
     input: CreateTodoInput,
 ) -> Result<TodoOutput, DataAccessError> {
     let output = create_todo(input);
@@ -24,7 +26,7 @@ pub async fn create_todo_workflow(
 }
 
 pub async fn update_todo_workflow(
-    pool: &Pool<Sqlite>,
+    pool: &Arc<DbPool>,
     input: UpdateTodoInput,
 ) -> Result<TodoOutput, DataAccessError> {
     let existing_todo = find_todo_by_id(pool, &input.id).await?;
@@ -39,7 +41,7 @@ pub async fn update_todo_workflow(
 }
 
 pub async fn delete_todo_workflow(
-    pool: &Pool<Sqlite>,
+    pool: &Arc<DbPool>,
     id: TodoId,
 ) -> Result<TodoOutput, DataAccessError> {
     let existing_todo = find_todo_by_id(pool, &id).await?;
@@ -54,7 +56,7 @@ pub async fn delete_todo_workflow(
 }
 
 pub async fn find_todo_workflow(
-    pool: &Pool<Sqlite>,
+    pool: &Arc<DbPool>,
     id: TodoId,
 ) -> Result<TodoOutput, DataAccessError> {
     let existing_todo = find_todo_by_id(pool, &id).await?;
@@ -64,7 +66,7 @@ pub async fn find_todo_workflow(
     Ok(output)
 }
 
-pub async fn list_todos_workflow(pool: &Pool<Sqlite>) -> Result<TodoOutput, DataAccessError> {
+pub async fn list_todos_workflow(pool: &Arc<DbPool>) -> Result<TodoOutput, DataAccessError> {
     let todos = find_all_todos(pool).await?;
 
     let output = list_todos(todos);
