@@ -20,16 +20,16 @@ pub fn create_router(pool: PgPool) -> Router {
         // Todo routes
         .route("/api/todos", get(todo::get_todos))
         .route("/api/todos", post(todo::create_todo))
-        .route("/api/todos/:id", get(todo::get_todo))
-        .route("/api/todos/:id", put(todo::update_todo))
-        .route("/api/todos/:id", delete(todo::delete_todo))
+        .route("/api/todos/{id}", get(todo::get_todo))
+        .route("/api/todos/{id}", put(todo::update_todo))
+        .route("/api/todos/{id}", delete(todo::delete_todo))
         // Repository routes
         .route("/api/repositories", get(repository::get_repositories))
         .route("/api/repositories", post(repository::create_repository))
-        .route("/api/repositories/:id", get(repository::get_repository))
-        .route("/api/repositories/:id", put(repository::update_repository))
+        .route("/api/repositories/{id}", get(repository::get_repository))
+        .route("/api/repositories/{id}", put(repository::update_repository))
         .route(
-            "/api/repositories/:id",
+            "/api/repositories/{id}",
             delete(repository::delete_repository),
         )
         // Health check route
