@@ -13,10 +13,6 @@ yarn-error.log*
 # api
 packages/api/target
 packages/api/.env
-packages/api/mikinovation.db
-packages/api/mikinovation.db-wal
-packages/api/mikinovation.db-shm
-packages/api/.sqlx
 
 # web
 packages/web/node_modules

@@ -1,70 +1,46 @@
-mod api;
-mod application;
-mod domain;
-mod infrastructure;
+mod db;
+mod error;
+mod handlers;
+mod models;
+mod router;
 
-use axum::{
-    routing::{delete, get, post, put},
-    Router,
-};
-use std::{env, sync::Arc};
-use tower_http::{
-    cors::{Any, CorsLayer},
-    trace::{DefaultMakeSpan, DefaultOnResponse, TraceLayer},
-};
-use tracing::{info, Level};
+use std::net::SocketAddr;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
-use api::handler::{create_todo, delete_todo, get_todo, get_todos, health_check, update_todo};
-use infrastructure::data_source::init_db_pool;
-
 #[tokio::main]
-async fn main() -> anyhow::Result<()> {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Initialize tracing
     tracing_subscriber::registry()
-        .with(
-            tracing_subscriber::EnvFilter::try_from_default_env()
-                .unwrap_or_else(|_| "mikinovation_api=debug,tower_http=debug".into()),
-        )
+        .with(tracing_subscriber::EnvFilter::new(
+            std::env::var("RUST_LOG").unwrap_or_else(|_| "info".into()),
+        ))
         .with(tracing_subscriber::fmt::layer())
         .init();
 
-    info!("Starting mikinovation-api server...");
+    // Create a database connection pool
+    let pool = db::create_pool().await?;
 
-    // データベースURL（デフォルトはPostgreSQL）
-    let database_url =
-        env::var("DATABASE_URL").unwrap_or_else(|_| "postgres://postgres:postgres@localhost:5432/mikinovation".to_string());
+    // Run SQLx migrations
+    tracing::info!("Running database migrations...");
+    sqlx::migrate!("./migrations")
+        .run(&pool)
+        .await
+        .expect("Failed to run database migrations");
+    tracing::info!("Migrations completed successfully");
+
+    // Build the application
+    let app = router::create_router(pool);
+
+    // Run the server
+    let port = std::env::var("PORT")
+        .ok()
+        .and_then(|s| s.parse::<u16>().ok())
+        .unwrap_or(3333);
     
-    info!("Using PostgreSQL database: {}", database_url);
+    let addr = SocketAddr::from(([0, 0, 0, 0], port));
+    tracing::info!("Listening on http://{}", addr);
     
-    // データベース接続プールを初期化
-    let db_pool = init_db_pool(&database_url).await?;
-    let db_pool = Arc::new(db_pool);
-
-    let cors = CorsLayer::new()
-        .allow_origin(Any)
-        .allow_methods(Any)
-        .allow_headers(Any);
-
-    let app = Router::new()
-        .route("/api/health", get(health_check))
-        .route("/api/todos", get(get_todos))
-        .route("/api/todos", post(create_todo))
-        .route("/api/todos/{id}", get(get_todo))
-        .route("/api/todos/{id}", put(update_todo))
-        .route("/api/todos/{id}", delete(delete_todo))
-        .with_state(db_pool)
-        .layer(
-            TraceLayer::new_for_http()
-                .make_span_with(DefaultMakeSpan::new().level(Level::INFO))
-                .on_response(DefaultOnResponse::new().level(Level::INFO)),
-        )
-        .layer(cors);
-
-    let port = env::var("PORT").unwrap_or_else(|_| "3000".to_string());
-    let addr = format!("0.0.0.0:{}", port);
-    info!("Server listening on {}", addr);
-
-    let listener = tokio::net::TcpListener::bind(&addr).await?;
+    let listener = tokio::net::TcpListener::bind(addr).await?;
     axum::serve(listener, app).await?;
 
     Ok(())
