@@ -8,7 +8,7 @@ pub type DbPool = Pool<Postgres>;
 pub async fn create_pool() -> Result<DbPool, sqlx::Error> {
     let database_url = std::env::var("DATABASE_URL")
         .unwrap_or_else(|_| "postgres://postgres:postgres@localhost:5432/mikinovation".to_string());
-    
+
     PgPoolOptions::new()
         .max_connections(5)
         .acquire_timeout(Duration::from_secs(3))

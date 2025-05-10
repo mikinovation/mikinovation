@@ -36,10 +36,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .ok()
         .and_then(|s| s.parse::<u16>().ok())
         .unwrap_or(3333);
-    
+
     let addr = SocketAddr::from(([0, 0, 0, 0], port));
     tracing::info!("Listening on http://{}", addr);
-    
+
     let listener = tokio::net::TcpListener::bind(addr).await?;
     axum::serve(listener, app).await?;
 

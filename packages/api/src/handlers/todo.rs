@@ -10,9 +10,7 @@ use crate::error::ApiError;
 use crate::models::{CreateTodo, Todo, UpdateTodo};
 
 // Get all todos
-pub async fn get_todos(
-    State(pool): State<PgPool>,
-) -> Result<Json<Vec<Todo>>, ApiError> {
+pub async fn get_todos(State(pool): State<PgPool>) -> Result<Json<Vec<Todo>>, ApiError> {
     let todos = sqlx::query_as!(
         Todo,
         r#"

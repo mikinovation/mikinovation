@@ -57,8 +57,13 @@ pub async fn create_repository(
     State(pool): State<PgPool>,
     Json(payload): Json<CreateRepository>,
 ) -> Result<(StatusCode, Json<Repository>), ApiError> {
-    if payload.name.trim().is_empty() || payload.full_name.trim().is_empty() || payload.html_url.trim().is_empty() {
-        return Err(ApiError::BadRequest("Name, full_name, and html_url cannot be empty".into()));
+    if payload.name.trim().is_empty()
+        || payload.full_name.trim().is_empty()
+        || payload.html_url.trim().is_empty()
+    {
+        return Err(ApiError::BadRequest(
+            "Name, full_name, and html_url cannot be empty".into(),
+        ));
     }
 
     // Check if repository with this github_id already exists
@@ -74,7 +79,10 @@ pub async fn create_repository(
     .map_err(ApiError::DbError)?;
 
     if existing.is_some() {
-        return Err(ApiError::BadRequest(format!("Repository with GitHub ID {} already exists", payload.github_id)));
+        return Err(ApiError::BadRequest(format!(
+            "Repository with GitHub ID {} already exists",
+            payload.github_id
+        )));
     }
 
     let repository = Repository::new(payload);
@@ -134,7 +142,9 @@ pub async fn update_repository(
     let description = payload.description.or(existing.description);
     let language = payload.language.or(existing.language);
     let html_url = payload.html_url.unwrap_or(existing.html_url);
-    let stargazers_count = payload.stargazers_count.unwrap_or(existing.stargazers_count);
+    let stargazers_count = payload
+        .stargazers_count
+        .unwrap_or(existing.stargazers_count);
     let updated_at = Utc::now();
 
     // Update the repository in the database

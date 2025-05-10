@@ -10,13 +10,13 @@ use thiserror::Error;
 pub enum ApiError {
     #[error("Resource not found")]
     NotFound,
-    
+
     #[error("Invalid input: {0}")]
     BadRequest(String),
-    
+
     #[error("Database error: {0}")]
     DbError(#[from] sqlx::Error),
-    
+
     #[error("Internal server error: {0}")]
     InternalServerError(String),
 }
@@ -35,7 +35,10 @@ impl IntoResponse for ApiError {
             }
             ApiError::InternalServerError(msg) => {
                 tracing::error!("Internal error: {}", msg);
-                (StatusCode::INTERNAL_SERVER_ERROR, "Internal server error".to_string())
+                (
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    "Internal server error".to_string(),
+                )
             }
         };
 
