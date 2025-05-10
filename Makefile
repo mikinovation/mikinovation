@@ -43,6 +43,7 @@ help:
 	@echo "  make migrate           - Run all pending migrations"
 	@echo "  make migrate-revert    - Revert the latest migration"
 	@echo "  make prepare           - Generate SQLx metadata for offline development"
+	@echo "  make db-seed           - Seed database with initial data"
 	@echo ""
 	@echo "Web Commands:"
 	@echo "  make setup-web         - Set up Web project"
@@ -78,6 +79,7 @@ setup: setup-api setup-node
 
 .PHONY: setup-api
 setup-api: db-create migrate prepare
+	@echo "Run 'make db-seed' if you want to populate the database with sample data"
 
 .PHONY: setup-node
 setup-node:
@@ -297,3 +299,8 @@ migrate-revert:
 prepare:
 	@echo "Preparing SQLx metadata..."
 	@cd $(API_DIR) && DATABASE_URL=$(DATABASE_URL) cargo sqlx prepare
+
+.PHONY: db-seed
+db-seed:
+	@echo "Seeding database with initial data..."
+	@$(API_DIR)/seeds/run_seed.sh
