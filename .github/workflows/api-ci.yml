@@ -21,6 +21,16 @@ jobs:
   check:
     name: Check
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17.5
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DB: mikinovation
+        ports:
+          - 5432:5432
+
     steps:
       - uses: actions/checkout@v4
 
@@ -41,10 +51,6 @@ jobs:
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: cargo sqlx migrate run
 
-      - name: Prepare SQLx Query Cache
-        working-directory: ${{ env.WORKING_DIRECTORY }}
-        run: cargo sqlx prepare
-
       - name: Format check
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: cargo fmt --all -- --check
@@ -56,23 +62,3 @@ jobs:
       - name: Run tests
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: cargo test
-
-  # TODO: CI build step
-  # build:
-  #  name: Build
-  #  runs-on: ubuntu-latest
-  # needs: check
-  # steps:
-  #    - uses: actions/checkout@v4
-
-  #    - name: Install Rust toolchain
-  #      uses: dtolnay/rust-toolchain@stable
-
-  #   - name: Cache dependencies
-  #  uses: Swatinem/rust-cache@v2
-  #      with:
-  #        workspaces: ${{ env.WORKING_DIRECTORY }}
-
-  #- name: Build
-  #  working-directory: ${{ env.WORKING_DIRECTORY }}
-  #  run: cargo build --release
