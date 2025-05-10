@@ -13,6 +13,7 @@ yarn-error.log*
 # api
 packages/api/target
 packages/api/.env
+packages/api/.sqlx
 
 # web
 packages/web/node_modules
