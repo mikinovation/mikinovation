@@ -1,0 +1,32 @@
+###
+# @name getTodos
+GET http://localhost:3333/api/todos
+Accept: application/json
+
+###
+# @name createTodo
+POST http://localhost:3000/api/todos
+Content-Type: application/json
+
+{
+  "title": "Test Todo Item"
+}
+
+###
+# @name getTodoById
+GET http://localhost:3000/api/todos/{{createTodo.response.body.id}}
+Accept: application/json
+
+###
+# @name updateTodo
+PUT http://localhost:3000/api/todos/{{createTodo.response.body.id}}
+Content-Type: application/json
+
+{
+  "title": "Updated Todo Item",
+  "completed": true
+}
+
+###
+# @name deleteTodo
+DELETE http://localhost:3000/api/todos/{{createTodo.response.body.id}}

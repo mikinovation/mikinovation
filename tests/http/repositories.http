@@ -1,0 +1,40 @@
+###
+# @name getRepositories
+GET http://localhost:3000/api/repositories
+Accept: application/json
+
+###
+# @name createRepository
+POST http://localhost:3000/api/repositories
+Content-Type: application/json
+
+{
+  "github_id": 123456789,
+  "name": "test-repo",
+  "full_name": "test-user/test-repo",
+  "description": "A test repository",
+  "language": "Rust",
+  "html_url": "https://github.com/test-user/test-repo",
+  "stargazers_count": 0
+}
+
+###
+# @name getRepositoryById
+GET http://localhost:3000/api/repositories/{{createRepository.response.body.id}}
+Accept: application/json
+
+###
+# @name updateRepository
+PUT http://localhost:3000/api/repositories/{{createRepository.response.body.id}}
+Content-Type: application/json
+
+{
+  "name": "updated-repo",
+  "full_name": "test-user/updated-repo",
+  "description": "An updated test repository",
+  "stargazers_count": 10
+}
+
+###
+# @name deleteRepository
+DELETE http://localhost:3000/api/repositories/{{createRepository.response.body.id}}
