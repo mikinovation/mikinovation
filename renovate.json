@@ -2,82 +2,45 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended",
-    ":dependencyDashboard",
     ":semanticCommits",
-    ":automergeMinor"
   ],
   "labels": [
     "dependencies"
   ],
   "schedule": [
-    "every weekend"
+    "every day"
   ],
-  "prHourlyLimit": 5,
-  "prConcurrentLimit": 10,
   "rangeStrategy": "pin",
   "packageRules": [
     {
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
-      "matchCurrentVersion": "!/^0/",
-      "automerge": true
-    },
-    {
-      "description": "Group all non-major Rust dependencies",
+      "description": "Add rust label to Rust package updates",
       "matchManagers": [
         "cargo"
       ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
-      "groupName": "Rust dependencies (non-major)",
-      "groupSlug": "rust-minor-patch",
       "addLabels": [
         "rust"
       ]
     },
     {
-      "description": "Group all non-major JavaScript dependencies",
+      "description": "Add javascript label to JavaScript package updates",
       "matchManagers": [
         "npm"
       ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
-      "groupName": "JavaScript dependencies (non-major)",
-      "groupSlug": "js-minor-patch",
       "addLabels": [
         "javascript"
       ]
     },
     {
-      "description": "Group all DevDependencies",
-      "matchDepTypes": [
-        "devDependencies"
+      "description": "Group TypeScript type definitions with their packages",
+      "matchPackagePatterns": [
+        "^@types/"
       ],
-      "groupName": "DevDependencies",
-      "prPriority": 5
-    },
-    {
-      "description": "Group GitHub Actions",
-      "matchManagers": [
-        "github-actions"
-      ],
-      "groupName": "GitHub Actions",
-      "addLabels": [
-        "github-actions"
-      ]
-    },
-    {
-      "description": "Group Axum ecosystem packages",
-      "groupName": "Axum ecosystem",
-      "matchPackageNames": [
-        "/^axum/",
-        "/tower-http/"
+      "matchPackageNames": [],
+      "groupName": null,
+      "groupSlug": null,
+      "packagePatternGroups": [
+        "^@types/(.*)",
+        "^$1$"
       ]
     }
   ],
