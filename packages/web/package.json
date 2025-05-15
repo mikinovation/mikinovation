@@ -25,9 +25,9 @@
   },
   "devDependencies": {
     "eslint": "9.26.0",
-    "msw": "2.7.6",
-    "openapi-typescript": "7.7.1",
-    "sass": "1.87.0",
+    "msw": "2.8.2",
+    "openapi-typescript": "7.8.0",
+    "sass": "1.88.0",
     "typescript": "5.8.3"
   },
   "msw": {
