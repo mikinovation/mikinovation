@@ -30,19 +30,6 @@
         "javascript"
       ]
     },
-    {
-      "description": "Group TypeScript type definitions with their packages",
-      "matchPackagePatterns": [
-        "^@types/"
-      ],
-      "matchPackageNames": [],
-      "groupName": null,
-      "groupSlug": null,
-      "packagePatternGroups": [
-        "^@types/(.*)",
-        "^$1$"
-      ]
-    }
   ],
   "ignoreDeps": [],
   "ignorePaths": [
