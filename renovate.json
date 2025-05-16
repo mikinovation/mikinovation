@@ -8,7 +8,7 @@
     "dependencies"
   ],
   "schedule": [
-    "every day"
+    "before 5am"
   ],
   "rangeStrategy": "pin",
   "packageRules": [
