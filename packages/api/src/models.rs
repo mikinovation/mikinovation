@@ -95,3 +95,58 @@ impl Repository {
         }
     }
 }
+
+// Label model that represents the database record
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct Label {
+    pub id: String,
+    pub name: String,
+    pub description: Option<String>,
+    pub color: Option<String>,
+    pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
+}
+
+// DTO for creating a new Label
+#[derive(Debug, Deserialize)]
+pub struct CreateLabel {
+    pub name: String,
+    pub description: Option<String>,
+    pub color: Option<String>,
+}
+
+// DTO for updating a Label
+#[derive(Debug, Deserialize)]
+pub struct UpdateLabel {
+    pub name: Option<String>,
+    pub description: Option<String>,
+    pub color: Option<String>,
+}
+
+// DTO for the repository-label relationship
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct RepositoryLabel {
+    pub repository_id: String,
+    pub label_id: String,
+    pub created_at: DateTime<Utc>,
+}
+
+// DTO for adding a label to a repository
+#[derive(Debug, Deserialize)]
+pub struct AddLabelToRepository {
+    pub label_id: String,
+}
+
+impl Label {
+    pub fn new(create_label: CreateLabel) -> Self {
+        let now = Utc::now();
+        Self {
+            id: Uuid::new_v4().to_string(),
+            name: create_label.name,
+            description: create_label.description,
+            color: create_label.color,
+            created_at: now,
+            updated_at: now,
+        }
+    }
+}
