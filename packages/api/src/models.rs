@@ -2,7 +2,6 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-// Todo model that represents the database record
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Todo {
     pub id: String,
@@ -12,13 +11,11 @@ pub struct Todo {
     pub updated_at: DateTime<Utc>,
 }
 
-// DTO for creating a new Todo
 #[derive(Debug, Deserialize)]
 pub struct CreateTodo {
     pub title: String,
 }
 
-// DTO for updating a Todo
 #[derive(Debug, Deserialize)]
 pub struct UpdateTodo {
     pub title: Option<String>,
@@ -38,7 +35,6 @@ impl Todo {
     }
 }
 
-// Repository model that represents the database record
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Repository {
     pub id: String,
@@ -54,7 +50,6 @@ pub struct Repository {
     pub updated_at: DateTime<Utc>,
 }
 
-// DTO for creating a new Repository
 #[derive(Debug, Deserialize)]
 pub struct CreateRepository {
     pub github_id: i64,
@@ -66,7 +61,6 @@ pub struct CreateRepository {
     pub stargazers_count: i64,
 }
 
-// DTO for updating a Repository
 #[derive(Debug, Deserialize)]
 pub struct UpdateRepository {
     pub name: Option<String>,
@@ -90,6 +84,49 @@ impl Repository {
             html_url: create_repo.html_url,
             stargazers_count: create_repo.stargazers_count,
             connected_at: now,
+            created_at: now,
+            updated_at: now,
+        }
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct Label {
+    pub id: String,
+    pub name: String,
+    pub description: Option<String>,
+    pub color: Option<String>,
+    pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct CreateLabel {
+    pub name: String,
+    pub description: Option<String>,
+    pub color: Option<String>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct UpdateLabel {
+    pub name: Option<String>,
+    pub description: Option<String>,
+    pub color: Option<String>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct AddLabelToRepository {
+    pub label_id: String,
+}
+
+impl Label {
+    pub fn new(create_label: CreateLabel) -> Self {
+        let now = Utc::now();
+        Self {
+            id: Uuid::new_v4().to_string(),
+            name: create_label.name,
+            description: create_label.description,
+            color: create_label.color,
             created_at: now,
             updated_at: now,
         }

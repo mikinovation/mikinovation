@@ -1,0 +1,37 @@
+@baseUrl = http://localhost:3000
+
+### Get all labels
+GET {{baseUrl}}/api/labels
+
+### Create a new label
+POST {{baseUrl}}/api/labels
+Content-Type: application/json
+
+{
+  "name": "important",
+  "description": "Important repositories that require attention",
+  "color": "#FF5733"
+}
+
+### Get a specific label by ID
+# Replace {id} with an actual label ID
+GET {{baseUrl}}/api/labels/{id}
+
+### Update a specific label
+# Replace {id} with an actual label ID
+PUT {{baseUrl}}/api/labels/{id}
+Content-Type: application/json
+
+{
+  "name": "critical",
+  "description": "Critical repositories that need immediate attention",
+  "color": "#FF0000"
+}
+
+### Delete a specific label
+# Replace {id} with an actual label ID
+DELETE {{baseUrl}}/api/labels/{id}
+
+### Get all repositories with a specific label
+# Replace {id} with an actual label ID
+GET {{baseUrl}}/api/labels/{id}/repositories
