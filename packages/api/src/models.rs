@@ -114,13 +114,6 @@ pub struct UpdateLabel {
     pub color: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct RepositoryLabel {
-    pub repository_id: String,
-    pub label_id: String,
-    pub created_at: DateTime<Utc>,
-}
-
 #[derive(Debug, Deserialize)]
 pub struct AddLabelToRepository {
     pub label_id: String,
