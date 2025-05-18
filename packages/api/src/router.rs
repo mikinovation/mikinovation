@@ -5,8 +5,7 @@ use axum::{
 use sqlx::PgPool;
 use tower_http::cors::{Any, CorsLayer};
 
-use crate::handlers::repository;
-use crate::handlers::todo;
+use crate::handlers::{label, repository, repository_label, todo};
 
 pub fn create_router(pool: PgPool) -> Router {
     // CORS settings
@@ -31,6 +30,29 @@ pub fn create_router(pool: PgPool) -> Router {
         .route(
             "/api/repositories/{id}",
             delete(repository::delete_repository),
+        )
+        // Label routes
+        .route("/api/labels", get(label::get_labels))
+        .route("/api/labels", post(label::create_label))
+        .route("/api/labels/{id}", get(label::get_label))
+        .route("/api/labels/{id}", put(label::update_label))
+        .route("/api/labels/{id}", delete(label::delete_label))
+        // Repository-Label relationship routes
+        .route(
+            "/api/repositories/{id}/labels",
+            get(repository_label::get_repository_labels),
+        )
+        .route(
+            "/api/repositories/{id}/labels",
+            post(repository_label::add_label_to_repository),
+        )
+        .route(
+            "/api/repositories/{id}/labels/{label_id}",
+            delete(repository_label::remove_label_from_repository),
+        )
+        .route(
+            "/api/labels/{id}/repositories",
+            get(repository_label::get_repositories_by_label),
         )
         // Health check route
         .route("/health", get(|| async { "OK" }))
