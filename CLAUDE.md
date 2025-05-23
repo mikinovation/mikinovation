@@ -23,4 +23,4 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Imports**: Group by external, then internal, then relative
 - **Error Handling**: Use Result/Option in Rust, try/catch or optional chaining in TS
 - **File Structure**: Follow package-based organization (API, Web, UI)
-- **Node Version**: 22.15.0 with pnpm 10.9.0 package manager
+- **Node Version**: 24.1.0 with pnpm 10.11.0 package manager
