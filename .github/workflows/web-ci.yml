@@ -13,7 +13,7 @@ on:
       - '.github/workflows/web-ci.yml'
 
 env:
-  NODE_VERSION: 22.15.0
+  NODE_VERSION: 24.1.0
   WORKING_DIRECTORY: ./packages/web
 
 jobs:
