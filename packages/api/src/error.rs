@@ -6,6 +6,8 @@ use axum::{
 use serde_json::json;
 use thiserror::Error;
 
+pub type Result<T> = std::result::Result<T, ApiError>;
+
 #[derive(Error, Debug)]
 pub enum ApiError {
     #[error("Resource not found")]
@@ -13,6 +15,9 @@ pub enum ApiError {
 
     #[error("Invalid input: {0}")]
     BadRequest(String),
+
+    #[error("Unauthorized: {0}")]
+    Unauthorized(String),
 
     #[error("Database error: {0}")]
     DbError(#[from] sqlx::Error),
@@ -26,6 +31,7 @@ impl IntoResponse for ApiError {
         let (status, error_message) = match self {
             ApiError::NotFound => (StatusCode::NOT_FOUND, self.to_string()),
             ApiError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg),
+            ApiError::Unauthorized(msg) => (StatusCode::UNAUTHORIZED, msg),
             ApiError::DbError(e) => {
                 tracing::error!("Database error: {:?}", e);
                 (
