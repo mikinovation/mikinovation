@@ -206,8 +206,6 @@ fn generate_jwt(user: &User, jwt_secret: &str) -> Result<String> {
     .map_err(|e| ApiError::InternalServerError(format!("Failed to generate JWT: {}", e)))
 }
 
-pub async fn get_current_user(
-    Extension(user): Extension<User>,
-) -> Result<impl IntoResponse> {
+pub async fn get_current_user(Extension(user): Extension<User>) -> Result<impl IntoResponse> {
     Ok(axum::Json(user))
 }
