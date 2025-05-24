@@ -1,5 +1,6 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+use sqlx::FromRow;
 use uuid::Uuid;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -127,6 +128,45 @@ impl Label {
             name: create_label.name,
             description: create_label.description,
             color: create_label.color,
+            created_at: now,
+            updated_at: now,
+        }
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, FromRow)]
+pub struct User {
+    pub id: Uuid,
+    pub github_id: i64,
+    pub username: String,
+    pub name: Option<String>,
+    pub email: Option<String>,
+    pub avatar_url: Option<String>,
+    pub access_token: String,
+    pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct GitHubUser {
+    pub id: i64,
+    pub login: String,
+    pub name: Option<String>,
+    pub email: Option<String>,
+    pub avatar_url: Option<String>,
+}
+
+impl User {
+    pub fn from_github(github_user: GitHubUser, access_token: String) -> Self {
+        let now = Utc::now();
+        Self {
+            id: Uuid::new_v4(),
+            github_id: github_user.id,
+            username: github_user.login,
+            name: github_user.name,
+            email: github_user.email,
+            avatar_url: github_user.avatar_url,
+            access_token,
             created_at: now,
             updated_at: now,
         }
