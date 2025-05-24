@@ -1,6 +1,7 @@
 use axum::{
     extract::{Query, State},
     response::{IntoResponse, Redirect},
+    Extension,
 };
 use oauth2::{
     basic::BasicClient, AuthUrl, AuthorizationCode, ClientId, ClientSecret, CsrfToken, Scope,
@@ -203,4 +204,8 @@ fn generate_jwt(user: &User, jwt_secret: &str) -> Result<String> {
         &EncodingKey::from_secret(jwt_secret.as_ref()),
     )
     .map_err(|e| ApiError::InternalServerError(format!("Failed to generate JWT: {}", e)))
+}
+
+pub async fn get_current_user(Extension(user): Extension<User>) -> Result<impl IntoResponse> {
+    Ok(axum::Json(user))
 }
