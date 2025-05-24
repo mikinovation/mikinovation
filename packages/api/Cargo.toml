@@ -27,7 +27,7 @@ anyhow = "=1.0.98"
 async-trait = "=0.1.88"
 oauth2 = "=5.0.0"
 reqwest = { version = "=0.12.15", features = ["json"] }
-jsonwebtoken = "=9.3.0"
+jsonwebtoken = "=9.3.1"
 rand = "=0.8.5"
 base64 = "=0.22.1"
 reqwest-middleware = "=0.4.2"
