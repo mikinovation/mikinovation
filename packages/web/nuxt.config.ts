@@ -1,5 +1,7 @@
+import { ViteMcp } from 'vite-plugin-mcp'
+
 export default defineNuxtConfig({
-  modules: ['@nuxt/eslint', '@nuxt/test-utils'],
+  modules: ['@nuxt/eslint', '@nuxt/test-utils', 'nuxt-mcp'],
   // TODO: SSR is disabled because of the API mocking
   ssr: !process.env.NUXT_PUBLIC_API_MOCK,
   devtools: { enabled: true },
@@ -11,6 +13,11 @@ export default defineNuxtConfig({
     },
   },
   compatibilityDate: '2024-11-01',
+  vite: {
+    plugins: [
+      ViteMcp(),
+    ],
+  },
   eslint: {
     config: {
       stylistic: true,
