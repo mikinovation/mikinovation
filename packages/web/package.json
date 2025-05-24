@@ -26,9 +26,11 @@
   "devDependencies": {
     "eslint": "9.27.0",
     "msw": "2.8.4",
+    "nuxt-mcp": "0.2.2",
     "openapi-typescript": "7.8.0",
     "sass": "1.89.0",
-    "typescript": "5.8.3"
+    "typescript": "5.8.3",
+    "vite-plugin-mcp": "0.2.2"
   },
   "msw": {
     "workerDirectory": [
