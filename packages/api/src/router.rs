@@ -44,6 +44,8 @@ pub fn create_router(pool: PgPool) -> Router {
 
     // Protected routes (auth required)
     let protected_routes = Router::new()
+        // User routes
+        .route("/api/user", get(auth::get_current_user))
         // Todo routes
         .route("/api/todos", get(compat::get_todos))
         .route("/api/todos", post(compat::create_todo))

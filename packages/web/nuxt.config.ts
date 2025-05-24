@@ -7,6 +7,7 @@ export default defineNuxtConfig({
     githubApiToken: process.env.GITHUB_API_TOKEN,
     public: {
       apiMock: process.env.NUXT_PUBLIC_API_MOCK,
+      apiUrl: process.env.NUXT_PUBLIC_API_URL || 'http://localhost:3333',
     },
   },
   compatibilityDate: '2024-11-01',
