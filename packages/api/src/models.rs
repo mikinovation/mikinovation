@@ -24,14 +24,19 @@ pub struct UpdateTodo {
 }
 
 impl Todo {
-    pub fn new(title: String) -> Self {
-        let now = Utc::now();
+    pub fn new(
+        id: String,
+        title: String,
+        completed: bool,
+        created_at: DateTime<Utc>,
+        updated_at: DateTime<Utc>,
+    ) -> Self {
         Self {
-            id: Uuid::new_v4().to_string(),
+            id,
             title,
-            completed: false,
-            created_at: now,
-            updated_at: now,
+            completed,
+            created_at,
+            updated_at,
         }
     }
 }
