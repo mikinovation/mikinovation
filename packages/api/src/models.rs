@@ -24,14 +24,19 @@ pub struct UpdateTodo {
 }
 
 impl Todo {
-    pub fn new(title: String) -> Self {
-        let now = Utc::now();
+    pub fn new(
+        id: String,
+        title: String,
+        completed: bool,
+        created_at: DateTime<Utc>,
+        updated_at: DateTime<Utc>,
+    ) -> Self {
         Self {
-            id: Uuid::new_v4().to_string(),
+            id,
             title,
-            completed: false,
-            created_at: now,
-            updated_at: now,
+            completed,
+            created_at,
+            updated_at,
         }
     }
 }
@@ -73,20 +78,32 @@ pub struct UpdateRepository {
 }
 
 impl Repository {
-    pub fn new(create_repo: CreateRepository) -> Self {
-        let now = Utc::now();
+    #[allow(clippy::too_many_arguments)]
+    pub fn new(
+        id: String,
+        github_id: i64,
+        name: String,
+        full_name: String,
+        description: Option<String>,
+        language: Option<String>,
+        html_url: String,
+        stargazers_count: i64,
+        connected_at: DateTime<Utc>,
+        created_at: DateTime<Utc>,
+        updated_at: DateTime<Utc>,
+    ) -> Self {
         Self {
-            id: Uuid::new_v4().to_string(),
-            github_id: create_repo.github_id,
-            name: create_repo.name,
-            full_name: create_repo.full_name,
-            description: create_repo.description,
-            language: create_repo.language,
-            html_url: create_repo.html_url,
-            stargazers_count: create_repo.stargazers_count,
-            connected_at: now,
-            created_at: now,
-            updated_at: now,
+            id,
+            github_id,
+            name,
+            full_name,
+            description,
+            language,
+            html_url,
+            stargazers_count,
+            connected_at,
+            created_at,
+            updated_at,
         }
     }
 }

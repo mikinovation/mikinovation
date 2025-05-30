@@ -181,9 +181,9 @@ run-api-release:
 	@cd $(API_DIR) && cargo run --release
 
 .PHONY: test-api
-test-api:
+test-api: test-db-create test-migrate
 	@echo "Running API tests..."
-	@cd $(API_DIR) && DATABASE_URL=postgres://postgres:postgres@localhost:5432/mikinovation_test cargo test
+	@cd $(API_DIR) && DATABASE_URL=postgres://postgres:postgres@localhost:5432/mikinovation_test cargo test -- --test-threads=1
 
 .PHONY: test-api-watch
 test-api-watch:
@@ -275,6 +275,11 @@ db-create:
 	@echo "Using database URL: $(DATABASE_URL)"
 	@sqlx database create --database-url $(DATABASE_URL)
 
+.PHONY: test-db-create
+test-db-create:
+	@echo "Creating test database..."
+	@sqlx database create --database-url postgres://postgres:postgres@localhost:5432/mikinovation_test
+
 .PHONY: db-drop
 db-drop:
 	@echo "Dropping database..."
@@ -289,6 +294,11 @@ migrate-add:
 migrate:
 	@echo "Running migrations..."
 	@sqlx migrate run --database-url $(DATABASE_URL) --source $(API_DIR)/migrations
+
+.PHONY: test-migrate
+test-migrate:
+	@echo "Running migrations on test database..."
+	@sqlx migrate run --database-url postgres://postgres:postgres@localhost:5432/mikinovation_test --source $(API_DIR)/migrations
 
 .PHONY: migrate-revert
 migrate-revert:
