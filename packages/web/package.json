@@ -21,7 +21,7 @@
     "@sentry/nuxt": "9.22.0",
     "nuxt": "3.17.4",
     "openapi-fetch": "0.14.0",
-    "vue": "3.5.15",
+    "vue": "3.5.16",
     "vue-router": "4.5.1"
   },
   "devDependencies": {
