@@ -433,7 +433,9 @@ mod tests {
 
         assert!(result.is_err());
         match result.unwrap_err() {
-            ApiError::BadRequest(msg) => assert_eq!(msg, "Label with name 'Duplicate' already exists"),
+            ApiError::BadRequest(msg) => {
+                assert_eq!(msg, "Label with name 'Duplicate' already exists")
+            }
             _ => panic!("Expected BadRequest error"),
         }
     }
@@ -486,7 +488,10 @@ mod tests {
         let Json(updated_label) = result.unwrap();
         assert_eq!(updated_label.id, test_label.id);
         assert_eq!(updated_label.name, "New Name");
-        assert_eq!(updated_label.description, Some("New description".to_string()));
+        assert_eq!(
+            updated_label.description,
+            Some("New description".to_string())
+        );
         assert_eq!(updated_label.color, Some("#0000ff".to_string()));
     }
 
@@ -530,7 +535,9 @@ mod tests {
 
         assert!(result.is_err());
         match result.unwrap_err() {
-            ApiError::BadRequest(msg) => assert_eq!(msg, "Label with name 'Existing Label' already exists"),
+            ApiError::BadRequest(msg) => {
+                assert_eq!(msg, "Label with name 'Existing Label' already exists")
+            }
             _ => panic!("Expected BadRequest error"),
         }
     }
