@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import GithubRepositoryTable from './index.vue'
 
-const mockGithubRepositories = {
+const mockGetGithubRepositories = {
   repositories: [],
   total: 0,
   loading: false,
@@ -15,12 +15,12 @@ const mockGithubRepositories = {
 }
 
 vi.mock('@/composables/useGetGithubRepositories', () => ({
-  useGithubRepositories: vi.fn(() => mockGithubRepositories),
+  useGetGithubRepositories: vi.fn(() => mockGetGithubRepositories),
 }))
 
 describe('GithubRepositoryTable', () => {
   it('should render loading state', () => {
-    mockGithubRepositories.loading = true
+    mockGetGithubRepositories.loading = true
     const wrapper = mount(GithubRepositoryTable)
 
     expect(wrapper.find('.loading-state').text()).toBe('Loading repositories...')
