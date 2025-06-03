@@ -1,7 +1,12 @@
 import { ViteMcp } from 'vite-plugin-mcp'
 
 export default defineNuxtConfig({
-  modules: ['@nuxt/eslint', '@nuxt/test-utils', 'nuxt-mcp', '@sentry/nuxt/module'],
+  modules: [
+    '@nuxt/eslint',
+    '@nuxt/test-utils/module',
+    'nuxt-mcp',
+    '@sentry/nuxt/module',
+  ],
   ssr: !process.env.NUXT_PUBLIC_API_MOCK,
   devtools: { enabled: true },
   runtimeConfig: {

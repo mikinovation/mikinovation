@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import GitHubRepositoryTable from '@/components/github/GithubRepositoryTable.vue'
+import GitHubRepositoryTable from '@/components/github/GithubRepositoryTable/index.vue'
 
 type User = {
   id: string

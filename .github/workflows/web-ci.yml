@@ -48,6 +48,10 @@ jobs:
       - name: Run type check
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: pnpm run typecheck
+
+      - name: Run tests
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: pnpm run test:unit --run
       
       - name: Build application
         working-directory: ${{ env.WORKING_DIRECTORY }}
