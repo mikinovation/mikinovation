@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useGithubRepositories } from '@/composables/useGetGithubRepositories'
+import { useGithubRepositories } from '@/composables/useGithubRepositories'
 
 /**
  * Refs
