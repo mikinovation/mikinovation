@@ -9,18 +9,16 @@ use tower_http::cors::{Any, CorsLayer};
 
 use crate::{
     app_state::AppState,
-    handlers::{auth, compat},
+    handlers::{auth, label, repository, repository_label, todo},
     middleware::auth::auth_middleware,
 };
 
 pub fn create_router(pool: PgPool) -> Router {
-    // CORS settings
     let cors = CorsLayer::new()
         .allow_origin(Any)
         .allow_methods(Any)
         .allow_headers(Any);
 
-    // Create app state
     let app_state = AppState {
         pool: Arc::new(pool),
         auth_config: Arc::new(auth::AuthConfig {
@@ -35,62 +33,63 @@ pub fn create_router(pool: PgPool) -> Router {
         }),
     };
 
-    // Public routes (no auth required)
     let public_routes = Router::new()
         .route("/health", get(|| async { "OK" }))
         .route("/api/auth/github", get(auth::github_auth))
         .route("/api/auth/github/callback", get(auth::github_callback))
         .with_state(app_state.clone());
 
-    // Protected routes (auth required)
-    let protected_routes = Router::new()
-        // User routes
+    let pool = (*app_state.pool).clone();
+
+    let user_routes = Router::new()
         .route("/api/user", get(auth::get_current_user))
-        // Todo routes
-        .route("/api/todos", get(compat::get_todos))
-        .route("/api/todos", post(compat::create_todo))
-        .route("/api/todos/{id}", get(compat::get_todo))
-        .route("/api/todos/{id}", put(compat::update_todo))
-        .route("/api/todos/{id}", delete(compat::delete_todo))
-        // Repository routes
-        .route("/api/repositories", get(compat::get_repositories))
-        .route("/api/repositories", post(compat::create_repository))
-        .route("/api/repositories/{id}", get(compat::get_repository))
-        .route("/api/repositories/{id}", put(compat::update_repository))
-        .route("/api/repositories/{id}", delete(compat::delete_repository))
-        // Label routes
-        .route("/api/labels", get(compat::get_labels))
-        .route("/api/labels", post(compat::create_label))
-        .route("/api/labels/{id}", get(compat::get_label))
-        .route("/api/labels/{id}", put(compat::update_label))
-        .route("/api/labels/{id}", delete(compat::delete_label))
-        // Repository-Label relationship routes
+        .layer(middleware::from_fn_with_state(
+            app_state.clone(),
+            auth_middleware,
+        ))
+        .with_state((*app_state.pool).clone());
+
+    let protected_routes = Router::new()
+        .route("/api/todos", get(todo::get_todos))
+        .route("/api/todos", post(todo::create_todo))
+        .route("/api/todos/{id}", get(todo::get_todo))
+        .route("/api/todos/{id}", put(todo::update_todo))
+        .route("/api/todos/{id}", delete(todo::delete_todo))
+        .route("/api/repositories", get(repository::get_repositories))
+        .route("/api/repositories", post(repository::create_repository))
+        .route("/api/repositories/{id}", get(repository::get_repository))
+        .route("/api/repositories/{id}", put(repository::update_repository))
+        .route("/api/repositories/{id}", delete(repository::delete_repository))
+        .route("/api/labels", get(label::get_labels))
+        .route("/api/labels", post(label::create_label))
+        .route("/api/labels/{id}", get(label::get_label))
+        .route("/api/labels/{id}", put(label::update_label))
+        .route("/api/labels/{id}", delete(label::delete_label))
         .route(
             "/api/repositories/{id}/labels",
-            get(compat::get_repository_labels),
+            get(repository_label::get_repository_labels),
         )
         .route(
             "/api/repositories/{id}/labels",
-            post(compat::add_label_to_repository),
+            post(repository_label::add_label_to_repository),
         )
         .route(
             "/api/repositories/{id}/labels/{label_id}",
-            delete(compat::remove_label_from_repository),
+            delete(repository_label::remove_label_from_repository),
         )
         .route(
             "/api/labels/{id}/repositories",
-            get(compat::get_repositories_by_label),
+            get(repository_label::get_repositories_by_label),
         )
         .layer(middleware::from_fn_with_state(
             app_state.clone(),
             auth_middleware,
         ))
-        .with_state(app_state.clone());
+        .with_state(pool);
 
-    // Combine public and protected routes
     Router::new()
         .merge(public_routes)
+        .merge(user_routes)
         .merge(protected_routes)
         .layer(cors)
-        .with_state(app_state)
 }
