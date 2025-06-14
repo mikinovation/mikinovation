@@ -59,7 +59,10 @@ pub fn create_router(pool: PgPool) -> Router {
         .route("/api/repositories", post(repository::create_repository))
         .route("/api/repositories/{id}", get(repository::get_repository))
         .route("/api/repositories/{id}", put(repository::update_repository))
-        .route("/api/repositories/{id}", delete(repository::delete_repository))
+        .route(
+            "/api/repositories/{id}",
+            delete(repository::delete_repository),
+        )
         .route("/api/labels", get(label::get_labels))
         .route("/api/labels", post(label::create_label))
         .route("/api/labels/{id}", get(label::get_label))
