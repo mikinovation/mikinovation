@@ -13,7 +13,7 @@
 ### Post-Task Verification
 
 After completing ANY code changes, you MUST run the following verification steps in order:
-k=
+
 ```bash
-make lint && make typecheck-web && make typecheck-ui && make test-api && make build
+make lint && make typecheck-web && make typecheck-ui && make fmt-api && make test-api && make build
 ```
