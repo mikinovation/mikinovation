@@ -30,7 +30,7 @@
     "eslint": "9.28.0",
     "happy-dom": "17.6.3",
     "msw": "2.10.2",
-    "nuxt-mcp": "0.2.2",
+    "nuxt-mcp": "0.2.3",
     "openapi-typescript": "7.8.0",
     "playwright-core": "1.52.0",
     "sass": "1.89.2",
