@@ -35,7 +35,7 @@
     "playwright-core": "1.53.1",
     "sass": "1.89.2",
     "typescript": "5.8.3",
-    "vite-plugin-mcp": "0.2.2",
+    "vite-plugin-mcp": "0.2.3",
     "vitest": "3.2.3"
   },
   "msw": {
