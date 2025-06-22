@@ -17,7 +17,7 @@
   },
   "packageManager": "pnpm@10.12.1",
   "dependencies": {
-    "@sentry/nuxt": "9.29.0",
+    "@sentry/nuxt": "9.30.0",
     "nuxt": "3.17.5",
     "openapi-fetch": "0.14.0",
     "vue": "3.5.17",
