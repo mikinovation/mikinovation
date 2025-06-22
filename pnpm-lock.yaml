@@ -96,8 +96,8 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
       vite-plugin-mcp:
-        specifier: 0.2.2
-        version: 0.2.2(vite@6.3.5(@types/node@22.15.32)(jiti@2.4.2)(sass@1.89.2)(terser@5.42.0)(yaml@2.8.0))
+        specifier: 0.2.3
+        version: 0.2.3(vite@6.3.5(@types/node@22.15.32)(jiti@2.4.2)(sass@1.89.2)(terser@5.42.0)(yaml@2.8.0))
       vitest:
         specifier: 3.2.3
         version: 3.2.3(@types/node@22.15.32)(happy-dom@18.0.1)(jiti@2.4.2)(msw@2.10.2(@types/node@22.15.32)(typescript@5.8.3))(sass@1.89.2)(terser@5.42.0)(yaml@2.8.0)
@@ -5430,6 +5430,11 @@ packages:
 
   vite-plugin-mcp@0.2.2:
     resolution: {integrity: sha512-bFIAPqKfBMNDPY7RiMuX9P+FbdBh6bOxuvYiF048PkqR5Vf0xiJ4WJnxaDHfUzsdZV/bJANud2qWbmwA/Pjrhw==}
+    peerDependencies:
+      vite: '>=6.0.0'
+
+  vite-plugin-mcp@0.2.3:
+    resolution: {integrity: sha512-eU0NEISi15TpRCSbBatp95d4T9/TvsiDNT0NSV6Eq5b6rs4N2YHx3YpfKsleLgleNRDHVdtnGa11G2YSJbvxmw==}
     peerDependencies:
       vite: '>=6.0.0'
 
@@ -11839,6 +11844,17 @@ snapshots:
       - supports-color
 
   vite-plugin-mcp@0.2.2(vite@6.3.5(@types/node@22.15.32)(jiti@2.4.2)(sass@1.89.2)(terser@5.42.0)(yaml@2.8.0)):
+    dependencies:
+      '@modelcontextprotocol/sdk': 1.12.3
+      ansis: 3.17.0
+      debug: 4.4.1(supports-color@10.0.0)
+      pathe: 2.0.3
+      vite: 6.3.5(@types/node@22.15.32)(jiti@2.4.2)(sass@1.89.2)(terser@5.42.0)(yaml@2.8.0)
+      zod: 3.25.67
+    transitivePeerDependencies:
+      - supports-color
+
+  vite-plugin-mcp@0.2.3(vite@6.3.5(@types/node@22.15.32)(jiti@2.4.2)(sass@1.89.2)(terser@5.42.0)(yaml@2.8.0)):
     dependencies:
       '@modelcontextprotocol/sdk': 1.12.3
       ansis: 3.17.0
