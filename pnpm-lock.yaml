@@ -96,8 +96,8 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
       vite-plugin-mcp:
-        specifier: 0.2.2
-        version: 0.2.2(vite@6.3.5(@types/node@22.15.32)(jiti@2.4.2)(sass@1.89.2)(terser@5.42.0)(yaml@2.8.0))
+        specifier: 0.2.3
+        version: 0.2.3(vite@6.3.5(@types/node@22.15.32)(jiti@2.4.2)(sass@1.89.2)(terser@5.42.0)(yaml@2.8.0))
       vitest:
         specifier: 3.2.3
         version: 3.2.3(@types/node@22.15.32)(happy-dom@18.0.1)(jiti@2.4.2)(msw@2.10.2(@types/node@22.15.32)(typescript@5.8.3))(sass@1.89.2)(terser@5.42.0)(yaml@2.8.0)
