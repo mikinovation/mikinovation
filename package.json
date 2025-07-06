@@ -8,7 +8,7 @@
   "engines": {
     "pnpm": "10.12.4",
     "npm": "please_use_pnpm_instead",
-    "node": "24.2.0"
+    "node": "24.3.0"
   },
   "packageManager": "pnpm@10.12.4"
 }

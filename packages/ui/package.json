@@ -29,15 +29,15 @@
   },
   "devDependencies": {
     "@storybook/vue3-vite": "9.1.0-alpha.6",
-    "@types/node": "22.15.33",
-    "@vitejs/plugin-vue": "5.2.4",
+    "@types/node": "22.16.0",
+    "@vitejs/plugin-vue": "6.0.0",
     "sass": "1.89.2",
     "storybook": "9.1.0-alpha.6",
     "typescript": "5.8.3",
-    "vite": "6.3.5",
+    "vite": "7.0.2",
     "vite-plugin-dts": "4.5.4",
     "vitest": "3.2.4",
     "vue": "3.5.17",
-    "vue-tsc": "2.2.10"
+    "vue-tsc": "2.2.12"
   }
 }
