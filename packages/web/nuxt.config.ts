@@ -1,4 +1,4 @@
-import { ViteMcp } from 'vite-plugin-mcp'
+// import { ViteMcp } from 'vite-plugin-mcp'
 
 export default defineNuxtConfig({
   modules: [
