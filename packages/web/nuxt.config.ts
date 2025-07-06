@@ -1,4 +1,4 @@
-import { ViteMcp } from 'vite-plugin-mcp'
+// import { ViteMcp } from 'vite-plugin-mcp'
 
 export default defineNuxtConfig({
   modules: [
@@ -23,7 +23,8 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   vite: {
     plugins: [
-      ViteMcp(),
+      // TODO: Enable this plugin when MCP is ready for Nuxt 3
+      // ViteMcp(),
     ],
   },
   eslint: {
