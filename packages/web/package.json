@@ -15,7 +15,7 @@
     "test:unit": "vitest",
     "codegen": "openapi-typescript https://raw.githubusercontent.com/github/rest-api-description/refs/heads/main/descriptions/api.github.com/api.github.com.json -o types/github-api.ts"
   },
-  "packageManager": "pnpm@10.12.4",
+  "packageManager": "pnpm@10.13.1",
   "dependencies": {
     "@sentry/nuxt": "9.33.0",
     "nuxt": "3.17.6",
