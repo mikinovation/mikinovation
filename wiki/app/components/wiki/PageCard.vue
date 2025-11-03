@@ -1,7 +1,7 @@
 <script setup lang="ts">
 type Props = {
   page: {
-    _path: string
+    path: string
     title: string
     description: string
     date: string | Date
@@ -25,9 +25,10 @@ const formatDateISO = (date: string | Date) => {
 
 <template>
   <NuxtLink
-    :to="page._path"
+    :to="page.path"
     class="block bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
   >
+
     <h2 class="text-xl font-bold mb-2 text-gray-900">{{ page.title }}</h2>
     <p class="text-gray-600 mb-4 line-clamp-2">{{ page.description }}</p>
 
