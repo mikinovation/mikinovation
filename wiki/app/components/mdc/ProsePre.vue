@@ -19,18 +19,8 @@ const props = withDefaults(defineProps<Props>(), {
   meta: null,
 })
 
-const {
-  code = '',
-  language = null,
-  filename = null,
-  highlights = [],
-  meta = null,
-  class = null,
-  style = null 
-} = defineProps<Props>()
-
 const mermaidContainer = ref<HTMLElement | null>(null)
-const isMermaid = computed(() => language.value === 'mermaid')
+const isMermaid = computed(() => props.language === 'mermaid')
 const rendered = ref(false)
 
 async function renderMermaid() {
@@ -55,7 +45,7 @@ async function renderMermaid() {
     })
 
     // Set the mermaid code as text content
-    mermaidContainer.value.textContent = code.value
+    mermaidContainer.value.textContent = props.code
     mermaidContainer.value.classList.add('mermaid')
 
     // Render the diagram
@@ -68,7 +58,7 @@ async function renderMermaid() {
     console.error('Failed to render Mermaid diagram:', error)
     // Fallback: show code if rendering fails
     if (mermaidContainer.value) {
-      mermaidContainer.value.innerHTML = `<pre><code>${code.value}</code></pre>`
+      mermaidContainer.value.innerHTML = `<pre><code>${props.code}</code></pre>`
     }
   }
 }
@@ -84,7 +74,7 @@ onMounted(() => {
   <div v-if="isMermaid" class="overflow-x-auto p-4 bg-transparent my-6">
     <div ref="mermaidContainer" class="flex justify-center items-center min-h-[100px] [&_svg]:max-w-full [&_svg]:h-auto"></div>
   </div>
-  <pre v-else :class="class" :style="style">
+  <pre v-else :class="props.class" :style="props.style">
     <slot />
   </pre>
 </template>
