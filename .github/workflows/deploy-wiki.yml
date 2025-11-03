@@ -30,7 +30,7 @@ jobs:
           version: 10.20.0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '24'
           cache: 'pnpm'
@@ -41,7 +41,7 @@ jobs:
         working-directory: ./wiki
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
 
       - name: Build
         run: pnpm run generate
@@ -50,7 +50,7 @@ jobs:
           NUXT_APP_BASE_URL: /mikinovation/
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./wiki/.output/public
 
