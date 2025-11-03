@@ -13,5 +13,15 @@ export default defineNuxtConfig({
   css: ['@/assets/css/main.css'],
   content: {
     experimental: { nativeSqlite: true }
+  },
+  app: {
+    baseURL: process.env.NODE_ENV === 'production' ? '/mikinovation/' : '/',
+    buildAssetsDir: 'assets'
+  },
+  nitro: {
+    prerender: {
+      crawlLinks: true,
+      routes: ['/']
+    }
   }
 })
