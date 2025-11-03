@@ -2,7 +2,6 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-
   modules: [
     '@nuxt/content',
     '@nuxt/eslint',
@@ -10,5 +9,8 @@ export default defineNuxtConfig({
     '@nuxt/scripts',
     '@nuxt/test-utils',
     '@nuxt/ui'
-  ]
+  ],
+  content: {
+    experimental: { nativeSqlite: true }
+  }
 })
