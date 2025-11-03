@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     '@nuxt/test-utils',
     '@nuxt/ui'
   ],
+  css: ['@/assets/css/main.css'],
   content: {
     experimental: { nativeSqlite: true }
   }
