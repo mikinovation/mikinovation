@@ -3,6 +3,12 @@ title: 'Tailwind CSS によるユーティリティファーストデザイン'
 description: 'Tailwind CSS を使った効率的なスタイリング手法。Nuxt UI との組み合わせで、美しいUIを素早く構築する方法を紹介します。'
 date: '2025-11-01'
 draft: false
+labels:
+  - Tailwind CSS
+  - CSS
+  - Web Development
+  - UI/UX
+  - Design System
 ---
 
 # Tailwind CSS によるユーティリティファーストデザイン

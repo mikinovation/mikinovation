@@ -5,6 +5,7 @@ type Props = {
     title: string
     description: string
     date: string | Date
+    labels: string[]
   }>
 }
 

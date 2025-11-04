@@ -9,6 +9,7 @@ export const collections = {
       description: z.string(),
       date: z.string().or(z.date()),
       draft: z.boolean().optional().default(false),
+      labels: z.array(z.string()),
     })
   })
 }

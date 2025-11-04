@@ -4,6 +4,29 @@ const { data: pages } = await useAsyncData('pages', () =>
     .all()
 )
 
+const selectedLabel = ref<string | null>(null)
+
+const allLabels = computed(() => {
+  if (!pages.value) return []
+  const labelSet = new Set<string>()
+  pages.value.forEach(page => {
+    page.labels?.forEach((label: string) => labelSet.add(label))
+  })
+  return Array.from(labelSet).sort()
+})
+
+const filteredPages = computed(() => {
+  if (!pages.value) return []
+  if (!selectedLabel.value) return pages.value
+  return pages.value.filter(page =>
+    page.labels?.includes(selectedLabel.value!)
+  )
+})
+
+const filterByLabel = (label: string | null) => {
+  selectedLabel.value = label
+}
+
 useSeoMeta({
   title: 'Wiki - mikinovation',
   description: 'ナレッジベース。技術的なドキュメントやメモを整理しています。',
@@ -69,7 +92,38 @@ useSeoMeta({
     <!-- Page List Section -->
     <div class="max-w-4xl mx-auto">
       <h2 class="text-2xl font-semibold mb-6 text-gray-800">記事一覧</h2>
-      <WikiPageList v-if="pages" :pages="pages" />
+
+      <!-- Label Filter -->
+      <div v-if="allLabels.length > 0" class="mb-6">
+        <div class="flex flex-wrap gap-2">
+          <button
+            :class="[
+              'px-4 py-2 text-sm font-medium rounded-full transition-colors',
+              selectedLabel === null
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            ]"
+            @click="filterByLabel(null)"
+          >
+            すべて
+          </button>
+          <button
+            v-for="label in allLabels"
+            :key="label"
+            :class="[
+              'px-4 py-2 text-sm font-medium rounded-full transition-colors',
+              selectedLabel === label
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            ]"
+            @click="filterByLabel(label)"
+          >
+            {{ label }}
+          </button>
+        </div>
+      </div>
+
+      <WikiPageList v-if="filteredPages.length > 0" :pages="filteredPages" />
       <div v-else class="text-center text-gray-500 py-8">
         ページがありません
       </div>

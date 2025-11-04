@@ -3,6 +3,11 @@ title: 'TypeScript で型安全な開発を実現する'
 description: 'TypeScript を使った型安全な開発手法について。Nuxt 4 での TypeScript 活用例を紹介します。'
 date: '2025-11-02'
 draft: false
+labels:
+  - TypeScript
+  - Nuxt
+  - Web Development
+  - Type Safety
 ---
 
 # TypeScript で型安全な開発を実現する

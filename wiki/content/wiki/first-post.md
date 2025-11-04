@@ -3,6 +3,11 @@ title: 'Nixの設定'
 description: 'Nix FlakesとHome Managerを使用した開発環境の宣言的構成管理。モジュール化された設定とクロスプラットフォーム対応について解説します。'
 date: '2025-01-03'
 draft: false
+labels:
+  - Nix
+  - DevOps
+  - Configuration
+  - Development Environment
 ---
 
 # Nix 設定ドキュメント
