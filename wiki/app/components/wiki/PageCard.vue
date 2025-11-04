@@ -5,6 +5,7 @@ type Props = {
     title: string
     description: string
     date: string | Date
+    labels: string[]
   }
 }
 
@@ -31,6 +32,16 @@ const formatDateISO = (date: string | Date) => {
 
     <h2 class="text-xl font-bold mb-2 text-gray-900">{{ page.title }}</h2>
     <p class="text-gray-600 mb-4 line-clamp-2">{{ page.description }}</p>
+
+    <div class="flex flex-wrap gap-2 mb-4">
+      <span
+        v-for="label in page.labels"
+        :key="label"
+        class="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full"
+      >
+        {{ label }}
+      </span>
+    </div>
 
     <div class="text-sm text-gray-500">
       <time :datetime="formatDateISO(page.date)">{{ formatDate(page.date) }}</time>
