@@ -10,6 +10,9 @@ if (!page.value) {
   throw createError({ statusCode: 404, statusMessage: 'Page not found' })
 }
 
+// 関連記事を取得
+const { data: relatedArticles } = await useRelatedArticles(route.params.slug as string)
+
 // SEO メタタグ設定
 useSeoMeta({
   title: page.value.title,
@@ -45,6 +48,9 @@ const formatDateISO = (date: string | Date) => {
 
       <!-- ページ本文 -->
       <WikiPageContent :page="page" />
+
+      <!-- 関連記事 -->
+      <WikiRelatedArticles v-if="relatedArticles" :articles="relatedArticles" />
     </article>
   </div>
 </template>

@@ -8,6 +8,8 @@ labels:
   - Nuxt
   - Web Development
   - Type Safety
+relatedArticles:
+  - third-post
 ---
 
 # TypeScript で型安全な開発を実現する

@@ -9,6 +9,9 @@ labels:
   - Web Development
   - UI/UX
   - Design System
+relatedArticles:
+  - second-post
+  - first-post
 ---
 
 # Tailwind CSS によるユーティリティファーストデザイン
