@@ -19,7 +19,7 @@ importers:
         version: 2.0.0(db0@0.3.4(better-sqlite3@12.4.1))(ioredis@5.8.2)(magicast@0.5.1)
       '@nuxt/scripts':
         specifier: 0.13.0
-        version: 0.13.0(@unhead/vue@2.0.3(vue@3.5.24(typescript@5.6.3)))(db0@0.3.4(better-sqlite3@12.4.1))(ioredis@5.8.2)(magicast@0.5.1)(typescript@5.6.3)(vue@3.5.24(typescript@5.6.3))
+        version: 0.13.0(@unhead/vue@2.0.19(vue@3.5.24(typescript@5.6.3)))(db0@0.3.4(better-sqlite3@12.4.1))(ioredis@5.8.2)(magicast@0.5.1)(typescript@5.6.3)(vue@3.5.24(typescript@5.6.3))
       '@nuxt/test-utils':
         specifier: 3.20.1
         version: 3.20.1(magicast@0.5.1)(typescript@5.6.3)
@@ -27,8 +27,8 @@ importers:
         specifier: 4.1.0
         version: 4.1.0(@babel/parser@7.28.5)(change-case@5.4.4)(db0@0.3.4(better-sqlite3@12.4.1))(embla-carousel@8.6.0)(ioredis@5.8.2)(magicast@0.5.1)(typescript@5.6.3)(valibot@1.1.0(typescript@5.6.3))(vite@7.2.2(@types/node@24.10.0)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.0)(yaml@2.8.1))(vue-router@4.6.3(vue@3.5.24(typescript@5.6.3)))(vue@3.5.24(typescript@5.6.3))(zod@3.25.76)
       '@unhead/vue':
-        specifier: 2.0.3
-        version: 2.0.3(vue@3.5.24(typescript@5.6.3))
+        specifier: 2.0.19
+        version: 2.0.19(vue@3.5.24(typescript@5.6.3))
       better-sqlite3:
         specifier: 12.4.1
         version: 12.4.1
@@ -1958,11 +1958,6 @@ packages:
     resolution: {integrity: sha512-7BYjHfOaoZ9+ARJkT10Q2TjnTUqDXmMpfakIAsD/hXiuff1oqWg1xeXT5+MomhNcC15HbiABpbbBmITLSHxdKg==}
     peerDependencies:
       vue: '>=3.5.18'
-
-  '@unhead/vue@2.0.3':
-    resolution: {integrity: sha512-6Yci+MTunYuJLYwujBA68hEr5PabBl87yEhImrG4AUogaYWqIwtMHukn0bQvcjaBksXartLJtGUhxhmKgBdyPw==}
-    peerDependencies:
-      vue: '>=3.5.13'
 
   '@unrs/resolver-binding-android-arm-eabi@1.11.1':
     resolution: {integrity: sha512-ppLRUgHVaGRWUx0R0Ut06Mjo9gBaBkg3v/8AxusGLhsIotbBLuRk51rAzqLC8gq6NyyAojEXglNjzf6R948DNw==}
@@ -5389,9 +5384,6 @@ packages:
   unhead@2.0.19:
     resolution: {integrity: sha512-gEEjkV11Aj+rBnY6wnRfsFtF2RxKOLaPN4i+Gx3UhBxnszvV6ApSNZbGk7WKyy/lErQ6ekPN63qdFL7sa1leow==}
 
-  unhead@2.0.3:
-    resolution: {integrity: sha512-l2O1DSzEid8Fp+I+FMMhFnl1IewyAvBhbdYipaq9Jh2AMndv//yWZ2amjzDLpYpUmDr9E8WTcdoAXkm9wH60Aw==}
-
   unicode-emoji-modifier-base@1.0.0:
     resolution: {integrity: sha512-yLSH4py7oFH3oG/9K+XWrz1pSi3dfUrWEnInbxMfArOfc1+33BlGPQtLsOYwvdMy11AwUBetYuaRxSPqgkq+8g==}
     engines: {node: '>=4'}
@@ -7143,10 +7135,10 @@ snapshots:
       pkg-types: 2.3.0
       std-env: 3.10.0
 
-  '@nuxt/scripts@0.13.0(@unhead/vue@2.0.3(vue@3.5.24(typescript@5.6.3)))(db0@0.3.4(better-sqlite3@12.4.1))(ioredis@5.8.2)(magicast@0.5.1)(typescript@5.6.3)(vue@3.5.24(typescript@5.6.3))':
+  '@nuxt/scripts@0.13.0(@unhead/vue@2.0.19(vue@3.5.24(typescript@5.6.3)))(db0@0.3.4(better-sqlite3@12.4.1))(ioredis@5.8.2)(magicast@0.5.1)(typescript@5.6.3)(vue@3.5.24(typescript@5.6.3))':
     dependencies:
       '@nuxt/kit': 4.2.0(magicast@0.5.1)
-      '@unhead/vue': 2.0.3(vue@3.5.24(typescript@5.6.3))
+      '@unhead/vue': 2.0.19(vue@3.5.24(typescript@5.6.3))
       '@vueuse/core': 13.9.0(vue@3.5.24(typescript@5.6.3))
       consola: 3.4.2
       defu: 6.1.4
@@ -8238,12 +8230,6 @@ snapshots:
     dependencies:
       hookable: 5.5.3
       unhead: 2.0.19
-      vue: 3.5.24(typescript@5.6.3)
-
-  '@unhead/vue@2.0.3(vue@3.5.24(typescript@5.6.3))':
-    dependencies:
-      hookable: 5.5.3
-      unhead: 2.0.3
       vue: 3.5.24(typescript@5.6.3)
 
   '@unrs/resolver-binding-android-arm-eabi@1.11.1':
@@ -12390,10 +12376,6 @@ snapshots:
       pathe: 2.0.3
 
   unhead@2.0.19:
-    dependencies:
-      hookable: 5.5.3
-
-  unhead@2.0.3:
     dependencies:
       hookable: 5.5.3
 
