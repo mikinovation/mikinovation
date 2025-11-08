@@ -8,6 +8,8 @@ labels:
   - DevOps
   - Configuration
   - Development Environment
+relatedArticles:
+  - second-post
 ---
 
 # Nix 設定ドキュメント
