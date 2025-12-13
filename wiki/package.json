@@ -19,7 +19,7 @@
     "@nuxt/ui": "4.2.1",
     "@unhead/vue": "2.0.19",
     "better-sqlite3": "12.5.0",
-    "eslint": "9.39.1",
+    "eslint": "9.39.2",
     "mermaid": "11.12.2",
     "nuxt": "4.2.1",
     "typescript": "5.9.3",
