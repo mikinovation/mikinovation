@@ -2,15 +2,15 @@
 </script>
 
 <template>
-  <header class="bg-white border-b border-gray-200">
+  <header class="bg-[#111111] border-b-2 border-[#888888]">
     <nav class="container mx-auto px-4 py-4">
       <div class="flex items-center justify-between">
-        <NuxtLink to="/" class="text-2xl font-bold text-gray-900">
-          Wiki
+        <NuxtLink to="/" class="text-2xl font-bold text-[#e0e0e0] tracking-wider">
+          &gt; Wiki_
         </NuxtLink>
 
         <div class="flex items-center space-x-6">
-          <NuxtLink to="/" class="text-gray-700 hover:text-gray-900">
+          <NuxtLink to="/" class="text-[#e0e0e0] hover:text-[#888888]">
             Home
           </NuxtLink>
         </div>

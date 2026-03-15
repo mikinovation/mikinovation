@@ -1,3 +1,61 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 @import "@nuxt/ui";
+
+:root {
+  --retro-bg: #111111;
+  --retro-bg-card: #222222;
+  --retro-text: #e0e0e0;
+  --retro-text-accent: #cccccc;
+  --retro-border: #888888;
+}
+
+body {
+  font-family: 'DotGothic16', cursive, monospace;
+  background-color: var(--retro-bg);
+  color: var(--retro-text);
+}
+
+/* Prose overrides for retro theme */
+.prose {
+  --tw-prose-body: var(--retro-text);
+  --tw-prose-headings: var(--retro-text);
+  --tw-prose-lead: var(--retro-text);
+  --tw-prose-links: var(--retro-text-accent);
+  --tw-prose-bold: var(--retro-text);
+  --tw-prose-counters: var(--retro-text);
+  --tw-prose-bullets: var(--retro-text);
+  --tw-prose-hr: var(--retro-border);
+  --tw-prose-quotes: var(--retro-text);
+  --tw-prose-quote-borders: var(--retro-border);
+  --tw-prose-captions: var(--retro-text);
+  --tw-prose-code: var(--retro-text);
+  --tw-prose-pre-code: var(--retro-text);
+  --tw-prose-pre-bg: var(--retro-bg-card);
+  --tw-prose-th-borders: var(--retro-border);
+  --tw-prose-td-borders: var(--retro-border);
+}
+
+/* Scrollbar retro style */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--retro-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--retro-text);
+}
+
+/* Retro blink animation for hover */
+@keyframes retro-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.retro-blink:hover {
+  animation: retro-blink 1s step-end infinite;
+}
