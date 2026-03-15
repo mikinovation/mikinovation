@@ -40,7 +40,7 @@ async function renderMermaid() {
     // Initialize mermaid with configuration
     mermaid.initialize({
       startOnLoad: false,
-      theme: 'default',
+      theme: 'dark',
       securityLevel: 'loose',
     })
 
@@ -71,7 +71,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="isMermaid" class="overflow-x-auto p-4 bg-transparent my-6">
+  <div v-if="isMermaid" class="overflow-x-auto p-4 bg-[#222222] border-2 border-[#888888] my-6">
     <div ref="mermaidContainer" class="flex justify-center items-center min-h-[100px] [&_svg]:max-w-full [&_svg]:h-auto"></div>
   </div>
   <pre v-else :class="props.class" :style="props.style">

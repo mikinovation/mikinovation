@@ -41,7 +41,7 @@ const formatDateISO = (date: string | Date) => {
       <!-- メタデータ -->
       <header class="mb-8">
         <h1 class="text-4xl font-bold mb-4">{{ page.title }}</h1>
-        <div class="text-gray-600">
+        <div class="text-[#e0e0e0]/60">
           <time :datetime="formatDateISO(page.date)">{{ formatDate(page.date) }}</time>
         </div>
       </header>
