@@ -27,23 +27,23 @@ const formatDateISO = (date: string | Date) => {
 <template>
   <NuxtLink
     :to="page.path"
-    class="block bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
+    class="block bg-[#222222] border-2 border-[#888888] p-6 hover:bg-[#111111] transition-colors"
   >
 
-    <h2 class="text-xl font-bold mb-2 text-gray-900">{{ page.title }}</h2>
-    <p class="text-gray-600 mb-4 line-clamp-2">{{ page.description }}</p>
+    <h2 class="text-xl font-bold mb-2 text-[#e0e0e0]">{{ page.title }}</h2>
+    <p class="text-[#e0e0e0]/70 mb-4 line-clamp-2">{{ page.description }}</p>
 
     <div class="flex flex-wrap gap-2 mb-4">
       <span
         v-for="label in page.labels"
         :key="label"
-        class="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full"
+        class="px-2 py-1 text-xs font-medium bg-[#e0e0e0] text-[#111111]"
       >
         {{ label }}
       </span>
     </div>
 
-    <div class="text-sm text-gray-500">
+    <div class="text-sm text-[#e0e0e0]/50">
       <time :datetime="formatDateISO(page.date)">{{ formatDate(page.date) }}</time>
     </div>
   </NuxtLink>
