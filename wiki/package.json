@@ -14,21 +14,21 @@
     "@nuxt/content": "3.12.0",
     "@nuxt/eslint": "1.15.2",
     "@nuxt/image": "2.0.0",
-    "@nuxt/scripts": "0.13.2",
+    "@nuxt/scripts": "0.13.4",
     "@nuxt/test-utils": "4.0.0",
     "@nuxt/ui": "4.5.1",
     "@unhead/vue": "2.1.12",
     "better-sqlite3": "12.8.0",
     "eslint": "10.0.3",
-    "mermaid": "11.13.0",
+    "mermaid": "11.14.0",
     "nuxt": "4.4.2",
     "typescript": "5.9.3",
     "vue": "3.5.30",
-    "vue-router": "5.0.3"
+    "vue-router": "5.0.6"
   },
   "packageManager": "pnpm@10.33.1+sha512.05ba3c1d5d1c18f68df06470d74055e62d41fc110a0c660db1b2dfb2785327f04cf0f68345d4609bc52089e7fa0343c31593b2f9594e2c5d5da426230acc9820",
   "devDependencies": {
     "@tailwindcss/typography": "0.5.19",
-    "@types/node": "24.12.0"
+    "@types/node": "24.12.2"
   }
 }
