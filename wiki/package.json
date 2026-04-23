@@ -17,7 +17,7 @@
     "@nuxt/scripts": "0.13.4",
     "@nuxt/test-utils": "4.0.2",
     "@nuxt/ui": "4.5.1",
-    "@unhead/vue": "2.1.12",
+    "@unhead/vue": "2.1.13",
     "better-sqlite3": "12.8.0",
     "eslint": "10.2.1",
     "mermaid": "11.14.0",
