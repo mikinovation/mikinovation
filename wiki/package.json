@@ -22,7 +22,7 @@
     "eslint": "10.2.1",
     "mermaid": "11.14.0",
     "nuxt": "4.4.2",
-    "typescript": "5.9.3",
+    "typescript": "6.0.3",
     "vue": "3.5.30",
     "vue-router": "5.0.6"
   },
