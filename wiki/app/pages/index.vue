@@ -1,22 +1,5 @@
 <script setup lang="ts">
-const config = useRuntimeConfig()
-
-// production環境では /mikinovation/wiki にリダイレクト
-// development環境では /wiki にリダイレクト
-if (import.meta.client) {
-  const targetPath = config.app.baseURL === '/mikinovation/'
-    ? '/mikinovation/wiki'
-    : '/wiki'
-  await navigateTo(targetPath, { replace: true })
-}
-
-// サーバーサイドでもリダイレクト
-if (import.meta.server) {
-  const targetPath = config.app.baseURL === '/mikinovation/'
-    ? '/mikinovation/wiki'
-    : '/wiki'
-  await navigateTo(targetPath, { replace: true })
-}
+await navigateTo('/wiki', { replace: true })
 </script>
 
 <template>
