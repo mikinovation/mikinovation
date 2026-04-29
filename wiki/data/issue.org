@@ -1,0 +1,31 @@
+#+TITLE: Issue Tracker
+#+STARTUP: showall
+
+* TODO Nuxt のグラフページを作る :nuxt:wiki:
+:PROPERTIES:
+:ID: c1a3e5f2-1111-4111-8111-aaaaaaaaaaaa
+:END:
+
+vue-flow と d3-force を使い、issue.org をネットワーク可視化する。
+関連 [[id:b2d4f6a3-2222-4222-8222-bbbbbbbbbbbb][issue.org のスキーマを定義する]]。
+
+** TODO ノード詳細パネルの実装
+:PROPERTIES:
+:ID: d3e5f7b4-3333-4333-8333-cccccccccccc
+:END:
+
+クリックされたノードのタイトル/タグ/forward links/backlinks を UModal で表示する。
+
+* TODO issue.org のスキーマを定義する :spec:
+:PROPERTIES:
+:ID: b2d4f6a3-2222-4222-8222-bbbbbbbbbbbb
+:END:
+
+org-mode の見出しに =:ID:= プロパティを付け、本文中の =[[id:xxx]]= リンクをエッジとして扱う。
+
+* DONE 既存 wiki の整理 :wiki:
+:PROPERTIES:
+:ID: e4f6a8c5-4444-4444-8444-dddddddddddd
+:END:
+
+既存の content/wiki/*.md には触れず、別ページとして /graph を独立させる方針。
