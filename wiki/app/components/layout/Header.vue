@@ -13,6 +13,9 @@
           <NuxtLink to="/" class="text-[#e0e0e0] hover:text-[#888888]">
             Home
           </NuxtLink>
+          <NuxtLink to="/issue" class="text-[#e0e0e0] hover:text-[#888888]">
+            Issue
+          </NuxtLink>
         </div>
       </div>
     </nav>
