@@ -23,7 +23,7 @@
     "@vue-flow/core": "1.48.2",
     "better-sqlite3": "12.9.0",
     "d3-force": "3.0.0",
-    "eslint": "10.2.1",
+    "eslint": "10.3.0",
     "mermaid": "11.14.0",
     "nuxt": "4.4.2",
     "typescript": "6.0.3",
