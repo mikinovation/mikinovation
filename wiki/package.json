@@ -24,7 +24,7 @@
     "better-sqlite3": "12.9.0",
     "d3-force": "3.0.0",
     "eslint": "10.3.0",
-    "mermaid": "11.14.0",
+    "mermaid": "11.15.0",
     "nuxt": "4.4.4",
     "typescript": "6.0.3",
     "vue": "3.5.33",
