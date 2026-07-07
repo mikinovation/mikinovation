@@ -28,7 +28,7 @@
     "nuxt": "4.4.7",
     "typescript": "6.0.3",
     "vue": "3.5.39",
-    "vue-router": "5.0.7"
+    "vue-router": "5.1.0"
   },
   "packageManager": "pnpm@11.10.0",
   "devDependencies": {
