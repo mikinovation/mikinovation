@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { existsSync } from 'node:fs'
-import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises'
+import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { execFileSync } from 'node:child_process'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -21,6 +21,7 @@ const KEYWORD_TO_FIELD = {
 
 const ARRAY_FIELDS = new Set(['labels', 'relatedArticles'])
 const BOOLEAN_FIELDS = new Set(['draft'])
+const REQUIRED_FIELDS = ['title', 'description', 'date']
 
 function parseOrgFile(raw) {
   const keywordPattern = /^#\+([A-Za-z_]+):\s?(.*)$/
@@ -43,7 +44,7 @@ function parseOrgFile(raw) {
       : []
   }
   for (const field of BOOLEAN_FIELDS) {
-    meta[field] = meta[field] === 'true'
+    meta[field] = String(meta[field]).toLowerCase() === 'true'
   }
 
   return { meta, body: bodyLines.join('\n').trim() }
@@ -64,6 +65,12 @@ function orgBodyToMarkdown(orgBody) {
 async function convertFile(fileName) {
   const raw = await readFile(path.join(SRC_DIR, fileName), 'utf-8')
   const { meta, body } = parseOrgFile(raw)
+
+  const missingFields = REQUIRED_FIELDS.filter((field) => !meta[field])
+  if (missingFields.length > 0) {
+    throw new Error(`${fileName} is missing required keyword(s): ${missingFields.join(', ')}`)
+  }
+
   const markdownBody = orgBodyToMarkdown(body)
   const output = matter.stringify(`\n${markdownBody}\n`, meta)
   const outName = fileName.replace(/\.org$/, '.md')
@@ -84,6 +91,13 @@ async function main() {
   }
 
   await mkdir(OUT_DIR, { recursive: true })
+
+  const outEntries = await readdir(OUT_DIR, { withFileTypes: true })
+  const staleMarkdownFiles = outEntries
+    .filter((entry) => entry.isFile() && entry.name.endsWith('.md'))
+    .map((entry) => entry.name)
+  await Promise.all(staleMarkdownFiles.map((name) => rm(path.join(OUT_DIR, name))))
+
   const entries = await readdir(SRC_DIR, { withFileTypes: true })
   const orgFiles = entries
     .filter((entry) => entry.isFile() && entry.name.endsWith('.org'))
