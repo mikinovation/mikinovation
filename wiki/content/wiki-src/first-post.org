@@ -1,64 +1,51 @@
----
-title: 'Nixの設定'
-description: 'Nix FlakesとHome Managerを使用した開発環境の宣言的構成管理。モジュール化された設定とクロスプラットフォーム対応について解説します。'
-date: '2025-01-03'
-draft: false
-labels:
-  - Nix
-  - DevOps
-  - Configuration
-  - Development Environment
-relatedArticles:
-  - second-post
----
+#+TITLE: Nixの設定
+#+DESCRIPTION: Nix FlakesとHome Managerを使用した開発環境の宣言的構成管理。モジュール化された設定とクロスプラットフォーム対応について解説します。
+#+DATE: 2025-01-03
+#+DRAFT: false
+#+LABELS: Nix, DevOps, Configuration, Development Environment
+#+RELATED_ARTICLES: second-post
 
-# Nix 設定ドキュメント
+* Nix 設定ドキュメント
+** 目次
+1. [[#概要][概要]]
+2. [[#システム構成][システム構成]]
+3. [[#ディレクトリ構造][ディレクトリ構造]]
+4. [[#flake-設定][Flake 設定]]
+5. [[#home-manager-設定][Home Manager 設定]]
+6. [[#モジュール詳細][モジュール詳細]]
+   - [[#git-設定][Git 設定]]
+   - [[#zsh-設定][Zsh 設定]]
+   - [[#neovim-設定][Neovim 設定]]
+   - [[#nodejs-環境][Node.js 環境]]
+   - [[#ruby-環境][Ruby 環境]]
+   - [[#rust-環境][Rust 環境]]
+   - [[#データベースツール][データベースツール]]
+   - [[#mcp-サーバー][MCP サーバー]]
+   - [[#textlint][Textlint]]
+7. [[#パッケージ管理][パッケージ管理]]
+8. [[#よくある操作][よくある操作]]
+9. [[#付録][付録]]
 
-## 目次
+--------------
 
-1. [概要](#概要)
-2. [システム構成](#システム構成)
-3. [ディレクトリ構造](#ディレクトリ構造)
-4. [Flake 設定](#flake-設定)
-5. [Home Manager 設定](#home-manager-設定)
-6. [モジュール詳細](#モジュール詳細)
-   - [Git 設定](#git-設定)
-   - [Zsh 設定](#zsh-設定)
-   - [Neovim 設定](#neovim-設定)
-   - [Node.js 環境](#nodejs-環境)
-   - [Ruby 環境](#ruby-環境)
-   - [Rust 環境](#rust-環境)
-   - [データベースツール](#データベースツール)
-   - [MCP サーバー](#mcp-サーバー)
-   - [Textlint](#textlint)
-7. [パッケージ管理](#パッケージ管理)
-8. [よくある操作](#よくある操作)
-9. [付録](#付録)
+** 概要
+このdotfilesリポジトリは、 *Nix Flakes* と *Home Manager* を使用して開発環境を宣言的に管理しています。
 
----
+*** 主な特徴
+- *宣言的構成管理*: すべての設定がコードとして定義され、再現可能
+- *Flakes対応*: 依存関係のバージョンがロックされ、一貫性のあるビルドを保証
+- *モジュール化*: 機能ごとに設定を分離し、保守性を向上
+- *クロスプラットフォーム*: WSL、Linux環境で動作
+- *開発環境統合*: Git、Zsh、Neovim、複数のプログラミング言語をサポート
 
-## 概要
+*** サポート環境
+- *プラットフォーム*: =x86_64-linux=
+- *対象OS*: WSL2 (Ubuntu)、Linux
+- *Home Manager バージョン*: 24.05+
+- *Nix バージョン*: 2.18+ (Flakes サポート必須)
 
-このdotfilesリポジトリは、**Nix Flakes**と**Home Manager**を使用して開発環境を宣言的に管理しています。
-
-### 主な特徴
-
-- **宣言的構成管理**: すべての設定がコードとして定義され、再現可能
-- **Flakes対応**: 依存関係のバージョンがロックされ、一貫性のあるビルドを保証
-- **モジュール化**: 機能ごとに設定を分離し、保守性を向上
-- **クロスプラットフォーム**: WSL、Linux環境で動作
-- **開発環境統合**: Git、Zsh、Neovim、複数のプログラミング言語をサポート
-
-### サポート環境
-
-- **プラットフォーム**: `x86_64-linux`
-- **対象OS**: WSL2 (Ubuntu)、Linux
-- **Home Manager バージョン**: 24.05+
-- **Nix バージョン**: 2.18+ (Flakes サポート必須)
-
-### 技術スタック
-
-```mermaid
+*** 技術スタック
+#+begin_src mermaid
 graph TB
     A[Nix Package Manager] --> B[Nix Flakes]
     B --> C[Home Manager]
@@ -70,15 +57,13 @@ graph TB
     style A fill:#5277C3,color:#fff
     style B fill:#7EBAE4,color:#000
     style C fill:#41B883,color:#fff
-```
+#+end_src
 
----
+--------------
 
-## システム構成
-
-### アーキテクチャ概要
-
-```mermaid
+** システム構成
+*** アーキテクチャ概要
+#+begin_src mermaid
 flowchart LR
     subgraph "Nix Flake"
         A[flake.nix]
@@ -125,11 +110,10 @@ flowchart LR
     B -.ロック.-> M
     B -.ロック.-> N
     B -.ロック.-> O
-```
+#+end_src
 
-### データフロー
-
-```mermaid
+*** データフロー
+#+begin_src mermaid
 sequenceDiagram
     participant User as ユーザー
     participant Setup as setup.sh
@@ -149,13 +133,12 @@ sequenceDiagram
     HM->>Home: ファイル配置
     HM->>Home: シンボリックリンク作成
     HM->>User: 適用完了
-```
+#+end_src
 
----
+--------------
 
-## ディレクトリ構造
-
-```
+** ディレクトリ構造
+#+begin_example
 dotfiles/
 ├── config/
 │   ├── nix/                    # Nix設定のルートディレクトリ
@@ -195,27 +178,24 @@ dotfiles/
 ├── setup.sh                   # 自動セットアップスクリプト
 ├── README.md                  # プロジェクト概要
 └── result -> /nix/store/...  # Home Manager ビルド結果 (シンボリックリンク)
-```
+#+end_example
 
-### ファイルの役割
+*** ファイルの役割
+| ファイル        | 役割                                                                       |
+|-----------------+----------------------------------------------------------------------------|
+| =flake.nix=     | Flakeのエントリーポイント。依存関係とHome Manager設定を定義                |
+| =flake.lock=    | 依存関係のバージョンをロック。再現性を保証                                 |
+| =home.nix=      | Home Managerのメイン設定。ユーザー情報、パッケージ、モジュールのインポート |
+| =configs/*.nix= | 機能ごとに分割された設定モジュール                                         |
+| =node2nix/=     | NPMパッケージをNixパッケージに変換                                         |
 
-| ファイル | 役割 |
-|---------|------|
-| `flake.nix` | Flakeのエントリーポイント。依存関係とHome Manager設定を定義 |
-| `flake.lock` | 依存関係のバージョンをロック。再現性を保証 |
-| `home.nix` | Home Managerのメイン設定。ユーザー情報、パッケージ、モジュールのインポート |
-| `configs/*.nix` | 機能ごとに分割された設定モジュール |
-| `node2nix/` | NPMパッケージをNixパッケージに変換 |
+--------------
 
----
+** Flake 設定
+*** flake.nix の構造
+=flake.nix= は、このプロジェクトのエントリーポイントです。
 
-## Flake 設定
-
-### flake.nix の構造
-
-`flake.nix` は、このプロジェクトのエントリーポイントです。
-
-```nix
+#+begin_src nix
 {
   description = "Home Manager configuration";
 
@@ -248,11 +228,10 @@ dotfiles/
       };
     };
 }
-```
+#+end_src
 
-### 依存関係 (inputs)
-
-```mermaid
+*** 依存関係 (inputs)
+#+begin_src mermaid
 graph TD
     A[flake.nix] --> B[nixpkgs<br/>nixpkgs-unstable]
     A --> C[home-manager<br/>nix-community]
@@ -265,21 +244,20 @@ graph TD
     style B fill:#7EBAE4,color:#000
     style C fill:#41B883,color:#fff
     style D fill:#42B983,color:#fff
-```
+#+end_src
 
-| Input | 説明 | URL | follows |
-|-------|------|-----|---------|
-| `nixpkgs` | Nixパッケージコレクション | `github:nixos/nixpkgs?ref=nixpkgs-unstable` | - |
-| `home-manager` | ユーザー環境管理ツール | `github:nix-community/home-manager` | nixpkgs |
-| `mcp-servers-nix` | MCP サーバーのNixパッケージ | `github:natsukium/mcp-servers-nix` | nixpkgs |
+| Input             | 説明                        | URL                                         | follows |
+|-------------------+-----------------------------+---------------------------------------------+---------|
+| =nixpkgs=         | Nixパッケージコレクション   | =github:nixos/nixpkgs?ref=nixpkgs-unstable= | -       |
+| =home-manager=    | ユーザー環境管理ツール      | =github:nix-community/home-manager=         | nixpkgs |
+| =mcp-servers-nix= | MCP サーバーのNixパッケージ | =github:natsukium/mcp-servers-nix=          | nixpkgs |
 
-**follows の意味**: `follows` を使用すると、複数のinputsが同じnixpkgsバージョンを共有し、依存関係の重複を避けます。
+*follows の意味*: =follows= を使用すると、複数のinputsが同じnixpkgsバージョンを共有し、依存関係の重複を避けます。
 
-### 出力 (outputs)
+*** 出力 (outputs)
+*homeConfigurations*: ユーザーごとのHome Manager設定を定義
 
-**homeConfigurations**: ユーザーごとのHome Manager設定を定義
-
-```nix
+#+begin_src nix
 homeConfigurations = {
   mikinovation = home-manager.lib.homeManagerConfiguration {
     inherit pkgs;
@@ -289,34 +267,31 @@ homeConfigurations = {
     };
   };
 };
-```
+#+end_src
 
-- **pkgs**: nixpkgs のパッケージセット
-- **modules**: Home Manager の設定モジュール（`home.nix`）
-- **extraSpecialArgs**: モジュールに渡す追加引数
-  - `nodePkgs`: node2nixで生成されたNode.jsパッケージ
-  - `mcp-servers-nix`: MCPサーバーライブラリ
+- *pkgs*: nixpkgs のパッケージセット
+- *modules*: Home Manager の設定モジュール（=home.nix=）
+- *extraSpecialArgs*: モジュールに渡す追加引数
+  - =nodePkgs=: node2nixで生成されたNode.jsパッケージ
+  - =mcp-servers-nix=: MCPサーバーライブラリ
 
-### カスタムパッケージ (node2nix)
-
-```nix
+*** カスタムパッケージ (node2nix)
+#+begin_src nix
 let
   nodePkgs = import ../node2nix/default.nix { inherit pkgs; };
 in
-```
+#+end_src
 
-`node2nix` を使用して、NPMパッケージをNixパッケージに変換しています。
-これにより、`@anthropic-ai/claude-code` などのNPMパッケージをNix経由でインストール可能になります。
+=node2nix= を使用して、NPMパッケージをNixパッケージに変換しています。
+これにより、=@anthropic-ai/claude-code= などのNPMパッケージをNix経由でインストール可能になります。
 
----
+--------------
 
-## Home Manager 設定
+** Home Manager 設定
+*** home.nix の構造
+=home.nix= は、Home Managerのメイン設定ファイルです。
 
-### home.nix の構造
-
-`home.nix` は、Home Managerのメイン設定ファイルです。
-
-```mermaid
+#+begin_src mermaid
 mindmap
   root((home.nix))
     ユーザー情報
@@ -353,23 +328,21 @@ mindmap
       デフォルトシェル設定
     Nix設定
       experimental-features
-```
+#+end_src
 
-### ユーザー情報
-
-```nix
+*** ユーザー情報
+#+begin_src nix
 home.username = "mikinovation";
 home.homeDirectory = "/home/mikinovation";
 home.stateVersion = "24.05";
-```
+#+end_src
 
-- **username**: Home Managerが管理するユーザー名
-- **homeDirectory**: ホームディレクトリのパス
-- **stateVersion**: Home Managerのバージョン（**変更しない**こと）
+- *username*: Home Managerが管理するユーザー名
+- *homeDirectory*: ホームディレクトリのパス
+- *stateVersion*: Home Managerのバージョン（ *変更しない* こと）
 
-### パッケージインストール
-
-```nix
+*** パッケージインストール
+#+begin_src nix
 home.packages = with pkgs; [
   sheldon   # Zsh プラグインマネージャー
   fnm       # Fast Node Manager
@@ -377,11 +350,10 @@ home.packages = with pkgs; [
   zoxide    # スマートなcdコマンド代替
   nodePkgs."@anthropic-ai/claude-code"  # Claude Code CLI
 ];
-```
+#+end_src
 
-### モジュールのインポート
-
-```nix
+*** モジュールのインポート
+#+begin_src nix
 imports = [
   ./configs/git.nix
   ./configs/zsh.nix
@@ -393,13 +365,12 @@ imports = [
   ./configs/mcp-servers.nix
   ./configs/textlint.nix
 ];
-```
+#+end_src
 
 各機能を個別のNixファイルに分離することで、保守性と再利用性を向上させています。
 
-### ファイル管理 (home.file)
-
-```nix
+*** ファイル管理 (home.file)
+#+begin_src nix
 home.file = {
   # Neovim 設定
   ".config/nvim".source = pkgs.lib.cleanSourceWith {
@@ -427,15 +398,14 @@ home.file = {
   # Claude Code エージェント
   ".claude/agents".source = ../claude/agents;
 };
-```
+#+end_src
 
-**cleanSourceWith の使用**: `lazy-lock.json` をフィルタリングすることで、データディレクトリで管理されるファイルを除外しています。
+*cleanSourceWith の使用*: =lazy-lock.json= をフィルタリングすることで、データディレクトリで管理されるファイルを除外しています。
 
-### アクティベーションスクリプト
-
+*** アクティベーションスクリプト
 Zshをデフォルトシェルに設定するためのスクリプトです。
 
-```nix
+#+begin_src nix
 home.activation.make-zsh-default-shell = config.lib.dag.entryAfter [ "writeBoundary" ] ''
   PATH="/usr/bin:/bin:$PATH"
   ZSH_PATH="${config.home.homeDirectory}/.nix-profile/bin/zsh"
@@ -455,35 +425,33 @@ home.activation.make-zsh-default-shell = config.lib.dag.entryAfter [ "writeBound
     echo "Zsh is already the default shell"
   fi
 '';
-```
+#+end_src
 
-**処理フロー**:
+*処理フロー*:
+
 1. Zshのパスを取得
-2. `/etc/shells` に追加（未登録の場合）
-3. `chsh` コマンドでデフォルトシェルを変更
+2. =/etc/shells= に追加（未登録の場合）
+3. =chsh= コマンドでデフォルトシェルを変更
 
-### Nix 設定
-
-```nix
+*** Nix 設定
+#+begin_src nix
 nix = {
   package = pkgs.nix;
   settings = {
     experimental-features = [ "nix-command" "flakes" ];
   };
 };
-```
+#+end_src
 
 Flakesとnew-style CLIを有効化します。
 
----
+--------------
 
-## モジュール詳細
+** モジュール詳細
+*** Git 設定
+*ファイル*: =config/nix/configs/git.nix=
 
-### Git 設定
-
-**ファイル**: `config/nix/configs/git.nix`
-
-```mermaid
+#+begin_src mermaid
 graph LR
     A[git.nix] --> B[programs.git]
     A --> C[programs.gh]
@@ -494,51 +462,49 @@ graph LR
     style A fill:#F05032,color:#fff
     style B fill:#F14E32,color:#fff
     style C fill:#333,color:#fff
-```
+#+end_src
 
-#### 設定内容
-
-**グローバル .gitignore**
+**** 設定内容
+*グローバル .gitignore*
 
 以下のファイル/ディレクトリを自動的に無視します：
 
-- カスタムツール: `.serena/`, `m-sandbox/`
-- OS固有ファイル: `.DS_Store`, `Thumbs.db`, `Desktop.ini`
-- エディタ設定: `.vscode/`, `.idea/`, `*.swp`
-- 開発ツール: `.direnv/`, `.envrc.local`
-- 言語固有: `__pycache__/`, `node_modules/`, `*.pyc`
-- ログ: `*.log`
-- 環境変数: `.env.local`, `.env.*.local`
+- カスタムツール: =.serena/=, =m-sandbox/=
+- OS固有ファイル: =.DS_Store=, =Thumbs.db=, =Desktop.ini=
+- エディタ設定: =.vscode/=, =.idea/=, =*.swp=
+- 開発ツール: =.direnv/=, =.envrc.local=
+- 言語固有: =__pycache__/=, =node_modules/=, =*.pyc=
+- ログ: =*.log=
+- 環境変数: =.env.local=, =.env.*.local=
 
-**Git 設定**
+*Git 設定*
 
-```nix
+#+begin_src nix
 settings = {
   fetch = {
     prune = true;       # リモートで削除されたブランチをローカルでも削除
     pruneTags = true;   # 削除されたタグも削除
   };
 };
-```
+#+end_src
 
-**GitHub CLI (gh)**
+*GitHub CLI (gh)*
 
-```nix
+#+begin_src nix
 programs.gh = {
   enable = true;
   settings = {
     git_protocol = "ssh";  # SSH プロトコルを使用
   };
 };
-```
+#+end_src
 
----
+--------------
 
-### Zsh 設定
+*** Zsh 設定
+*ファイル*: =config/nix/configs/zsh.nix=
 
-**ファイル**: `config/nix/configs/zsh.nix`
-
-```mermaid
+#+begin_src mermaid
 flowchart TD
     A[zsh.nix] --> B[programs.zsh.enable]
     A --> C[sessionVariables]
@@ -556,32 +522,29 @@ flowchart TD
 
     style A fill:#89E051,color:#000
     style E fill:#5C8AE6,color:#fff
-```
+#+end_src
 
-#### 環境変数
-
-```nix
+**** 環境変数
+#+begin_src nix
 sessionVariables = {
   ZSH = "$HOME/.local/share/sheldon/repos/github.com/ohmyzsh/ohmyzsh";
   BUN_INSTALL = "$HOME/.bun";
   POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD = "true";
 };
-```
+#+end_src
 
-#### PATH 追加
-
-```nix
+**** PATH 追加
+#+begin_src nix
 envExtra = ''
   export PATH="$HOME/.local/bin:$PATH"
   export PATH="$PATH:/opt/nvim/"
   export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
   export PATH="$BUN_INSTALL/bin:$PATH"
 '';
-```
+#+end_src
 
-#### 初期化スクリプト
-
-```nix
+**** 初期化スクリプト
+#+begin_src nix
 initContent = ''
   # Powerlevel10k Instant Prompt
   if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
@@ -614,25 +577,23 @@ initContent = ''
   # bun completions
   [ -s "/home/mikinovation/.bun/_bun" ] && source "/home/mikinovation/.bun/_bun"
 '';
-```
+#+end_src
 
-#### 統合ツール
+**** 統合ツール
+| ツール          | 用途                                  | 初期化コマンド             |
+|-----------------+---------------------------------------+----------------------------|
+| *Powerlevel10k* | 高速でカスタマイズ可能なZshテーマ     | Instant Prompt             |
+| *Sheldon*       | Zsh プラグインマネージャー            | =eval "$(sheldon source)"= |
+| *fnm*           | 高速なNode.jsバージョン管理           | =fnm env --use-on-cd=      |
+| *zoxide*        | スマートなディレクトリジャンプ        | =zoxide init zsh --cmd cd= |
+| *bun*           | 高速なJavaScript/TypeScriptランタイム | Completions読み込み        |
 
-| ツール | 用途 | 初期化コマンド |
-|-------|------|--------------|
-| **Powerlevel10k** | 高速でカスタマイズ可能なZshテーマ | Instant Prompt |
-| **Sheldon** | Zsh プラグインマネージャー | `eval "$(sheldon source)"` |
-| **fnm** | 高速なNode.jsバージョン管理 | `fnm env --use-on-cd` |
-| **zoxide** | スマートなディレクトリジャンプ | `zoxide init zsh --cmd cd` |
-| **bun** | 高速なJavaScript/TypeScriptランタイム | Completions読み込み |
+--------------
 
----
+*** Neovim 設定
+*ファイル*: =config/nix/configs/neovim.nix=
 
-### Neovim 設定
-
-**ファイル**: `config/nix/configs/neovim.nix`
-
-```mermaid
+#+begin_src mermaid
 graph TD
     A[neovim.nix] --> B[programs.neovim]
     B --> C[enable: true]
@@ -660,11 +621,10 @@ graph TD
     style A fill:#57A143,color:#fff
     style G fill:#0C7CBA,color:#fff
     style H fill:#F07C28,color:#fff
-```
+#+end_src
 
-#### 基本設定
-
-```nix
+**** 基本設定
+#+begin_src nix
 programs.neovim = {
   enable = true;
   defaultEditor = true;  # システムのデフォルトエディタに設定
@@ -672,59 +632,55 @@ programs.neovim = {
   vimAlias = true;       # vim コマンドでneovimを起動
   vimdiffAlias = true;   # vimdiff コマンドでneovimを起動
 };
-```
+#+end_src
 
-#### インストールされるツール
+**** インストールされるツール
+*Language Servers (LSP)*
 
-**Language Servers (LSP)**
+| LSP                            | 言語/技術               |
+|--------------------------------+-------------------------|
+| =lua-language-server=          | Lua                     |
+| =rust-analyzer=                | Rust                    |
+| =typescript-language-server=   | TypeScript/JavaScript   |
+| =tailwindcss-language-server=  | Tailwind CSS            |
+| =vscode-langservers-extracted= | HTML, CSS, JSON, ESLint |
+| =solargraph=                   | Ruby                    |
+| =vue-language-server= (volar)  | Vue.js                  |
 
-| LSP | 言語/技術 |
-|-----|----------|
-| `lua-language-server` | Lua |
-| `rust-analyzer` | Rust |
-| `typescript-language-server` | TypeScript/JavaScript |
-| `tailwindcss-language-server` | Tailwind CSS |
-| `vscode-langservers-extracted` | HTML, CSS, JSON, ESLint |
-| `solargraph` | Ruby |
-| `vue-language-server` (volar) | Vue.js |
+*Formatters & Linters*
 
-**Formatters & Linters**
+| ツール   | 用途               |
+|----------+--------------------|
+| =stylua= | Lua フォーマッター |
 
-| ツール | 用途 |
-|-------|------|
-| `stylua` | Lua フォーマッター |
-
-#### 環境変数
-
-```nix
+**** 環境変数
+#+begin_src nix
 home.sessionVariables = {
   EDITOR = "nvim";
   VISUAL = "nvim";
 };
-```
+#+end_src
 
 これにより、Gitなどのツールがneovimをデフォルトエディタとして使用します。
 
-#### Neovim 設定ファイル
+**** Neovim 設定ファイル
+実際のNeovim設定は =config/nvim/= ディレクトリに配置され、=home.nix= の =home.file= セクションでシンボリックリンクされます：
 
-実際のNeovim設定は `config/nvim/` ディレクトリに配置され、`home.nix` の `home.file` セクションでシンボリックリンクされます：
-
-```nix
+#+begin_src nix
 ".config/nvim".source = pkgs.lib.cleanSourceWith {
   src = ../nvim;
   filter = path: type:
     let baseName = baseNameOf path;
     in baseName != "lazy-lock.json";
 };
-```
+#+end_src
 
----
+--------------
 
-### Node.js 環境
+*** Node.js 環境
+*ファイル*: =config/nix/configs/nodejs.nix=
 
-**ファイル**: `config/nix/configs/nodejs.nix`
-
-```mermaid
+#+begin_src mermaid
 graph TB
     A[nodejs.nix] --> B[home.packages]
     A --> C[sessionVariables]
@@ -742,11 +698,10 @@ graph TB
 
     style A fill:#339933,color:#fff
     style B fill:#68A063,color:#fff
-```
+#+end_src
 
-#### インストールされるパッケージ
-
-```nix
+**** インストールされるパッケージ
+#+begin_src nix
 home.packages = with pkgs; [
   nodejs_22                         # Node.js LTS (v22)
   yarn                              # Yarn パッケージマネージャー
@@ -757,11 +712,10 @@ home.packages = with pkgs; [
   nodePackages.prettier             # Prettier フォーマッター
   typescript-go                     # Go実装のTypeScript
 ];
-```
+#+end_src
 
-#### 環境変数設定
-
-```nix
+**** 環境変数設定
+#+begin_src nix
 home.sessionVariables = {
   NPM_CONFIG_PREFIX = "${config.home.homeDirectory}/.npm-global";
 };
@@ -769,27 +723,25 @@ home.sessionVariables = {
 home.sessionPath = [
   "${config.home.homeDirectory}/.npm-global/bin"
 ];
-```
+#+end_src
 
-グローバルNPMパッケージを `~/.npm-global` にインストールします。
+グローバルNPMパッケージを =~/.npm-global= にインストールします。
 
-#### .npmrc 設定
-
-```nix
+**** .npmrc 設定
+#+begin_src nix
 home.file.".npmrc".text = ''
   prefix=''${HOME}/.npm-global
   save-exact=true      # 完全なバージョン番号で保存
   engine-strict=true   # engineフィールドを厳密にチェック
 '';
-```
+#+end_src
 
----
+--------------
 
-### Ruby 環境
+*** Ruby 環境
+*ファイル*: =config/nix/configs/ruby.nix=
 
-**ファイル**: `config/nix/configs/ruby.nix`
-
-```mermaid
+#+begin_src mermaid
 graph TB
     A[ruby.nix] --> B[home.packages]
     A --> C[sessionVariables]
@@ -808,22 +760,20 @@ graph TB
 
     style A fill:#CC342D,color:#fff
     style B fill:#D44A47,color:#fff
-```
+#+end_src
 
-#### インストールされるパッケージ
-
-```nix
+**** インストールされるパッケージ
+#+begin_src nix
 home.packages = with pkgs; [
   ruby_3_4                    # Ruby 3.4.x
   gcc                         # C/C++ コンパイラ (ネイティブ拡張用)
   gnumake                     # Make (ビルド用)
   rubyPackages.solargraph     # Ruby Language Server
 ];
-```
+#+end_src
 
-#### 環境変数設定
-
-```nix
+**** 環境変数設定
+#+begin_src nix
 home.sessionVariables = {
   GEM_HOME = "${config.home.homeDirectory}/.gem";
   GEM_PATH = "${config.home.homeDirectory}/.gem";
@@ -832,37 +782,34 @@ home.sessionVariables = {
 home.sessionPath = [
   "${config.home.homeDirectory}/.gem/bin"
 ];
-```
+#+end_src
 
-Gemを `~/.gem` にインストールします。
+Gemを =~/.gem= にインストールします。
 
-#### .gemrc 設定
-
-```nix
+**** .gemrc 設定
+#+begin_src nix
 home.file.".gemrc".text = ''
   gem: --no-document      # ドキュメント生成をスキップ
   install: --user-install # ユーザーディレクトリにインストール
   update: --user-install
 '';
-```
+#+end_src
 
-#### Bundler 設定
-
-```nix
+**** Bundler 設定
+#+begin_src nix
 home.file.".bundle/config".text = ''
   ---
   BUNDLE_PATH: ".bundle/vendor"  # プロジェクトローカルにインストール
   BUNDLE_BIN: ".bundle/bin"      # binディレクトリの場所
 '';
-```
+#+end_src
 
----
+--------------
 
-### Rust 環境
+*** Rust 環境
+*ファイル*: =config/nix/configs/rust.nix=
 
-**ファイル**: `config/nix/configs/rust.nix`
-
-```mermaid
+#+begin_src mermaid
 graph TB
     A[rust.nix] --> B[home.packages]
     A --> C[sessionVariables]
@@ -879,11 +826,10 @@ graph TB
 
     style A fill:#CE422B,color:#fff
     style B fill:#E34C26,color:#fff
-```
+#+end_src
 
-#### インストールされるパッケージ
-
-```nix
+**** インストールされるパッケージ
+#+begin_src nix
 home.packages = with pkgs; [
   rustup         # Rust ツールチェーン管理 (rustc, cargo, rust-analyzer, rustfmt, clippy含む)
   gcc            # C/C++ コンパイラ
@@ -891,18 +837,18 @@ home.packages = with pkgs; [
   pkg-config     # パッケージ設定ツール
   openssl        # OpenSSL ライブラリ
 ];
-```
+#+end_src
 
-**rustup に含まれるツール**:
-- `rustc`: Rust コンパイラ
-- `cargo`: Rust パッケージマネージャー
-- `rust-analyzer`: Rust LSP
-- `rustfmt`: Rust フォーマッター
-- `clippy`: Rust リンター
+*rustup に含まれるツール*:
 
-#### 環境変数設定
+- =rustc=: Rust コンパイラ
+- =cargo=: Rust パッケージマネージャー
+- =rust-analyzer=: Rust LSP
+- =rustfmt=: Rust フォーマッター
+- =clippy=: Rust リンター
 
-```nix
+**** 環境変数設定
+#+begin_src nix
 home.sessionVariables = {
   CARGO_HOME = "${config.home.homeDirectory}/.cargo";
   RUSTUP_HOME = "${config.home.homeDirectory}/.rustup";
@@ -911,11 +857,10 @@ home.sessionVariables = {
 home.sessionPath = [
   "${config.home.homeDirectory}/.cargo/bin"
 ];
-```
+#+end_src
 
-#### Cargo 設定
-
-```nix
+**** Cargo 設定
+#+begin_src nix
 home.file.".cargo/config.toml".text = ''
   [build]
   jobs = 4        # 並列ビルドジョブ数
@@ -923,15 +868,14 @@ home.file.".cargo/config.toml".text = ''
   [term]
   color = "auto"  # 自動カラー出力
 '';
-```
+#+end_src
 
----
+--------------
 
-### データベースツール
+*** データベースツール
+*ファイル*: =config/nix/configs/database.nix=
 
-**ファイル**: `config/nix/configs/database.nix`
-
-```mermaid
+#+begin_src mermaid
 graph LR
     A[database.nix] --> B[home.packages]
     B --> C[sqlite<br/>軽量データベース]
@@ -940,24 +884,22 @@ graph LR
     style A fill:#336791,color:#fff
     style C fill:#003B57,color:#fff
     style D fill:#336791,color:#fff
-```
+#+end_src
 
-#### インストールされるパッケージ
-
-```nix
+**** インストールされるパッケージ
+#+begin_src nix
 home.packages = with pkgs; [
   sqlite       # SQLite データベース
   postgresql   # PostgreSQL クライアントツール (psql, pg_dump など)
 ];
-```
+#+end_src
 
----
+--------------
 
-### MCP サーバー
+*** MCP サーバー
+*ファイル*: =config/nix/configs/mcp-servers.nix=
 
-**ファイル**: `config/nix/configs/mcp-servers.nix`
-
-```mermaid
+#+begin_src mermaid
 graph TB
     A[mcp-servers.nix] --> B[mcpConfig定義]
     B --> C[programs]
@@ -977,13 +919,12 @@ graph TB
     style F fill:#F59E0B,color:#fff
     style G fill:#5277C3,color:#fff
     style H fill:#3B82F6,color:#fff
-```
+#+end_src
 
-#### 設定内容
-
+**** 設定内容
 MCP (Model Context Protocol) サーバーは、Claude Code と連携して動作するツールです。
 
-```nix
+#+begin_src nix
 let
   mcpConfig = mcp-servers-nix.lib.mkConfig pkgs {
     programs = {
@@ -1017,33 +958,29 @@ in
 {
   home.file.".mcp.json".text = builtins.readFile "${mcpConfig}";
 }
-```
+#+end_src
 
-#### MCP サーバー一覧
+**** MCP サーバー一覧
+| サーバー     | タイプ | 用途                           |
+|--------------+--------+--------------------------------|
+| *playwright* | stdio  | ブラウザ自動化、E2Eテスト      |
+| *serena*     | stdio  | IDE統合アシスタント            |
+| *nixos*      | stdio  | NixOSパッケージ/オプション情報 |
+| *deepwiki*   | SSE    | Wikiドキュメント検索           |
 
-| サーバー | タイプ | 用途 |
-|---------|-------|------|
-| **playwright** | stdio | ブラウザ自動化、E2Eテスト |
-| **serena** | stdio | IDE統合アシスタント |
-| **nixos** | stdio | NixOSパッケージ/オプション情報 |
-| **deepwiki** | SSE | Wikiドキュメント検索 |
+**** 接続タイプ
+- *stdio*: 標準入出力を使用した通信
+- *SSE*: Server-Sent Events (HTTP ストリーミング)
 
-#### 接続タイプ
+**** 生成される設定ファイル
+=~/.mcp.json= に設定がJSON形式で出力されます。Claude Code がこのファイルを読み込んで各MCPサーバーと連携します。
 
-- **stdio**: 標準入出力を使用した通信
-- **SSE**: Server-Sent Events (HTTP ストリーミング)
+--------------
 
-#### 生成される設定ファイル
+*** Textlint
+*ファイル*: =config/nix/configs/textlint.nix=
 
-`~/.mcp.json` に設定がJSON形式で出力されます。Claude Code がこのファイルを読み込んで各MCPサーバーと連携します。
-
----
-
-### Textlint
-
-**ファイル**: `config/nix/configs/textlint.nix`
-
-```mermaid
+#+begin_src mermaid
 graph LR
     A[textlint.nix] --> B[home.packages]
     B --> C[textlint.withPackages]
@@ -1051,25 +988,22 @@ graph LR
 
     style A fill:#1976D2,color:#fff
     style C fill:#42A5F5,color:#fff
-```
+#+end_src
 
-#### インストールされるパッケージ
-
-```nix
+**** インストールされるパッケージ
+#+begin_src nix
 home.packages = with pkgs; [
   (textlint.withPackages [
     textlint-rule-preset-ja-technical-writing  # 日本語技術文書用ルールセット
   ])
 ];
-```
+#+end_src
 
----
+--------------
 
-## パッケージ管理
-
-### パッケージ追加フロー
-
-```mermaid
+** パッケージ管理
+*** パッケージ追加フロー
+#+begin_src mermaid
 flowchart TD
     A[パッケージを追加したい] --> B{パッケージの種類は?}
 
@@ -1093,23 +1027,20 @@ flowchart TD
     style A fill:#5277C3,color:#fff
     style K fill:#41B883,color:#fff
     style L fill:#F05032,color:#fff
-```
+#+end_src
 
-### パッケージ検索
+*** パッケージ検索
+| 方法             | コマンド/URL                          |
+|------------------+---------------------------------------|
+| *CLI検索*        | =nix search nixpkgs <package-name>=   |
+| *Web検索*        | [[https://search.nixos.org/packages]] |
+| *バージョン確認* | =nix-env -q=                          |
 
-| 方法 | コマンド/URL |
-|-----|-------------|
-| **CLI検索** | `nix search nixpkgs <package-name>` |
-| **Web検索** | https://search.nixos.org/packages |
-| **バージョン確認** | `nix-env -q` |
+--------------
 
----
-
-## よくある操作
-
-### 基本コマンド
-
-```mermaid
+** よくある操作
+*** 基本コマンド
+#+begin_src mermaid
 flowchart LR
     A[設定変更] --> B{何をする?}
 
@@ -1127,51 +1058,46 @@ flowchart LR
     style F fill:#41B883,color:#fff
     style G fill:#F59E0B,color:#000
     style H fill:#3B82F6,color:#fff
-```
+#+end_src
 
-### コマンド一覧
+*** コマンド一覧
+| 操作           | コマンド                                                         |
+|----------------+------------------------------------------------------------------|
+| *設定適用*     | =./setup.sh= または =home-manager switch --flake .#mikinovation= |
+| *ビルドのみ*   | =home-manager build --flake .#mikinovation=                      |
+| *依存更新*     | =nix flake update=                                               |
+| *特定入力更新* | =nix flake lock --update-input nixpkgs=                          |
+| *世代確認*     | =home-manager generations=                                       |
+| *GC実行*       | =nix-collect-garbage -d=                                         |
+| *環境変数確認* | =cat ~/.nix-profile/etc/profile.d/hm-session-vars.sh=            |
 
-| 操作 | コマンド |
-|-----|---------|
-| **設定適用** | `./setup.sh` または `home-manager switch --flake .#mikinovation` |
-| **ビルドのみ** | `home-manager build --flake .#mikinovation` |
-| **依存更新** | `nix flake update` |
-| **特定入力更新** | `nix flake lock --update-input nixpkgs` |
-| **世代確認** | `home-manager generations` |
-| **GC実行** | `nix-collect-garbage -d` |
-| **環境変数確認** | `cat ~/.nix-profile/etc/profile.d/hm-session-vars.sh` |
+--------------
 
----
+** 付録
+*** 参考リンク
+- *Nix 公式ドキュメント*: [[https://nixos.org/manual/nix/stable/]]
+- *Nixpkgs マニュアル*: [[https://nixos.org/manual/nixpkgs/stable/]]
+- *Home Manager マニュアル*: [[https://nix-community.github.io/home-manager/]]
+- *Nix Flakes*: [[https://nixos.wiki/wiki/Flakes]]
+- *mcp-servers-nix*: [[https://github.com/natsukium/mcp-servers-nix]]
+- *node2nix*: [[https://github.com/svanderburg/node2nix]]
 
-## 付録
+*** 用語集
+| 用語           | 説明                                    |
+|----------------+-----------------------------------------|
+| *Nix*          | 関数型パッケージマネージャー            |
+| *nixpkgs*      | Nixパッケージコレクション               |
+| *Flakes*       | 再現可能なビルドを実現するNixの機能     |
+| *Home Manager* | Nix でユーザー環境を管理するツール      |
+| *derivation*   | Nixでパッケージをビルドするための設定   |
+| *store path*   | =/nix/store= 内のパッケージのパス       |
+| *generation*   | Home Manager の世代（スナップショット） |
+| *profile*      | ユーザー環境のシンボリックリンク        |
 
-### 参考リンク
+--------------
 
-- **Nix 公式ドキュメント**: https://nixos.org/manual/nix/stable/
-- **Nixpkgs マニュアル**: https://nixos.org/manual/nixpkgs/stable/
-- **Home Manager マニュアル**: https://nix-community.github.io/home-manager/
-- **Nix Flakes**: https://nixos.wiki/wiki/Flakes
-- **mcp-servers-nix**: https://github.com/natsukium/mcp-servers-nix
-- **node2nix**: https://github.com/svanderburg/node2nix
-
-### 用語集
-
-| 用語 | 説明 |
-|------|------|
-| **Nix** | 関数型パッケージマネージャー |
-| **nixpkgs** | Nixパッケージコレクション |
-| **Flakes** | 再現可能なビルドを実現するNixの機能 |
-| **Home Manager** | Nix でユーザー環境を管理するツール |
-| **derivation** | Nixでパッケージをビルドするための設定 |
-| **store path** | `/nix/store` 内のパッケージのパス |
-| **generation** | Home Manager の世代（スナップショット） |
-| **profile** | ユーザー環境のシンボリックリンク |
-
----
-
-## まとめ
-
-```mermaid
+** まとめ
+#+begin_src mermaid
 mindmap
   root((Nix設定の<br/>ポイント))
     再現性
@@ -1190,4 +1116,4 @@ mindmap
     拡張性
       パッケージ追加
       モジュール追加
-```
+#+end_src

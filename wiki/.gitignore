@@ -6,6 +6,9 @@
 .cache
 dist
 
+# Generated from content/wiki-src/*.org
+content/wiki/*.md
+
 # Node dependencies
 node_modules
 

@@ -3,6 +3,10 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "convert:org": "node scripts/convert-org.mjs",
+    "predev": "node scripts/convert-org.mjs",
+    "prebuild": "node scripts/convert-org.mjs",
+    "pregenerate": "node scripts/convert-org.mjs",
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
@@ -34,6 +38,7 @@
   "devDependencies": {
     "@tailwindcss/typography": "0.5.20",
     "@types/d3-force": "3.0.10",
-    "@types/node": "24.13.2"
+    "@types/node": "24.13.2",
+    "gray-matter": "^4.0.3"
   }
 }
