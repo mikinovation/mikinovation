@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID: 22c1f5f4-79b0-4255-8ed6-ec1aa24c1549
+:END:
+#+TITLE: NISA
+
+- NISAとは利益に対して税金のかからない投資
+
+[[id:97ee201b-a6e4-4146-add6-5bcdc72d6bb5][こどもNISA]]
