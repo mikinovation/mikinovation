@@ -1,0 +1,13 @@
+:PROPERTIES:
+:ID: 6df1b481-534b-4f18-92c1-1fe09c7b021b
+:END:
+#+TITLE: org-mode
+
+#+begin_src yaml
+type: note
+description: org-modeに関するメモ
+tags: []
+timestamp: 2026-07-26T09:22:58+0900
+#+end_src
+
+- メモ、タスク管理、プロジェクト管理、テキスト編集等多様な機能を持つ

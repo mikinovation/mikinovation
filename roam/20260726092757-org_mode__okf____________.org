@@ -1,0 +1,55 @@
+:PROPERTIES:
+:ID: 31de5fdb-617e-4832-954e-670ae5e2afd6
+:ROAM_ORIGIN: 6df1b481-534b-4f18-92c1-1fe09c7b021b
+:END:
+#+TITLE: org-modeにokfの概念を導入する
+
+#+begin_src yaml
+type: note
+description: org-modeにokfの概念を導入した記録
+tags: [issue]
+timestamp: 2026-07-26T09:27:57+0900
+#+end_src
+
+- org-modeにokfの概念を導入することを検討する。
+- org-roamに対してプロパティをどのように付与するかを検討する必要がある
+  - プロパティで導入するか、yaml形式で埋め込むか
+    1. org-roamのノードに対して、okfの概念を表すプロパティを追加する
+    ```
+    :PROPERTIES:
+    :ID: 31de5fdb-617e-4832-954e-670ae5e2afd6
+    :ROAM_ORIGIN: 6df1b481-534b-4f18-92c1-1fe09c7b021b
+    :END:
+    ```
+    2. org-roamのノードに対して、yaml形式でokfの概念を表すプロパティを追加する
+    ```
+    #+begin_src yaml
+    type: note
+    description: org-modeにokfの概念を導入した記録
+    tags: [issue]
+    timestamp: 2026-07-26T09:27:57+0900
+    #+end_src
+    ```
+  - 結論2を採用
+    - org-roamだと一つのプロパティに対して、複数の値を持たせることができないため、yaml形式で埋め込む方が柔軟性が高い
+- ymlを埋め込むタイミングをどうするか
+  - <leader>ncで新規ノードを作成する際に、ymlを埋め込むようにする
+  - org-roamに設定を追加
+  ```
+  templates = {
+    description = "default",
+      template = table.concat({
+      "#+begin_src yaml",
+      "type:",
+      "description:",
+      "tags: []",
+      "timestamp: %<%Y-%m-%dT%H:%M:%S%z>",
+      "#+end_src",
+      "",
+      "%?",
+    }, "\n"),
+    target = "%<%Y%m%d%H%M%S>-%[slug].org",
+  },
+  ```
+- typeやtagsの値をどのように補完するか
+  - nvim-cmpで補完するようにした
