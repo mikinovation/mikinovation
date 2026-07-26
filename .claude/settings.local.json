@@ -1,9 +1,0 @@
-{
-  "enabledMcpjsonServers": [
-    "deepwiki",
-    "nixos",
-    "playwright",
-    "serena"
-  ],
-  "enableAllProjectMcpServers": true
-}
