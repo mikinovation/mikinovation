@@ -1,0 +1,16 @@
+:PROPERTIES:
+:ID: df7fdc0e-bfd3-4b48-b3c5-d03e37419b85
+:END:
+#+TITLE: OKF(Open Knowledge Format)
+
+#+begin_src yaml
+type: note
+description:
+tags: []
+timestamp: 2026-07-26T12:26:06+0900
+#+end_src
+
+- AIエージェントと人間の両者とって情報の検索性を高める
+- 原則が緩く、個人で運用するにはちょうどいい
+- 2026年7月現在でv0.1でまだ仕様の方針が決まり切っていない
+[[id:31de5fdb-617e-4832-954e-670ae5e2afd6][org-modeにokfの概念を導入する]]
