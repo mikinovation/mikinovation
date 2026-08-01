@@ -1,5 +1,5 @@
 variable "cloudflare_account_id" {
-  description = "Cloudflare のアカウント ID。.envrc の TF_VAR_cloudflare_account_id から渡る"
+  description = "Cloudflare のアカウント ID。リポジトリルートの .envrc の TF_VAR_cloudflare_account_id から渡る"
   type        = string
   sensitive   = true
 }
