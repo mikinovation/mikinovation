@@ -1,0 +1,13 @@
+:PROPERTIES:
+:ID: 4b689abc-391d-4637-a02f-8ae13b918fa9
+:END:
+#+TITLE: orgroamの運用ルール
+
+#+begin_src yaml
+type:
+description:
+tags: []
+timestamp: 2026-07-27T10:43:38+0900
+#+end_src
+
+- 本や参考文献と内容自体はノードを切り離す

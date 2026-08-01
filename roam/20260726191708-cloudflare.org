@@ -1,0 +1,13 @@
+:PROPERTIES:
+:ID: 55e6daa8-fc9f-4c7c-ab82-85db9d63b72f
+:END:
+#+TITLE: cloudflare
+
+#+begin_src yaml
+type: note
+description:
+tags: []
+timestamp: 2026-07-26T19:17:08+0900
+#+end_src
+
+- 世界中に分散したネットワークを活用して、ウェブサイトやアプリケーションのパフォーマンスを向上させるサービスを提供する企業、もしくはそのサービスのことを指す

@@ -1,0 +1,13 @@
+:PROPERTIES:
+:ID: d4b69c51-ebab-46a2-bce7-b2188a2b3c53
+:END:
+#+TITLE: org-roamで整理されていないnodeを抽出したい
+
+#+begin_src yaml
+type: note
+description:
+tags: [issue]
+timestamp: 2026-07-28T01:04:29+0900
+#+end_src
+
+- neovimでfuzzy finderを利用して検索できるようにしたい

@@ -1,0 +1,13 @@
+:PROPERTIES:
+:ID: 87887d23-81c5-4914-b8ed-4608667ece46
+:END:
+#+TITLE: blink.nvimに関して調査
+
+#+begin_src yaml
+type: note
+description:
+tags: [issue]
+timestamp: 2026-07-28T10:12:22+0900
+#+end_src
+
+
