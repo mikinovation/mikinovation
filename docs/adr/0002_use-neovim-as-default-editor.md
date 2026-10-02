@@ -34,7 +34,7 @@ PRD 0001 の要求と ADR 0001 の決定から、次の条件も満たす必要�
 ## 決定
 
 Neovim を既定エディターにする。
-Neovim は ADR 0001 の共通の Home Manager 設定から、`nix/programs/neovim` のモジュールとして導入し、導入範囲「すべて」にだけ含める。
+Neovim は ADR 0001 の共通の Home Manager 設定から、`packages/dotfiles/nix/programs/neovim` のモジュールとして導入し、導入範囲「すべて」にだけ含める。
 
 - 環境変数 `EDITOR` と `VISUAL` を `nvim` にし、`vi`、`vim`、`vimdiff` を Neovim の別名にする。
 - 設定は Lua で書き、Home Manager が `~/.config/nvim` に配置する。

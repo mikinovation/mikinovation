@@ -75,7 +75,7 @@ PRD 0004 の要求のうち、権限と安全については、選べる案は�
 エージェントとして Claude Code を採用する。
 本体、設定、作業手順、参照の経路は、ADR 0001 の共通の Home Manager 設定から宣言し、両方の導入範囲に含める。
 
-- 本体: `nix/pkgs/claude-code.nix` で自前のパッケージとして定義し、npm の配布物にプラットフォーム別のネイティブバイナリを組み合わせる。版はこの記述で固定し、対応する環境は x86_64-linux と aarch64-darwin とする。
+- 本体: `packages/dotfiles/nix/pkgs/claude-code.nix` で自前のパッケージとして定義し、npm の配布物にプラットフォーム別のネイティブバイナリを組み合わせる。版はこの記述で固定し、対応する環境は x86_64-linux と aarch64-darwin とする。
 - 設定: home-manager の `programs.claude-code` から settings.json を生成する。既定の権限モードを bypassPermissions とし、拒む破壊的な操作は hard_deny にパターンとして列挙する。モデルは opus、思考の強度は high を既定とする。共著者の記載を無効にし、下位のエージェントを同一プロセスで走らせ、本体の自動更新を無効にする。
 - 通知と状態表示: Stop、Notification、PreCompact のフックと statusline のコマンドを、リポジトリ内のシェルスクリプトとして持つ。通知は WSL では Windows のトースト、macOS では通知センターへ出す。statusline は作業場所、ブランチ、モデル、5時間と7日の利用量の割合を表示する。圧縮のフックは、時刻と作業場所をログへ追記する。
 - 文脈: headroom を OS のユーザーサービスとして常駐させ、`ANTHROPIC_BASE_URL` でエージェントの通信を常に経由させる。常駐は Linux では systemd のユーザーユニット、macOS では launchd のエージェントで行う。経由により扱える文脈量が縮むのは、`_CLAUDE_CODE_ASSUME_FIRST_PARTY_BASE_URL` で打ち消す。
