@@ -24,8 +24,8 @@ PRD 0001 の要求から、選べる案は次の条件を満たす必要があ�
 
 ## 決定
 
-`nix/flake.nix` の1つの flake で、すべての OS の環境を定義する。
-ユーザー環境は共通の Home Manager 設定（`nix/home.nix`）で定義し、OS ごとに次の仕組みから適用する。
+`packages/dotfiles/nix/flake.nix` の1つの flake で、すべての OS の環境を定義する。
+ユーザー環境は共通の Home Manager 設定（`packages/dotfiles/nix/home.nix`）で定義し、OS ごとに次の仕組みから適用する。
 
 | OS | 適用する仕組み | flake の出力 |
 |---|---|---|
@@ -62,7 +62,7 @@ PRD 0001 の要求から、選べる案は次の条件を満たす必要があ�
 - 導入操作の前に、Nix 本体を所有者が導入しておく必要がある。
 - ユーザー名とマシン名を flake の出力に書くため、所有者と異なるユーザー名やマシン名では導入できない。
 - 依存の版が `flake.lock` に固定されるため、版を上げるには `flake.lock` の更新が必要になる。nixpkgs は unstable を参照し、`flake.lock` の更新は Renovate が行う。
-- nixpkgs にないツールは、`nix/pkgs/` で自前のパッケージとして定義し、保守する。
+- nixpkgs にないツールは、`packages/dotfiles/nix/pkgs/` で自前のパッケージとして定義し、保守する。
 - WSL で使う端末アプリの設定を Windows 側へ配置する作業と、macOS で Claude Code から操作するブラウザの導入は、Nix の管理外として手作業で行う。
 
 ## 出典
