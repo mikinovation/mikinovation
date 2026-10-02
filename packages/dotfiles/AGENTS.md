@@ -1,5 +1,9 @@
 # AGENTS.md
 
+This is `packages/dotfiles` inside the mikinovation/mikinovation monorepo.
+Run the commands below from this directory. CI lives in the repository root
+`.github/workflows/` (`dotfiles-ci.yml`, `secretlint.yml`).
+
 ## Development Workflow
 
 ### Post-Task Verification

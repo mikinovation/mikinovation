@@ -2,6 +2,11 @@
 
 Dotfiles managed declaratively using Nix and Home Manager.
 
+This package lives at `packages/dotfiles` in the
+[mikinovation/mikinovation](https://github.com/mikinovation/mikinovation)
+repository. It was previously the standalone `mikinovation/dotfiles` repository.
+Commands below are run from this directory unless stated otherwise.
+
 ## prerequisite
 
 ### Nix
@@ -38,7 +43,7 @@ No extra step is required.
 On WSL, WezTerm runs on the Windows host, so copy the config over:
 
 ```bash
-cp ~/ghq/github.com/mikinovation/dotfiles/nix/programs/wezterm/.wezterm.lua /mnt/c/Users/[UserName]/
+cp ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles/nix/programs/wezterm/.wezterm.lua /mnt/c/Users/[UserName]/
 ```
 
 ### Google Chrome (macOS only)
@@ -54,8 +59,8 @@ find it.
 Run the setup script. It detects the environment and deploys the configuration:
 
 ```bash
-ghq get git@github.com:mikinovation/dotfiles.git
-cd ~/ghq/github.com/mikinovation/dotfiles
+ghq get git@github.com:mikinovation/mikinovation.git
+cd ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles
 DOTFILES_PROFILE=full ./setup.sh
 ```
 
@@ -101,21 +106,35 @@ If you prefer to deploy manually using Home Manager:
 
 ```bash
 # Clone the repository
-ghq get git@github.com:mikinovation/dotfiles.git
+ghq get git@github.com:mikinovation/mikinovation.git
 
 # Setup nix.conf first
 mkdir -p ~/.config/nix
-ln -s ~/ghq/github.com/mikinovation/dotfiles/nix/nix.conf ~/.config/nix/nix.conf
+ln -s ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles/nix/nix.conf ~/.config/nix/nix.conf
 
 # Deploy using Home Manager (standalone)
-nix run home-manager/master -- switch --flake ~/ghq/github.com/mikinovation/dotfiles/nix#mikinovation
+nix run home-manager/master -- switch --flake ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles/nix#mikinovation
 
 # Or for NixOS
-sudo nixos-rebuild switch --flake ~/ghq/github.com/mikinovation/dotfiles/nix#nixos
+sudo nixos-rebuild switch --flake ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles/nix#nixos
 
 # Or for macOS
-sudo darwin-rebuild switch --flake ~/ghq/github.com/mikinovation/dotfiles/nix#mac
+sudo darwin-rebuild switch --flake ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles/nix#mac
 ```
+
+### Migrating from the old mikinovation/dotfiles checkout
+
+Machines set up from the old standalone repository keep working until you
+switch, because they still point at `~/ghq/github.com/mikinovation/dotfiles`.
+To switch:
+
+1. `ghq get git@github.com:mikinovation/mikinovation.git`
+2. `cd ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles`
+3. Run `DOTFILES_PROFILE=full ./setup.sh` (or `minimal`). This re-points the
+   `~/.config/nix` symlinks, `DOTFILES_DIR`, and the Claude Code hook and
+   statusline paths at the new location.
+4. Open a new shell and check `echo $DOTFILES_DIR` shows the new path.
+5. Remove the old `~/ghq/github.com/mikinovation/dotfiles` checkout.
 
 ### Update Configuration
 
@@ -124,22 +143,22 @@ The standalone deploy installs the `home-manager` command itself. After the firs
 deploy, use it instead of `nix run home-manager/master --`:
 
 ```bash
-home-manager switch --flake ~/ghq/github.com/mikinovation/dotfiles/nix#mikinovation
+home-manager switch --flake ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles/nix#mikinovation
 ```
 
 Re-running the setup script works as well:
 
 ```bash
-cd ~/ghq/github.com/mikinovation/dotfiles
+cd ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles
 DOTFILES_PROFILE=full ./setup.sh
 ```
 
 ### Setting up from a WSL release image
 
-The [Build WSL release image](.github/workflows/build-wsl-release.yml) workflow
+The [Build dotfiles WSL release image](../../.github/workflows/dotfiles-wsl-release.yml) workflow
 builds a minimal NixOS-WSL image. It runs weekly, and on demand via
 `workflow_dispatch`. The image is published as a GitHub Release asset. It embeds
-a copy of this repository. A broken WSL install can therefore be restored without
+a copy of this package (not the rest of the monorepo, and not as a git checkout). A broken WSL install can therefore be restored without
 network access to GitHub:
 
 ```powershell
@@ -150,11 +169,11 @@ wsl -d nixos
 
 ```bash
 # Inside the imported distro
-cd ~/ghq/github.com/mikinovation/dotfiles
+cd ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles
 DOTFILES_PROFILE=full ./setup.sh
 ```
 
-`setup.sh` runs `nixos-rebuild switch` against the embedded repository. That
+`setup.sh` runs `nixos-rebuild switch` against the embedded package. That
 rebuilds the Home Manager environment. For a shell before the full build
 finishes, run
 `DOTFILES_PROFILE=minimal ./setup.sh` first. Re-run with `full` afterwards.
