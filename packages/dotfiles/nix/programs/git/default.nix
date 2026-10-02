@@ -1,0 +1,82 @@
+{ config, pkgs, ... }:
+
+{
+  programs.git = {
+    enable = true;
+
+    signing.format = null;
+
+    ignores = [
+      # Custom tools
+      ".serena/"
+      ".mikinovation/"
+
+      # OS files
+      ".DS_Store"
+      "Thumbs.db"
+      "Desktop.ini"
+      "._*"
+      ".Spotlight-V100"
+      ".Trashes"
+      "ehthumbs.db"
+
+      # Editor configurations
+      ".vscode/"
+      ".idea/"
+      "*.swp"
+      "*.swo"
+      "*~"
+      ".vim/"
+      "*.sublime-workspace"
+
+      # Development tools
+      ".direnv/"
+      ".envrc.local"
+
+      # Python
+      "__pycache__/"
+      "*.pyc"
+      "*.pyo"
+      "*.pyd"
+      ".pytest_cache/"
+      "*.egg-info/"
+      ".Python"
+      "pip-log.txt"
+
+      # Node.js
+      "node_modules/"
+      ".npm/"
+      "npm-debug.log*"
+      "yarn-debug.log*"
+      "yarn-error.log*"
+
+      # Logs
+      "*.log"
+
+      # Environment files
+      ".env.local"
+      ".env.*.local"
+    ];
+
+    settings = {
+      user = {
+        name = "mikinovation";
+        email = "maneuver2472@gmail.com";
+      };
+      fetch = {
+        prune = true;
+        pruneTags = true;
+      };
+      ghq = {
+        root = "~/ghq";
+      };
+    };
+  };
+
+  programs.gh = {
+    enable = true;
+    settings = {
+      git_protocol = "ssh";
+    };
+  };
+}
