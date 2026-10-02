@@ -1,10 +1,20 @@
-name: CI
+name: dotfiles CI
 
 on:
   push:
     branches: [ main ]
+    paths:
+      - "packages/dotfiles/**"
+      - ".github/workflows/dotfiles-ci.yml"
   pull_request:
     branches: [ main ]
+    paths:
+      - "packages/dotfiles/**"
+      - ".github/workflows/dotfiles-ci.yml"
+
+defaults:
+  run:
+    working-directory: packages/dotfiles
 
 jobs:
   lint-and-format:
@@ -49,24 +59,6 @@ jobs:
       - name: Run Nix tests
         run: make nix-test
 
-  secret-scan:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - uses: cachix/install-nix-action@13d8dd58da0234aa297dedd986986ccb8e7f3e24 # v31
-        with:
-          extra_nix_config: |
-            experimental-features = nix-command flakes
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run Secretlint
-        run: make lint
-
   nvim-smoke-test:
     runs-on: ubuntu-latest
     steps:
@@ -90,7 +82,7 @@ jobs:
           path: |
             ~/.local/share/nvim/lazy
             ~/.local/share/nvim/lazy-rocks
-          key: nvim-plugins-${{ hashFiles('nix/programs/neovim/nvim/plugins.lua', 'nix/programs/neovim/nvim/plugins/*.lua') }}
+          key: nvim-plugins-${{ hashFiles('packages/dotfiles/nix/programs/neovim/nvim/plugins.lua', 'packages/dotfiles/nix/programs/neovim/nvim/plugins/*.lua') }}
           restore-keys: |
             nvim-plugins-
 
