@@ -1,0 +1,242 @@
+-- lsp/test_helper.lua
+-- Shared test utilities for LSP spec files
+
+local M = {}
+
+-- Resolve the lsp directory from the calling spec file
+function M.get_lsp_dir()
+	local info = debug.getinfo(2, "S")
+	local test_file = info.source:gsub("^@", "")
+	if not test_file:match("^/") then
+		local cwd
+		local handle = io.popen("pwd")
+		if handle then
+			cwd = handle:read("*l")
+			handle:close()
+		end
+		cwd = cwd or os.getenv("PWD") or "."
+		test_file = cwd .. "/" .. test_file
+	end
+	return test_file:match("(.*/)")
+end
+
+-- Set nvim_dir from caller (each spec passes its resolved directory)
+function M.init(lsp_dir)
+	M.nvim_dir = lsp_dir:match("(.*/)[^/]+/$")
+end
+
+-- Save global state before tests (call in busted setup())
+function M.save_state()
+	M._saved = {
+		vim = _G.vim,
+		blink_cmp = package.loaded["blink.cmp"],
+		telescope_builtin = package.loaded["telescope.builtin"],
+	}
+end
+
+-- Restore global state after tests (call in busted teardown())
+function M.restore_state()
+	if M._saved then
+		_G.vim = M._saved.vim
+		package.loaded["blink.cmp"] = M._saved.blink_cmp
+		package.loaded["telescope.builtin"] = M._saved.telescope_builtin
+		M._saved = nil
+	end
+end
+
+-- State captured from lsp module execution
+M.captured = {}
+
+-- Recursive deep merge (mirrors vim.tbl_deep_extend behavior)
+local function deep_merge(base, override)
+	local result = {}
+	for k, v in pairs(base) do
+		if type(v) == "table" and type(override[k]) == "table" then
+			result[k] = deep_merge(v, override[k])
+		elseif override[k] ~= nil then
+			result[k] = override[k]
+		else
+			result[k] = v
+		end
+	end
+	for k, v in pairs(override) do
+		if result[k] == nil then
+			result[k] = v
+		end
+	end
+	return result
+end
+
+function M.setup_vim_mock()
+	M.captured = {
+		autocmds = {},
+		diagnostic_config = nil,
+		lsp_servers_enabled = {},
+		linked_editing_range = nil,
+	}
+
+	-- Mock require for external dependencies
+	package.loaded["blink.cmp"] = {
+		get_lsp_capabilities = function(caps)
+			return caps or {}
+		end,
+	}
+	package.loaded["telescope.builtin"] = {
+		lsp_definitions = function() end,
+		lsp_references = function() end,
+		lsp_implementations = function() end,
+		lsp_type_definitions = function() end,
+		lsp_document_symbols = function() end,
+		lsp_dynamic_workspace_symbols = function() end,
+	}
+
+	-- Metatable-based lsp.config to capture server configurations
+	local lsp_config_store = {}
+	local lsp_config_mt = {
+		__newindex = function(_, key, value)
+			lsp_config_store[key] = value
+		end,
+		__index = function(_, key)
+			return lsp_config_store[key]
+		end,
+	}
+
+	_G.vim = {
+		fn = {
+			has = function()
+				return 0
+			end,
+			executable = function()
+				return 1
+			end,
+			exepath = function(name)
+				return "/test-prefix/bin/" .. name
+			end,
+		},
+		fs = {
+			dirname = function(path)
+				return path:match("(.*)/[^/]*$") or "."
+			end,
+		},
+		g = { mapleader = " ", maplocalleader = " " },
+		o = {},
+		bo = setmetatable({}, {
+			__index = function()
+				return {}
+			end,
+		}),
+		-- Window-local options, keyed as vim.wo[win][bufnr] (see :h vim.wo).
+		-- Backed by real tables (via rawset) so assignments persist and can be asserted.
+		wo = setmetatable({}, {
+			__index = function(t, win)
+				local sub = rawget(t, win)
+				if not sub then
+					sub = setmetatable({}, {
+						__index = function(tt, key)
+							local leaf = rawget(tt, key)
+							if not leaf then
+								leaf = {}
+								rawset(tt, key, leaf)
+							end
+							return leaf
+						end,
+					})
+					rawset(t, win, sub)
+				end
+				return sub
+			end,
+		}),
+		opt = {},
+		env = { HOME = "/home/testuser" },
+		api = {
+			nvim_create_autocmd = function(event, opts)
+				table.insert(M.captured.autocmds, { event = event, opts = opts })
+			end,
+			nvim_create_augroup = function(name, opts)
+				return { name = name, opts = opts }
+			end,
+			nvim_get_runtime_file = function()
+				return {}
+			end,
+			nvim_get_current_win = function()
+				return 1000
+			end,
+		},
+		keymap = {
+			set = function() end,
+		},
+		cmd = function() end,
+		notify = function() end,
+		log = { levels = { WARN = 2, ERROR = 4, INFO = 1 } },
+		diagnostic = {
+			config = function(opts)
+				M.captured.diagnostic_config = opts
+			end,
+			severity = { WARN = 2, ERROR = 4, HINT = 3, INFO = 1 },
+			open_float = function() end,
+			goto_prev = function() end,
+			goto_next = function() end,
+			setloclist = function() end,
+		},
+		lsp = {
+			config = setmetatable({}, lsp_config_mt),
+			protocol = {
+				make_client_capabilities = function()
+					return {}
+				end,
+			},
+			enable = function(servers)
+				M.captured.lsp_servers_enabled = servers
+			end,
+			buf = {
+				rename = function() end,
+				code_action = function() end,
+				declaration = function() end,
+				hover = function() end,
+				signature_help = function() end,
+				format = function() end,
+			},
+			get_clients = function()
+				return {}
+			end,
+			linked_editing_range = {
+				enable = function(enable, opts)
+					M.captured.linked_editing_range = { enable = enable, opts = opts }
+				end,
+			},
+			foldexpr = function() end,
+		},
+		tbl_deep_extend = function(_, base, override)
+			return deep_merge(base, override)
+		end,
+		list_extend = function(dst, src)
+			for _, v in ipairs(src) do
+				table.insert(dst, v)
+			end
+			return dst
+		end,
+	}
+
+	-- Store reference for assertions
+	M.captured.lsp_config_store = lsp_config_store
+end
+
+function M.load_lsp()
+	-- Clear all lsp.* modules to ensure fresh require on each test run
+	for name in pairs(package.loaded) do
+		if name:match("^lsp%.") then
+			package.loaded[name] = nil
+		end
+	end
+
+	-- Add nvim dir to package path so require("lsp.xxx") resolves correctly
+	local nvim_path = M.nvim_dir .. "?.lua"
+	local nvim_init_path = M.nvim_dir .. "?/init.lua"
+	if not package.path:find(nvim_path, 1, true) then
+		package.path = nvim_path .. ";" .. nvim_init_path .. ";" .. package.path
+	end
+
+	return dofile(M.nvim_dir .. "lsp/init.lua")
+end
+
+return M
