@@ -49,6 +49,7 @@
   "oil.nvim": { "branch": "master", "commit": "0fcc83805ad11cf714a949c98c605ed717e0b83e" },
   "open-browser.vim": { "branch": "master", "commit": "7d4c1d8198e889d513a030b5a83faa07606bac27" },
   "org-bullets.nvim": { "branch": "main", "commit": "21437cfa99c70f2c18977bffd423f912a7b832ea" },
+  "org-roam.nvim": { "branch": "main", "commit": "34d1d113cd139ea903125305310be3d7c1067484" },
   "orgmode": { "branch": "master", "commit": "2fc30d36fd1c3e6086a7424858e19a52a29ae937" },
   "package-info.nvim": { "branch": "master", "commit": "52e407af634cd5d3add0dc916c517865850113a4" },
   "pathtool.nvim": { "branch": "main", "commit": "eca221c955f84501e63bb7dfcd2eb85ae107d628" },
