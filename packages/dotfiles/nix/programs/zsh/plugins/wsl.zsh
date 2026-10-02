@@ -1,0 +1,10 @@
+# WSL2 clipboard configuration
+if [[ -r /proc/version ]] && grep -q microsoft /proc/version; then
+  alias pbcopy="iconv -f UTF-8 -t UTF-16LE | clip.exe"
+  alias pbpaste="powershell.exe -NoProfile -command '[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; \$c = Get-Clipboard; if (\$c -ne \$null) { \$c }' | tr -d '\r'"
+
+  # Locale settings for WSL
+  export LANG=en_US.UTF-8
+  export LC_ALL=en_US.UTF-8
+  export LANGUAGE=en_US:en
+fi
