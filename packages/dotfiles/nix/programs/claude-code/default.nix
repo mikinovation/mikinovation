@@ -7,6 +7,7 @@
   chromeDevtoolsMcp,
   headroom,
   tanteki,
+  dotfilesDir,
   ...
 }:
 
@@ -158,7 +159,7 @@
             hooks = [
               {
                 type = "command";
-                command = "$HOME/ghq/github.com/mikinovation/dotfiles/nix/programs/claude-code/hooks/notify-stop.sh";
+                command = "${dotfilesDir}/nix/programs/claude-code/hooks/notify-stop.sh";
               }
             ];
           }
@@ -169,7 +170,7 @@
             hooks = [
               {
                 type = "command";
-                command = "$HOME/ghq/github.com/mikinovation/dotfiles/nix/programs/claude-code/hooks/notify-input.sh";
+                command = "${dotfilesDir}/nix/programs/claude-code/hooks/notify-input.sh";
               }
             ];
           }
@@ -180,7 +181,7 @@
             hooks = [
               {
                 type = "command";
-                command = "$HOME/ghq/github.com/mikinovation/dotfiles/nix/programs/claude-code/hooks/pre-compact.sh";
+                command = "${dotfilesDir}/nix/programs/claude-code/hooks/pre-compact.sh";
               }
             ];
           }
@@ -188,7 +189,7 @@
       };
       statusLine = {
         type = "command";
-        command = "sh $HOME/ghq/github.com/mikinovation/dotfiles/nix/programs/claude-code/statusline.sh";
+        command = "sh ${dotfilesDir}/nix/programs/claude-code/statusline.sh";
       };
       env = {
         # ANTHROPIC_BASE_URL が api.anthropic.com 以外だと Claude Code が

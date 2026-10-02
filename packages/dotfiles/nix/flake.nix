@@ -87,6 +87,10 @@
           pkgs = pkgsFor system;
         in
         {
+          # Checkout location of this package. Modules that reference files in the
+          # working tree at runtime (shell plugins, Claude Code hooks) derive their
+          # paths from this so the location is defined in one place.
+          dotfilesDir = "$HOME/ghq/github.com/mikinovation/mikinovation/packages/dotfiles";
           apm = pkgs.callPackage ./pkgs/apm.nix { };
           claudeCode = pkgs.callPackage ./pkgs/claude-code.nix { };
           vueLanguageServer = pkgs.callPackage ./pkgs/vue-language-server.nix { };

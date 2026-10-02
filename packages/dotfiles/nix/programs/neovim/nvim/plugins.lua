@@ -9,6 +9,11 @@ end ---@diagnostic disable-next-line: undefined-field
 
 vim.opt.rtp:prepend(lazypath)
 
+-- DOTFILES_DIR is exported by the zsh module. Without it lazy.nvim falls back
+-- to its default lockfile location.
+local dotfiles_dir = os.getenv("DOTFILES_DIR")
+local lockfile = dotfiles_dir and (dotfiles_dir .. "/nix/programs/neovim/nvim/lazy-lock.json") or nil
+
 -- Load clipboard configuration early
 require("plugins.clipboard").config()
 
@@ -66,7 +71,7 @@ require("lazy").setup({
 	require("plugins.open-browser").config(),
 	require("plugins.oil").config(),
 }, {
-	lockfile = os.getenv("HOME") .. "/dotfiles/nix/programs/neovim/nvim/lazy-lock.json",
+	lockfile = lockfile,
 	performance = {
 		rtp = {
 			-- Built-in runtime plugins that are never used

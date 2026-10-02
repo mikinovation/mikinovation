@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  dotfilesDir,
   ...
 }:
 
@@ -12,7 +13,7 @@
     sessionVariables = {
       ZSH = "$HOME/.local/share/sheldon/repos/github.com/ohmyzsh/ohmyzsh";
       BUN_INSTALL = "$HOME/.bun";
-      DOTFILES_DIR = "$HOME/ghq/github.com/mikinovation/dotfiles";
+      DOTFILES_DIR = dotfilesDir;
       POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD = "true";
     };
 
