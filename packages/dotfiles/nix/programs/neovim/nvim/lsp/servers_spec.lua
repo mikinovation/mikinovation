@@ -1,0 +1,127 @@
+-- luacheck: globals describe it before_each setup teardown assert
+
+local helper = dofile(debug.getinfo(1, "S").source:gsub("^@", ""):match("(.*/)") .. "test_helper.lua")
+helper.init(helper.get_lsp_dir())
+
+describe("lsp servers", function()
+	setup(function()
+		helper.save_state()
+	end)
+
+	teardown(function()
+		helper.restore_state()
+	end)
+
+	before_each(function()
+		helper.setup_vim_mock()
+		helper.load_lsp()
+	end)
+
+	describe("LSP server configurations", function()
+		local expected_servers = {
+			"lua_ls",
+			"rust_analyzer",
+			"vtsls",
+			"vue_ls",
+			"tailwindcss",
+			"solargraph",
+			"nil_ls",
+			"tinymist",
+		}
+
+		it("has no unexpected servers", function()
+			local expected_set = {}
+			for _, name in ipairs(expected_servers) do
+				expected_set[name] = true
+			end
+
+			local unexpected = {}
+			for name, _ in pairs(helper.captured.lsp_config_store) do
+				if not expected_set[name] then
+					table.insert(unexpected, name)
+				end
+			end
+			assert.same(
+				{},
+				unexpected,
+				"unexpected servers found: " .. table.concat(unexpected, ", ") .. " — add them to expected_servers"
+			)
+		end)
+
+		for _, server_name in ipairs(expected_servers) do
+			describe(server_name, function()
+				it("is configured", function()
+					local config = helper.captured.lsp_config_store[server_name]
+					assert.is_not_nil(config, server_name .. " should be configured in vim.lsp.config")
+					assert.is_table(config, server_name .. " config should be a table")
+				end)
+
+				it("has cmd field", function()
+					local config = helper.captured.lsp_config_store[server_name]
+					assert.is_table(config.cmd, server_name .. " must have cmd as a table")
+					assert.truthy(#config.cmd > 0, server_name .. " cmd must not be empty")
+					assert.is_string(config.cmd[1], server_name .. " cmd[1] must be a string (executable name)")
+				end)
+
+				it("has filetypes field", function()
+					local config = helper.captured.lsp_config_store[server_name]
+					assert.is_table(config.filetypes, server_name .. " must have filetypes as a table")
+					assert.truthy(#config.filetypes > 0, server_name .. " filetypes must not be empty")
+				end)
+			end)
+		end
+
+		describe("vue typescript plugin location", function()
+			local function plugin_location()
+				local config = helper.captured.lsp_config_store.vtsls
+				return config.settings.vtsls.tsserver.globalPlugins[1].location
+			end
+
+			it("derives the package path from the vue-language-server executable", function()
+				assert.equals("/test-prefix/lib/node_modules/@vue/language-server", plugin_location())
+			end)
+
+			it("prefers VUE_LANGUAGE_SERVER_PATH when set", function()
+				vim.env.VUE_LANGUAGE_SERVER_PATH = "/custom/path"
+				helper.load_lsp()
+				assert.equals("/custom/path", plugin_location())
+			end)
+
+			it("falls back to the nix profile path when the executable is missing", function()
+				vim.fn.exepath = function()
+					return ""
+				end
+				helper.load_lsp()
+				assert.equals("/home/testuser/.nix-profile/lib/node_modules/@vue/language-server", plugin_location())
+			end)
+		end)
+
+		it("handles TypeScript and Vue with a single vtsls client", function()
+			local filetype_set = {}
+			for _, ft in ipairs(helper.captured.lsp_config_store.vtsls.filetypes) do
+				filetype_set[ft] = true
+			end
+			for _, ft in ipairs({ "typescript", "javascript", "typescriptreact", "javascriptreact", "vue" }) do
+				assert.is_truthy(filetype_set[ft], "vtsls should handle " .. ft)
+			end
+		end)
+	end)
+
+	describe("vim.lsp.enable", function()
+		it("enables all expected servers", function()
+			local enabled = helper.captured.lsp_servers_enabled
+			assert.is_table(enabled, "vim.lsp.enable should be called with a table")
+			assert.truthy(#enabled > 0, "at least one server should be enabled")
+		end)
+
+		it("every enabled server has a corresponding config", function()
+			for _, server_name in ipairs(helper.captured.lsp_servers_enabled) do
+				local config = helper.captured.lsp_config_store[server_name]
+				assert.is_not_nil(
+					config,
+					"enabled server '" .. server_name .. "' has no corresponding vim.lsp.config entry"
+				)
+			end
+		end)
+	end)
+end)

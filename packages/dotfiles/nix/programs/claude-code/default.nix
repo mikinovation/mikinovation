@@ -1,0 +1,248 @@
+{
+  lib,
+  pkgs,
+  inputs,
+  profile,
+  claudeCode,
+  chromeDevtoolsMcp,
+  headroom,
+  tanteki,
+  dotfilesDir,
+  ...
+}:
+
+{
+  home.packages = [ headroom ];
+
+  # headroom は claude が起動するたびにプロキシを手動で立ち上げるのを避けるため
+  # ユーザーサービスとして常駐させ、ANTHROPIC_BASE_URL で常時経由させる
+  # Linux は systemd user unit、macOS は launchd agent で同じ常駐を行う
+  systemd.user.services = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+    headroom-proxy = {
+      Unit = {
+        Description = "Headroom context compression proxy";
+        After = [ "network.target" ];
+      };
+      Service = {
+        ExecStart = "${lib.getExe headroom} proxy --port 8787";
+        Restart = "always";
+        RestartSec = 5;
+      };
+      Install.WantedBy = [ "default.target" ];
+    };
+  };
+
+  launchd.agents = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
+    headroom-proxy = {
+      enable = true;
+      config = {
+        ProgramArguments = [
+          (lib.getExe headroom)
+          "proxy"
+          "--port"
+          "8787"
+        ];
+        KeepAlive = true;
+        RunAtLoad = true;
+      };
+    };
+  };
+
+  home.sessionVariables = {
+    ANTHROPIC_BASE_URL = "http://127.0.0.1:8787";
+  };
+
+  mcp-servers.programs = {
+    context7.enable = true;
+    terraform.enable = true;
+  };
+
+  programs.mcp = {
+    enable = true;
+    servers = {
+      deepwiki = {
+        url = "https://mcp.deepwiki.com/mcp";
+      };
+    }
+    # chrome-devtools は chromium を閉包に引き込むため minimal プロファイルでは外す
+    // lib.optionalAttrs (profile != "minimal") {
+      chrome-devtools = {
+        command = "${chromeDevtoolsMcp}/bin/chrome-devtools-mcp";
+        args = [
+          "--executablePath"
+          # nixpkgs の chromium は Linux 専用のため、macOS では
+          # 手動インストールした Google Chrome の実体を指す
+          (
+            if pkgs.stdenv.hostPlatform.isDarwin then
+              "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+            else
+              (lib.getExe pkgs.chromium)
+          )
+          "--headless"
+          "--isolated"
+        ];
+      };
+    };
+  };
+
+  programs.claude-code = {
+    enable = true;
+    package = claudeCode;
+    enableMcpIntegration = true;
+
+    # skills-dir personal plugins do not expose their commands in Claude Code
+    # 2.1.218, so deploy the commit-commands plugin as user commands instead
+    commandsDir = "${inputs.claude-code-plugins}/plugins/commit-commands/commands";
+
+    # LSP servers
+    lspServers = {
+      typescript = {
+        command = "typescript-language-server";
+        args = [ "--stdio" ];
+        extensionToLanguage = {
+          ".ts" = "typescript";
+          ".tsx" = "typescriptreact";
+          ".mts" = "typescript";
+          ".cts" = "typescript";
+          ".js" = "javascript";
+          ".jsx" = "javascriptreact";
+          ".mjs" = "javascript";
+          ".cjs" = "javascript";
+        };
+      };
+      vue = {
+        command = "vue-language-server";
+        args = [ "--stdio" ];
+        extensionToLanguage = {
+          ".vue" = "vue";
+        };
+      };
+      nix = {
+        command = "nil";
+        extensionToLanguage = {
+          ".nix" = "nix";
+        };
+      };
+      lua = {
+        command = "lua-language-server";
+        extensionToLanguage = {
+          ".lua" = "lua";
+        };
+      };
+      ruby = {
+        command = "solargraph";
+        args = [ "stdio" ];
+        extensionToLanguage = {
+          ".rb" = "ruby";
+          ".rake" = "ruby";
+          ".gemspec" = "ruby";
+        };
+      };
+      rust = {
+        command = "rust-analyzer";
+        extensionToLanguage = {
+          ".rs" = "rust";
+        };
+      };
+    };
+
+    # settings.json
+    settings = {
+      model = "opus";
+      effortLevel = "high";
+      includeCoAuthoredBy = false;
+      teammateMode = "in-process";
+      hooks = {
+        Stop = [
+          {
+            matcher = "";
+            hooks = [
+              {
+                type = "command";
+                command = "${dotfilesDir}/nix/programs/claude-code/hooks/notify-stop.sh";
+              }
+            ];
+          }
+        ];
+        Notification = [
+          {
+            matcher = "";
+            hooks = [
+              {
+                type = "command";
+                command = "${dotfilesDir}/nix/programs/claude-code/hooks/notify-input.sh";
+              }
+            ];
+          }
+        ];
+        PreCompact = [
+          {
+            matcher = "";
+            hooks = [
+              {
+                type = "command";
+                command = "${dotfilesDir}/nix/programs/claude-code/hooks/pre-compact.sh";
+              }
+            ];
+          }
+        ];
+      };
+      statusLine = {
+        type = "command";
+        command = "sh ${dotfilesDir}/nix/programs/claude-code/statusline.sh";
+      };
+      env = {
+        # ANTHROPIC_BASE_URL が api.anthropic.com 以外だと Claude Code が
+        # first-party ではないと判定してコンテキスト窓を 1M から 200k に落とすため、
+        # headroom プロキシ経由でも 1M を維持できるようにフラグで打ち消す
+        _CLAUDE_CODE_ASSUME_FIRST_PARTY_BASE_URL = "1";
+        CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1";
+        CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR = "1";
+        DISABLE_UPDATES = "1";
+        CLAUDE_CODE_STOP_HOOK_BLOCK_CAP = "5";
+        ANTHROPIC_DEFAULT_OPUS_MODEL = "claude-opus-5";
+        ANTHROPIC_DEFAULT_SONNET_MODEL = "claude-sonnet-5";
+      };
+      permissions = {
+        defaultMode = "bypassPermissions";
+        allow = [
+          "Bash(grep *)"
+          "Bash(ls *)"
+          "Bash(ls)"
+          "Bash(find *)"
+          "Bash(gh api *)"
+          "Bash(git status *)"
+          "Bash(git diff *)"
+          "Bash(gh run view *)"
+          "Bash(git log *)"
+          "Bash(git fetch *)"
+        ];
+      };
+      autoMode.hard_deny = [
+        "Bash(rm -rf /*)"
+        "Bash(rm -rf ~*)"
+        "Bash(rm -rf $HOME*)"
+        "Bash(rm -rf .*)"
+        "Bash(git push --force*)"
+        "Bash(git push -f*)"
+        "Bash(git reset --hard*)"
+        "Bash(dd if=*)"
+        "Bash(mkfs*)"
+        "Bash(chmod -R 777*)"
+      ];
+    };
+
+    skills = {
+      "commit-commands:create-branch" = ./skills/commit-commands/create-branch;
+      "commit-commands:create-pr" = ./skills/commit-commands/create-pr;
+      "code-to-adr" = ./skills/code-to-adr;
+      "code-to-prd" = ./skills/code-to-prd;
+      "create-adr" = ./skills/create-adr;
+      "create-prd" = ./skills/create-prd;
+      "nix-npm-update" = ./skills/nix-npm-update;
+      "tanteki" = tanteki;
+    };
+
+    context = ./CLAUDE.md;
+  };
+}
