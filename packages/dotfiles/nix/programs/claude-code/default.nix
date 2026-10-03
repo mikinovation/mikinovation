@@ -243,6 +243,7 @@
       "code-to-prd" = ./skills/code-to-prd;
       "create-adr" = ./skills/create-adr;
       "create-design-doc" = ./skills/create-design-doc;
+      "create-plan" = ./skills/create-plan;
       "create-prd" = ./skills/create-prd;
       "create-test-cases" = ./skills/create-test-cases;
       "nix-npm-update" = ./skills/nix-npm-update;
