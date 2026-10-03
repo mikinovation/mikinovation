@@ -276,9 +276,9 @@ $KINTAI_DIR/
 勤怠の記録は、次の形で書く。
 
 ```org
-* 株式会社アクメ
+* サンプル案件
   :PROPERTIES:
-  :KINTAI_PROJECT: acme
+  :KINTAI_PROJECT: sample
   :END:
 ** 2026-09-01
    :PROPERTIES:
