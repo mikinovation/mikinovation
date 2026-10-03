@@ -6,11 +6,11 @@ use check_test_ids::{run, Outcome};
 
 const DOC: &str = "### TC-0001-001 始業を切り上げて丸める
 
-- 優先度: 必須
+- 期待: 10:00 になる
 
 ### TC-0001-002 終業を切り捨てて丸める
 
-- 優先度: 任意
+- 期待: 19:00 になる
 ";
 
 struct Project(PathBuf);
@@ -52,28 +52,22 @@ fn ids_in(messages: &[String]) -> Vec<&str> {
 }
 
 #[test]
-fn fails_on_required_case_without_test_and_only_warns_on_optional() {
+fn fails_on_every_case_without_a_test() {
     let project = Project::new(&[
         ("docs/test/0001_example.md", DOC),
-        ("src/lib.rs", "fn x() {}"),
+        ("src/lib.rs", "fn tc_0001_001() {}"),
     ]);
     let outcome = project.run(&[]);
     assert_eq!(outcome.code, 1);
     assert_eq!(
         outcome.err,
-        ["エラー: TC-0001-001（docs/test/0001_example.md:1）に対応するテストがありません。"]
+        ["エラー: TC-0001-002（docs/test/0001_example.md:5）に対応するテストがありません。"]
     );
-    assert_eq!(
-        outcome.out,
-        [
-            "ケース 0/2 件にテストがあります（必須 0/1 件）。",
-            "警告: TC-0001-002（docs/test/0001_example.md:5）に対応するテストがありません。",
-        ]
-    );
+    assert_eq!(outcome.out, ["ケース 1/2 件にテストがあります。"]);
 }
 
 #[test]
-fn passes_when_required_cases_have_tests_and_skips_docs_and_vendored_dirs() {
+fn passes_when_every_case_has_a_test_and_skips_docs_and_vendored_dirs() {
     let project = Project::new(&[
         ("docs/test/0001_example.md", DOC),
         ("docs/test/notes.txt", "tc_0001_002"),
@@ -81,15 +75,13 @@ fn passes_when_required_cases_have_tests_and_skips_docs_and_vendored_dirs() {
             "crates/core/src/round.rs",
             "#[test]\nfn tc_0001_001_rounds_start_up() {}\n",
         ),
-        ("node_modules/pkg/index.js", "tc_0001_002"),
-        ("target/debug/out.rs", "tc_0001_002"),
+        ("web/round.test.ts", "test(\"TC-0001-002 終業\", () => {});"),
+        ("node_modules/pkg/index.js", "tc_0001_003"),
+        ("target/debug/out.rs", "tc_0001_003"),
     ]);
-    let outcome = project.run(&[]);
+    let outcome = project.run(&["--strict"]);
     assert_eq!(outcome.code, 0, "{:?}", outcome.err);
-    assert_eq!(
-        outcome.out[0],
-        "ケース 1/2 件にテストがあります（必須 1/1 件）。"
-    );
+    assert_eq!(outcome.out, ["ケース 2/2 件にテストがあります。"]);
 }
 
 #[test]
@@ -107,7 +99,7 @@ fn unknown_ids_warn_by_default_fail_with_strict_and_respect_only() {
         ("docs/test/0001_example.md", DOC),
         (
             "src/a.rs",
-            "fn tc_0001_001() {}\nfn tc_0001_099() {}\nfn tc_0002_001() {}\n",
+            "fn tc_0001_001() {}\nfn tc_0001_002() {}\nfn tc_0001_099() {}\nfn tc_0002_001() {}\n",
         ),
     ]);
     assert_eq!(project.run(&[]).code, 0);
@@ -123,11 +115,8 @@ fn unknown_ids_warn_by_default_fail_with_strict_and_respect_only() {
 fn only_skips_documents_with_other_numbers() {
     let project = Project::new(&[
         ("docs/test/0001_example.md", DOC),
-        (
-            "docs/test/0002_other.md",
-            "### TC-0002-001 a\n- 優先度: 必須\n",
-        ),
-        ("src/a.rs", "fn tc_0001_001() {}"),
+        ("docs/test/0002_other.md", "### TC-0002-001 a\n"),
+        ("src/a.rs", "fn tc_0001_001() {}\nfn tc_0001_002() {}"),
     ]);
     assert_eq!(project.run(&[]).code, 1);
     assert_eq!(project.run(&["--only", "0001"]).code, 0);
@@ -136,8 +125,8 @@ fn only_skips_documents_with_other_numbers() {
 #[test]
 fn format_errors_exit_with_two() {
     let project = Project::new(&[
-        ("docs/test/0001_a.md", "### TC-0001-001 a\n- 優先度: 必須\n"),
-        ("docs/test/0001_b.md", "### TC-0001-001 b\n- 優先度: 必須\n"),
+        ("docs/test/0001_a.md", "### TC-0001-001 a\n"),
+        ("docs/test/0001_b.md", "### TC-0001-001 b\n"),
     ]);
     let outcome = project.run(&[]);
     assert_eq!(outcome.code, 2);

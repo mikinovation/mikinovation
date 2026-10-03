@@ -1,4 +1,4 @@
-use crate::case_document::{Priority, TestCase};
+use crate::case_document::TestCase;
 use crate::case_id::CaseId;
 use crate::cli::Options;
 use crate::code_scan::References;
@@ -60,30 +60,17 @@ fn unknown_ids<'a>(
 }
 
 fn summary(cases: &[TestCase], references: &References) -> String {
-    let tested: Vec<&TestCase> = cases
+    let tested = cases
         .iter()
         .filter(|case| references.contains_key(&case.id))
-        .collect();
-    format!(
-        "ケース {}/{} 件にテストがあります（必須 {}/{} 件）。",
-        tested.len(),
-        cases.len(),
-        count_required(tested.iter().copied()),
-        count_required(cases.iter())
-    )
-}
-
-fn count_required<'a>(cases: impl Iterator<Item = &'a TestCase>) -> usize {
-    cases
-        .filter(|case| case.priority == Priority::Required)
-        .count()
+        .count();
+    format!("ケース {tested}/{} 件にテストがあります。", cases.len())
 }
 
 impl Finding<'_> {
     fn severity(&self, strict: bool) -> Severity {
         match self {
-            Finding::MissingTest(case) if case.priority == Priority::Required => Severity::Error,
-            Finding::MissingTest(_) => Severity::Warning,
+            Finding::MissingTest(_) => Severity::Error,
             Finding::UnknownId(..) if strict => Severity::Error,
             Finding::UnknownId(..) => Severity::Warning,
         }
