@@ -7,12 +7,16 @@
   chromeDevtoolsMcp,
   headroom,
   tanteki,
+  checkTestIds,
   dotfilesDir,
   ...
 }:
 
 {
-  home.packages = [ headroom ];
+  home.packages = [
+    headroom
+    checkTestIds
+  ];
 
   # headroom は claude が起動するたびにプロキシを手動で立ち上げるのを避けるため
   # ユーザーサービスとして常駐させ、ANTHROPIC_BASE_URL で常時経由させる
