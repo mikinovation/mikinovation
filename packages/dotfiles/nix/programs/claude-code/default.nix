@@ -238,6 +238,7 @@
       "code-to-adr" = ./skills/code-to-adr;
       "code-to-prd" = ./skills/code-to-prd;
       "create-adr" = ./skills/create-adr;
+      "create-design-doc" = ./skills/create-design-doc;
       "create-prd" = ./skills/create-prd;
       "nix-npm-update" = ./skills/nix-npm-update;
       "tanteki" = tanteki;
