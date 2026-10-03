@@ -240,6 +240,7 @@
       "create-adr" = ./skills/create-adr;
       "create-design-doc" = ./skills/create-design-doc;
       "create-prd" = ./skills/create-prd;
+      "create-test-cases" = ./skills/create-test-cases;
       "nix-npm-update" = ./skills/nix-npm-update;
       "tanteki" = tanteki;
     };
