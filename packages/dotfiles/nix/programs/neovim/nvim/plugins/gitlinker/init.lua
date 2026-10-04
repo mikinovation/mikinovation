@@ -3,6 +3,7 @@ local gitlinker = {}
 function gitlinker.config()
 	return {
 		"ruifm/gitlinker.nvim",
+		commit = "cc59f732f3d043b626c8702cb725c82e54d35c25",
 		-- Keep in sync with plugins/gitlinker/keymaps.lua (normal mode) and with
 		-- gitlinker's own default mapping, which also covers visual mode.
 		keys = {

@@ -3,6 +3,7 @@ local quickScope = {}
 function quickScope.config()
 	return {
 		"unblevable/quick-scope",
+		commit = "6cee1d9e0b9ac0fbffeb538d4a5ba9f5628fabbc",
 		event = { "BufReadPost", "BufNewFile" },
 		config = function()
 			-- Set highlight colors that match with tokyonight theme

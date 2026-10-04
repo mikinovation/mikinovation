@@ -3,6 +3,7 @@ local octo = {}
 function octo.config()
 	return {
 		"pwntester/octo.nvim",
+		commit = "af2411604b51cb4a0f3e2de50b1b7cacc2581c48",
 		cmd = "Octo",
 		dependencies = {
 			require("plugins.plenary").config(),

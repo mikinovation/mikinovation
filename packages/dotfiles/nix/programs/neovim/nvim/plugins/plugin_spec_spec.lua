@@ -217,6 +217,22 @@ describe("plugin specs", function()
 				)
 			end)
 
+			it("pins the version with a commit", function()
+				local mod = load_plugin(plugin_name)
+				local spec = mod.config()
+
+				-- The spec is the source of truth for the version, so `:Lazy update`
+				-- cannot move the plugin away from it.
+				assert.is_string(spec.commit, plugin_name .. ": spec.commit must be set")
+				assert.truthy(
+					spec.commit:match("^%x+$") and #spec.commit == 40,
+					plugin_name .. ": spec.commit must be a full 40-character commit hash"
+				)
+				for _, field in ipairs({ "version", "tag", "branch" }) do
+					assert.is_nil(spec[field], plugin_name .. ": use spec.commit instead of spec." .. field)
+				end
+			end)
+
 			it("optional fields have correct types", function()
 				local mod = load_plugin(plugin_name)
 				local spec = mod.config()
@@ -272,6 +288,42 @@ describe("plugin specs", function()
 			end)
 		end)
 	end
+end)
+
+describe("dependencies given by name", function()
+	local original_vim
+
+	setup(function()
+		original_vim = _G.vim
+		setup_vim_mock()
+	end)
+
+	teardown(function()
+		_G.vim = original_vim
+	end)
+
+	it("are pinned by a plugin spec", function()
+		local pinned = {}
+		local specs = {}
+		for _, name in ipairs(lazy_plugin_files) do
+			local spec = load_plugin(name).config()
+			pinned[spec[1]] = true
+			specs[name] = spec
+		end
+
+		-- A dependency written only as "author/repo" carries no commit, so lazy.nvim
+		-- takes the commit from the plugin spec it is merged with.
+		local unpinned = {}
+		for name, spec in pairs(specs) do
+			for _, dep in ipairs(spec.dependencies or {}) do
+				if type(dep) == "string" and not pinned[dep] then
+					table.insert(unpinned, name .. " -> " .. dep)
+				end
+			end
+		end
+
+		assert.same({}, unpinned, "Dependencies without a pinned spec: " .. table.concat(unpinned, ", "))
+	end)
 end)
 
 describe("plugin file coverage", function()

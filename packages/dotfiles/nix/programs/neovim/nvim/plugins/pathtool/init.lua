@@ -3,8 +3,7 @@ local pathtool = {}
 function pathtool.config()
 	return {
 		"mikinovation/pathtool.nvim",
-		-- renovate: datasource=github-releases depName=mikinovation/pathtool.nvim
-		-- commit=a4a97ffee7b105451c5925beb444847cdc468b
+		commit = "eca221c955f84501e63bb7dfcd2eb85ae107d628",
 		-- Keep in sync with plugins/pathtool/keymaps.lua
 		keys = {
 			{ "<leader>pa", desc = "Copy absolute path" },

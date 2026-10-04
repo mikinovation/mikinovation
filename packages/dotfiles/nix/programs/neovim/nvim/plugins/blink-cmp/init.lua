@@ -3,7 +3,7 @@ local blinkCmp = {}
 function blinkCmp.config()
 	return {
 		"saghen/blink.cmp",
-		version = "1.*",
+		commit = "78336bc89ee5365633bcf754d93df01678b5c08f",
 		build = "cargo build --release",
 		event = { "InsertEnter", "CmdlineEnter" },
 		dependencies = {
