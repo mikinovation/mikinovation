@@ -5,7 +5,6 @@ function rest.config()
 		"rest-nvim/rest.nvim",
 		branch = "main",
 		commit = "714d5512aaec5565d55652480c16c26f8d95645d",
-		-- renovate: datasource=git-refs depName=https://github.com/rest-nvim/rest.nvim
 		ft = "http",
 		cmd = "Rest",
 		-- Keep in sync with plugins/rest/keymaps.lua
