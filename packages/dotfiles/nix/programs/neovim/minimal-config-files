@@ -1,0 +1,4 @@
+core.lua
+core_keymaps.lua
+options.lua
+plugins/clipboard/init.lua

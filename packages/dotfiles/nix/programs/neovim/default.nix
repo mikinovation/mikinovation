@@ -1,10 +1,22 @@
 {
   config,
+  lib,
   pkgs,
+  profile,
   vueLanguageServer,
   ...
 }:
 
+let
+  isMinimal = profile == "minimal";
+
+  # The minimal profile deploys only the plugin-free part of the config, with
+  # minimal.lua as init.lua, so Neovim starts without a network connection.
+  # scripts/nvim-smoke-test.sh reads the same list.
+  minimalConfigFiles = lib.filter (file: file != "") (
+    lib.splitString "\n" (builtins.readFile ./minimal-config-files)
+  );
+in
 {
   programs.neovim = {
     enable = true;
@@ -16,7 +28,7 @@
     withPython3 = false;
 
     # Install additional packages that neovim plugins might need
-    extraPackages =
+    extraPackages = lib.optionals (!isMinimal) (
       (with pkgs; [
         # Language servers
         lua-language-server
@@ -42,10 +54,28 @@
       ])
       ++ [
         vueLanguageServer # Vue (volar) — local build to avoid nixpkgs pnpm dep
-      ];
+      ]
+    );
   };
 
-  home.file.".config/nvim".source = ./nvim;
+  # Deploy the config as one directory in both profiles, so the init.lua that
+  # Home Manager generates is shadowed the same way.
+  home.file.".config/nvim".source =
+    if isMinimal then
+      pkgs.linkFarm "nvim-minimal-config" (
+        [
+          {
+            name = "init.lua";
+            path = ./nvim/minimal.lua;
+          }
+        ]
+        ++ map (file: {
+          name = file;
+          path = ./nvim + "/${file}";
+        }) minimalConfigFiles
+      )
+    else
+      ./nvim;
 
   home.sessionVariables = {
     EDITOR = "nvim";

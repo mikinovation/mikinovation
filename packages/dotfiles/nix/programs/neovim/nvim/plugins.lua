@@ -16,9 +16,6 @@ end ---@diagnostic disable-next-line: undefined-field
 
 vim.opt.rtp:prepend(lazypath)
 
--- Load clipboard configuration early
-require("plugins.clipboard").config()
-
 require("lazy").setup({
 	{ "folke/lazy.nvim", commit = LAZY_COMMIT },
 	require("plugins.blink-cmp").config(),
