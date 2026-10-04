@@ -1,7 +1,14 @@
+-- Plugin versions are pinned by the `commit` field of each spec, not by a
+-- lockfile. lazy.nvim itself is pinned here so the bootstrap matches the spec.
+local LAZY_COMMIT = "306a05526ada86a7b30af95c5cc81ffba93fef97"
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-	local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+	local out = vim.fn.system({ "git", "clone", "--filter=blob:none", lazyrepo, lazypath })
+	if vim.v.shell_error == 0 then
+		out = vim.fn.system({ "git", "-C", lazypath, "checkout", LAZY_COMMIT })
+	end
 	if vim.v.shell_error ~= 0 then
 		error("Error cloning lazy.nvim:\n" .. out)
 	end
@@ -9,15 +16,11 @@ end ---@diagnostic disable-next-line: undefined-field
 
 vim.opt.rtp:prepend(lazypath)
 
--- DOTFILES_DIR is exported by the zsh module. Without it lazy.nvim falls back
--- to its default lockfile location.
-local dotfiles_dir = os.getenv("DOTFILES_DIR")
-local lockfile = dotfiles_dir and (dotfiles_dir .. "/nix/programs/neovim/nvim/lazy-lock.json") or nil
-
 -- Load clipboard configuration early
 require("plugins.clipboard").config()
 
 require("lazy").setup({
+	{ "folke/lazy.nvim", commit = LAZY_COMMIT },
 	require("plugins.blink-cmp").config(),
 	require("plugins.comment").config(),
 	require("plugins.copilot").config(),
@@ -71,7 +74,9 @@ require("lazy").setup({
 	require("plugins.open-browser").config(),
 	require("plugins.oil").config(),
 }, {
-	lockfile = lockfile,
+	-- lazy.nvim always writes a lockfile. Keep it out of the read-only config
+	-- directory and the repository; the specs are the source of truth.
+	lockfile = vim.fn.stdpath("state") .. "/lazy-lock.json",
 	performance = {
 		rtp = {
 			-- Built-in runtime plugins that are never used

@@ -3,7 +3,8 @@ local gitConflict = {}
 function gitConflict.config()
 	return {
 		"akinsho/git-conflict.nvim",
-		version = "2.0.0",
+		-- renovate: tag=v2.0.0
+		commit = "bfd9fe6fba9a161fc199771d85996236a0d0faad",
 		event = { "BufReadPost", "BufNewFile" },
 		config = function()
 			require("git-conflict").setup({

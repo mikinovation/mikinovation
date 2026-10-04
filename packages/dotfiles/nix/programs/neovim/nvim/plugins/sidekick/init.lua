@@ -3,6 +3,8 @@ local sidekick = {}
 function sidekick.config()
 	return {
 		"folke/sidekick.nvim",
+		branch = "main",
+		commit = "3d80a47e6375f6d647c9695d3afea6fa1b3275df",
 		event = "VeryLazy",
 		opts = {
 			cli = {

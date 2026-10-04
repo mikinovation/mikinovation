@@ -3,6 +3,8 @@ local yanky = {}
 function yanky.config()
 	return {
 		"gbprod/yanky.nvim",
+		branch = "main",
+		commit = "4b4ddd196526fd3d6fd091d931810f9743e936d3",
 		event = "VeryLazy",
 		opts = {},
 		config = function()

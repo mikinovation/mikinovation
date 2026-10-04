@@ -45,15 +45,7 @@
       ];
   };
 
-  home.file.".config/nvim".source = pkgs.lib.cleanSourceWith {
-    src = ./nvim;
-    filter =
-      path: type:
-      let
-        baseName = baseNameOf path;
-      in
-      baseName != "lazy-lock.json";
-  };
+  home.file.".config/nvim".source = ./nvim;
 
   home.sessionVariables = {
     EDITOR = "nvim";

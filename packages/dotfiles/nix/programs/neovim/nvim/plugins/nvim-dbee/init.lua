@@ -3,6 +3,8 @@ local nvimDbee = {}
 function nvimDbee.config()
 	return {
 		"kndndrj/nvim-dbee",
+		branch = "master",
+		commit = "dda517694889a5d238d7aa407403984da9f80cc0",
 		cmd = "Dbee",
 		-- Keep in sync with plugins/nvim-dbee/keymaps.lua
 		keys = {

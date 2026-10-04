@@ -82,7 +82,7 @@ jobs:
           path: |
             ~/.local/share/nvim/lazy
             ~/.local/share/nvim/lazy-rocks
-          key: nvim-plugins-${{ hashFiles('packages/dotfiles/nix/programs/neovim/nvim/plugins.lua', 'packages/dotfiles/nix/programs/neovim/nvim/plugins/*.lua') }}
+          key: nvim-plugins-${{ hashFiles('packages/dotfiles/nix/programs/neovim/nvim/plugins.lua', 'packages/dotfiles/nix/programs/neovim/nvim/plugins/**/*.lua') }}
           restore-keys: |
             nvim-plugins-
 

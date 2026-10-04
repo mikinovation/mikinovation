@@ -3,6 +3,8 @@ local nvimTree = {}
 function nvimTree.config()
 	return {
 		"nvim-tree/nvim-tree.lua",
+		branch = "master",
+		commit = "478c69c0fe253caea88de9c5e138bfa77395a59a",
 		cmd = { "NvimTreeToggle", "NvimTreeOpen", "NvimTreeFindFile", "NvimTreeCollapse" },
 		-- Keep in sync with plugins/nvim-tree/keymaps.lua
 		keys = {
