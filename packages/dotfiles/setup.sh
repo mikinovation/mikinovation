@@ -12,7 +12,7 @@ usage() {
 DOTFILES_PROFILE is required. Set it to "full" or "minimal".
 
   DOTFILES_PROFILE=full ./setup.sh      # every module (default environment)
-  DOTFILES_PROFILE=minimal ./setup.sh   # zsh, sheldon, git, claude-code, nodejs, plugin-free neovim only
+  DOTFILES_PROFILE=minimal ./setup.sh   # zsh, sheldon, git, claude-code, nodejs, neovim with orgmode only
 EOF
 }
 

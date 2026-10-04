@@ -10,9 +10,9 @@
 let
   isMinimal = profile == "minimal";
 
-  # The minimal profile deploys only the plugin-free part of the config, with
-  # minimal.lua as init.lua, so Neovim starts without a network connection.
-  # scripts/nvim-smoke-test.sh reads the same list.
+  # The minimal profile deploys only the built-in part of the config and the
+  # specs of the note and task plugins (nvim-orgmode, org-roam.nvim), with
+  # minimal.lua as init.lua. scripts/nvim-smoke-test.sh reads the same list.
   minimalConfigFiles = lib.filter (file: file != "") (
     lib.splitString "\n" (builtins.readFile ./minimal-config-files)
   );
@@ -28,7 +28,12 @@ in
     withPython3 = false;
 
     # Install additional packages that neovim plugins might need
-    extraPackages = lib.optionals (!isMinimal) (
+    extraPackages = [
+      # nvim-orgmode compiles its tree-sitter parser on first start (both
+      # profiles); nvim-treesitter also uses it in the full profile.
+      (if pkgs.stdenv.hostPlatform.isDarwin then pkgs.clang else pkgs.gcc)
+    ]
+    ++ lib.optionals (!isMinimal) (
       (with pkgs; [
         # Language servers
         lua-language-server
@@ -41,7 +46,6 @@ in
 
         # Tree-sitter parser build tools
         tree-sitter
-        (if stdenv.hostPlatform.isDarwin then clang else gcc)
 
         # Lua runtime and package manager (required for luarocks plugin deps)
         lua5_1

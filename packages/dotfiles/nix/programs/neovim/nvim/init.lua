@@ -5,7 +5,10 @@ local config_path = vim.fn.stdpath("config")
 package.path = package.path .. ";" .. config_path .. "/?.lua;" .. config_path .. "/?/init.lua"
 
 require("core").setup()
-require("plugins")
+
+local plugins = require("plugins")
+plugins.setup(plugins.full_specs())
+
 require("lsp")
 require("keymaps")
 

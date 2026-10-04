@@ -1,4 +1,10 @@
 core.lua
 core_keymaps.lua
 options.lua
+plugins.lua
 plugins/clipboard/init.lua
+plugins/orgmode/init.lua
+plugins/orgmode/actions.lua
+plugins/orgmode/keymaps.lua
+plugins/orgmode/workflow.lua
+plugins/org-roam/init.lua
