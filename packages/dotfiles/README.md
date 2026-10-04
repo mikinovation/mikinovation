@@ -78,13 +78,25 @@ the full environment.
 | Profile | Contents |
 | --- | --- |
 | `full` | Every module. The normal day-to-day environment. |
-| `minimal` | zsh, sheldon, git, claude-code with its agent skills, Node.js, core CLI tools. |
+| `minimal` | zsh, sheldon, git, claude-code with its agent skills, Node.js, core CLI tools, Neovim limited to org notes and tasks. |
 
 The core CLI tools in `minimal` are zoxide, fzf, ripgrep, ghq, jq, and curl.
 
+Neovim in `minimal` is still the default editor (`EDITOR`/`VISUAL`, `vi`/`vim`
+aliases). It loads the built-in part of the config (options, the keymaps that
+need no plugin, the WSL clipboard) and only two plugins: nvim-orgmode and
+org-roam.nvim, from the same pinned specs as `full`. `minimal.lua` is deployed
+as `init.lua` together with the files listed in
+`nix/programs/neovim/minimal-config-files`. The first start needs a network
+connection to fetch them, and a C compiler (installed by the module) builds the
+Org tree-sitter parser. There are no language servers, and the features that
+rely on other tools are unavailable: Markdown copy (pandoc), note type
+completion (blink.cmp), and the untagged-notes picker (telescope).
+
 Everything outside that list is skipped:
 
-- neovim and its language servers
+- Neovim plugins other than nvim-orgmode and org-roam.nvim, language servers,
+  and the other Neovim tooling
 - herdr
 - the ruby/rust/python toolchains, and the Node.js tooling beyond node itself
   (yarn, pnpm, typescript, eslint, prettier)

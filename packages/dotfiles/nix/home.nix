@@ -55,10 +55,10 @@ in
     ./programs/claude-code
     ./programs/nodejs
     ./programs/agent-skills
+    ./programs/neovim
   ]
   ++ lib.optionals (!isMinimal) [
     ./programs/herdr
-    ./programs/neovim
     ./programs/emacs
     ./programs/ruby
     ./programs/rust
