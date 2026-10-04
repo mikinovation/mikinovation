@@ -3,6 +3,7 @@ local diffview = {}
 function diffview.config()
 	return {
 		"sindrets/diffview.nvim",
+		branch = "main",
 		commit = "4516612fe98ff56ae0415a259ff6361a89419b0a",
 		cmd = {
 			"DiffviewOpen",

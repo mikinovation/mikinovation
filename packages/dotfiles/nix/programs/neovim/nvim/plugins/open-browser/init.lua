@@ -3,6 +3,7 @@ local openBrowser = {}
 function openBrowser.config()
 	return {
 		"tyru/open-browser.vim",
+		branch = "master",
 		commit = "7d4c1d8198e889d513a030b5a83faa07606bac27",
 		-- Keep in sync with plugins/open-browser/keymaps.lua
 		keys = {

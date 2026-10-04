@@ -3,6 +3,7 @@ local comment = {}
 function comment.config()
 	return {
 		"numToStr/Comment.nvim",
+		branch = "master",
 		commit = "e30b7f2008e52442154b66f7c519bfd2f1e32acb",
 		event = { "BufReadPost", "BufNewFile" },
 		-- pre_hook needs ts_context_commentstring loaded first

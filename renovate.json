@@ -16,5 +16,57 @@
     "lockFileMaintenance": {
       "enabled": true
     }
-  }
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Neovim plugins that follow a branch",
+      "managerFilePatterns": [
+        "/^packages/dotfiles/nix/programs/neovim/nvim/plugins/.+/init\\.lua$/"
+      ],
+      "matchStrings": [
+        "\"(?<depName>[\\w.-]+/[\\w.-]+)\",\\n\\s*branch = \"(?<currentValue>[^\"]+)\",\\n\\s*commit = \"(?<currentDigest>[0-9a-f]{40})\""
+      ],
+      "datasourceTemplate": "git-refs",
+      "packageNameTemplate": "https://github.com/{{{depName}}}"
+    },
+    {
+      "customType": "regex",
+      "description": "Neovim plugins that follow release tags",
+      "managerFilePatterns": [
+        "/^packages/dotfiles/nix/programs/neovim/nvim/plugins/.+/init\\.lua$/"
+      ],
+      "matchStrings": [
+        "\"(?<depName>[\\w.-]+/[\\w.-]+)\",\\n\\s*-- renovate: tag=(?<currentValue>\\S+)\\n\\s*commit = \"(?<currentDigest>[0-9a-f]{40})\""
+      ],
+      "datasourceTemplate": "github-tags"
+    },
+    {
+      "customType": "regex",
+      "description": "lazy.nvim bootstrap commit",
+      "managerFilePatterns": [
+        "/^packages/dotfiles/nix/programs/neovim/nvim/plugins\\.lua$/"
+      ],
+      "matchStrings": [
+        "local LAZY_COMMIT = \"(?<currentDigest>[0-9a-f]{40})\""
+      ],
+      "depNameTemplate": "folke/lazy.nvim",
+      "currentValueTemplate": "main",
+      "datasourceTemplate": "git-refs",
+      "packageNameTemplate": "https://github.com/folke/lazy.nvim"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Neovim plugins: one PR a week",
+      "matchFileNames": [
+        "packages/dotfiles/nix/programs/neovim/nvim/**"
+      ],
+      "groupName": "neovim plugins",
+      "separateMajorMinor": false,
+      "schedule": [
+        "before 5am on monday"
+      ]
+    }
+  ]
 }

@@ -3,6 +3,7 @@ local pathtool = {}
 function pathtool.config()
 	return {
 		"mikinovation/pathtool.nvim",
+		branch = "main",
 		commit = "eca221c955f84501e63bb7dfcd2eb85ae107d628",
 		-- Keep in sync with plugins/pathtool/keymaps.lua
 		keys = {

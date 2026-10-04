@@ -3,6 +3,7 @@ local tokyonight = {}
 function tokyonight.config()
 	return { -- You can easily change to a different colorscheme.
 		"folke/tokyonight.nvim",
+		branch = "main",
 		commit = "cdc07ac78467a233fd62c493de29a17e0cf2b2b6",
 		priority = 1000, -- Make sure to load this before all the other start plugins.
 		init = function()

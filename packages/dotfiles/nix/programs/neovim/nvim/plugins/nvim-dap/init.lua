@@ -3,6 +3,7 @@ local nvimDap = {}
 function nvimDap.config()
 	return {
 		"mfussenegger/nvim-dap",
+		branch = "master",
 		commit = "cfa2d58f4537aca6ca83e2de1a0d9f1491121264",
 		dependencies = {
 			require("plugins.nvim-dap-virtual-text").config(),

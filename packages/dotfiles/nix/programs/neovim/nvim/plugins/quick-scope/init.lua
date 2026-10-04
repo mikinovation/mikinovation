@@ -3,6 +3,7 @@ local quickScope = {}
 function quickScope.config()
 	return {
 		"unblevable/quick-scope",
+		branch = "master",
 		commit = "6cee1d9e0b9ac0fbffeb538d4a5ba9f5628fabbc",
 		event = { "BufReadPost", "BufNewFile" },
 		config = function()

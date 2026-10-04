@@ -3,6 +3,7 @@ local whichKey = {}
 function whichKey.config()
 	return { -- Useful plugin to show you pending keybinds.
 		"folke/which-key.nvim",
+		branch = "main",
 		commit = "3aab2147e74890957785941f0c1ad87d0a44c15a",
 		event = "VimEnter", -- Sets the loading event to 'VimEnter'
 		opts = {

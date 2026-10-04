@@ -5,6 +5,7 @@ local ROAM_DIRECTORY = "~/ghq/github.com/mikinovation/mikinovation/roam"
 function orgRoam.config()
 	return {
 		"chipsenkbeil/org-roam.nvim",
+		-- renovate: tag=0.2.0
 		commit = "34d1d113cd139ea903125305310be3d7c1067484",
 		dependencies = {
 			"nvim-orgmode/orgmode",
