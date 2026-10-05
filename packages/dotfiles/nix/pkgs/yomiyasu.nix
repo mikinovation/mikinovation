@@ -7,7 +7,7 @@
 
 stdenvNoCC.mkDerivation {
   pname = "yomiyasu";
-  version = "0-unstable-2026-10-05";
+  version = "0-unstable-2026-10-04";
 
   src = fetchFromGitHub {
     owner = "nanaism";
