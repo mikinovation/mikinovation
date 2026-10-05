@@ -99,6 +99,7 @@
           chromeDevtoolsMcp = pkgs.callPackage ./pkgs/chrome-devtools-mcp.nix { };
           headroom = pkgs.callPackage ./pkgs/headroom.nix { };
           tanteki = pkgs.callPackage ./pkgs/tanteki.nix { };
+          yomiyasu = pkgs.callPackage ./pkgs/yomiyasu.nix { };
           checkTestIds = pkgs.callPackage ./pkgs/check-test-ids.nix { };
           herdr = inputs.herdr.packages.${system}.default;
         };

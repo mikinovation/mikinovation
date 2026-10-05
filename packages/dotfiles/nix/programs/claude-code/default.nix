@@ -7,6 +7,7 @@
   chromeDevtoolsMcp,
   headroom,
   tanteki,
+  yomiyasu,
   checkTestIds,
   dotfilesDir,
   ...
@@ -246,9 +247,11 @@
       "create-plan" = ./skills/create-plan;
       "create-prd" = ./skills/create-prd;
       "create-test-cases" = ./skills/create-test-cases;
+      "japanese-review" = ./skills/japanese-review;
       "nix-npm-update" = ./skills/nix-npm-update;
       "renovate-pr-summary" = ./skills/renovate-pr-summary;
       "tanteki" = tanteki;
+      "yomiyasu" = yomiyasu;
     };
 
     context = ./CLAUDE.md;
