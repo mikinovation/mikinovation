@@ -36,8 +36,7 @@ Machines with the dotfiles already have the skills under their plain names, so
 installing the plugins there shows each skill twice.
 
 The commands write the following settings to the settings file of the scope.
-Adding them by hand has the same effect. This repository already has them in
-`.claude/settings.json`.
+Adding them by hand has the same effect.
 
 ```json
 {
@@ -57,3 +56,14 @@ Adding them by hand has the same effect. This repository already has them in
 ```
 
 Plugin skills are namespaced, for example `/mikinovation-skills:create-prd`.
+
+This repository itself does not install `mikinovation-skills` as a plugin.
+Instead, `.claude/skills/` holds a symlink to each skill under `skills/`, so
+Claude Code loads them as project skills under their plain names, for example
+`/create-prd`, and picks up edits without reinstalling. `.claude/settings.json`
+enables only the plugins for the skills they call. When adding a skill, add
+its symlink too:
+
+```sh
+ln -s ../../packages/claude-skills/skills/<name> .claude/skills/<name>
+```

@@ -8,7 +8,6 @@
     }
   },
   "enabledPlugins": {
-    "mikinovation-skills@mikinovation": true,
     "tanteki@mikinovation": true,
     "yomiyasu@mikinovation": true,
     "mattpocock-skills@mikinovation": true,
