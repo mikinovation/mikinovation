@@ -1,0 +1,16 @@
+{
+  "extraKnownMarketplaces": {
+    "mikinovation": {
+      "source": {
+        "source": "github",
+        "repo": "mikinovation/mikinovation"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "mikinovation-skills@mikinovation": true,
+    "tanteki@mikinovation": true,
+    "yomiyasu@mikinovation": true,
+    "mattpocock-skills@mikinovation": true
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "mikinovation",
+  "owner": {
+    "name": "mikinovation"
+  },
+  "description": "Nix で配置している Claude Code のスキルを、Nix のない環境（スマホやブラウザの Claude Code）でも使うためのマーケットプレイス",
+  "plugins": [
+    {
+      "name": "mikinovation-skills",
+      "description": "create-prd、japanese-review などの文書作成スキル",
+      "source": "./packages/dotfiles/nix/programs/claude-code",
+      "strict": false
+    },
+    {
+      "name": "tanteki",
+      "description": "日本語の業務・技術文書を執筆・推敲するスキル（japanese-review が使う）",
+      "source": {
+        "source": "github",
+        "repo": "iwasa-kosui/tanteki"
+      },
+      "strict": false
+    },
+    {
+      "name": "yomiyasu",
+      "description": "AI が生成した日本語を読みやすく整えるスキル（japanese-review が使う）",
+      "source": {
+        "source": "github",
+        "repo": "nanaism/yomiyasu"
+      }
+    },
+    {
+      "name": "mattpocock-skills",
+      "description": "grilling を含む Matt Pocock のスキル（create-prd が使う）",
+      "source": {
+        "source": "github",
+        "repo": "mattpocock/skills"
+      }
+    }
+  ]
+}

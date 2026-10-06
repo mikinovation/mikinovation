@@ -202,6 +202,34 @@ rebuilds the Home Manager environment. For a shell before the full build
 finishes, run
 `DOTFILES_PROFILE=minimal ./setup.sh` first. Re-run with `full` afterwards.
 
+### Claude Code skills without Nix
+
+Claude Code on the web and mobile cannot read the skills that Home Manager
+deploys to `~/.claude/skills`. The repository root publishes them as the
+`mikinovation` plugin marketplace (`.claude-plugin/marketplace.json`), together
+with the skills they call (tanteki, yomiyasu, and mattpocock/skills for
+`grilling`). This repository enables them in `.claude/settings.json`. To use
+them in another repository, add the same settings to its
+`.claude/settings.json`:
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "mikinovation": {
+      "source": { "source": "github", "repo": "mikinovation/mikinovation" }
+    }
+  },
+  "enabledPlugins": {
+    "mikinovation-skills@mikinovation": true,
+    "tanteki@mikinovation": true,
+    "yomiyasu@mikinovation": true,
+    "mattpocock-skills@mikinovation": true
+  }
+}
+```
+
+Plugin skills are namespaced, for example `/mikinovation-skills:create-prd`.
+
 ## lint, format, test
 
 `nix run ./nix#lint` runs both luacheck and secretlint. secretlint needs

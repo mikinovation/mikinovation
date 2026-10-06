@@ -7,6 +7,8 @@ description: 日本語の文書を tanteki と yomiyasu の組で執筆・レビ
 
 日本語の文書を、tanteki → yomiyasu → textlint の再実行の順に通す。
 
+tanteki と yomiyasu をプラグインとして導入した環境では、`tanteki:tanteki`、`yomiyasu:yomiyasu` のように名前空間の付いた名前で呼ぶ。
+
 二つのスキルは役割が違う。
 
 | スキル | 役割 |
@@ -78,7 +80,7 @@ yomiyasu が文書を書き換えたため、tanteki の textlint だけを再�
 "$(readlink -f <tanteki のスキルルート>/scripts/lint.mjs)" --type <手順1で控えた --type> <文書の絶対パス>
 ```
 
-tanteki のスキルルートは、tanteki の `SKILL.md` があるディレクトリである。Nix で配置した環境では `~/.claude/skills/tanteki` にある。`scripts/lint.mjs` は symlink 経由で呼ぶと検査せずに終了コード0を返すため、`readlink -f` で解決したパスで実行する。tanteki の `SKILL.md` が `node` を付けて実行するよう指示している環境では、その指示に従う。
+tanteki のスキルルートは、tanteki の `SKILL.md` があるディレクトリである。Nix で配置した環境では `~/.claude/skills/tanteki` にある。プラグインとして導入した環境では、tanteki を呼んだときに示されるスキルのディレクトリを使う。`scripts/lint.mjs` は symlink 経由で呼ぶと検査せずに終了コード0を返すため、`readlink -f` で解決したパスで実行する。tanteki の `SKILL.md` が `node` を付けて実行するよう指示している環境では、その指示に従う。
 
 手順1で控えた指摘と比べ、yomiyasu の後に新しく出た指摘だけを直す。手順1から残っている指摘は直さず、そのまま結果に書く。
 
