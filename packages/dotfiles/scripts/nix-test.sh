@@ -18,11 +18,11 @@ if [ "$(uname -s)" = "Darwin" ]; then
 else
   echo ""
   echo "=== Dry-run home-manager build ==="
-  nix build "$FLAKE_DIR#homeConfigurations.mikinovation.activationPackage" --dry-run
+  nix build "$FLAKE_DIR#homeConfigurations.linux.activationPackage" --dry-run
 
   echo ""
   echo "=== Dry-run home-manager build (minimal) ==="
-  nix build "$FLAKE_DIR#homeConfigurations.mikinovation-minimal.activationPackage" --dry-run
+  nix build "$FLAKE_DIR#homeConfigurations.linux-minimal.activationPackage" --dry-run
 
   echo ""
   echo "=== Dry-run NixOS configuration build ==="

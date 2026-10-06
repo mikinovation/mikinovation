@@ -68,6 +68,18 @@ DOTFILES_PROFILE=full ./setup.sh
 - macOS: applies Home Manager as a module via `sudo darwin-rebuild switch`
 - Other Linux: applies via standalone Home Manager
 
+The flake does not hardcode the OS user name. It reads the user to configure
+from the environment at evaluation time, so the same outputs work for any user:
+
+1. `DOTFILES_USER`, if set (explicit override)
+2. `SUDO_USER`, the user who ran `sudo nixos-rebuild` / `sudo darwin-rebuild`
+3. `USER`, the current user (standalone Home Manager)
+
+`root` is skipped. If none of them is available, for example in pure evaluation
+such as `nix flake check` and CI, it falls back to `nixos`, the NixOS-WSL default
+user. Reading the environment needs `--impure`, which `setup.sh` passes. Pass it
+yourself when you run the switch commands by hand.
+
 #### Profiles
 
 `DOTFILES_PROFILE` is required. The script exits with an error if it is unset.
@@ -125,13 +137,13 @@ mkdir -p ~/.config/nix
 ln -s ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles/nix/nix.conf ~/.config/nix/nix.conf
 
 # Deploy using Home Manager (standalone)
-nix run home-manager/master -- switch --flake ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles/nix#mikinovation
+nix run home-manager/master -- switch --impure --flake ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles/nix#linux
 
 # Or for NixOS
-sudo nixos-rebuild switch --flake ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles/nix#nixos
+sudo nixos-rebuild switch --impure --flake ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles/nix#nixos
 
 # Or for macOS
-sudo darwin-rebuild switch --flake ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles/nix#mac
+sudo darwin-rebuild switch --impure --flake ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles/nix#mac
 ```
 
 ### Migrating from the old mikinovation/dotfiles checkout
@@ -155,7 +167,7 @@ The standalone deploy installs the `home-manager` command itself. After the firs
 deploy, use it instead of `nix run home-manager/master --`:
 
 ```bash
-home-manager switch --flake ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles/nix#mikinovation
+home-manager switch --impure --flake ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles/nix#linux
 ```
 
 Re-running the setup script works as well:
