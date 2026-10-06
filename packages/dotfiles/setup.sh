@@ -49,30 +49,31 @@ setup_nix_config() {
   ln -snfv "$DOTFILES_DIR/nix/flake.lock" "$NIX_CONFIG_DIR/flake.lock"
 }
 
+# The flake reads the OS user name from the environment (SUDO_USER under sudo,
+# USER otherwise) instead of hardcoding it, so every rebuild passes --impure.
+
 # Deploy NixOS system configuration
 deploy_nixos() {
   local hostname
   hostname="$(hostname)"
   echo "Deploying NixOS system configuration..."
-  sudo nixos-rebuild switch -L --flake "$DOTFILES_DIR/nix#${hostname}${FLAKE_SUFFIX}"
+  sudo nixos-rebuild switch -L --impure --flake "$DOTFILES_DIR/nix#${hostname}${FLAKE_SUFFIX}"
 }
 
 # Deploy nix-darwin system configuration (macOS)
 deploy_darwin() {
   echo "Deploying nix-darwin system configuration..."
   if command -v darwin-rebuild >/dev/null 2>&1; then
-    sudo darwin-rebuild switch -L --flake "$DOTFILES_DIR/nix#mac${FLAKE_SUFFIX}"
+    sudo darwin-rebuild switch -L --impure --flake "$DOTFILES_DIR/nix#mac${FLAKE_SUFFIX}"
   else
-    sudo nix run nix-darwin -- switch -L --flake "$DOTFILES_DIR/nix#mac${FLAKE_SUFFIX}"
+    sudo nix run nix-darwin -- switch -L --impure --flake "$DOTFILES_DIR/nix#mac${FLAKE_SUFFIX}"
   fi
 }
 
 # Deploy configurations using Home Manager (standalone, for non-NixOS)
 deploy_home_manager() {
-  local username
-  username="$(id -un)"
   echo "Deploying configurations with Home Manager..."
-  nix run home-manager/master -- switch -L --flake "$DOTFILES_DIR/nix#${username}${FLAKE_SUFFIX}"
+  DOTFILES_USER="$(id -un)" nix run home-manager/master -- switch -L --impure --flake "$DOTFILES_DIR/nix#linux${FLAKE_SUFFIX}"
 }
 
 main() {

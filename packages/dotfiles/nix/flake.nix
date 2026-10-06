@@ -74,6 +74,27 @@
       ];
       forAllSystems = nixpkgs.lib.genAttrs systems;
 
+      # OS user to configure. It is read from the environment instead of being
+      # written here, so the same outputs work for any user name. Reading the
+      # environment requires `--impure` (setup.sh passes it):
+      #   - DOTFILES_USER: explicit override
+      #   - SUDO_USER: the invoking user under `sudo nixos-rebuild` / `sudo darwin-rebuild`
+      #   - USER: the current user for standalone Home Manager
+      # Pure evaluation (nix flake check, CI) sees none of them and falls back to
+      # "nixos", the NixOS-WSL default user. "root" is skipped so a root shell
+      # never configures root as the regular user.
+      username =
+        let
+          candidates = builtins.filter (name: name != "" && name != "root") (
+            map builtins.getEnv [
+              "DOTFILES_USER"
+              "SUDO_USER"
+              "USER"
+            ]
+          );
+        in
+        if candidates == [ ] then "nixos" else builtins.head candidates;
+
       pkgsFor =
         system:
         import nixpkgs {
@@ -154,7 +175,6 @@
 
       mkHomeConfig =
         {
-          username,
           system,
           profile,
         }:
@@ -167,7 +187,7 @@
         };
 
       mkNixosConfig =
-        username: hostname: profile:
+        hostname: profile:
         nixpkgs.lib.nixosSystem {
           system = linuxSystem;
           specialArgs = {
@@ -191,7 +211,7 @@
         };
 
       mkDarwinConfig =
-        username: hostname: profile:
+        hostname: profile:
         nix-darwin.lib.darwinSystem {
           system = darwinSystem;
           specialArgs = {
@@ -217,8 +237,8 @@
     {
       # NixOS system configuration (WSL)
       nixosConfigurations = {
-        nixos = mkNixosConfig "nixos" "nixos" "full";
-        nixos-minimal = mkNixosConfig "nixos" "nixos" "minimal";
+        nixos = mkNixosConfig "nixos" "full";
+        nixos-minimal = mkNixosConfig "nixos" "minimal";
 
         wsl-bootstrap = nixpkgs.lib.nixosSystem {
           system = linuxSystem;
@@ -231,29 +251,17 @@
 
       # nix-darwin system configuration (macOS)
       darwinConfigurations = {
-        mac = mkDarwinConfig "mikinovation" "mac" "full";
-        mac-minimal = mkDarwinConfig "mikinovation" "mac" "minimal";
+        mac = mkDarwinConfig "mac" "full";
+        mac-minimal = mkDarwinConfig "mac" "minimal";
       };
 
       # Home Manager configuration (standalone, non-NixOS Linux)
       homeConfigurations = {
-        mikinovation = mkHomeConfig {
-          username = "mikinovation";
+        linux = mkHomeConfig {
           system = linuxSystem;
           profile = "full";
         };
-        nixos = mkHomeConfig {
-          username = "nixos";
-          system = linuxSystem;
-          profile = "full";
-        };
-        mikinovation-minimal = mkHomeConfig {
-          username = "mikinovation";
-          system = linuxSystem;
-          profile = "minimal";
-        };
-        nixos-minimal = mkHomeConfig {
-          username = "nixos";
+        linux-minimal = mkHomeConfig {
           system = linuxSystem;
           profile = "minimal";
         };
@@ -265,7 +273,7 @@
       # Nix flake checks
       checks = {
         ${linuxSystem} = {
-          home-manager-build = self.homeConfigurations.mikinovation.activationPackage;
+          home-manager-build = self.homeConfigurations.linux.activationPackage;
           nixos-build = self.nixosConfigurations.nixos.config.system.build.toplevel;
         };
         ${darwinSystem} = {
