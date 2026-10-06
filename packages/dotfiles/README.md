@@ -202,6 +202,13 @@ rebuilds the Home Manager environment. For a shell before the full build
 finishes, run
 `DOTFILES_PROFILE=minimal ./setup.sh` first. Re-run with `full` afterwards.
 
+### Claude Code skills
+
+General-purpose skills such as `create-prd` live in
+[`packages/claude-skills`](../claude-skills). Home Manager deploys them to
+`~/.claude/skills` together with the dotfiles-specific skills in
+`nix/programs/claude-code/skills`.
+
 ## lint, format, test
 
 `nix run ./nix#lint` runs both luacheck and secretlint. secretlint needs

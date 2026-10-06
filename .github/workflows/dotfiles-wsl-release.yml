@@ -38,17 +38,23 @@ jobs:
 
       - name: Stage embedded dotfiles
         run: |
-          # Only packages/dotfiles is embedded; the rest of the monorepo (notes,
-          # apps) must not end up in the public image.
-          dest=/tmp/extra-files/home/nixos/ghq/github.com/mikinovation/mikinovation/packages/dotfiles
-          mkdir -p "$dest"
-          cp -a . "$dest"
+          # Only packages/dotfiles and packages/claude-skills are embedded; the
+          # rest of the monorepo (notes, apps) must not end up in the public
+          # image. The flake reads packages/claude-skills from outside its own
+          # directory, which Nix allows only inside a git tree, so the staged
+          # files are added to a fresh git repository.
+          root=/tmp/extra-files/home/nixos/ghq/github.com/mikinovation/mikinovation
+          mkdir -p "$root/packages"
+          cp -a . "$root/packages/dotfiles"
+          cp -a ../claude-skills "$root/packages/claude-skills"
+          git -C "$root" init -q
+          git -C "$root" add -A
 
       - name: Build nixos.wsl
         run: |
           sudo "$BUILDER/bin/nixos-wsl-tarball-builder" \
             --extra-files /tmp/extra-files \
-            --chown home/nixos/ghq/github.com/mikinovation/mikinovation/packages/dotfiles 1000:1000 \
+            --chown home/nixos/ghq/github.com/mikinovation/mikinovation 1000:1000 \
             nixos.wsl
           ls -lh nixos.wsl
           df -h /
@@ -60,7 +66,7 @@ jobs:
           tag="wsl-release-$(date -u +%Y%m%d-%H%M%S)"
           gh release create "$tag" nixos.wsl \
             --title "NixOS WSL release image ($tag)" \
-            --notes "Automatically built by GitHub Actions from commit ${GITHUB_SHA}, from a clean checkout of packages/dotfiles only. Contains no local machine data or other project data. This is a minimal bootstrap image (nixosConfigurations.wsl-bootstrap) -- it does not include the Home Manager environment, but packages/dotfiles is embedded (as plain files, not a git checkout) at ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles. Recovery steps: 1) wsl --import <name> <install-dir> nixos.wsl; 2) inside the new distro, cd ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles && DOTFILES_PROFILE=full ./setup.sh to rebuild the full environment via nixos-rebuild (or DOTFILES_PROFILE=minimal for a shell-only build first)."
+            --notes "Automatically built by GitHub Actions from commit ${GITHUB_SHA}, from a clean checkout of packages/dotfiles and packages/claude-skills only. Contains no local machine data or other project data. This is a minimal bootstrap image (nixosConfigurations.wsl-bootstrap) -- it does not include the Home Manager environment, but packages/dotfiles and packages/claude-skills are embedded (in a fresh git repository with no commits or remote, not a clone) at ~/ghq/github.com/mikinovation/mikinovation. Recovery steps: 1) wsl --import <name> <install-dir> nixos.wsl; 2) inside the new distro, cd ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles && DOTFILES_PROFILE=full ./setup.sh to rebuild the full environment via nixos-rebuild (or DOTFILES_PROFILE=minimal for a shell-only build first)."
 
       - name: Delete release assets older than 1 month
         env:

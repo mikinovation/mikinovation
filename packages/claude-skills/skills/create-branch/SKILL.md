@@ -1,9 +1,9 @@
 ---
-name: commit-commands:create-branch
+name: create-branch
 description: ブランチを作成するスキル。feat, fix, chore等の一般的なprefixを選択するか、カスタムprefixを自由入力し、現在のブランチから新しいブランチを作成する。「ブランチを作って」「新しいブランチ」「create branch」「/create-branch」「branch作成」などで使用。
 ---
 
-# commit-commands:create-branch: ブランチ作成スキル
+# create-branch: ブランチ作成スキル
 
 現在のブランチから、`${PREFIX}/${BRANCH_DESC}` 形式の新しいブランチを作成します。
 

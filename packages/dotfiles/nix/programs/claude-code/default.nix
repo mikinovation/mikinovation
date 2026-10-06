@@ -238,18 +238,18 @@
     };
 
     skills = {
-      "commit-commands:create-branch" = ./skills/commit-commands/create-branch;
-      "commit-commands:create-pr" = ./skills/commit-commands/create-pr;
-      "code-to-adr" = ./skills/code-to-adr;
-      "code-to-prd" = ./skills/code-to-prd;
-      "create-adr" = ./skills/create-adr;
-      "create-design-doc" = ./skills/create-design-doc;
-      "create-plan" = ./skills/create-plan;
-      "create-prd" = ./skills/create-prd;
-      "create-test-cases" = ./skills/create-test-cases;
-      "japanese-review" = ./skills/japanese-review;
+      "code-to-adr" = ../../../../claude-skills/skills/code-to-adr;
+      "code-to-prd" = ../../../../claude-skills/skills/code-to-prd;
+      "create-adr" = ../../../../claude-skills/skills/create-adr;
+      "create-branch" = ../../../../claude-skills/skills/create-branch;
+      "create-design-doc" = ../../../../claude-skills/skills/create-design-doc;
+      "create-plan" = ../../../../claude-skills/skills/create-plan;
+      "create-pr" = ../../../../claude-skills/skills/create-pr;
+      "create-prd" = ../../../../claude-skills/skills/create-prd;
+      "create-test-cases" = ../../../../claude-skills/skills/create-test-cases;
+      "japanese-review" = ../../../../claude-skills/skills/japanese-review;
       "nix-npm-update" = ./skills/nix-npm-update;
-      "renovate-pr-summary" = ./skills/renovate-pr-summary;
+      "renovate-pr-summary" = ../../../../claude-skills/skills/renovate-pr-summary;
       "tanteki" = tanteki;
       "yomiyasu" = yomiyasu;
     };

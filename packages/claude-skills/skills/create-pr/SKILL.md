@@ -1,9 +1,9 @@
 ---
-name: commit-commands:create-pr
+name: create-pr
 description: プルリクエストを作成するスキル。commit-push-pr の流れ（ブランチ作成→コミット→push→gh pr create）を踏襲し、PRのタイトルと本文を書く言語を選択させ、リポジトリのPRテンプレートに沿って書いた本文を tanteki と yomiyasu の組（japanese-review）でレビューし、下書きを確認してから Draft PR を作成する。「PRを作って」「プルリクを作成」「create pr」「/create-pr」「PR作成」などで使用。
 ---
 
-# commit-commands:create-pr: プルリクエスト作成スキル
+# create-pr: プルリクエスト作成スキル
 
 commit-commands の `/commit-push-pr` と同じ流れ（ブランチ作成、コミット、push、`gh pr create`）で、現在のブランチから PR を作成する。`/commit-push-pr` との違いは次の4点である。
 
@@ -11,6 +11,8 @@ commit-commands の `/commit-push-pr` と同じ流れ（ブランチ作成、コ
 - リポジトリの PR テンプレートに沿って本文を書く
 - 作成前に下書きを tanteki と yomiyasu の組でレビューし、ユーザーの承認を得てから作成する
 - 常に Draft PR として作成する
+
+このスキルが呼ぶスキルをプラグインとして導入した環境では、`mikinovation-skills:create-branch`、`commit-commands:commit` のように名前空間の付いた名前で呼ぶ。
 
 ## 手順
 
@@ -40,7 +42,7 @@ gh pr view --json url,state 2>/dev/null
 
 ### 3. ブランチを用意する
 
-現在のブランチが `BASE_BRANCH` の場合は、`Skill` ツールで `commit-commands:create-branch` を呼んでブランチを作成する。それ以外のブランチでは何もしない。
+現在のブランチが `BASE_BRANCH` の場合は、`Skill` ツールで `create-branch` を呼んでブランチを作成する。それ以外のブランチでは何もしない。
 
 ### 4. 未コミットの変更をコミットする
 
