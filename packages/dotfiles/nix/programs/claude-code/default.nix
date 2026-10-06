@@ -238,13 +238,13 @@
     };
 
     skills = {
-      "commit-commands:create-branch" = ./skills/commit-commands/create-branch;
-      "commit-commands:create-pr" = ./skills/commit-commands/create-pr;
       "code-to-adr" = ../../../../claude-skills/skills/code-to-adr;
       "code-to-prd" = ../../../../claude-skills/skills/code-to-prd;
       "create-adr" = ../../../../claude-skills/skills/create-adr;
+      "create-branch" = ../../../../claude-skills/skills/create-branch;
       "create-design-doc" = ../../../../claude-skills/skills/create-design-doc;
       "create-plan" = ../../../../claude-skills/skills/create-plan;
+      "create-pr" = ../../../../claude-skills/skills/create-pr;
       "create-prd" = ../../../../claude-skills/skills/create-prd;
       "create-test-cases" = ../../../../claude-skills/skills/create-test-cases;
       "japanese-review" = ../../../../claude-skills/skills/japanese-review;

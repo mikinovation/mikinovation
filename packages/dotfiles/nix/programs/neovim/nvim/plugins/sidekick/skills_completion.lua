@@ -11,7 +11,7 @@
 
 local M = {}
 
--- Deployed skills are flat (`commit-commands:create-branch` is one directory),
+-- Deployed skills are flat (a `plugin:skill` name is one directory),
 -- but a source tree may nest one level under a plugin directory, so descend
 -- twice before giving up.
 M.MAX_DEPTH = 2
