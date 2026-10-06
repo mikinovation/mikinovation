@@ -13,23 +13,31 @@ commit-commands plugin for `commit`.
 
 ## Install
 
-Run the following in the root of the repository that should use the skills.
-`--scope project` writes the marketplace and the plugins to the repository's
-`.claude/settings.json`. Commit that file, and Claude Code on the web and
-mobile installs the plugins when a session starts in the repository.
+Install the plugins with one of two scopes.
+
+| Scope | Settings file | Where the skills are available |
+|---|---|---|
+| `user` | `~/.claude/settings.json` | Every repository on the machine |
+| `project` | `<repository>/.claude/settings.json` | The repository, including Claude Code on the web and mobile after the file is committed |
+
+Claude Code on the web and mobile does not read user settings, so use
+`project` for repositories that should have the skills there. For `project`,
+run the commands in the root of the repository.
 
 ```sh
-claude plugin marketplace add mikinovation/mikinovation --scope project
-claude plugin install mikinovation-skills@mikinovation --scope project
-claude plugin install tanteki@mikinovation --scope project
-claude plugin install yomiyasu@mikinovation --scope project
-claude plugin install mattpocock-skills@mikinovation --scope project
-claude plugin install commit-commands@mikinovation --scope project
+SCOPE=user # or project
+claude plugin marketplace add mikinovation/mikinovation --scope "$SCOPE"
+for plugin in mikinovation-skills tanteki yomiyasu mattpocock-skills commit-commands; do
+  claude plugin install "$plugin@mikinovation" --scope "$SCOPE"
+done
 ```
 
-The commands write the following settings. Adding them to
-`.claude/settings.json` by hand has the same effect. This repository already
-has them.
+Machines with the dotfiles already have the skills under their plain names, so
+installing the plugins there shows each skill twice.
+
+The commands write the following settings to the settings file of the scope.
+Adding them by hand has the same effect. This repository already has them in
+`.claude/settings.json`.
 
 ```json
 {
@@ -47,10 +55,5 @@ has them.
   }
 }
 ```
-
-On a machine without the dotfiles, omit `--scope project` to install the
-plugins for the user instead. Machines with the dotfiles already have the
-skills under their plain names, so installing the plugins there shows each
-skill twice.
 
 Plugin skills are namespaced, for example `/mikinovation-skills:create-prd`.
