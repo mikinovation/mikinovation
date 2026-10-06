@@ -4,7 +4,8 @@
 -- goes to the CLI agent via plugins/sidekick or plugins/herdr).
 --
 -- Skills are discovered on disk rather than hardcoded: ~/.claude/skills is the
--- merged output of nix (nix/programs/claude-code/skills) and agent-skills, and
+-- merged output of nix (nix/programs/claude-code/skills, packages/claude-skills)
+-- and agent-skills, and
 -- each project may add its own <cwd>/.claude/skills. On a name clash the
 -- project copy wins, since that is what Claude itself resolves.
 

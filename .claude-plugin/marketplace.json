@@ -9,8 +9,7 @@
     {
       "name": "mikinovation-skills",
       "description": "create-prd、japanese-review などの文書作成スキル",
-      "source": "./packages/dotfiles/nix/programs/claude-code",
-      "strict": false
+      "source": "./packages/claude-skills"
     },
     {
       "name": "tanteki",

@@ -5,11 +5,13 @@ on:
     branches: [ main ]
     paths:
       - "packages/dotfiles/**"
+      - "packages/claude-skills/**"
       - ".github/workflows/dotfiles-ci.yml"
   pull_request:
     branches: [ main ]
     paths:
       - "packages/dotfiles/**"
+      - "packages/claude-skills/**"
       - ".github/workflows/dotfiles-ci.yml"
 
 defaults:

@@ -1,0 +1,9 @@
+{
+  "name": "mikinovation-skills",
+  "description": "create-prd、japanese-review などの文書作成スキル",
+  "author": {
+    "name": "mikinovation"
+  },
+  "repository": "https://github.com/mikinovation/mikinovation",
+  "license": "MIT"
+}
