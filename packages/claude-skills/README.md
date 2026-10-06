@@ -67,3 +67,10 @@ its symlink too:
 ```sh
 ln -s ../../packages/claude-skills/skills/<name> .claude/skills/<name>
 ```
+
+Claude Code on the web and mobile does not install the plugins enabled in
+`.claude/settings.json` by itself. The SessionStart hook
+`.claude/hooks/session-start.sh` adds the marketplaces and installs the enabled
+plugins at the start of each remote session. It reads both lists from
+`.claude/settings.json`, so enabling a plugin there is enough. The hook does
+nothing on local machines.
