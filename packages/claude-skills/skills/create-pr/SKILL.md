@@ -1,6 +1,7 @@
 ---
 name: create-pr
 description: プルリクエストを作成するスキル。commit-push-pr の流れ（ブランチ作成→コミット→push→gh pr create）を踏襲し、PRのタイトルと本文を書く言語を選択させ、リポジトリのPRテンプレートに沿って書いた本文を tanteki と yomiyasu の組（japanese-review）でレビューし、下書きを確認してから Draft PR を作成する。「PRを作って」「プルリクを作成」「create pr」「/create-pr」「PR作成」などで使用。
+model: opus
 ---
 
 # create-pr: プルリクエスト作成スキル
