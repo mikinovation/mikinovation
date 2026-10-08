@@ -1,6 +1,7 @@
 ---
 name: create-design-doc
 description: 設計書（Design Doc）を作り、詳しさを段階的に加えていくスキル。PRD の要求と ADR の決定を前提に、選んだ方式でどう組むかを、全体から各コンポーネントの内部へと順に聞き取り、材料を合意してから japanese-review（tanteki と yomiyasu の組）に執筆または更新を渡す。設計書は上から読み進めるほど詳しくなる構成にし、読者が必要な深さで読み止められるようにする。方式の選定と代替案の比較は ADR に任せ、設計書では繰り返さない。ADR で決まっていない方式上の論点が見つかった場合は、設計を止めて create-adr を案内する。「設計書を作って」「Design Docを書きたい」「設計を詳しくしたい」「/create-design-doc」などで使用。方式の決定そのものを記録する場合は create-adr、要求を定める場合は create-prd を使う。
+model: opus
 ---
 
 # create-design-doc: 設計書作成ヒアリングスキル

@@ -1,6 +1,7 @@
 ---
 name: code-to-adr
 description: 実装済みの設計上の決定から ADR を逆生成するスキル。記録する決定を一つに絞ったうえで grilling を三段階で行い、コードから読める現状の仕様は調べて埋め、コードから読めない決定理由・代替案・決定日をユーザーに確かめ、材料を合意してから japanese-review（tanteki と yomiyasu の組）に執筆を渡す。「導入済みの技術のADRを作って」「実装からADRを逆生成」「既存の設計をADRに残したい」「/code-to-adr」などで使用。これから行う決定の ADR には create-adr を使い、このスキルは使わない。
+model: opus
 ---
 
 # code-to-adr: コードからのADR逆生成スキル

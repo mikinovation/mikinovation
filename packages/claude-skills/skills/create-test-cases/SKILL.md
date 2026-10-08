@@ -1,6 +1,7 @@
 ---
 name: create-test-cases
 description: 設計書から、BDD と TDD で使う振る舞いのテストケース一覧を作り、更新するスキル。PRD の受入条件と設計書の記述にテスト技法を当てはめて観点を漏れなく列挙し、期待値を聞き取り、独立した検査で網羅を確かめてから japanese-review（tanteki と yomiyasu の組）に執筆を渡す。ケースには ID を付け、テストコードとの対応を照合コマンドで機械的に検査できるようにする。「テストケースを作って」「振る舞いのテストを洗い出したい」「テストの抜け漏れを確認したい」「/create-test-cases」などで使用。テストコードを書くのは tdd、要求を決めるのは create-prd、設計を決めるのは create-design-doc を使う。
+model: opus
 ---
 
 # create-test-cases: 振る舞いのテストケース作成スキル

@@ -1,6 +1,7 @@
 ---
 name: create-branch
 description: ブランチを作成するスキル。feat, fix, chore等の一般的なprefixを選択するか、カスタムprefixを自由入力し、現在のブランチから新しいブランチを作成する。「ブランチを作って」「新しいブランチ」「create branch」「/create-branch」「branch作成」などで使用。
+model: haiku
 ---
 
 # create-branch: ブランチ作成スキル

@@ -1,6 +1,7 @@
 ---
 name: japanese-review
 description: 日本語の文書を tanteki と yomiyasu の組で執筆・レビューするスキル。tanteki で構成と内容を整えて textlint を通し、yomiyasu で AI が書いたような不自然な日本語を直し、最後に tanteki の textlint だけを再実行して検査が崩れていないことを確かめる。create-pr、renovate-pr-summary、create-adr、create-prd、create-design-doc、create-test-cases、create-plan、code-to-adr、code-to-prd から呼ばれる。ユーザーが「tanteki と yomiyasu で見て」「/japanese-review」と組での確認を明示した場合にも使う。tanteki だけ、yomiyasu だけを指定された場合と、日本語以外の文書には使わない。
+model: opus
 ---
 
 # japanese-review: tanteki と yomiyasu の組でレビューするスキル

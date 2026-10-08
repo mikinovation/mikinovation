@@ -1,6 +1,7 @@
 ---
 name: create-prd
 description: 製品要求書（PRD）を作り、段階に合わせて育てるスキル。PRD を引き渡し用の静的な仕様書ではなく、理解が深まるたびに更新する意思決定の文書として扱う。現在の段階を定め、その段階で決めるべき項目だけを聞き取り、材料を合意してから japanese-review（tanteki と yomiyasu の組）に執筆または更新を渡す。「PRDを作って」「PRDを書きたい」「製品要求書を作成」「PRDを次の段階に進めたい」「リリース結果をPRDに反映」「/create-prd」などで使用。文章の推敲だけなら使わない。既存コードからの逆生成には code-to-prd を使う。
+model: opus
 ---
 
 # create-prd: PRD作成・更新ヒアリングスキル

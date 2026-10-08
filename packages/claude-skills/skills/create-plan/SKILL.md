@@ -1,6 +1,7 @@
 ---
 name: create-plan
 description: 設計書とテストケース一覧から、実装の計画を Markdown で作るスキル。作業を縦に切ったスライスに分け、各スライスに依存関係と完了条件となるテストケースの ID を割り当て、独立した検査で抜けと循環を確かめてから japanese-review（tanteki と yomiyasu の組）に執筆を渡す。進捗は計画の Markdown の中で管理し、GitHub の Issue は作らない。「計画を作って」「実装計画を立てたい」「作業を分けたい」「/create-plan」などで使用。テストケースを作るのは create-test-cases、設計を決めるのは create-design-doc を使う。
+model: opus
 ---
 
 # create-plan: 実装計画作成スキル
