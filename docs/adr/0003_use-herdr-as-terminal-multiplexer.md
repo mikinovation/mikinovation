@@ -85,6 +85,9 @@ herdr は ADR 0001 の共通の Home Manager 設定から、flake input `github:
 - 端末多重化ツールを使わず、エディターの端末ウィンドウだけで済ませる案: 次の2点から採らない。
   - 通常のシェル作業を同じ画面で行えない。
   - エージェントがエディターの寿命に縛られ、複数のプロジェクトをまたいで走らせ続けられない。
+- Orca: エージェントごとに git worktree を分けて並列に動かし、差分のレビューや PR との連携までを一画面で扱うデスクトップアプリ。次の2点から採らない。
+  - GUI アプリのため、所有者が端末とシェルを中心に作業するという前提に合わない。Neovim から herdr のエージェントへ送る仕組みも使えなくなる。
+  - 同じリポジトリで並列に作業するときの作業ツリーの衝突は、Claude Code の `--worktree` で worktree を分ければ避けられる。
 
 ## 結果
 
@@ -103,3 +106,6 @@ herdr は ADR 0001 の共通の Home Manager 設定から、flake input `github:
 - docs/adr/0001_manage-environment-with-nix-flakes.md
 - docs/adr/0002_use-neovim-as-default-editor.md
 - 所有者へのヒアリング（2026-09-29）
+- 所有者へのヒアリング（2026-10-08）
+- https://github.com/stablyai/orca
+- https://code.claude.com/docs/en/worktrees
