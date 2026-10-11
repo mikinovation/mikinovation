@@ -18,7 +18,7 @@ description: Claude Code のスキル（SKILL.md と scripts）を新規に作�
 次の場所にある各スキルの `SKILL.md` の frontmatter（name と description）だけを読む。ほかの場所は探索しない。
 
 - 実行中のリポジトリの `.claude/skills/`。mikinovation リポジトリ（`packages/claude-skills/skills/` がある）では `packages/claude-skills/skills/` だけを読む。`.claude/skills/` はそこへのリンクである
-- mikinovation リポジトリでは、Nix の skills 一覧（`packages/dotfiles/nix/programs/claude-code/default.nix`）に挙がった各スキル。上の場所にないスキルも含む
+- mikinovation リポジトリの Nix の skills 一覧に挙がった各スキル。上の場所にないスキルも含む。一覧は `packages/dotfiles/nix/programs/claude-code/default.nix` にある
 - 起動中のセッションに一覧として示されているスキル。一覧の description をすべて読む。同じ名前のスキルがリポジトリにもある場合は、リポジトリのファイルの description を採る
 
 description から役割の重なりの候補が見つからなくても、作るスキルの中心となる操作の語（例: TODO の収集なら `TODO`）で、リポジトリのスキルの本文を `grep` する。当たった行の前後を読み、作るスキルの中心となる操作（作成、一覧、要約など）と同じ操作を担う場合だけ、そのスキルの本文を通して読む。
