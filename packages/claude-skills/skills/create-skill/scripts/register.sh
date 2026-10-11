@@ -16,7 +16,7 @@ nix_file="$root/packages/dotfiles/nix/programs/claude-code/default.nix"
 
 if [ ! -f "$skill_dir/SKILL.md" ]; then
   echo "error: $skill_dir/SKILL.md がない" >&2
-  exit 1
+  exit 2
 fi
 
 link="$root/.claude/skills/$name"

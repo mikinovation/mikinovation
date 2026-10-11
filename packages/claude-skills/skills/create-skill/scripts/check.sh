@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # スキルのディレクトリを機械的に検査する。問題がなければ 0 で終わり、
-# あれば問題を1行ずつ出して 1 で終わる。
+# あれば問題を1行ずつ出して 1 で終わる。引数の誤りは 2 で終わる。
 set -uo pipefail
 
 if [ $# -ne 1 ]; then
@@ -9,7 +9,7 @@ if [ $# -ne 1 ]; then
 fi
 dir=$(cd "$1" 2>/dev/null && pwd) || {
   echo "NG: $1 がディレクトリではない"
-  exit 1
+  exit 2
 }
 dirname=$(basename "$dir")
 skill="$dir/SKILL.md"
