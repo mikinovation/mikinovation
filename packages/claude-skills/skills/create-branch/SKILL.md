@@ -1,6 +1,6 @@
 ---
 name: create-branch
-description: ブランチを作成するスキル。feat, fix, chore等の一般的なprefixを選択するか、カスタムprefixを自由入力し、現在のブランチから新しいブランチを作成する。「ブランチを作って」「新しいブランチ」「create branch」「/create-branch」「branch作成」などで使用。
+description: ブランチを作成するスキル。feat, fix, chore等の一般的なprefixを選択するか、カスタムprefixを自由入力し、現在のブランチから新しいブランチを作成する。「ブランチを作って」「新しいブランチ」「create branch」「/create-branch」「branch作成」などで使用。既存ブランチの名前の変更や削除、コミットと PR の作成には使わない（PR は create-pr を使う）。
 ---
 
 # create-branch: ブランチ作成スキル

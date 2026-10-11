@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "mikinovation-skills",
-      "description": "create-prd、japanese-review などの文書作成と、ブランチと PR の作成のスキル",
+      "description": "create-prd、japanese-review などの文書作成と、ブランチと PR の作成、スキルの作成のスキル",
       "source": "./packages/claude-skills"
     },
     {
@@ -30,7 +30,7 @@
     },
     {
       "name": "mattpocock-skills",
-      "description": "grilling を含む Matt Pocock のスキル（create-prd が使う）",
+      "description": "grilling と writing-for-agents を含む Matt Pocock のスキル（create-prd、create-skill が使う）",
       "source": {
         "source": "github",
         "repo": "mattpocock/skills"

@@ -246,6 +246,7 @@
       "create-plan" = ../../../../claude-skills/skills/create-plan;
       "create-pr" = ../../../../claude-skills/skills/create-pr;
       "create-prd" = ../../../../claude-skills/skills/create-prd;
+      "create-skill" = ../../../../claude-skills/skills/create-skill;
       "create-test-cases" = ../../../../claude-skills/skills/create-test-cases;
       "japanese-review" = ../../../../claude-skills/skills/japanese-review;
       "nix-npm-update" = ./skills/nix-npm-update;

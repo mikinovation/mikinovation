@@ -1,6 +1,6 @@
 ---
 name: nix-npm-update
-description: nix管理下のnpm依存を最新化するスキル。package.jsonの通常依存（secretlint）、buildNpmPackage形式のラッパーパッケージ（vue-language-server, vue-typescript-plugin, difit）、tgz直接展開形式（claude-code）、プリビルドバンドル形式（chrome-devtools-mcp）、GitHubソース形式（tanteki）の5種を扱う。npm依存の最新化や、これらのパッケージの個別更新を頼まれたときに使う。
+description: nix管理下のnpm依存を最新化するスキル。package.jsonの通常依存（secretlint）、buildNpmPackage形式のラッパーパッケージ（vue-language-server, vue-typescript-plugin, difit）、tgz直接展開形式（claude-code）、プリビルドバンドル形式（chrome-devtools-mcp）、GitHubソース形式（tanteki）の5種を扱う。npm依存の最新化や、これらのパッケージの個別更新を頼まれたときに使う。「npm依存を最新化して」「vue-language-serverを更新して」「/nix-npm-update」などで使用。Nix で管理していないプロジェクトの npm 依存の更新には使わない。
 ---
 
 # nix-npm-update: nix管理下のnpm依存更新スキル
