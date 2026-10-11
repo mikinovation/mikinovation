@@ -1,14 +1,15 @@
 # claude-skills
 
 Claude Code skills for writing documents (PRD, ADR, design docs, plans, test
-cases), reviewing Japanese text, and creating branches and pull requests. Each
-skill is a directory under `skills/`.
+cases), reviewing Japanese text, creating branches and pull requests, and
+creating new skills. Each skill is a directory under `skills/`.
 
 The dotfiles deploy these skills to `~/.claude/skills` with Home Manager.
 Claude Code on the web and mobile cannot read that directory, so the
 repository root also publishes this package as the `mikinovation` plugin
 marketplace (`.claude-plugin/marketplace.json`), together with the skills they
-call: tanteki, yomiyasu, mattpocock/skills for `grilling`, and the official
+call: tanteki, yomiyasu, mattpocock/skills for `grilling` and
+`writing-for-agents`, and the official
 commit-commands plugin for `commit`.
 
 ## Install
@@ -62,10 +63,13 @@ Instead, `.claude/skills/` holds a symlink to each skill under `skills/`, so
 Claude Code loads them as project skills under their plain names, for example
 `/create-prd`, and picks up edits without reinstalling. `.claude/settings.json`
 enables only the plugins for the skills they call. When adding a skill, add
-its symlink too:
+its symlink and its entry in the `skills` list of
+`packages/dotfiles/nix/programs/claude-code/default.nix` too. The
+`create-skill` skill does both with its scripts:
 
 ```sh
-ln -s ../../packages/claude-skills/skills/<name> .claude/skills/<name>
+packages/claude-skills/skills/create-skill/scripts/register.sh <name>
+packages/claude-skills/skills/create-skill/scripts/check.sh packages/claude-skills/skills/<name>
 ```
 
 Claude Code on the web and mobile does not install the plugins enabled in
