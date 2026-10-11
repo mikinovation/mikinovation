@@ -1,6 +1,6 @@
 ---
 name: create-skill
-description: Claude Code のスキルを新しく作るスキル。grilling で目的を最初に定め、name、description、見る場所、進め方、書き方、スクリプトにする手順までを詰め、writing-for-agents に沿って SKILL.md と scripts を書く。文脈を持たないサブエージェントで試しに実行して失敗した手順を直し、yomiyasu で日本語を整える。「スキルを作って」「新しいスキルを追加」「この作業をスキルにしたい」「/create-skill」などで使用。既存スキルの改修や推敲には使わない。
+description: Claude Code のスキル（SKILL.md と scripts）を新規に作るスキル。既存の手順書や CLAUDE.md の一部を切り出して新しいスキルにする場合も含む。grilling で目的から description、見る場所、進め方、書き方、スクリプトにする手順までを詰めて書き、文脈を持たないサブエージェントで試しに実行して直す。「スキルを作って」「新しいスキルを追加」「この作業をスキルにしたい」「/create-skill」などで使用。既存スキルの改修には writing-for-agents、スキルの評価やベンチマークには skill-creator、日本語の推敲だけなら yomiyasu を使い、このスキルは使わない。
 ---
 
 # create-skill: スキル作成スキル
