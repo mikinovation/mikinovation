@@ -11,6 +11,7 @@
   "schedule": [
     "before 5am"
   ],
+  "npmrc": "allow-remote=all",
   "nix": {
     "enabled": true,
     "lockFileMaintenance": {
