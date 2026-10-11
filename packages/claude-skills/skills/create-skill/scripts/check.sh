@@ -51,10 +51,10 @@ if [ -z "$description" ]; then
   ng "description がない"
 else
   # 起動する場面と使わない場面の両方を書く決まり（日本語か英語の書き方を受け付ける）
-  if ! printf '%s' "$description" | grep -Eq '「[^」]+」.*(で使用|で使う)|[Uu]se (it )?when'; then
+  if ! printf '%s' "$description" | grep -Eq '「[^」]+」.*(使用|使う)|[Uu]se (it )?when'; then
     ng "description に起動する場面（「…」などで使用 / Use when …）がない"
   fi
-  if ! printf '%s' "$description" | grep -Eq '使わない|[Dd]o not use|[Dd]on.t use|[Nn]ot for'; then
+  if ! printf '%s' "$description" | grep -Eq '使わ(ない|ず)|[Dd]o not use|[Dd]on.t use|[Nn]ot for'; then
     ng "description に使わない場面（…には使わない / Do not use …）がない"
   fi
 fi
