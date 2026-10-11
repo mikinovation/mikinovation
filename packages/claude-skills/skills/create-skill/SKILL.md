@@ -46,7 +46,7 @@ description から役割の重なりの候補が見つからなくても、作�
 
 model-invoked は、エージェントや他のスキルが呼べるスキルである。user-invoked は、`disable-model-invocation: true` を付け、人が名前を打ったときだけ動くスキルである。起動の仕方は `SKILL-MECHANICS.md` に従って推奨する。エージェントや他のスキルが自分で呼ぶ必要がなければ user-invoked を推奨する。
 
-`SKILL-MECHANICS.md` は user-invoked の description を1行の要約にするが、このスキルでは user-invoked でも起動する場面と使わない場面の両方を description に書く。人がスキルの一覧から選ぶときにも、どれを使うかを description だけで判断できるようにするためである。`check.sh` もこの決まりで検査する。
+`SKILL-MECHANICS.md` は user-invoked の description を1行の要約にする。このスキルでは、user-invoked でも起動する場面と使わない場面の両方を description に書く。人がスキルの一覧から選ぶときにも、どれを使うかを description だけで判断できるようにするためである。`check.sh` もこの決まりで検査する。
 
 スクリプトにする手順は、7の各手順について「同じ入力で毎回同じ結果になるか」を確かめて推奨する。ファイルの配置、登録、形式の検査、決まった変換はスクリプトにする。
 
