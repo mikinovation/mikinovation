@@ -4,7 +4,7 @@ function oil.config()
 	return {
 		"stevearc/oil.nvim",
 		branch = "master",
-		commit = "b73018b75affd13fa38e2fc94ef753b465f770d7",
+		commit = "d3733d933833a0e59b813ecec99341527adf0c28",
 		cmd = "Oil",
 		-- Keep in sync with plugins/oil/keymaps.lua
 		keys = {
