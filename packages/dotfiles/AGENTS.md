@@ -23,5 +23,5 @@ Each command can also be run individually:
 ```bash
 nix run ./nix#fmt   # stylua --check
 nix run ./nix#test  # busted tests
-nix run ./nix#lint  # luacheck + secretlint (requires `npm ci`)
+nix run ./nix#lint  # luacheck + secretlint (requires `pnpm install`)
 ```

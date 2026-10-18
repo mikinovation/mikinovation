@@ -213,10 +213,10 @@ General-purpose skills such as `create-prd` live in
 
 `nix run ./nix#lint` runs both luacheck and secretlint. secretlint needs
 `node_modules`. The command exits with an error when it is missing, so run
-`npm ci` first:
+`pnpm install` first:
 
 ```bash
-npm ci
+pnpm install
 make lint   # luacheck + secretlint (nix run ./nix#lint)
 make fmt    # stylua --check        (nix run ./nix#fmt)
 make test   # busted tests          (nix run ./nix#test)

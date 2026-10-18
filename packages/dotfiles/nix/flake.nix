@@ -147,7 +147,7 @@
             if [ -x "./node_modules/.bin/secretlint" ]; then
               git ls-files -z | xargs -0 ./node_modules/.bin/secretlint
             else
-              echo "Warning: secretlint not found. Run 'npm ci' first."
+              echo "Warning: secretlint not found. Run 'pnpm install' first."
               exit 1
             fi
           '';

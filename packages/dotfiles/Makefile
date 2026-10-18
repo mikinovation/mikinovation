@@ -31,7 +31,7 @@ setup-minimal: ## Deploy dotfiles with the minimal profile
 
 check: lint fmt test ## Run lint, format check and tests
 
-lint: ## Run luacheck + secretlint (requires `npm ci`)
+lint: ## Run luacheck + secretlint (requires `pnpm install`)
 	nix run $(FLAKE_DIR)#lint
 
 fmt: ## Check Lua formatting with stylua
