@@ -4,7 +4,7 @@ function nvimWebDevicons.config()
 	return {
 		"nvim-tree/nvim-web-devicons",
 		branch = "master",
-		commit = "58447c1fca354bbf184425e4a8d01deecbd6f3c4",
+		commit = "ec309a0eaff6ea967e58c275996155ab5c16938d",
 		enabled = vim.g.have_nerd_font,
 	}
 end
