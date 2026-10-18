@@ -100,7 +100,7 @@ gh pr diff "$PR" --repo "$REPO"
 | 種類（datasource） | npm, github-tags, git-refs, nix flake 入力 |
 | 現行 → 更新後 | `9.0.0` → `10.1.0`、コミットハッシュ同士など |
 | 更新の種別 | major / minor / patch / digest / lockFileMaintenance |
-| 変更されたファイル | `apps/web/package.json`, `packages/dotfiles/nix/flake.lock` など |
+| 変更されたファイル | `packages/dotfiles/package.json`, `packages/dotfiles/nix/flake.lock` など |
 | ソースリポジトリ | `https://github.com/<owner>/<repo>` |
 
 ソースリポジトリは、Renovate の本文の表にあるリンクを使う。なければ npm なら `npm view <pkg> repository.url`、flake 入力なら `flake.lock` の `owner`/`repo` から求める。
@@ -189,7 +189,6 @@ A で控えた変更されたファイルから、その依存を使うプロダ
 
 | 変更されたファイル | プロダクト・ツール |
 |------|------|
-| `apps/web/` 配下 | Web サイト（Next.js） |
 | `packages/dotfiles/package.json` | dotfiles の開発用ツール（secretlint） |
 | `packages/dotfiles/nix/flake.lock` | dotfiles で配布する環境全体（home-manager で入れる各プログラム） |
 | `packages/dotfiles/nix/programs/<name>/` 配下 | そのプログラム（Neovim、zsh など） |
