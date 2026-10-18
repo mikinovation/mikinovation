@@ -7,13 +7,13 @@
 
 buildNpmPackage rec {
   pname = "tanteki";
-  version = "0-unstable-2026-09-22";
+  version = "0-unstable-2026-10-05";
 
   src = fetchFromGitHub {
     owner = "iwasa-kosui";
     repo = "tanteki";
-    rev = "cf51a7bab450253a4e1fc75cdf35692111b4bddb";
-    hash = "sha256-dvEY+sUGi6TLbnvlIYphkx9IdpdQSdwpiJLRPLSlspI=";
+    rev = "e9c4ae749fbe1b35cb740d9e7e0e00a00a0cb42b";
+    hash = "sha256-AJM0XapyqRopnB+KWs8L1qjOrJTcPY9AsyY6Ra35xWk=";
   };
 
   sourceRoot = "${src.name}/skills/tanteki";
