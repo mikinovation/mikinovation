@@ -40,7 +40,7 @@ buildNpmPackage {
   # The published tarball ships a prebuilt bundle (build/) with all
   # dependencies inlined, so there is nothing to fetch, install, or build.
   forceEmptyCache = true;
-  npmDepsHash = "sha256-T0kN+SXYLtvQKWR6PKCEkXaEhQbPL2x+FwyfqtuH6mY=";
+  npmDepsHash = "sha256-tkzd9r92KBDJIp/yF3ISrIxdxB8CSJFHttYEgY8PLkw=";
 
   dontNpmBuild = true;
 
