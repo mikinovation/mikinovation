@@ -6,14 +6,15 @@
 ## 開発
 
 ```sh
-npm ci
-npm run dev        # http://localhost:3000
-npm run build      # 静的書き出し（out/）
-npm run typecheck
+pnpm install
+pnpm dev           # http://localhost:3000
+pnpm build         # 静的書き出し（out/）
+pnpm typecheck
 ```
 
 ## 構成
 
+- パッケージマネージャーは pnpm（`packageManager` フィールドで版を固定）
 - Next.js 16（App Router）、React 19、TypeScript
 - `output: 'export'` で静的ファイルに書き出す
 - スタイルは `src/app/globals.css` のみ
