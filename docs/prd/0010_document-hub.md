@@ -63,7 +63,6 @@ PRD、ADR、設計書、テストケース、計画を作るスキルが揃い�
 
 ### 対象外
 
-- `okf/` と `roam/` のノート。
 - このリポジトリの外にある文書。ほかのリポジトリ、Notion、Google Docs などを含む。
 - `docs/` 以外の Markdown。README、SKILL.md、AGENTS.md などを含む。
 - 外部の閲覧者に向けた導入ページ、用語の説明、文章の品質向上。

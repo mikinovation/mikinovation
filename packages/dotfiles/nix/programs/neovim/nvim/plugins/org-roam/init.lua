@@ -1,6 +1,6 @@
 local orgRoam = {}
 
-local ROAM_DIRECTORY = "~/ghq/github.com/mikinovation/mikinovation/roam"
+local ROAM_DIRECTORY = "~/ghq/github.com/mikinovation/org/roam"
 
 function orgRoam.config()
 	return {

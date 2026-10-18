@@ -39,8 +39,8 @@ jobs:
       - name: Stage embedded dotfiles
         run: |
           # Only packages/dotfiles and packages/claude-skills are embedded; the
-          # rest of the monorepo (notes, apps) must not end up in the public
-          # image. The flake reads packages/claude-skills from outside its own
+          # rest of the monorepo (docs) must not end up in the public image.
+          # The flake reads packages/claude-skills from outside its own
           # directory, which Nix allows only inside a git tree, so the staged
           # files are added to a fresh git repository.
           root=/tmp/extra-files/home/nixos/ghq/github.com/mikinovation/mikinovation
