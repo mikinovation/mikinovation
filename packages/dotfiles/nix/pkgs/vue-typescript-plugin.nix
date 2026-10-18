@@ -7,13 +7,13 @@
 
 let
   tgz = fetchurl {
-    url = "https://registry.npmjs.org/@vue/typescript-plugin/-/typescript-plugin-3.3.11.tgz";
-    sha512 = "sTfyjuZuAClToH59lcBxNMWF+Ede6IBUiYEZI1MgL3Bf9sWV15mtv9P2dfL+4moSQjRf+17O7HX+a8JQdXhLYA==";
+    url = "https://registry.npmjs.org/@vue/typescript-plugin/-/typescript-plugin-3.3.13.tgz";
+    sha512 = "L/ht0WIIB5GOPYx0ooWoVQztsI/v1h7lW2/ND0YBuoBYHTteGPfRFzM5j0/uD1nf/rYezqWHhNDDmww2Co53KA==";
   };
 in
 buildNpmPackage {
   pname = "vue-typescript-plugin";
-  version = "3.3.11";
+  version = "3.3.13";
 
   src = runCommand "vue-typescript-plugin-src" { } ''
     mkdir -p $out
@@ -21,7 +21,7 @@ buildNpmPackage {
     cp ${./vue-typescript-plugin-lock.json} $out/package-lock.json
   '';
 
-  npmDepsHash = "sha256-YD+X6cNmZiZQj6p1zqTuy9z17MY1kjDl8unjJuOlPFk=";
+  npmDepsHash = "sha256-MYaF2YPNcg7kJZ9l5fOXQbwK2bZj8CmUXfrhlE49G74=";
 
   dontNpmBuild = true;
 
