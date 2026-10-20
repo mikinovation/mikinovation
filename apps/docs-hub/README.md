@@ -25,4 +25,4 @@ pnpm typecheck
 - `docs/` の Markdown の表示、サイドバー、一覧、文書参照のリンク化、全文検索、Mermaid、ダークモードの手動切り替え
 - GitHub Pages への公開（`basePath` の設定とワークフロー）
 - PRD 0010 はドキュメントのみを対象としており、ポートフォリオを載せる範囲は未反映
-- ADR 0017 は VitePress を採用し Next.js を却下しているため、この構成を続けるなら ADR の置き換えが必要
+- ADR 0017 は VitePress を採用し Next.js を却下しており、ADR 0018 はその VitePress の検索を前提に日本語のトークナイザーを決めている。この構成を続けるなら両方の ADR の置き換えが必要
