@@ -3,19 +3,19 @@ const documents = [
     kind: 'ADR',
     number: '0017',
     title: 'ドキュメントハブに VitePress を使う',
-    badge: { text: '置き換え', className: 'badge-superseded' },
+    badge: { text: '置き換え', className: 'badge badge-superseded' },
   },
   {
     kind: 'ADR',
     number: '0018',
     title: '日本語検索にバイグラムのトークナイザーを使う',
-    badge: { text: '採用', className: 'badge-accepted' },
+    badge: { text: '採用', className: 'badge badge-accepted' },
   },
   {
     kind: 'PRD',
     number: '0010',
     title: 'ドキュメントハブ',
-    badge: { text: '段階 5 デリバリー', className: 'badge-stage' },
+    badge: { text: '段階 5 デリバリー', className: 'badge badge-stage' },
   },
   {
     kind: '設計書',
