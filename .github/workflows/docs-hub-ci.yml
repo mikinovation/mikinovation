@@ -1,11 +1,6 @@
 name: docs-hub CI
 
 on:
-  push:
-    branches: [ main ]
-    paths:
-      - "apps/docs-hub/**"
-      - ".github/workflows/docs-hub-ci.yml"
   pull_request:
     branches: [ main ]
     paths:
