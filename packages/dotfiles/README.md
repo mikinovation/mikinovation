@@ -90,7 +90,7 @@ the full environment.
 | Profile | Contents |
 | --- | --- |
 | `full` | Every module. The normal day-to-day environment. |
-| `minimal` | zsh, sheldon, git, claude-code with its agent skills, Node.js, core CLI tools, Neovim limited to org notes and tasks. |
+| `minimal` | zsh, sheldon, git, claude-code with its agent skills, Node.js with pnpm, core CLI tools, Neovim limited to org notes and tasks. |
 
 The core CLI tools in `minimal` are zoxide, fzf, ripgrep, ghq, jq, and curl.
 
@@ -110,8 +110,8 @@ Everything outside that list is skipped:
 - Neovim plugins other than nvim-orgmode and org-roam.nvim, language servers,
   and the other Neovim tooling
 - herdr
-- the ruby/rust/python toolchains, and the Node.js tooling beyond node itself
-  (yarn, pnpm, typescript, eslint, prettier)
+- the ruby/rust/python toolchains, and the Node.js tooling beyond node and pnpm
+  (yarn, typescript, eslint, prettier)
 - database and terraform tooling
 - wezterm and the remaining program modules
 - the chrome-devtools MCP server, which pulls in chromium
@@ -213,10 +213,10 @@ General-purpose skills such as `create-prd` live in
 
 `nix run ./nix#lint` runs both luacheck and secretlint. secretlint needs
 `node_modules`. The command exits with an error when it is missing, so run
-`npm ci` first:
+`pnpm install` first:
 
 ```bash
-npm ci
+pnpm install
 make lint   # luacheck + secretlint (nix run ./nix#lint)
 make fmt    # stylua --check        (nix run ./nix#fmt)
 make test   # busted tests          (nix run ./nix#test)

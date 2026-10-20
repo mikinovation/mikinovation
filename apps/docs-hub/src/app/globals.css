@@ -1,0 +1,35 @@
+:root {
+  color-scheme: light dark;
+  --color-background: #ffffff;
+  --color-foreground: #1a1a1a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #121212;
+    --color-foreground: #ededed;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 2rem 1.25rem;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family:
+    system-ui,
+    -apple-system,
+    'Hiragino Kaku Gothic ProN',
+    'Noto Sans JP',
+    sans-serif;
+  line-height: 1.8;
+}
+
+main {
+  margin: 0 auto;
+  max-width: 48rem;
+}
