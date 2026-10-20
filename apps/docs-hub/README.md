@@ -22,19 +22,12 @@ pnpm typecheck
 
 ### テーマ
 
-暗い配色の未来的なテーマで、明暗の切り替えは持たない。
+暗い配色の未来的なテーマで、明暗の切り替えは持たない。配色、タイポグラフィ、各コンポーネントをいつ使うかは `DESIGN.md` に書いてある。値を変えるときは `DESIGN.md` と `src/app/globals.css` の両方を直す。
 
 - 配色、フォント、影は `@theme` のトークンで定義し、`bg-base-700` や `text-neon` のようなクラスから参照する
-- 共通クラスは `@layer components` に置く
-  - `.app-backdrop`: 背景の光彩と格子
-  - `.panel` / `.panel-glow`: 枠付きの面
-  - `.doc-card`: 文書一覧のカード
-  - `.badge` と `.badge-accepted` / `.badge-rejected` / `.badge-superseded` / `.badge-stage`: ADR の状態と PRD の段階
-  - `.nav-link`: サイドバーの項目（`aria-current="page"` で現在地を示す）
-  - `.search-field`、`.kbd`、`.label`、`.hairline`、`.code-chip`
-  - `.doc-body`: Markdown の変換結果に当てる本文の体裁。見出し、表、コード、引用を含む
+- 共通クラス（`.panel`、`.doc-card`、`.badge`、`.nav-link`、`.doc-body` など）は `@layer components` に置く
 - `src/app/page.tsx` はテーマの見本を兼ねる。文書一覧、本文、配色を並べている
-- サイドバーと検索欄は表示だけで、リンクはページ内の見出しを指す
+- サイドバーの項目のリンクはページ内の見出しを指し、検索欄は押せないボタンである
 
 ## 公開
 
