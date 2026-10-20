@@ -1,40 +1,28 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
+import { docKindLabels, docKinds, listDocs } from '@/lib/docs'
+
 import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Docs Hub',
-  description: 'ポートフォリオと docs/ の文書を公開するサイト',
+  description: 'ポートフォリオと PRD、ADR、設計書を公開するサイト',
 }
-
-const navSections = [
-  {
-    label: 'Documents',
-    items: [
-      { title: 'ADR', href: '#documents', count: 18 },
-      { title: 'PRD', href: '#documents', count: 9 },
-      { title: '設計書', href: '#documents', count: 1 },
-      { title: 'テストケース', href: '#documents', count: 0 },
-      { title: '計画', href: '#documents', count: 0 },
-    ],
-  },
-  {
-    label: 'Theme',
-    items: [
-      { title: '文書本文の見本', href: '#sample', count: null },
-      { title: '配色', href: '#palette', count: null },
-    ],
-  },
-]
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const sections = docKinds.map((kind) => ({
+    kind,
+    label: docKindLabels[kind],
+    docs: listDocs(kind),
+  }))
+
   return (
-    <html lang="ja">
+    <html lang="ja" data-scroll-behavior="smooth">
       <body>
         <div className="app-backdrop" aria-hidden="true" />
 
@@ -70,20 +58,24 @@ export default function RootLayout({
         </header>
 
         <div className="mx-auto flex max-w-7xl gap-10 px-5 py-10">
-          <aside className="sticky top-24 hidden h-fit w-56 shrink-0 lg:block">
-            <nav className="flex flex-col gap-7">
-              {navSections.map((section) => (
-                <div key={section.label} className="flex flex-col gap-1.5">
-                  <p className="label px-3">{section.label}</p>
-                  {section.items.map((item) => (
-                    <a key={item.title} href={item.href} className="nav-link">
-                      <span>{item.title}</span>
-                      {item.count !== null && (
-                        <span className="font-mono text-xs text-ink-faint">
-                          {item.count}
-                        </span>
-                      )}
-                    </a>
+          <aside className="sticky top-24 hidden h-fit w-64 shrink-0 lg:block">
+            <nav className="flex max-h-[calc(100vh-10rem)] flex-col gap-7 overflow-y-auto pr-1">
+              {sections.map((section) => (
+                <div key={section.kind} className="flex flex-col gap-1.5">
+                  <p className="label px-3">
+                    {section.label} · {section.docs.length}
+                  </p>
+                  {section.docs.map((doc) => (
+                    <Link
+                      key={doc.slug}
+                      href={`/${doc.kind}/${doc.slug}`}
+                      className="nav-link"
+                    >
+                      <span className="truncate">{doc.title}</span>
+                      <span className="font-mono text-xs text-ink-faint">
+                        {doc.number}
+                      </span>
+                    </Link>
                   ))}
                 </div>
               ))}
@@ -96,7 +88,7 @@ export default function RootLayout({
         <footer className="mx-auto max-w-7xl px-5 pb-12">
           <hr className="hairline" />
           <p className="label mt-5">
-            docs/ の Markdown が正本 · 表示だけをこのサイトが担う
+            src/content/ の MDX が正本
           </p>
         </footer>
       </body>

@@ -166,7 +166,7 @@ spacing:
   page-x: 1.25rem
   header-h: 4rem
   content-max: 80rem
-  sidebar-w: 14rem
+  sidebar-w: 16rem
   column-gap: 2.5rem
   section-gap: 4rem
   card-y: 1.25rem
@@ -230,13 +230,14 @@ rounded:
 | panel | 読み物を1つ載せるとき。文書の本文を入れる |
 | doc-card | 文書を一覧で並べ、1件を開かせるとき |
 | badge | ADR の状態や PRD の段階を、1語で示すとき |
-| nav-link | サイドバーで種類や見出しを選ばせるとき |
+| nav-link | サイドバーと本文の下で、別の文書を選ばせるとき |
 | search-field | 検索を始めさせるとき。今は押せないボタンとして置く |
 | kbd | キーボードの操作を示すとき |
 | label | 節やカードの内容の分類を、本文より小さく示すとき |
 | hairline | 節の終わりを、見出しを使わずに区切るとき |
 | code-chip | 本文の外でファイル名や識別子を示すとき |
-| doc-body | Markdown から変換した本文を囲むとき |
+| doc-body | MDX から変換した本文を囲むとき |
+| mermaid-figure | 本文の Mermaid の図を囲むとき |
 
 ```yaml
 components:
@@ -315,6 +316,10 @@ components:
   doc-body:
     textColor: '{colors.ink-dim}'
     typography: '{typography.body-md}'
+  mermaid-figure:
+    backgroundColor: '{colors.base-800}'
+    borderColor: '{colors.line}'
+    rounded: '{rounded.xl}'
 ```
 
 `doc-card-hover`、`nav-link-hover`、`nav-link-current`、`search-field-hover` の `neon` は、そのままの濃さでは使わない。枠線では `line` に、面では地色に混ぜて薄く載せる。混ぜる割合は `globals.css` の `color-mix()` に書く。
@@ -330,6 +335,7 @@ components:
 | コードブロック | `base-800` の面に `xl` の角丸を付け、横に溢れさせる |
 | 表 | 見出しは `table-head`、行の区切りは `line`。hover で行に `neon` を薄く敷く |
 | 箇条書き | 行頭の記号を `neon` に寄せる |
+| 図 | Mermaid の記述を `base-800` の面に描く。描き終わるまでは記述をそのまま見せる |
 
 本文に光彩と格子を重ねない。本文で使う強調は、文字色を `ink` に上げることと、`neon` の下線と縦線だけである。
 
