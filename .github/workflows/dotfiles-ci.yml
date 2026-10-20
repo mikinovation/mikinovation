@@ -29,8 +29,12 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
 
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          package_json_file: packages/dotfiles/package.json
+
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Run check (lint, format, test)
         run: make check

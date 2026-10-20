@@ -31,7 +31,7 @@ hash の計算には `nix run nixpkgs#prefetch-npm-deps`、`nix flake prefetch`�
 
 | パッケージ | 種別 | 定義ファイル |
 |------|------|------|
-| secretlint | A | `package.json`, `package-lock.json` |
+| secretlint | A | `package.json`, `pnpm-lock.yaml` |
 | vue-language-server | B | `nix/pkgs/vue-language-server.nix` |
 | vue-typescript-plugin | B | `nix/pkgs/vue-typescript-plugin.nix` |
 | difit | B | `nix/pkgs/difit.nix` |
@@ -41,7 +41,7 @@ hash の計算には `nix run nixpkgs#prefetch-npm-deps`、`nix flake prefetch`�
 
 | 種別 | 形式 |
 |------|------|
-| A. 通常npm | renovateで自動更新済。手動なら `npm update` |
+| A. 通常npm | renovateで自動更新済。手動なら `pnpm update` |
 | B. buildNpmPackage | tgz fetchUrl + 手書きlock + npmDepsHash |
 | C. tgz直接展開 | mainTgz + プラットフォーム別 native tgz（linux-x64 と darwin-arm64） |
 | D. プリビルドバンドル | tgz fetchUrl + 空lock + forceEmptyCache + 手書きinstallPhase |
@@ -66,7 +66,7 @@ npm package名は nix のパッケージ名と一致しないものがある。
 差分が無いものはスキップ。
 
 現行版:
-- secretlint: `npm pkg get devDependencies.secretlint`
+- secretlint: `pnpm pkg get devDependencies.secretlint`
 - 種別B/C/D: 各 `.nix` の `version` 属性
 - tanteki: `nix/pkgs/tanteki.nix` の `src.rev`（npmレジストリではなくGitHubの最新コミットと比較する）
 
@@ -85,10 +85,10 @@ git ls-remote https://github.com/iwasa-kosui/tanteki.git refs/heads/main
 
 ### 2. 種別A (secretlint) の更新
 
-renovateが自動更新するため、手動更新はrenovateと競合する可能性がある。実行前に secretlint を含む open PR を確認する。`gh` が使えない環境では GitHub MCP の `list_pull_requests` などで確認する。renovate が止まっている等の正当理由がなければスキップ。`package.json` は固定バージョン記法なので `--save-exact` を維持する。
+renovateが自動更新するため、手動更新はrenovateと競合する可能性がある。実行前に secretlint を含む open PR を確認する。`gh` が使えない環境では GitHub MCP の `list_pull_requests` などで確認する。renovate が止まっている等の正当理由がなければスキップ。`package.json` は固定バージョン記法なので `-E`（`--save-exact`）を維持する。
 
 ```bash
-npm install --save-exact secretlint@latest @secretlint/secretlint-rule-preset-recommend@latest
+pnpm add -E -D secretlint@latest @secretlint/secretlint-rule-preset-recommend@latest
 ```
 
 ### 3. 種別B (buildNpmPackage) の更新

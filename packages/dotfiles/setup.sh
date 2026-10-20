@@ -81,8 +81,8 @@ main() {
 
   echo "Start setup dotfiles... (profile: $PROFILE)"
 
-  if ! command -v npm >/dev/null 2>&1; then
-    echo "Warning: npm is not installed or not in PATH"
+  if ! command -v pnpm >/dev/null 2>&1; then
+    echo "Warning: pnpm is not installed or not in PATH"
   fi
 
   # Setup Nix configuration first
