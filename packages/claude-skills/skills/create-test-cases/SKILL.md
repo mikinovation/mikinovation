@@ -30,8 +30,8 @@ description: 設計書から、BDD と TDD で使う振る舞いのテストケ�
 
 照合コマンドが読むため、次の形式を崩さない。
 
-- 保存先: リポジトリルートの `docs/test/`。保存先をユーザーに問わない。
-- ファイル名: 前提の設計書と同じ `<番号>_<タイトル>.md`。例: 設計書 `docs/design/0001_attendance-invoice.md` に対して `docs/test/0001_attendance-invoice.md`
+- 保存先: `apps/docs-hub/src/content/test/`。保存先をユーザーに問わない。
+- ファイル名: 前提の設計書と同じ `<番号>_<タイトル>.md`。例: 設計書 `apps/docs-hub/src/content/design/0001_attendance-invoice.mdx` に対して `apps/docs-hub/src/content/test/0001_attendance-invoice.md`
 - ケース ID: `TC-<設計書の番号4桁>-<連番3桁>`。例: `TC-0001-014`
 - ケースは見出し一つで表し、見出しは ID で始める。見出しにしたケースには、すべてテストを書く。テストを書かない観点は、ケースの見出しにせず、「意図して扱わない振る舞い」か「未解決点」に置く。
 
@@ -71,7 +71,7 @@ ID は振り直さない。ケースを削除したら、末尾の「廃止し�
 
 ### 2. 前提の文書とテストを読む
 
-リポジトリルートの `docs/design/` から設計書を、`docs/prd/` から設計書が前提とする PRD を、`docs/test/` から既存のテストケース一覧を読む。ADR は、設計書の「前提とする決定」に挙げたもののうち、振る舞いを制約するものだけを読む。
+`apps/docs-hub/src/content/design/` から設計書を、`apps/docs-hub/src/content/prd/` から設計書が前提とする PRD を、`apps/docs-hub/src/content/test/` から既存のテストケース一覧を読む。ADR は、設計書の「前提とする決定」に挙げたもののうち、振る舞いを制約するものだけを読む。
 
 既存のテストケース一覧を更新する場合は、照合コマンド（手順9）を実行し、現在どのケースにテストがあるかを把握する。
 
@@ -163,12 +163,12 @@ PRD と設計書の記述を一つずつ取り上げ、次の表で技法を当�
 執筆の後、リポジトリルートで照合コマンドを実行し、結果をユーザーに示す。
 
 ```sh
-check-test-ids --only <設計書の番号>
+check-test-ids --docs apps/docs-hub/src/content/test --only <設計書の番号>
 ```
 
 | 引数 | 意味 |
 |---|---|
-| `--docs <dir>` | テストケース一覧のディレクトリ。既定は `docs/test` |
+| `--docs <dir>` | テストケース一覧のディレクトリ。既定は `docs/test` なので、`apps/docs-hub/src/content/test` を必ず渡す |
 | `--src <dir>` | テストコードを探すディレクトリ。複数指定できる。既定はリポジトリルート |
 | `--only <番号>` | 照合する文書の番号。複数指定できる |
 | `--strict` | 文書にない ID がコードにある場合も失敗にする |
