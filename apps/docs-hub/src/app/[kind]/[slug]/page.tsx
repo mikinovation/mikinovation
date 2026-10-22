@@ -77,7 +77,10 @@ export default async function DocumentPage({ params }: Props) {
 
       <nav className="flex flex-col gap-3 sm:flex-row sm:justify-between">
         {previous !== null ? (
-          <Link href={`/${previous.kind}/${previous.slug}`} className="nav-link">
+          <Link
+            href={`/${previous.kind}/${previous.slug}`}
+            className="nav-link"
+          >
             <span>
               ← {docKindLabels[previous.kind]} {previous.number}{' '}
               {previous.title}
