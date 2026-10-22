@@ -8,7 +8,10 @@ export default function Home() {
     label: docKindLabels[kind],
     docs: listDocs(kind),
   }))
-  const total = sections.reduce((count, section) => count + section.docs.length, 0)
+  const total = sections.reduce(
+    (count, section) => count + section.docs.length,
+    0,
+  )
 
   return (
     <div className="flex flex-col gap-16">
@@ -20,7 +23,8 @@ export default function Home() {
           </span>
         </h1>
         <p className="max-w-xl text-ink-dim">
-          ポートフォリオと PRD、ADR、設計書を一つにまとめるサイトです。種類別に一覧からたどれます。
+          ポートフォリオと
+          PRD、ADR、設計書を一つにまとめるサイトです。種類別に一覧からたどれます。
         </p>
         <div className="flex flex-wrap items-center gap-2">
           <span className="badge badge-stage">{total} docs</span>
@@ -30,7 +34,11 @@ export default function Home() {
       </section>
 
       {sections.map((section) => (
-        <section key={section.kind} id={section.kind} className="flex flex-col gap-5">
+        <section
+          key={section.kind}
+          id={section.kind}
+          className="flex flex-col gap-5"
+        >
           <div className="flex items-end justify-between gap-4">
             <h2 className="text-xl font-semibold">{section.label}</h2>
             <p className="label">{section.docs.length} docs</p>
@@ -53,7 +61,9 @@ export default function Home() {
                 </p>
                 {doc.badge !== null && (
                   <div className="mt-3">
-                    <span className={doc.badge.className}>{doc.badge.text}</span>
+                    <span className={doc.badge.className}>
+                      {doc.badge.text}
+                    </span>
                   </div>
                 )}
               </Link>

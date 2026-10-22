@@ -87,9 +87,7 @@ export default function RootLayout({
 
         <footer className="mx-auto max-w-7xl px-5 pb-12">
           <hr className="hairline" />
-          <p className="label mt-5">
-            src/content/ の MDX が正本
-          </p>
+          <p className="label mt-5">src/content/ の MDX が正本</p>
         </footer>
       </body>
     </html>

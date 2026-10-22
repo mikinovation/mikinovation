@@ -12,7 +12,7 @@ defaults:
     working-directory: apps/docs-hub
 
 jobs:
-  typecheck-and-build:
+  lint-typecheck-and-build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -29,6 +29,12 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Run oxlint
+        run: pnpm lint
+
+      - name: Run oxfmt
+        run: pnpm fmt:check
 
       - name: Run typecheck
         run: pnpm typecheck

@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "semi": false,
+  "singleQuote": true,
+  "jsxSingleQuote": false,
+  "printWidth": 80,
+  "tabWidth": 2,
+  "trailingComma": "all",
+  "arrowParens": "always",
+  "sortPackageJson": false,
+  "ignorePatterns": [
+    ".next",
+    "out",
+    "next-env.d.ts",
+    "tsconfig.tsbuildinfo",
+    "**/*.md",
+    "**/*.mdx"
+  ]
+}

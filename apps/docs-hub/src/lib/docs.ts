@@ -48,10 +48,7 @@ const badgeOf = (attributes: DocAttribute[]): DocBadge | null => {
     if (state.value.startsWith('却下')) {
       return { text: state.value, className: 'badge badge-rejected' }
     }
-    if (
-      state.value.startsWith('置き換え') ||
-      state.value.startsWith('廃止')
-    ) {
+    if (state.value.startsWith('置き換え') || state.value.startsWith('廃止')) {
       return { text: state.value, className: 'badge badge-superseded' }
     }
     return { text: state.value, className: 'badge' }
@@ -129,7 +126,7 @@ export const listDocs = (kind: DocKind): Doc[] => {
 
   return readdirSync(directory)
     .filter((name) => name.endsWith('.mdx'))
-    .sort()
+    .toSorted()
     .map((name) =>
       parse(
         kind,
