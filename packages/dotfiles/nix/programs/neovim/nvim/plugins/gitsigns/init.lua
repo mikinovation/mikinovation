@@ -4,7 +4,7 @@ function gitsign.config()
 	return {
 		"lewis6991/gitsigns.nvim",
 		branch = "main",
-		commit = "fd780920613e541cbdfac41bf711583ed49f9249",
+		commit = "d4854fa9a94b5c8b37dd209fb4a19e98e764186f",
 		event = { "BufReadPre", "BufNewFile" },
 		opts = {
 			signs = {
