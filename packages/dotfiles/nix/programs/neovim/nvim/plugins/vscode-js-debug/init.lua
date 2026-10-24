@@ -4,7 +4,7 @@ function vscodeJsDebug.config()
 	return {
 		"microsoft/vscode-js-debug",
 		branch = "main",
-		commit = "49b9128f4b3872ab71fe22d1b97c12dcf7296df3",
+		commit = "60db540b297ec51c944fd6753fe9f2cf0fdd8667",
 		build = "npm install --legacy-peer-deps && npm run compile",
 	}
 end
