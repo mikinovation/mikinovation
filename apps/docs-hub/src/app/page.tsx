@@ -33,6 +33,19 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold">プロフィール</h2>
+        <Link href="/career" className="doc-card">
+          <div className="flex items-center gap-2.5">
+            <span className="label text-neon-soft">Career</span>
+          </div>
+          <p className="mt-1.5 leading-snug font-medium text-ink">経歴</p>
+          <p className="mt-2 text-sm text-ink-dim">
+            フリーランスのエンジニアとして担ってきた役割、取り組んできたこと、扱える技術をまとめている。
+          </p>
+        </Link>
+      </section>
+
       {sections.map((section) => (
         <section
           key={section.kind}
