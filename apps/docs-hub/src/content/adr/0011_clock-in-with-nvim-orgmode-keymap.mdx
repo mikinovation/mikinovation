@@ -32,6 +32,60 @@ ADR 0006、ADR 0007、ADR 0010 から、選べる案は次の条件を満たす�
 
 `kintai` は Org 形式のファイルを読むだけにし、書き込まない。
 
+<Figure caption="書き込むのは nvim-orgmode だけで、kintai は読むだけにする。">
+  <FigSvg
+    height={210}
+    label="キー操作から自作の Lua と nvim-orgmode を経て Org のファイルに打刻が書かれ、kintai はそれを読む流れ"
+  >
+    <FigNode
+      x={0}
+      y={60}
+      w={150}
+      h={70}
+      title="キー操作"
+      lines={['Neovim で打刻する']}
+    />
+    <FigArrow points={[[150, 95], [186, 95]]} />
+    <FigNode
+      x={190}
+      y={60}
+      w={180}
+      h={70}
+      tone="amber"
+      title="自作の Lua"
+      lines={['当日の見出しを用意']}
+    />
+    <FigArrow points={[[370, 95], [406, 95]]} />
+    <FigNode
+      x={410}
+      y={60}
+      w={180}
+      h={70}
+      tone="neon"
+      title="nvim-orgmode"
+      lines={['clock in と clock out']}
+    />
+    <FigArrow points={[[590, 95], [626, 95]]} tone="neon" />
+    <FigNode
+      x={630}
+      y={60}
+      w={130}
+      h={70}
+      tone="mint"
+      title="Org のファイル"
+    />
+    <FigArrow points={[[695, 164], [695, 134]]} />
+    <FigNode
+      x={410}
+      y={168}
+      w={350}
+      h={42}
+      tone="ghost"
+      lines={['kintai は読むだけで書き込まない']}
+    />
+  </FigSvg>
+</Figure>
+
 ## 決定理由
 
 - CLOCK 行を nvim-orgmode が書くため、ADR 0007 が依存する書式とずれない。
@@ -53,8 +107,8 @@ ADR 0006、ADR 0007、ADR 0010 から、選べる案は次の条件を満たす�
 
 ## 出典
 
-- apps/docs-hub/src/content/prd/0007_attendance-invoice.mdx
-- apps/docs-hub/src/content/adr/0006_use-orgmode-and-org-roam-for-notes-and-tasks.mdx
-- apps/docs-hub/src/content/adr/0007_use-rust-and-typst-for-kintai-cli.mdx
-- apps/docs-hub/src/content/adr/0010_write-project-settings-in-toml.mdx
+- [PRD 0007「勤怠表と請求書の作成」](/prd/0007_attendance-invoice)
+- [ADR 0006「ノートとタスクを Org 形式で書き、nvim-orgmode と org-roam.nvim で扱う」](/adr/0006_use-orgmode-and-org-roam-for-notes-and-tasks)
+- [ADR 0007「勤怠表の CLI を Rust で書き、Typst を組み込んで PDF を生成する」](/adr/0007_use-rust-and-typst-for-kintai-cli)
+- [ADR 0010「案件の設定は、非公開のリポジトリに案件ごとの TOML ファイルで書く」](/adr/0010_write-project-settings-in-toml)
 - 所有者へのヒアリング（2026-10-03）

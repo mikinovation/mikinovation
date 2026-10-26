@@ -28,7 +28,9 @@ pnpm typecheck
 - 一覧とメタ情報は `src/lib/docs.ts` が `src/content/` を読んで組み立てる。各文書の冒頭の H1 をタイトル、続く箇条書きを `- キー: 値` の組として読み、`状態` と `段階` からバッジを決める
 - 本文は `src/app/[kind]/[slug]/page.tsx` が `@/content/<種類>/<ファイル名>.mdx` を動的に読み込み、MDX として描画する。URL は `/<種類>/<ファイル名>` で、`generateStaticParams` が全件を静的に書き出す
 - MDX の拡張は `next.config.ts` で設定する。表には remark-gfm、見出しの `id` には rehype-slug を使う。Turbopack には関数を渡せないため、プラグインは名前の文字列で指定する
-- Mermaid の図は `src/mdx-components.tsx` が `language-mermaid` のコードブロックを見分け、`MermaidDiagram` に渡してブラウザ側で描く。描き終わるまでは記述をそのまま表示する
+- 図は `src/components/figure.tsx` のコンポーネントで HTML と SVG として書く。`src/mdx-components.tsx` に登録してあるため、MDX 側で import は要らない。書き方は `FIGURES.md` に定める
+- 文書どうしの参照は `/<種類>/<ファイル名>` へのリンクで書く。`src/mdx-components.tsx` が `a` を `next/link` に差し替え、`basePath` を付ける
+- 本文中の「PRD 0007」「ADR 0013」のような文書参照は、`src/lib/remark-doc-links.mjs` が該当する文書へのリンクに変える。存在しない番号は文字のままにする
 
 ファイル名から URL が決まるため、文書を改名すると URL も変わる。
 
@@ -53,4 +55,3 @@ pnpm typecheck
 - ポートフォリオの内容。PRD 0010 はドキュメントのみを対象としており、ポートフォリオを載せる範囲は未反映
 - テストケース（`src/content/test/`）と計画（`src/content/plan/`）の表示。この2種類は `.md` のまま運用するため、一覧に出ない
 - PRD 0010 と ADR 0017・0018 は、正本をリポジトリルートの `docs/` の Markdown とし、サイトの生成に VitePress を使うと決めている。現状の構成はどちらとも違うため、置き換えが必要
-- Mermaid の図がブラウザで描かれるかは、実機で確認していない

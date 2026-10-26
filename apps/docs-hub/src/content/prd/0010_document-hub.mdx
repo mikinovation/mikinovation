@@ -147,6 +147,74 @@ PRD、ADR、設計書、テストケース、計画を作るスキルが揃い�
 業務要求1では、索引の更新や設定の追記など、ハブのための追加の作業を要らなくする。
 業務要求2のスキルは、PRD、ADR、設計書、テストケース、計画を作るスキルである。
 
+<Figure caption="文書を書いて push する以外の作業を増やさない。ハブは正本を表示するだけで、内容を持たない。">
+  <FigSvg
+    height={210}
+    label="文書を書いて push すると自動で公開され、読者がハブで検索し参照をたどる流れ"
+  >
+    <FigNode
+      x={0}
+      y={30}
+      w={160}
+      h={70}
+      title="文書を書く"
+      lines={['スキルが書いたまま']}
+    />
+    <FigArrow points={[[160, 65], [196, 65]]} />
+    <FigNode
+      x={200}
+      y={30}
+      w={160}
+      h={70}
+      title="main へ push"
+      lines={['ほかのファイルは触らない']}
+    />
+    <FigArrow points={[[360, 65], [396, 65]]} tone="neon" />
+    <FigNode
+      x={400}
+      y={30}
+      w={160}
+      h={70}
+      tone="neon"
+      title="自動で公開"
+      lines={['10分以内に反映']}
+    />
+    <FigArrow points={[[560, 65], [596, 65]]} tone="neon" />
+    <FigNode
+      x={600}
+      y={30}
+      w={160}
+      h={70}
+      tone="mint"
+      title="読者"
+      lines={['URL ひとつで読める']}
+    />
+
+    <FigNode
+      x={200}
+      y={128}
+      w={560}
+      h={66}
+      tone="ghost"
+      tag="ハブが担うのは表示だけ"
+    />
+    <FigNote x={330} y={172}>種類別のメニュー</FigNote>
+    <FigNote x={480} y={172}>日本語の全文検索</FigNote>
+    <FigNote x={640} y={172}>文書参照のリンク</FigNote>
+    <FigArrow points={[[480, 128], [480, 100]]} tone="soft" head={false} />
+
+    <FigNode
+      x={0}
+      y={128}
+      w={160}
+      h={66}
+      title="正本は Git"
+      lines={['リポジトリの文書']}
+    />
+    <FigArrow points={[[80, 128], [80, 100]]} tone="soft" head={false} />
+  </FigSvg>
+</Figure>
+
 機能要求と、各要求が解く問題と受入条件は次のとおり。
 
 | # | 要求 | 解く問題 | 受入条件 |
@@ -166,7 +234,7 @@ PRD、ADR、設計書、テストケース、計画を作るスキルが揃い�
 文書が0件の種類は、メニューに出さない。
 
 要求3では、参照先が存在しない文書参照はリンクにせず、文字のまま表示する。
-「ADR 0007 から ADR 0013」のような範囲の参照は、範囲内に存在する文書すべてへのリンクを並べて表示する。
+`ADR 0007 から ADR 0013` のような範囲の参照は、範囲内に存在する文書すべてへのリンクを並べて表示する。
 どちらの場合も、文書の書き方は変えない。
 
 要求4のメタ情報は、ADR の状態、PRD の段階などである。
@@ -181,6 +249,38 @@ PRD、ADR、設計書、テストケース、計画を作るスキルが揃い�
 要求9では、広い表は表の中だけで横にスクロールできればよい。
 
 各文書から GitHub 上の元のファイルを開く機能も検討したが、制約に従って機能を絞るため、要求に入れなかった。
+
+<Figure caption="9つの機能要求のうち6つが問題 a から d に対応し、残る3つは読みやすさを支える。">
+  <FigGrid wide>
+    <FigCard tone="rose" title="a 目的の文書を探しにくい">
+      <FigChips
+        tone="neon"
+        items={['要求1 種類別のメニュー', '要求2 日本語の全文検索']}
+      />
+    </FigCard>
+    <FigCard tone="rose" title="b 関連する文書をたどれない">
+      <FigChips tone="neon" items={['要求3 文書参照のリンク']} />
+    </FigCard>
+    <FigCard tone="rose" title="c 一覧で把握できない">
+      <FigChips tone="neon" items={['要求4 メタ情報つきの一覧']} />
+    </FigCard>
+    <FigCard tone="rose" title="d 読み物として共有しにくい">
+      <FigChips
+        tone="neon"
+        items={['要求5 変わらない URL', '要求8 push で自動反映']}
+      />
+    </FigCard>
+    <FigCard
+      tone="ghost"
+      title="読みやすさを支える"
+      note="問題 a から d には対応しない"
+    >
+      <FigChips
+        items={['要求6 図の表示', '要求7 ダークモード', '要求9 スマートフォン']}
+      />
+    </FigCard>
+  </FigGrid>
+</Figure>
 
 ### 成功条件の測定方法
 

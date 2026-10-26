@@ -59,30 +59,100 @@ PRD 0007 の要求1から要求14を満たす構成を示す。
 
 全体は、Neovim の中の打刻、非公開リポジトリに置くデータ、`kintai`、skill、外部のサービスからなる。
 
-```mermaid
-flowchart LR
-  subgraph Neovim
-    L[打刻の操作] -->|clock in| N[nvim-orgmode]
-  end
-  subgraph 非公開リポジトリ
-    O[(勤怠の記録 Org)]
-    T[(案件の設定 TOML)]
-    R[(勤怠表 PDF)]
-  end
-  N -->|CLOCK 行| O
-  S[月末の skill] -->|呼ぶ| K
-  subgraph K[kintai]
-    RD[読み込み] --> V[検出] --> C[集計]
-    C --> P[勤怠表]
-    C --> F[freee 連携]
-  end
-  O --> RD
-  T --> RD
-  P --> R
-  F <-->|請求書の確認と作成| FR[(freee請求書 API)]
-  F -.->|シークレット| OP[(1Password)]
-  F -.->|トークン| TK[(状態ファイル)]
-```
+<Figure caption="打刻は Neovim から記録へ、月末は skill から kintai へ流れ、外部との通信は freee 連携だけが持つ。">
+  <FigSvg
+    height={380}
+    label="Neovim の打刻、非公開リポジトリのデータ、kintai の内部、skill と外部サービスの関係"
+  >
+    <FigNode x={0} y={0} w={300} h={86} tone="ghost" tag="Neovim" />
+    <FigNode x={16} y={34} w={128} h={42} rx={8} title="打刻の操作" />
+    <FigArrow points={[[144, 55], [170, 55]]} />
+    <FigNode x={174} y={34} w={110} h={42} rx={8} title="nvim-orgmode" />
+
+    <FigArrow points={[[229, 76], [229, 142]]} />
+    <FigLabel x={262} y={110}>
+      CLOCK 行
+    </FigLabel>
+
+    <FigNode x={0} y={106} w={300} h={236} tone="ghost" tag="非公開リポジトリ" />
+    <FigNode
+      x={16}
+      y={146}
+      w={268}
+      h={48}
+      title="勤怠の記録（Org）"
+    />
+    <FigNode
+      x={16}
+      y={206}
+      w={268}
+      h={48}
+      title="案件の設定（TOML）"
+    />
+    <FigNode
+      x={16}
+      y={266}
+      w={268}
+      h={48}
+      tone="mint"
+      title="勤怠表 PDF"
+    />
+
+    <FigArrow points={[[284, 170], [330, 170], [330, 112], [368, 112]]} />
+    <FigArrow points={[[284, 230], [348, 230], [348, 132], [368, 132]]} />
+
+    <FigNode
+      x={360}
+      y={0}
+      w={240}
+      h={44}
+      tone="amber"
+      title="月末の skill"
+    />
+    <FigArrow points={[[480, 44], [480, 58]]} tone="neon" />
+
+    <FigNode x={360} y={62} w={240} h={280} tone="ghost" tag="kintai" />
+    <FigNode x={376} y={100} w={208} h={44} rx={8} tone="neon" title="読み込み" />
+    <FigArrow points={[[480, 144], [480, 152]]} tone="neon" head={false} />
+    <FigNode x={376} y={156} w={208} h={44} rx={8} tone="neon" title="検出" />
+    <FigArrow points={[[480, 200], [480, 208]]} tone="neon" head={false} />
+    <FigNode x={376} y={212} w={208} h={44} rx={8} tone="neon" title="集計" />
+    <FigArrow points={[[480, 256], [430, 256], [430, 264]]} tone="neon" />
+    <FigArrow points={[[480, 256], [532, 256], [532, 264]]} tone="neon" />
+    <FigNode x={376} y={268} w={108} h={52} rx={8} title="勤怠表" />
+    <FigNode x={488} y={268} w={96} h={52} rx={8} title="freee 連携" />
+
+    <FigArrow points={[[430, 320], [430, 356], [150, 356], [150, 318]]} />
+
+    <FigArrow points={[[584, 282], [606, 282], [606, 130], [626, 130]]} tone="neon" />
+    <FigNode
+      x={630}
+      y={100}
+      w={130}
+      h={60}
+      title="freee請求書"
+      lines={['確認と作成']}
+    />
+    <FigArrow points={[[584, 296], [600, 296], [600, 212], [626, 212]]} tone="soft" />
+    <FigNode
+      x={630}
+      y={190}
+      w={130}
+      h={46}
+      tone="ghost"
+      lines={['1Password']}
+    />
+    <FigArrow points={[[584, 308], [614, 308], [614, 278], [626, 278]]} tone="soft" />
+    <FigNode
+      x={630}
+      y={256}
+      w={130}
+      h={46}
+      tone="ghost"
+      lines={['状態ファイル']}
+    />
+  </FigSvg>
+</Figure>
 
 ## 層2: 構成
 
@@ -110,25 +180,58 @@ flowchart LR
 
 通常時は、次の順に流れる。
 
-```mermaid
-sequenceDiagram
-  actor U as 所有者
-  participant S as 月末の skill
-  participant K as kintai
-  participant F as freee請求書 API
-  U->>S: 9月の勤怠と請求書を作って
-  S->>K: check 2026-09
-  K-->>S: 検出なし
-  S->>K: report 2026-09
-  K-->>S: 勤怠表 PDF の場所
-  S->>K: invoice 2026-09
-  K->>F: 同じ月の請求書の有無を確認
-  F-->>K: なし
-  K->>F: 送付待ちの請求書を作成
-  F-->>K: 請求書の ID
-  K-->>S: 請求書の ID と確認用の URL
-  S-->>U: PDF の場所と下書きを報告
-```
+<Figure caption="skill は kintai を順に呼ぶだけで、金額の計算も freee との通信も kintai の中で完結する。">
+  <FigSvg
+    height={545}
+    label="所有者から skill、kintai、freee請求書 API へと進む通常時のやり取りの順序"
+  >
+    <FigNode x={0} y={0} w={160} h={40} rx={8} title="所有者" />
+    <FigNode x={210} y={0} w={160} h={40} rx={8} tone="amber" title="月末の skill" />
+    <FigNode x={420} y={0} w={160} h={40} rx={8} tone="neon" title="kintai" />
+    <FigNode x={610} y={0} w={150} h={40} rx={8} title="freee請求書 API" />
+
+    <FigArrow points={[[80, 40], [80, 532]]} tone="soft" head={false} />
+    <FigArrow points={[[290, 40], [290, 532]]} tone="soft" head={false} />
+    <FigArrow points={[[500, 40], [500, 532]]} tone="soft" head={false} />
+    <FigArrow points={[[685, 40], [685, 532]]} tone="soft" head={false} />
+
+    <FigLabel x={185} y={62}>9月の勤怠と請求書を作って</FigLabel>
+    <FigArrow points={[[80, 76], [286, 76]]} />
+
+    <FigLabel x={395} y={102}>check 2026-09</FigLabel>
+    <FigArrow points={[[290, 116], [496, 116]]} />
+
+    <FigLabel x={395} y={142}>検出なし</FigLabel>
+    <FigArrow points={[[500, 156], [294, 156]]} tone="soft" />
+
+    <FigLabel x={395} y={182}>report 2026-09</FigLabel>
+    <FigArrow points={[[290, 196], [496, 196]]} />
+
+    <FigLabel x={395} y={222}>勤怠表 PDF の場所</FigLabel>
+    <FigArrow points={[[500, 236], [294, 236]]} tone="soft" />
+
+    <FigLabel x={395} y={262}>invoice 2026-09</FigLabel>
+    <FigArrow points={[[290, 276], [496, 276]]} />
+
+    <FigLabel x={592} y={302}>同じ月の請求書を確認</FigLabel>
+    <FigArrow points={[[500, 316], [681, 316]]} tone="neon" />
+
+    <FigLabel x={592} y={342}>なし</FigLabel>
+    <FigArrow points={[[685, 356], [504, 356]]} tone="soft" />
+
+    <FigLabel x={592} y={382}>送付待ちの請求書を作成</FigLabel>
+    <FigArrow points={[[500, 396], [681, 396]]} tone="neon" />
+
+    <FigLabel x={592} y={422}>請求書の ID</FigLabel>
+    <FigArrow points={[[685, 436], [504, 436]]} tone="soft" />
+
+    <FigLabel x={395} y={462}>請求書の ID と確認用の URL</FigLabel>
+    <FigArrow points={[[500, 476], [294, 476]]} tone="soft" />
+
+    <FigLabel x={185} y={502}>PDF の場所と下書きを報告</FigLabel>
+    <FigArrow points={[[290, 516], [84, 516]]} tone="soft" />
+  </FigSvg>
+</Figure>
 
 `report` と `invoice` は、どちらも内部で必ず検出を通す。
 skill が `check` を飛ばしても、検出を経ない勤怠表や下書きは作られない。
@@ -380,15 +483,38 @@ freee の API の trait を差し替えれば、通信なしで振る舞いを�
 
 トークンは、次の状態をとる。
 
-```mermaid
-stateDiagram-v2
-  [*] --> 未認証: 状態ファイルがない
-  未認証 --> 有効: kintai auth
-  有効 --> 有効: 期限まで5分以上ある
-  有効 --> 更新中: 期限まで5分を切った、または切れた
-  更新中 --> 有効: 新しいトークンを書き戻した
-  更新中 --> 未認証: 更新が拒まれた
-```
+<Figure caption="新しいトークンを書き戻してから API を呼び、書き戻せない状態で先へ進まない。">
+  <FigSvg
+    height={215}
+    label="未認証、有効、更新中の3つの状態と、その間の遷移"
+  >
+    <FigNode
+      x={40}
+      y={90}
+      w={170}
+      h={64}
+      tone="ghost"
+      title="未認証"
+      lines={['状態ファイルがない']}
+    />
+    <FigArrow points={[[210, 122], [296, 122]]} />
+    <FigLabel x={253} y={108}>kintai auth</FigLabel>
+
+    <FigNode x={300} y={90} w={160} h={64} tone="mint" title="有効" />
+    <FigArrow points={[[460, 110], [556, 110]]} tone="neon" />
+    <FigLabel x={508} y={96}>期限まで5分を切った</FigLabel>
+
+    <FigNode x={560} y={90} w={160} h={64} tone="amber" title="更新中" />
+    <FigArrow points={[[560, 136], [464, 136]]} tone="neon" />
+    <FigLabel x={512} y={150}>書き戻してから呼ぶ</FigLabel>
+
+    <FigArrow points={[[640, 90], [640, 40], [125, 40], [125, 86]]} tone="soft" />
+    <FigLabel x={380} y={30}>更新が拒まれた</FigLabel>
+
+    <FigArrow points={[[340, 154], [340, 186], [420, 186], [420, 158]]} />
+    <FigLabel x={380} y={200}>期限まで5分以上ある</FigLabel>
+  </FigSvg>
+</Figure>
 
 更新中は、受け取った新しいトークンを一時ファイルに書いてから、状態ファイルと置き換える。
 置き換えたあとで、API を呼ぶ。
@@ -447,13 +573,13 @@ freee は数量に単価を掛けて行の金額を求め、1円単位で丸め�
 
 ## 出典
 
-- PRD 0007「勤怠表と請求書の作成」
-- ADR 0001、ADR 0004、ADR 0006 から ADR 0013
-- freee請求書 API の仕様（GitHub の freee/freee-api-schema、2026-10-02 時点）
+- [PRD 0007「勤怠表と請求書の作成」](/prd/0007_attendance-invoice)
+- ADR [0001](/adr/0001_manage-environment-with-nix-flakes)、[0004](/adr/0004_manage-claude-code-with-home-manager)、[0006](/adr/0006_use-orgmode-and-org-roam-for-notes-and-tasks)、[0007](/adr/0007_use-rust-and-typst-for-kintai-cli)、[0008](/adr/0008_call-freee-api-from-kintai)、[0009](/adr/0009_store-freee-credentials-in-1password-and-state-file)、[0010](/adr/0010_write-project-settings-in-toml)、[0011](/adr/0011_clock-in-with-nvim-orgmode-keymap)、[0012](/adr/0012_use-tokio-and-reqwest-for-kintai)、[0013](/adr/0013_split-kintai-into-library-and-cli-crates)
+- freee請求書 API の仕様（GitHub の [freee/freee-api-schema](https://github.com/freee/freee-api-schema)、2026-10-02 時点）
   - 請求書の作成と一覧、送付待ちの状態、取消
   - 添付の手段がないこと、単価にマイナスを書けること
-- freee の MCP サーバー（GitHub の freee/freee-mcp、2026-10-01 時点）: 会計 API の請求書の扱い、認可コードの受け取り方
-- freee Developers Community のリファレンスの概要（認証）: トークンの有効期限、リフレッシュトークンの使い捨て、コールバック URL の扱い
+- freee の MCP サーバー（GitHub の [freee/freee-mcp](https://github.com/freee/freee-mcp)、2026-10-01 時点）: 会計 API の請求書の扱い、認可コードの受け取り方
+- [freee Developers Community](https://developer.freee.co.jp/) のリファレンスの概要（認証）: トークンの有効期限、リフレッシュトークンの使い捨て、コールバック URL の扱い
 - 所有者へのヒアリング（2026-10-03）
   - 層2: 到達させる層、コマンドの形、PDF の置き場と添付、日ごとの見出しのプロパティ、複数の打刻の扱い
   - 層2: 支払期日、二重作成の判定、請求日、認可コードの受け取り方

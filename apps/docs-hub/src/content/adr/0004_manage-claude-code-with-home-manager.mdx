@@ -83,6 +83,40 @@ PRD 0004 の要求のうち、権限と安全については、選べる案は�
 - 作業手順: 外部の提供元5つを flake の入力として取り込み、agent-skills-nix で配布する。自作の作業手順と、文章を整える作業手順はリポジトリと自前のパッケージから配置する。変更を送り出す作業手順は、本体がスキル経由のコマンドを一覧に出さないため、ユーザーコマンドとして配置する。配布先は Claude Code だけとする。
 - 参照: 外部の情報は MCP サーバーから引く。ライブラリの文書は context7、リポジトリの解説は deepwiki、インフラ定義は terraform、ブラウザの操作は chrome-devtools を使い、chrome-devtools は「すべて」にだけ含める。コードの定義や参照は、6言語の LSP サーバーから引く。
 
+<Figure caption="本体から参照の経路までを1つの Home Manager 設定で宣言し、手作業の設定を残さない。">
+  <FigGrid>
+    <FigCard tone="neon" title="本体" note="x86_64-linux と aarch64-darwin">
+      <FigChips tone="neon" items={['自前のパッケージ', '版を記述で固定']} />
+    </FigCard>
+    <FigCard tone="rose" title="権限" note="承認しても実行されない操作を列挙">
+      <FigChips tone="rose" items={['確認を挟まない既定', '破壊的な操作は拒む']} />
+    </FigCard>
+    <FigCard title="気付きと可視化">
+      <FigChips
+        items={['完了と入力待ちの通知', '作業場所とブランチ', 'モデルと利用量']}
+      />
+    </FigCard>
+    <FigCard title="文脈" note="経由で縮む分は打ち消す">
+      <FigChips items={['headroom を常駐', '通信を常に経由', '圧縮をログへ追記']} />
+    </FigCard>
+    <FigCard title="指示と作業手順" note="配布先は Claude Code だけ">
+      <FigChips
+        items={['共通の CLAUDE.md', '外部5つを flake 入力', '自作はリポジトリから']}
+      />
+    </FigCard>
+    <FigCard title="参照">
+      <FigChips>
+        <FigChip>context7</FigChip>
+        <FigChip>deepwiki</FigChip>
+        <FigChip>terraform</FigChip>
+        <FigChip tone="amber">chrome-devtools</FigChip>
+        <FigChip tone="amber">6言語の LSP</FigChip>
+      </FigChips>
+    </FigCard>
+  </FigGrid>
+  <FigLegend items={[{ tone: 'amber', text: '「すべて」にだけ含める' }]} />
+</Figure>
+
 ## 決定理由
 
 - 権限モード、拒否するパターン、フック、状態表示、共通の指示、作業手順、MCP、LSP のいずれも、設定ファイルとファイルの配置だけで宣言できる。設定の配置先は home-manager と各モジュールが引き受けるため、導入後に手作業で設定しなくても制約を満たせる。
@@ -123,8 +157,8 @@ PRD 0004 の要求のうち、権限と安全については、選べる案は�
 
 ## 出典
 
-- apps/docs-hub/src/content/prd/0004_ai-agent.mdx
-- apps/docs-hub/src/content/prd/0001_environment-setup.mdx
-- apps/docs-hub/src/content/adr/0001_manage-environment-with-nix-flakes.mdx
-- apps/docs-hub/src/content/adr/0003_use-herdr-as-terminal-multiplexer.mdx
+- [PRD 0004「AI エージェントの導入」](/prd/0004_ai-agent)
+- [PRD 0001「開発環境の導入」](/prd/0001_environment-setup)
+- [ADR 0001「開発環境を Nix flakes で宣言的に管理する」](/adr/0001_manage-environment-with-nix-flakes)
+- [ADR 0003「端末多重化ツールに herdr を使う」](/adr/0003_use-herdr-as-terminal-multiplexer)
 - 所有者へのヒアリング（2026-09-30）

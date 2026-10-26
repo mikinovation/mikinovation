@@ -33,6 +33,50 @@ PRD 0007、ADR 0001、ADR 0004 から、選べる案は次の条件を満たす�
 対象月の下書きがすでにあるかの確認も、`kintai` が行う。
 skill は `kintai` を呼び、その結果を所有者に報告するだけにする。
 
+<Figure caption="skill は窓口に徹し、API の呼び出しと重複の確認はどちらも kintai が行う。">
+  <FigSvg
+    height={220}
+    label="skill が kintai を呼び、kintai が freee の API を呼んで下書きを作る流れ"
+  >
+    <FigNode
+      x={0}
+      y={50}
+      w={180}
+      h={70}
+      title="skill"
+      lines={['kintai を呼び', '結果を報告する']}
+    />
+    <FigArrow points={[[180, 85], [246, 85]]} />
+    <FigNode
+      x={250}
+      y={50}
+      w={200}
+      h={70}
+      tone="neon"
+      title="kintai"
+      lines={['下書きの作成', '重複の確認']}
+    />
+    <FigArrow points={[[450, 85], [516, 85]]} tone="neon" />
+    <FigNode
+      x={520}
+      y={50}
+      w={240}
+      h={70}
+      title="freee の API"
+      lines={['送付待ちの請求書を作る']}
+    />
+    <FigArrow points={[[350, 120], [350, 146]]} />
+    <FigNode
+      x={250}
+      y={150}
+      w={200}
+      h={60}
+      tone="rose"
+      lines={['同じ月の下書きがあれば', '知らせて止まる']}
+    />
+  </FigSvg>
+</Figure>
+
 ## 決定理由
 
 - 金額が Claude を通らないため、下書きの金額は CLI の計算結果と必ず一致する。
@@ -56,6 +100,6 @@ skill は `kintai` を呼び、その結果を所有者に報告するだけに�
 
 ## 出典
 
-- apps/docs-hub/src/content/prd/0007_attendance-invoice.mdx
-- apps/docs-hub/src/content/adr/0007_use-rust-and-typst-for-kintai-cli.mdx
+- [PRD 0007「勤怠表と請求書の作成」](/prd/0007_attendance-invoice)
+- [ADR 0007「勤怠表の CLI を Rust で書き、Typst を組み込んで PDF を生成する」](/adr/0007_use-rust-and-typst-for-kintai-cli)
 - 所有者へのヒアリング（2026-10-03）

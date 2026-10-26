@@ -34,6 +34,60 @@ PRD 0007 と ADR 0007 から、選べる案は次の条件を満たす必要が�
 日割り月の上書き、テンプレートの差し替え、1Password の参照先も、同じファイルに書く。
 `kintai` は、`serde` と `toml` のクレートで設定を読む。
 
+<Figure caption="精算のルールと勤怠の記録を同じ非公開のリポジトリに置き、kintai は読むだけにする。">
+  <FigSvg
+    height={200}
+    label="非公開のリポジトリに案件ごとの TOML と Org の記録を置き、kintai が読む構成"
+  >
+    <FigNode
+      x={0}
+      y={20}
+      w={420}
+      h={170}
+      tone="ghost"
+      tag="非公開のリポジトリ"
+    />
+    <FigNode
+      x={20}
+      y={60}
+      w={180}
+      h={56}
+      tone="neon"
+      title="案件ごとの TOML"
+      lines={['精算のルール']}
+    />
+    <FigNode
+      x={220}
+      y={60}
+      w={180}
+      h={56}
+      title="Org の記録"
+      lines={['打刻と備考']}
+    />
+    <FigNode
+      x={20}
+      y={126}
+      w={380}
+      h={50}
+      tone="ghost"
+      lines={[
+        '日割りの上書き、テンプレートの差し替え、',
+        '1Password の参照先も同じファイルに書く',
+      ]}
+    />
+    <FigArrow points={[[420, 105], [536, 105]]} tone="neon" />
+    <FigNode
+      x={540}
+      y={70}
+      w={220}
+      h={70}
+      tone="neon"
+      title="kintai"
+      lines={['serde と toml で読む']}
+    />
+  </FigSvg>
+</Figure>
+
 ## 決定理由
 
 - 型を決めて読めるため、設定の誤りを読み込みの時点で検出できる。
@@ -56,7 +110,7 @@ PRD 0007 と ADR 0007 から、選べる案は次の条件を満たす必要が�
 
 ## 出典
 
-- apps/docs-hub/src/content/prd/0007_attendance-invoice.mdx
-- apps/docs-hub/src/content/adr/0007_use-rust-and-typst-for-kintai-cli.mdx
-- apps/docs-hub/src/content/adr/0009_store-freee-credentials-in-1password-and-state-file.mdx
+- [PRD 0007「勤怠表と請求書の作成」](/prd/0007_attendance-invoice)
+- [ADR 0007「勤怠表の CLI を Rust で書き、Typst を組み込んで PDF を生成する」](/adr/0007_use-rust-and-typst-for-kintai-cli)
+- [ADR 0009「freee の認証情報は、変わらない値を 1Password に、トークンを状態ファイルに置く」](/adr/0009_store-freee-credentials-in-1password-and-state-file)
 - 所有者へのヒアリング（2026-10-03）

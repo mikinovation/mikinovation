@@ -90,6 +90,56 @@ Nix のない環境では、このリポジトリを開いたときに要求17 �
 
 ### 要求と受入条件
 
+<Figure caption="17の要求は6つのねらいに分かれる。導入範囲で差が出るのは要求10と要求12だけである。">
+  <FigGrid>
+    <FigCard tone="neon" title="止まらずに実行する">
+      <FigChips>
+        <FigChip tone="neon">1 確認を求めない</FigChip>
+        <FigChip tone="rose">2 破壊的な操作は拒む</FigChip>
+      </FigChips>
+    </FigCard>
+    <FigCard title="状況に気付ける">
+      <FigChips items={['3 終了と入力待ちの通知', '4 作業中の状態表示']} />
+    </FigCard>
+    <FigCard title="文脈を保つ">
+      <FigChips items={['5 文脈量が減らない', '6 圧縮の記録']} />
+    </FigCard>
+    <FigCard title="指示と作業手順を揃える">
+      <FigChips
+        items={[
+          '7 共通の指示',
+          '8 外部の作業手順',
+          '9 自作の作業手順',
+          '17 Nix のない環境',
+        ]}
+      />
+    </FigCard>
+    <FigCard title="外部の知識を引く">
+      <FigChips>
+        <FigChip tone="amber">10 コードの意味</FigChip>
+        <FigChip>11 外部の情報</FigChip>
+        <FigChip tone="amber">12 ブラウザの操作</FigChip>
+      </FigChips>
+    </FigCard>
+    <FigCard title="動かし方を固定する">
+      <FigChips
+        items={[
+          '13 同一プロセス',
+          '14 モデルと思考の強度',
+          '15 自動更新しない',
+          '16 共著者の記載なし',
+        ]}
+      />
+    </FigCard>
+  </FigGrid>
+  <FigLegend
+    items={[
+      { tone: 'amber', text: '「すべて」でだけ満たす' },
+      { tone: 'rose', text: '常に拒む側の要求' },
+    ]}
+  />
+</Figure>
+
 各要求と、その要求を受け入れる条件は次のとおり。
 
 | # | 要求 | 受入条件 |
@@ -114,6 +164,77 @@ Nix のない環境では、このリポジトリを開いたときに要求17 �
 
 要求10 と要求12 以外は、「すべて」と「最小限」のどちらの導入範囲でも満たす。
 要求17 は、導入範囲によらず、Nix のない環境で満たす。
+
+<Figure caption="同じ設定と作業手順が2つの経路で届く。満たす要求の差は、導入範囲と環境によって決まる。">
+  <FigSvg
+    height={290}
+    label="リポジトリの設定と作業手順が、Nix で導入したマシンと Nix のない環境の2経路に届く構成"
+  >
+    <FigNode
+      x={230}
+      y={0}
+      w={300}
+      h={56}
+      tone="neon"
+      title="リポジトリの設定と作業手順"
+      lines={['変更すると全てのマシンへ同じ形で届く']}
+    />
+    <FigArrow points={[[380, 56], [380, 80], [170, 80], [170, 106]]} />
+    <FigArrow points={[[380, 56], [380, 80], [590, 80], [590, 106]]} />
+
+    <FigNode
+      x={0}
+      y={110}
+      w={340}
+      h={170}
+      valign="top"
+      title="Nix で導入したマシン"
+      lines={['導入操作で設定と作業手順が配置される']}
+    />
+    <FigNode
+      x={18}
+      y={172}
+      w={148}
+      h={86}
+      rx={10}
+      title="すべて"
+      lines={['17の要求を', 'すべて満たす']}
+    />
+    <FigNode
+      x={176}
+      y={172}
+      w={148}
+      h={86}
+      rx={10}
+      tone="amber"
+      title="最小限"
+      lines={['要求10と要求12を', '除いて満たす']}
+    />
+
+    <FigNode
+      x={420}
+      y={110}
+      w={340}
+      h={170}
+      tone="ghost"
+      valign="top"
+      title="Nix のない環境"
+      lines={['ブラウザとスマホから使う場合']}
+    />
+    <FigNode
+      x={438}
+      y={172}
+      w={304}
+      h={86}
+      rx={10}
+      lines={[
+        'このリポジトリを開くと作業手順が揃う',
+        'セッションの開始時に取り込む',
+        '外部の作業手順は版を固定しない',
+      ]}
+    />
+  </FigSvg>
+</Figure>
 
 要求2で拒む操作は次のとおり。
 

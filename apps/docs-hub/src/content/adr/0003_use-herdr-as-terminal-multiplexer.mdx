@@ -64,6 +64,53 @@ herdr は ADR 0001 の共通の Home Manager 設定から、flake input `github:
 - エージェントの監視は、注目するエージェントを全画面に広げる操作を主とし、優先度順に並ぶサイドバーを副とする。サイドバーは畳むと画面を占有しない。
 - Neovim から herdr のエージェントへ送る仕組みは、herdr の CLI を呼ぶ `plugins/herdr/actions` として自前で実装する。選択範囲、現在行、ファイルパス、自由入力の送信と、エージェントの起動、ワークスペースの切り替えを行う。
 
+<Figure caption="監視と画面の操作は herdr の機能に任せ、エディターとの連携だけを自前で持つ。">
+  <FigGrid>
+    <FigCard tone="neon" title="herdr が担う" note="自前の実装を要しない">
+      <FigChips
+        tone="neon"
+        items={[
+          'エージェントの一覧',
+          '状態の表示',
+          '優先度順の並び',
+          '全画面との行き来',
+          'サイドバーの開閉',
+          'ワークスペース',
+          '分割とタブ',
+          'マウス操作',
+          '過去の出力',
+        ]}
+      />
+    </FigCard>
+    <FigCard
+      tone="amber"
+      title="自前で実装する"
+      note="herdr の CLI を呼ぶ Neovim のモジュール"
+    >
+      <FigChips
+        tone="amber"
+        items={[
+          '選択範囲の送信',
+          '現在行の送信',
+          'ファイルパスの送信',
+          '自由入力の送信',
+          'エージェントの起動',
+          'ワークスペースの切り替え',
+        ]}
+      />
+    </FigCard>
+    <FigCard tone="ghost" title="Nix が担う" note="「すべて」にだけ含める">
+      <FigChips
+        items={[
+          'flake input で導入',
+          'flake.lock で版を固定',
+          'config.toml の配置',
+        ]}
+      />
+    </FigCard>
+  </FigGrid>
+</Figure>
+
 ## 決定理由
 
 - エージェントの一覧、状態の表示、優先度順の並びを herdr 自身が持つため、監視に関わる制約を自前の実装なしで満たせる。
@@ -101,11 +148,11 @@ herdr は ADR 0001 の共通の Home Manager 設定から、flake input `github:
 
 ## 出典
 
-- apps/docs-hub/src/content/prd/0003_terminal-multiplexer.mdx
-- apps/docs-hub/src/content/prd/0001_environment-setup.mdx
-- apps/docs-hub/src/content/adr/0001_manage-environment-with-nix-flakes.mdx
-- apps/docs-hub/src/content/adr/0002_use-neovim-as-default-editor.mdx
+- [PRD 0003「端末多重化ツールの導入」](/prd/0003_terminal-multiplexer)
+- [PRD 0001「開発環境の導入」](/prd/0001_environment-setup)
+- [ADR 0001「開発環境を Nix flakes で宣言的に管理する」](/adr/0001_manage-environment-with-nix-flakes)
+- [ADR 0002「Neovim を既定エディターにする」](/adr/0002_use-neovim-as-default-editor)
 - 所有者へのヒアリング（2026-09-29）
 - 所有者へのヒアリング（2026-10-08）
-- https://github.com/stablyai/orca
-- https://code.claude.com/docs/en/worktrees
+- [Orca（stablyai/orca）](https://github.com/stablyai/orca)
+- [Claude Code の worktrees の文書](https://code.claude.com/docs/en/worktrees)

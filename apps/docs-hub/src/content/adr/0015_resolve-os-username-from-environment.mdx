@@ -52,6 +52,67 @@ WSL と macOS の出力名は変えない。
 
 環境変数を読むには評価を impure にする必要があるため、`setup.sh` は3つの OS のすべてで `--impure` を付けて適用する。
 
+<Figure caption="出力にユーザー名を書かず、評価時に環境変数から決める。">
+  <FigSvg
+    height={205}
+    label="DOTFILES_USER、SUDO_USER、USER の順に環境変数を読み、どれもなければ nixos を使う流れ"
+  >
+    <FigLabel x={380} y={18}>
+      値が root の環境変数は飛ばす
+    </FigLabel>
+    <FigNode
+      x={0}
+      y={56}
+      w={170}
+      h={70}
+      tone="neon"
+      title="DOTFILES_USER"
+      lines={['明示的に指定する場合']}
+    />
+    <FigArrow points={[[170, 91], [206, 91]]} />
+    <FigLabel x={188} y={76}>
+      なければ
+    </FigLabel>
+    <FigNode
+      x={210}
+      y={56}
+      w={170}
+      h={70}
+      title="SUDO_USER"
+      lines={['sudo で適用する場合']}
+    />
+    <FigArrow points={[[380, 91], [416, 91]]} />
+    <FigNode
+      x={420}
+      y={56}
+      w={170}
+      h={70}
+      title="USER"
+      lines={['単体で使う場合']}
+    />
+    <FigArrow points={[[590, 91], [626, 91]]} />
+    <FigNode
+      x={630}
+      y={56}
+      w={130}
+      h={70}
+      tone="ghost"
+      title="nixos"
+      lines={['既定のユーザー']}
+    />
+    <FigNode
+      x={0}
+      y={150}
+      w={760}
+      h={50}
+      tone="ghost"
+      lines={[
+        '環境変数を読むため評価は impure になり、setup.sh は3つの OS すべてで --impure を付ける',
+      ]}
+    />
+  </FigSvg>
+</Figure>
+
 ## 決定理由
 
 - ユーザー名を環境から決めるため、flake を書き換えずにどのユーザー名のマシンにも導入できる。
@@ -86,6 +147,6 @@ WSL と macOS の出力名は変えない。
 
 ## 出典
 
-- `apps/docs-hub/src/content/prd/0001_environment-setup.mdx`
-- `apps/docs-hub/src/content/adr/0001_manage-environment-with-nix-flakes.mdx`
+- [PRD 0001「開発環境の導入」](/prd/0001_environment-setup)
+- [ADR 0001「開発環境を Nix flakes で宣言的に管理する」](/adr/0001_manage-environment-with-nix-flakes)
 - 所有者の依頼（2026-10-06）: ユーザー名に依存しない設計にする

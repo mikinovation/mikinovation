@@ -40,6 +40,59 @@ Org 形式の解析は、CLOCK 行と日ごとの見出しのプロパティに�
 
 導入は、`buildRustPackage` で nix のパッケージにし、Home Manager で行う。
 
+<Figure caption="CLI は集計までを担い、見た目はテンプレートに委ねる。">
+  <FigSvg
+    height={215}
+    label="Org のファイルを kintai が解析し、typst のテンプレートを通して勤怠表 PDF を作る構成"
+  >
+    <FigNode
+      x={0}
+      y={70}
+      w={160}
+      h={70}
+      title="Org のファイル"
+      lines={['CLOCK 行と見出し']}
+    />
+    <FigArrow points={[[160, 105], [196, 105]]} />
+    <FigNode
+      x={200}
+      y={40}
+      w={200}
+      h={130}
+      tone="neon"
+      valign="top"
+      title="kintai（Rust）"
+      lines={['正規表現で解析する', '集計の結果を渡すだけ']}
+    />
+    <FigArrow points={[[400, 105], [420, 105], [420, 55], [436, 55]]} tone="neon" />
+    <FigNode
+      x={440}
+      y={20}
+      w={160}
+      h={70}
+      title="typst のテンプレート"
+      lines={['見た目を担う']}
+    />
+    <FigArrow points={[[600, 55], [636, 55]]} tone="neon" />
+    <FigNode x={640} y={20} w={120} h={70} tone="mint" title="勤怠表 PDF" />
+    <FigArrow points={[[420, 105], [420, 150], [436, 150]]} tone="soft" />
+    <FigNode
+      x={440}
+      y={120}
+      w={320}
+      h={70}
+      tone="ghost"
+      lines={[
+        'テンプレートと Noto Sans JP は同梱する',
+        '案件の設定で差し替えられる',
+      ]}
+    />
+    <FigLabel x={300} y={205}>
+      buildRustPackage で Home Manager から導入する
+    </FigLabel>
+  </FigSvg>
+</Figure>
+
 ## 決定理由
 
 - Rust は単一のバイナリを作れるため、実行時に Node や Python などの実行環境を用意しなくて済む。Home Manager でバイナリを置くだけで導入でき、導入の制約に合う。
@@ -72,7 +125,7 @@ Org 形式の解析は、CLOCK 行と日ごとの見出しのプロパティに�
 
 ## 出典
 
-- apps/docs-hub/src/content/prd/0007_attendance-invoice.mdx
-- apps/docs-hub/src/content/adr/0001_manage-environment-with-nix-flakes.mdx
-- apps/docs-hub/src/content/adr/0004_manage-claude-code-with-home-manager.mdx
+- [PRD 0007「勤怠表と請求書の作成」](/prd/0007_attendance-invoice)
+- [ADR 0001「開発環境を Nix flakes で宣言的に管理する」](/adr/0001_manage-environment-with-nix-flakes)
+- [ADR 0004「Claude Code を Home Manager で宣言的に管理する」](/adr/0004_manage-claude-code-with-home-manager)
 - 所有者へのヒアリング（2026-10-02〜2026-10-03）

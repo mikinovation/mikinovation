@@ -17,7 +17,7 @@
 - 日割り月: 稼働率を使う、契約の開始月と終了月。
 - 下書き: freee で作る、送付前の請求書。freee請求書では「送付待ち」の請求書にあたる。
 - skill: Claude Code に月末の作業を頼むための作業手順。
-- 「すべて」「最小限」: 開発環境の導入範囲。PRD「開発環境の導入」（`apps/docs-hub/src/content/prd/0001_environment-setup.mdx`）で定める。
+- 「すべて」「最小限」: 開発環境の導入範囲。PRD 0001「開発環境の導入」で定める。
 
 ## 課題
 
@@ -133,6 +133,90 @@ freee請求書には下書きと発行の区別がないため、請求書を発
 各要求と、その要求を受け入れる条件は次のとおり。
 受入条件の金額と時間は、表の下に示す例の契約条件で計算した値である。
 
+<Figure caption="検出で止まる場合、勤怠表も下書きも作られない。二重の下書きも同じ扱いで止める。">
+  <FigSvg
+    height={250}
+    label="日々の打刻から検出、計算を経て勤怠表 PDF と freee の下書きに至る流れ"
+  >
+    <FigLabel x={380} y={10}>
+      「9月の勤怠と請求書を作って」の一言で、検出から下書きまで進む
+    </FigLabel>
+
+    <FigNode
+      x={0}
+      y={34}
+      w={150}
+      h={76}
+      title="日々の打刻"
+      lines={['日ごとの見出しに残す']}
+    />
+    <FigArrow points={[[150, 72], [182, 72]]} />
+    <FigNode
+      x={186}
+      y={34}
+      w={160}
+      h={76}
+      tone="amber"
+      title="提出前の検出"
+      lines={['打刻漏れ、日割りの設定漏れ']}
+    />
+    <FigArrow points={[[266, 110], [266, 166]]} />
+    <FigNode
+      x={186}
+      y={170}
+      w={160}
+      h={64}
+      tone="rose"
+      title="見つかれば止まる"
+      lines={['直すべき箇所を案内する']}
+    />
+
+    <FigArrow points={[[346, 72], [378, 72]]} tone="neon" />
+    <FigNode
+      x={382}
+      y={34}
+      w={160}
+      h={76}
+      tone="neon"
+      title="丸めと精算の計算"
+      lines={['毎回同じ結果になる']}
+    />
+    <FigNode
+      x={382}
+      y={170}
+      w={160}
+      h={64}
+      tone="ghost"
+      lines={['案件ごとの設定', '精算幅、単価、丸め、締め日']}
+    />
+    <FigArrow points={[[462, 170], [462, 114]]} tone="soft" />
+
+    <FigArrow points={[[542, 72], [562, 72], [562, 48], [596, 48]]} tone="neon" />
+    <FigArrow
+      points={[[542, 72], [562, 72], [562, 128], [596, 128]]}
+      tone="neon"
+    />
+    <FigNode
+      x={600}
+      y={20}
+      w={160}
+      h={56}
+      tone="mint"
+      title="勤怠表 PDF"
+      lines={['先方に提出する']}
+    />
+    <FigNode
+      x={600}
+      y={100}
+      w={160}
+      h={56}
+      tone="mint"
+      title="freee の下書き"
+      lines={['送付は所有者が行う']}
+    />
+  </FigSvg>
+</Figure>
+
 | # | 要求 | 受入条件 |
 |---|---|---|
 | 1 | その日の見出しに打刻できる | 1回の操作で、案件の見出しの下に当日の見出しができ、打刻が始まる。当日の見出しがすでにあれば、その見出しを使う |
@@ -155,6 +239,55 @@ freee請求書には下書きと発行の区別がないため、請求書を発
 要求7の精算額は、稼働91hなら ¥400,000 ＋ 1h × ¥4,440 ＝ ¥404,440 になる。
 稼働69.75hなら、控除額 0.25h × ¥5,710 ＝ ¥1,427.5 を切り捨てて ¥1,420 とし、¥398,580 になる。
 精算幅の範囲内なら ¥400,000 になる。
+
+<Figure caption="稼働が精算幅から外れた分だけを単価で精算し、10円未満は切り捨てる。">
+  <FigSvg
+    height={170}
+    label="精算幅 70 から 90 時間を境に、控除、基本額のまま、超過に分かれる精算額の関係"
+  >
+    <FigNode
+      x={60}
+      y={78}
+      w={160}
+      h={32}
+      rx={6}
+      tone="rose"
+      lines={['控除 ¥5,710/h']}
+    />
+    <FigNode
+      x={220}
+      y={78}
+      w={320}
+      h={32}
+      rx={6}
+      tone="mint"
+      title="基本額のまま ¥400,000"
+    />
+    <FigNode
+      x={540}
+      y={78}
+      w={160}
+      h={32}
+      rx={6}
+      tone="amber"
+      lines={['超過 ¥4,440/h']}
+    />
+
+    <path className="fig-axis" d="M220 110 V126" />
+    <path className="fig-axis" d="M540 110 V126" />
+    <FigLabel x={220} y={138}>70h</FigLabel>
+    <FigLabel x={540} y={138}>90h</FigLabel>
+    <FigLabel x={380} y={138}>精算幅（日割り月に上書きした値）</FigLabel>
+
+    <path className="fig-axis" d="M216 60 V78" />
+    <circle className="fig-rose" cx={216} cy={56} r={4} />
+    <FigNote x={216} y={38}>稼働 69.75h → ¥398,580</FigNote>
+
+    <path className="fig-axis" d="M556 60 V78" />
+    <circle className="fig-amber" cx={556} cy={56} r={4} />
+    <FigNote x={556} y={38}>稼働 91h → ¥404,440</FigNote>
+  </FigSvg>
+</Figure>
 
 要求10の勤怠表 PDF では、列は日付、曜日、始業、終業、休憩、稼働、備考で、稼働のない日は時刻の欄が空になる。
 ヘッダーに対象月、氏名、案件名、先方名が載る。
@@ -206,5 +339,5 @@ PDF の表の下に、合計時間、精算幅、超過または控除の時間�
 ## 出典
 
 - 所有者へのヒアリング（2026-10-02〜2026-10-03）: 精算のルール、課題と解決策のすべての項目
-- freee請求書 API の仕様（freee/freee-api-schema の `iv/open-api-3/api-schema.yml`、2026-10-02 時点）: 下書き、要求11、要求14
+- freee請求書 API の仕様（[freee/freee-api-schema](https://github.com/freee/freee-api-schema) の `iv/open-api-3/api-schema.yml`、2026-10-02 時点）: 下書き、要求11、要求14
 - 所有者へのヒアリング（2026-10-03）: 要求4の基本額の端数の丸め方

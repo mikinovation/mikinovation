@@ -7,10 +7,10 @@
 
 この PRD の用語は次の意味で使う。
 
-- `refile.org`: 分類前のメモやタスクをいったん置くファイル。PRD「ノートとタスクの管理」（`apps/docs-hub/src/content/prd/0006_note-taking.mdx`）で定める。
+- `refile.org`: 分類前のメモやタスクをいったん置くファイル。PRD 0006「ノートとタスクの管理」で定める。
 - 促し: 一定の間隔で、所有者に `refile.org` へメモを書くよう求めること。
 - 一時停止: 所有者が選んだ時間だけ、促しを止めること。
-- 「すべて」「最小限」: 開発環境の導入範囲。PRD「開発環境の導入」（`apps/docs-hub/src/content/prd/0001_environment-setup.mdx`）で定める。
+- 「すべて」「最小限」: 開発環境の導入範囲。PRD 0001「開発環境の導入」で定める。
 
 ## 課題
 
@@ -90,6 +90,72 @@
 
 各要求と、その要求を受け入れる条件は次のとおり。
 
+<Figure caption="直接 refile.org に書いた場合も数え直す。促しは通知だけで、書くかどうかは所有者が決める。">
+  <FigSvg
+    height={240}
+    label="最後のメモから15分で通知が出て、メモを書くと数え直し、一時停止の間は通知が止まる流れ"
+  >
+    <FigNode
+      x={210}
+      y={0}
+      w={350}
+      h={52}
+      tone="ghost"
+      title="一時停止（30分・1時間・2時間）"
+      lines={['その間は通知が出ない']}
+    />
+    <FigArrow points={[[300, 90], [300, 52]]} tone="soft" head={false} />
+    <FigLabel x={334} y={72}>止める</FigLabel>
+    <FigArrow points={[[240, 52], [80, 52], [80, 86]]} tone="soft" />
+    <FigLabel x={150} y={72}>過ぎたら数え直す</FigLabel>
+
+    <FigNode
+      x={0}
+      y={90}
+      w={160}
+      h={64}
+      title="起動、または直前のメモ"
+      lines={['ここから15分を数える']}
+    />
+    <FigArrow points={[[160, 122], [216, 122]]} />
+    <FigLabel x={188} y={108}>15分</FigLabel>
+    <FigNode
+      x={220}
+      y={90}
+      w={160}
+      h={64}
+      tone="amber"
+      title="エディターに通知"
+      lines={['閉じるか書くまで残る']}
+    />
+    <FigArrow points={[[380, 122], [416, 122]]} tone="neon" />
+    <FigNode
+      x={420}
+      y={90}
+      w={170}
+      h={64}
+      tone="neon"
+      title="1回の操作で入力欄"
+      lines={['日時付きの見出しを書く']}
+    />
+    <FigArrow points={[[590, 122], [626, 122]]} tone="neon" />
+    <FigNode
+      x={630}
+      y={90}
+      w={130}
+      h={64}
+      tone="mint"
+      title="refile.org"
+      lines={['見出しが1件増える']}
+    />
+    <FigArrow
+      points={[[695, 154], [695, 200], [80, 200], [80, 158]]}
+      tone="neon"
+    />
+    <FigLabel x={390} y={190}>見出しが増えた時刻から15分を数え直す</FigLabel>
+  </FigSvg>
+</Figure>
+
 | # | 要求 | 受入条件 |
 |---|---|---|
 | 1 | 最後にメモを書いてから15分たつと、エディターに通知が出る | 起動または最後のメモから15分たつと通知が出る。15分たつ前には出ない |
@@ -131,4 +197,4 @@
 
 - 所有者の依頼（2026-10-04）: 「15分ごとにneovimのrefileにメモを強制するにはどうすればいいでしょうか」
 - 所有者へのヒアリング（2026-10-04）: 課題と解決策のすべての項目
-- PRD「ノートとタスクの管理」（`apps/docs-hub/src/content/prd/0006_note-taking.mdx`）: `refile.org` の定義、`refile.org` を1回の操作で開く要求
+- [PRD 0006「ノートとタスクの管理」](/prd/0006_note-taking): `refile.org` の定義、`refile.org` を1回の操作で開く要求

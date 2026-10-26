@@ -45,6 +45,52 @@ PRD 0004 の要求17 から、選べる案は次の条件を満たす必要が�
 - 外部の作業手順: 4つのプラグインを `.claude/settings.json` の `enabledPlugins` で有効にする。対象は tanteki、yomiyasu、mattpocock-skills、commit-commands である。
 - 導入: SessionStart のフック `.claude/hooks/session-start.sh` を置く。フックは `.claude/settings.json` に書いたマーケットプレイスを追加し、有効にしたプラグインをプロジェクトのスコープで導入する。フックは `CLAUDE_CODE_REMOTE` が `true` のときだけ動き、導入が終わるまでセッションを待たせる。`claude plugin` のコマンドが書き直す `.claude/settings.json` は、フックの終了時に元の内容へ戻す。
 
+<Figure caption="自作の作業手順はリポジトリから直接読み、外部の作業手順だけをセッションの開始時に導入する。">
+  <FigSvg
+    height={215}
+    label="リポジトリのプロジェクトスキルと設定から、SessionStart のフックが外部プラグインを導入してセッションが始まる流れ"
+  >
+    <FigNode x={0} y={20} w={360} h={180} tone="ghost" tag="このリポジトリ" />
+    <FigNode
+      x={20}
+      y={64}
+      w={320}
+      h={56}
+      tone="neon"
+      title=".claude/skills のリンク"
+      lines={['自作の作業手順をそのまま読む']}
+    />
+    <FigNode
+      x={20}
+      y={130}
+      w={320}
+      h={56}
+      tone="amber"
+      title=".claude/settings.json"
+      lines={['外部の4プラグインを有効にする']}
+    />
+    <FigArrow points={[[360, 158], [400, 158], [400, 75], [436, 75]]} />
+    <FigNode
+      x={440}
+      y={40}
+      w={320}
+      h={70}
+      title="SessionStart のフック"
+      lines={['マーケットプレイスを追加して導入', '遠隔の環境のときだけ動く']}
+    />
+    <FigArrow points={[[600, 110], [600, 136]]} tone="neon" />
+    <FigNode
+      x={440}
+      y={140}
+      w={320}
+      h={60}
+      tone="mint"
+      title="セッションの開始"
+      lines={['導入が終わるまで待たせる']}
+    />
+  </FigSvg>
+</Figure>
+
 ## 決定理由
 
 - シンボリックリンクにすると、正本を一か所に保ったまま、作業手順の変更が導入操作なしに効く。
@@ -76,7 +122,7 @@ PRD 0004 の要求17 から、選べる案は次の条件を満たす必要が�
 
 ## 出典
 
-- apps/docs-hub/src/content/prd/0004_ai-agent.mdx
-- apps/docs-hub/src/content/adr/0004_manage-claude-code-with-home-manager.mdx
-- packages/claude-skills/README.md
+- [PRD 0004「AI エージェントの導入」](/prd/0004_ai-agent)
+- [ADR 0004「Claude Code を Home Manager で宣言的に管理する」](/adr/0004_manage-claude-code-with-home-manager)
+- [packages/claude-skills/README.md](https://github.com/mikinovation/mikinovation/blob/main/packages/claude-skills/README.md)
 - 所有者の依頼（2026-10-06）
