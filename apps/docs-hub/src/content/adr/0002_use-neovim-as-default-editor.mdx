@@ -64,6 +64,53 @@ Neovim は ADR 0001 の共通の Home Manager 設定から、`packages/dotfiles/
 - C コンパイラーは、nvim-orgmode が tree-sitter-org を組み立てるために使うため、両方の導入範囲に入れる。Linux は gcc、macOS は clang とする。
 - 起動確認のスクリプトは、同じ `minimal-config-files` から「最小限」の配置を組み立て、空のデータのディレクトリーでプラグインを取得したあと、エラーなく起動することを確かめる。
 
+<Figure caption="入口だけを分け、共通の設定とプラグインの定義は両方の導入範囲で同じものを読む。">
+  <FigSvg
+    height={240}
+    label="共通の設定から入口が2つに分かれ、同じプラグインの定義を参照する構成"
+  >
+    <FigNode
+      x={0}
+      y={75}
+      w={200}
+      h={90}
+      tone="neon"
+      title="共通の設定"
+      lines={['core.lua（オプション）', 'core_keymaps.lua']}
+    />
+    <FigArrow points={[[200, 120], [250, 120], [250, 63], [296, 63]]} />
+    <FigArrow points={[[200, 120], [250, 120], [250, 177], [296, 177]]} />
+    <FigNode
+      x={300}
+      y={20}
+      w={200}
+      h={86}
+      title="init.lua（すべて）"
+      lines={['full_specs() の全定義', '言語サーバーと道具']}
+    />
+    <FigNode
+      x={300}
+      y={134}
+      w={200}
+      h={86}
+      tone="amber"
+      title="minimal.lua（最小限）"
+      lines={['orgmode と org-roam だけ', 'C コンパイラーだけ']}
+    />
+    <FigArrow points={[[500, 63], [530, 63], [530, 110], [556, 110]]} />
+    <FigArrow points={[[500, 177], [530, 177], [530, 130], [556, 130]]} />
+    <FigNode
+      x={560}
+      y={72}
+      w={200}
+      h={96}
+      tone="ghost"
+      title="プラグインの定義"
+      lines={['lazy.nvim が初回起動で取得', 'commit で版を固定']}
+    />
+  </FigSvg>
+</Figure>
+
 ## 決定理由
 
 - 端末内で動くため、端末中心の作業に合い、macOS、WSL、それ以外の Linux の端末から同じ操作で使える。
@@ -107,12 +154,12 @@ Neovim は ADR 0001 の共通の Home Manager 設定から、`packages/dotfiles/
 
 ## 出典
 
-- `apps/docs-hub/src/content/prd/0002_editor-setup.mdx`
-- `apps/docs-hub/src/content/prd/0001_environment-setup.mdx`
-- `apps/docs-hub/src/content/adr/0001_manage-environment-with-nix-flakes.mdx`
+- [PRD 0002「エディターの導入」](/prd/0002_editor-setup)
+- [PRD 0001「開発環境の導入」](/prd/0001_environment-setup)
+- [ADR 0001「開発環境を Nix flakes で宣言的に管理する」](/adr/0001_manage-environment-with-nix-flakes)
 - 所有者へのヒアリング（2026-09-28）
-- `apps/docs-hub/src/content/adr/0006_use-orgmode-and-org-roam-for-notes-and-tasks.mdx`
-- `apps/docs-hub/src/content/adr/0014_pin-neovim-plugins-by-commit-in-lazy-nvim-specs.mdx`
-- Home Manager のソース（`modules/programs/neovim/default.nix` の `nvim/init.lua`、`modules/files.nix` の `insertFile`）
+- [ADR 0006「ノートとタスクを Org 形式で書き、nvim-orgmode と org-roam.nvim で扱う」](/adr/0006_use-orgmode-and-org-roam-for-notes-and-tasks)
+- [ADR 0014「Neovim のプラグインを lazy.nvim で管理し、版を各プラグインの定義の commit で固定して Renovate で更新を知らせる」](/adr/0014_pin-neovim-plugins-by-commit-in-lazy-nvim-specs)
+- [Home Manager のソース](https://github.com/nix-community/home-manager)（`modules/programs/neovim/default.nix` の `nvim/init.lua`、`modules/files.nix` の `insertFile`）
 - 所有者の依頼（2026-10-04、「最小限」でも Neovim を使えるようにする）
 - 所有者の依頼（2026-10-04、「最小限」でも Orgmode と org-roam を Neovim のプラグインとして使う）

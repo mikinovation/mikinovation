@@ -14,7 +14,7 @@
 - 手番: そのチケットを次に進めるのが、所有者か他者か。
 - アジェンダ: 開いているチケットを集めた一覧。
 - `refile.org`: 分類前のメモやタスクをいったん置くファイル。
-- 「すべて」「最小限」: 開発環境の導入範囲。PRD「開発環境の導入」（`apps/docs-hub/src/content/prd/0001_environment-setup.mdx`）で定める。
+- 「すべて」「最小限」: 開発環境の導入範囲。PRD 0001「開発環境の導入」で定める。
 
 ## 課題
 
@@ -102,6 +102,67 @@ AI エージェントは、ナレッジノートを読む側としてだけ想�
 
 ### 要求と受入条件
 
+<Figure caption="欄は作成時に揃い、付け忘れは一覧から回収する。分類を所有者の注意に任せない。">
+  <FigSvg
+    height={230}
+    label="新しいノートにメタデータの欄が揃い、タグのないノートを一覧から回収する流れ"
+  >
+    <FigNode
+      x={0}
+      y={60}
+      w={170}
+      h={80}
+      title="新しいノート"
+      lines={['作成日時は自動で入る']}
+    />
+    <FigArrow points={[[170, 100], [206, 100]]} />
+
+    <FigNode
+      x={210}
+      y={30}
+      w={200}
+      h={140}
+      tone="neon"
+      valign="top"
+      title="メタデータの4欄"
+    />
+    <FigNode x={226} y={66} w={168} h={22} rx={6} lines={['種類（6種から補完）']} />
+    <FigNode x={226} y={92} w={168} h={22} rx={6} lines={['説明']} />
+    <FigNode x={226} y={118} w={168} h={22} rx={6} lines={['タグ（複数持てる）']} />
+    <FigNode x={226} y={144} w={168} h={22} rx={6} lines={['作成日時']} />
+
+    <FigArrow points={[[410, 100], [410, 55], [556, 55]]} />
+    <FigLabel x={480} y={44}>タグが空</FigLabel>
+    <FigArrow points={[[410, 100], [410, 155], [556, 155]]} tone="neon" />
+    <FigLabel x={480} y={144}>タグあり</FigLabel>
+
+    <FigNode
+      x={560}
+      y={28}
+      w={200}
+      h={56}
+      tone="amber"
+      title="タグなしの一覧"
+      lines={['選ぶとそのノートが開く']}
+    />
+    <FigArrow
+      points={[[660, 28], [660, 8], [310, 8], [310, 26]]}
+      tone="soft"
+    />
+    <FigLabel x={470} y={18}>後から付けて回収する</FigLabel>
+
+    <FigNode
+      x={560}
+      y={128}
+      w={200}
+      h={56}
+      tone="mint"
+      title="探せるノート"
+      lines={['人と AI のどちらからも引ける']}
+    />
+  </FigSvg>
+</Figure>
+
 各要求と、その要求を受け入れる条件は次のとおり。
 
 | # | 要求 | 受入条件 |
@@ -129,6 +190,35 @@ AI エージェントは、ナレッジノートを読む側としてだけ想�
 | decision | 意思決定、トレードオフの記録 |
 
 要求5の11の状態と、要求6の色分けは次のとおり。
+
+<Figure caption="色は段階ではなく手番を表す。チケットは左から右へ進み、色が変わる位置が手を離す位置になる。">
+  <FigGrid>
+    <FigCard tone="ghost" title="未着手" note="まだ着手していない">
+      <FigChips tone="ghost" items={['1 未着手']} />
+    </FigCard>
+    <FigCard tone="neon" title="所有者の手番" note="自分が手を動かす">
+      <FigChips
+        tone="neon"
+        items={[
+          '2 ISSUE 作成',
+          '3 設計',
+          '4 テストケース作成',
+          '5 実装',
+          '6 セルフレビュー',
+        ]}
+      />
+    </FigCard>
+    <FigCard tone="amber" title="他者の手番" note="返ってくるのを待つ">
+      <FigChips
+        tone="amber"
+        items={['7 レビュー', '8 QA 中', '9 QA 完了', '10 受け入れ中']}
+      />
+    </FigCard>
+    <FigCard title="完了" note="受け入れ済み、雑務の完了、中止をまとめる">
+      <FigChips tone="ghost" items={['11 完了']} />
+    </FigCard>
+  </FigGrid>
+</Figure>
 
 | 順 | 状態 | 手番による色分け |
 |---|---|---|

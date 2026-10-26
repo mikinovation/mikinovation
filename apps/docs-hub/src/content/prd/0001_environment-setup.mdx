@@ -52,6 +52,56 @@
 
 ### 要求と受入条件
 
+<Figure caption="OS が変わっても導入操作は変わらず、選んだ導入範囲だけが結果を分ける。">
+  <FigSvg
+    height={220}
+    label="3種類の OS のどれでも同じ導入操作を行い、選んだ導入範囲に応じた環境が得られる流れ"
+  >
+    <FigNode x={0} y={10} w={130} h={44} rx={10} title="WSL" />
+    <FigNode x={0} y={78} w={130} h={44} rx={10} title="macOS" />
+    <FigNode x={0} y={146} w={130} h={44} rx={10} title="それ以外の Linux" />
+    <FigArrow points={[[130, 32], [165, 32]]} head={false} />
+    <FigArrow points={[[130, 100], [165, 100]]} head={false} />
+    <FigArrow points={[[130, 168], [165, 168]]} head={false} />
+    <FigArrow points={[[165, 32], [165, 168]]} head={false} />
+    <FigArrow points={[[165, 100], [196, 100]]} tone="neon" />
+    <FigNode
+      x={200}
+      y={40}
+      w={180}
+      h={120}
+      tone="neon"
+      title="1回の導入操作"
+      lines={['導入範囲を選んで実行する', '何度実行しても同じ状態']}
+    />
+    <FigArrow points={[[380, 100], [415, 100], [415, 53], [446, 53]]} />
+    <FigArrow points={[[380, 100], [415, 100], [415, 165], [446, 165]]} />
+    <FigNode
+      x={450}
+      y={10}
+      w={300}
+      h={86}
+      align="start"
+      padX={24}
+      title="すべて"
+      lines={['日常的に使う開発環境の全体']}
+    />
+    <FigNode
+      x={450}
+      y={118}
+      w={300}
+      h={92}
+      align="start"
+      padX={24}
+      title="最小限"
+      lines={[
+        'シェル、Git、Claude Code、Node.js、',
+        '基本的なコマンドラインツール、エディター',
+      ]}
+    />
+  </FigSvg>
+</Figure>
+
 所有者は、導入する範囲を次の2つから選ぶ。
 
 | 導入範囲 | 含むもの |

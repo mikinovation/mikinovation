@@ -45,6 +45,42 @@ PRD 0010 の制約から、選べる案は次の条件を満たす必要があ�
 ハブの生成には VitePress を使う。
 VitePress の `srcDir` に `docs/` を指定し、`docs/` の Markdown を直接読み込む。
 
+<Figure caption="正本の Markdown を複製も変換もせず、そのまま読み込んでサイトにする。">
+  <FigSvg
+    height={170}
+    label="docs の Markdown を VitePress が srcDir として直接読み込み、ハブを生成する構成"
+  >
+    <FigNode
+      x={0}
+      y={50}
+      w={220}
+      h={70}
+      tone="neon"
+      title="docs/ の Markdown"
+      lines={['正本をそのまま置く']}
+    />
+    <FigArrow points={[[220, 85], [266, 85]]} tone="neon" />
+    <FigNode
+      x={270}
+      y={50}
+      w={220}
+      h={70}
+      title="VitePress"
+      lines={['srcDir に docs/ を指定', '複製も変換もしない']}
+    />
+    <FigArrow points={[[490, 85], [536, 85]]} tone="neon" />
+    <FigNode
+      x={540}
+      y={50}
+      w={220}
+      h={70}
+      tone="mint"
+      title="ハブ"
+      lines={['push のたびに生成する']}
+    />
+  </FigSvg>
+</Figure>
+
 ## 決定理由
 
 - `docs/` を `srcDir` に指定すれば、フロントマターのない既存の文書を書き換えずに表示できる。書き方を変えないという制約を守れる。
@@ -71,6 +107,6 @@ VitePress の `srcDir` に `docs/` を指定し、`docs/` の Markdown を直接
 
 ## 出典
 
-- apps/docs-hub/src/content/prd/0010_document-hub.mdx
-- apps/docs-hub/src/content/adr/0018_use-bigram-tokenizer-for-japanese-search.mdx
+- [PRD 0010「ドキュメントハブ」](/prd/0010_document-hub)
+- [ADR 0018「ドキュメントハブの日本語検索に文字 bigram のトークナイザーを使う」](/adr/0018_use-bigram-tokenizer-for-japanese-search)
 - 所有者へのヒアリング（2026-10-06）

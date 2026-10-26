@@ -37,6 +37,72 @@ PRD 0001 の要求から、選べる案は次の条件を満たす必要があ�
 
 導入操作は `setup.sh` に一本化する。`setup.sh` は OS を判定して適用する仕組みと出力を選ぶ。導入範囲の指定が未指定または未定義の値なら、何も導入せずにエラーで終わる。
 
+<Figure caption="1つの flake と共通の設定から、OS ごとの仕組みに合わせた出力を作る。">
+  <FigSvg
+    height={250}
+    label="setup.sh が OS を判定し、1つの flake の3種類の出力から適切なものを適用する構成"
+  >
+    <FigNode
+      x={0}
+      y={85}
+      w={150}
+      h={80}
+      title="setup.sh"
+      lines={['OS を判定し', '出力を選ぶ']}
+    />
+    <FigArrow points={[[150, 125], [196, 125]]} tone="neon" />
+    <FigNode
+      x={200}
+      y={40}
+      w={180}
+      h={80}
+      tone="neon"
+      title="flake.nix（1つ）"
+      lines={['flake.lock で版を固定']}
+    />
+    <FigNode
+      x={200}
+      y={140}
+      w={180}
+      h={70}
+      tone="neon"
+      title="共通の設定"
+      lines={['home.nix（Home Manager）']}
+    />
+    <FigArrow points={[[290, 140], [290, 124]]} />
+    <FigArrow points={[[380, 80], [410, 80], [410, 51], [436, 51]]} />
+    <FigArrow points={[[380, 80], [410, 80], [410, 125], [436, 125]]} />
+    <FigArrow points={[[380, 80], [410, 80], [410, 199], [436, 199]]} />
+    <FigNode
+      x={440}
+      y={20}
+      w={320}
+      h={62}
+      title="nixosConfigurations"
+      lines={['WSL：NixOS-WSL に組み込む']}
+    />
+    <FigNode
+      x={440}
+      y={94}
+      w={320}
+      h={62}
+      title="darwinConfigurations"
+      lines={['macOS：nix-darwin に組み込む']}
+    />
+    <FigNode
+      x={440}
+      y={168}
+      w={320}
+      h={62}
+      title="homeConfigurations"
+      lines={['それ以外の Linux：単体で使う']}
+    />
+    <FigLabel x={600} y={244}>
+      各出力に -minimal を加え、導入範囲を選べるようにする
+    </FigLabel>
+  </FigSvg>
+</Figure>
+
 ## 決定理由
 
 - 1つの flake と共通の Home Manager 設定を3つの OS で使うため、どの OS でも同じユーザー環境になる。
@@ -67,5 +133,5 @@ PRD 0001 の要求から、選べる案は次の条件を満たす必要があ�
 
 ## 出典
 
-- `apps/docs-hub/src/content/prd/0001_environment-setup.mdx`
+- [PRD 0001「開発環境の導入」](/prd/0001_environment-setup)
 - 所有者へのヒアリング（2026-09-27）

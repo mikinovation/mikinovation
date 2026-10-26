@@ -34,6 +34,31 @@
 WSL では、シェルでコピーした内容を Windows 側とやり取りできる。
 この機能は、「すべて」「最小限」のどちらを導入しても使える。
 
+<Figure caption="プロンプトに現在地、ブランチ、変更の有無が出る。失敗は記号の色、長い処理は所要時間でわかる。">
+  <FigTerm>
+    <FigTermRow>
+      <FigInk tone="neon">~/ghq/github.com/mikinovation/mikinovation</FigInk>
+      <FigInk tone="flux">main</FigInk>
+      <FigInk tone="amber">✱ 変更あり</FigInk>
+    </FigTermRow>
+    <FigTermRow>
+      <FigInk tone="mint">❯</FigInk>
+      <span>g st</span>
+      <FigInk tone="dim">短い綴りが git status に展開される</FigInk>
+    </FigTermRow>
+    <FigTermRow>
+      <FigInk tone="mint">❯</FigInk>
+      <span>git co</span>
+      <FigInk tone="dim">mmit -m "fix: ..."　履歴からの続きが薄く出る</FigInk>
+    </FigTermRow>
+    <FigTermRow>
+      <FigInk tone="rose">❯</FigInk>
+      <FigInk tone="dim">直前のコマンドが失敗すると記号の色が変わる</FigInk>
+      <FigInk tone="amber">2.4s</FigInk>
+    </FigTermRow>
+  </FigTerm>
+</Figure>
+
 ### 対象外
 
 - 対象のシェル以外のシェルで、同じ操作を使えるようにすること。
@@ -66,6 +91,48 @@ WSL では、シェルでコピーした内容を Windows 側とやり取りで�
 ## 解決策
 
 ### 要求と受入条件
+
+<Figure caption="14の要求のうち、課題である手数を直接減らすのは7件で、残りは状態の把握と前提を支える。">
+  <FigGrid>
+    <FigCard title="シェルが開く">
+      <FigChips
+        items={['1 ログイン時に開く', '2 すぐ入力できる', '14 非対話を壊さない']}
+      />
+    </FigCard>
+    <FigCard title="現在地と結果が見える">
+      <FigChips
+        items={['3 ディレクトリと Git', '4 失敗と所要時間', '7 構文の色分け']}
+      />
+    </FigCard>
+    <FigCard tone="neon" title="入力の手数を減らす">
+      <FigChips
+        tone="neon"
+        items={['5 短い綴りの展開', '6 続きの提示', '8 補完']}
+      />
+    </FigCard>
+    <FigCard tone="neon" title="履歴をたどる">
+      <FigChips
+        tone="neon"
+        items={['9 シェルをまたぐ履歴', '10 絞り込んで実行']}
+      />
+    </FigCard>
+    <FigCard tone="neon" title="移動の手数を減らす">
+      <FigChips
+        tone="neon"
+        items={['11 名前だけで移動', '12 上の階層と直前へ']}
+      />
+    </FigCard>
+    <FigCard title="OS とつなぐ">
+      <FigChips tone="amber" items={['13 Windows とのやり取り']} />
+    </FigCard>
+  </FigGrid>
+  <FigLegend
+    items={[
+      { tone: 'neon', text: '手数を直接減らす要求' },
+      { tone: 'amber', text: 'WSL だけが対象' },
+    ]}
+  />
+</Figure>
 
 各要求と、その要求を受け入れる条件は次のとおり。
 

@@ -40,6 +40,60 @@ ADR 0007、ADR 0008 と所有者へのヒアリングから、選べる案は次
 - 状態ファイルの置き換え: tempfile
 - エラーの型: thiserror
 
+<Figure caption="外部と通信する処理だけを非同期にし、計算は同期のままにする。">
+  <FigSvg
+    height={190}
+    label="外部と通信する処理を tokio と reqwest で非同期にし、集計と検出は同期のままにする構成"
+  >
+    <FigNode
+      x={0}
+      y={20}
+      w={420}
+      h={150}
+      tone="ghost"
+      tag="非同期（tokio のランタイム）"
+    />
+    <FigNode
+      x={20}
+      y={76}
+      w={180}
+      h={74}
+      tone="neon"
+      title="freee の API"
+      lines={['reqwest と rustls']}
+    />
+    <FigNode
+      x={220}
+      y={76}
+      w={180}
+      h={74}
+      tone="neon"
+      title="認可コードの待受"
+      lines={['tokio の TcpListener']}
+    />
+    <FigArrow points={[[480, 95], [424, 95]]} tone="soft" />
+    <FigNode
+      x={484}
+      y={40}
+      w={276}
+      h={110}
+      title="同期のままにする処理"
+      lines={['集計', '検出']}
+    />
+  </FigSvg>
+  <FigChips
+    items={[
+      'clap 引数',
+      'chrono 日付',
+      'regex Org 解析',
+      'serde と toml',
+      'serde_json',
+      'tempfile 置き換え',
+      'thiserror エラー',
+    ]}
+  />
+</Figure>
+
 ## 決定理由
 
 - Rust の主な Web フレームワークは tokio の上で動くため、freee 連携などの部品を、今後の Web API と同じ基盤で共有できる。
@@ -63,6 +117,6 @@ ADR 0007、ADR 0008 と所有者へのヒアリングから、選べる案は次
 
 ## 出典
 
-- apps/docs-hub/src/content/adr/0007_use-rust-and-typst-for-kintai-cli.mdx
-- apps/docs-hub/src/content/adr/0008_call-freee-api-from-kintai.mdx
+- [ADR 0007「勤怠表の CLI を Rust で書き、Typst を組み込んで PDF を生成する」](/adr/0007_use-rust-and-typst-for-kintai-cli)
+- [ADR 0008「freee の請求書の下書きは kintai が freee の API を呼んで作る」](/adr/0008_call-freee-api-from-kintai)
 - 所有者へのヒアリング（2026-10-03）

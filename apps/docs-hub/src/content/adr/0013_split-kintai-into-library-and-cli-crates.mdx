@@ -31,6 +31,43 @@ CLI のクレートを `apps/kintai-cli` に置き、バイナリの名前は `k
 
 ADR 0007 の決定のうち、クレートの置き場だけを、この ADR で置き換える。
 
+<Figure caption="業務とその入口を別のクレートに分け、今後の入口も同じ並びに加えられるようにする。">
+  <FigSvg
+    height={190}
+    label="リポジトリのルートの workspace に、ライブラリのクレートと CLI のクレートが並ぶ構成"
+  >
+    <FigNode
+      x={0}
+      y={10}
+      w={760}
+      h={170}
+      tone="ghost"
+      tag="リポジトリのルート（cargo の workspace）"
+    />
+    <FigNode
+      x={40}
+      y={60}
+      w={320}
+      h={86}
+      tone="neon"
+      title="packages/kintai"
+      lines={['ライブラリのクレート', '勤怠の業務と freee 連携']}
+    />
+    <FigNode
+      x={400}
+      y={60}
+      w={320}
+      h={86}
+      title="apps/kintai-cli"
+      lines={['CLI のクレート', 'バイナリの名前は kintai']}
+    />
+    <FigArrow points={[[400, 103], [364, 103]]} />
+    <FigLabel x={380} y={166}>
+      今後の Web API も apps/ の下に加える
+    </FigLabel>
+  </FigSvg>
+</Figure>
+
 ## 決定理由
 
 - Web API は、ライブラリのクレートだけに依存すればよい。
@@ -53,6 +90,6 @@ ADR 0007 の決定のうち、クレートの置き場だけを、この ADR で
 
 ## 出典
 
-- apps/docs-hub/src/content/adr/0007_use-rust-and-typst-for-kintai-cli.mdx
-- apps/docs-hub/src/content/adr/0012_use-tokio-and-reqwest-for-kintai.mdx
+- [ADR 0007「勤怠表の CLI を Rust で書き、Typst を組み込んで PDF を生成する」](/adr/0007_use-rust-and-typst-for-kintai-cli)
+- [ADR 0012「kintai は非同期で構成し、tokio と reqwest を使う」](/adr/0012_use-tokio-and-reqwest-for-kintai)
 - 所有者へのヒアリング（2026-10-03）

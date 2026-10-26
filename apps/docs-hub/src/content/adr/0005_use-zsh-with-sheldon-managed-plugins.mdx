@@ -61,6 +61,78 @@ ADR 0001 は、導入するものの版を固定し、何度導入してもど�
 - `.zshenv` に PATH と fnm の設定を置き、`.zshrc` に対話用の読み込みを置く。zoxide は対話シェルでは `cd`、非対話シェルでは `z` として初期化する。zsh は非対話シェルでは `.zshrc` を読まないため、この書き分けが効くのは、`.zshrc` を読ませたうえで非対話でコマンドを動かす呼び出し（Claude Code のシェルスナップショットなど）である。
 - WSL のクリップボード連携とロケールは `wsl.zsh` に分け、`/proc/version` を見て WSL でだけ有効にする。クリップボードの読み書きには `clip.exe` と `powershell.exe` を使う。
 
+<Figure caption="非対話でも読む設定と、対話でだけ読む設定を分け、WSL 固有の設定は条件付きで読む。">
+  <FigSvg
+    height={240}
+    label="zshenv と zshrc の読み込み経路と、対話シェルで有効になる機能の構成"
+  >
+    <FigNode
+      x={0}
+      y={30}
+      w={180}
+      h={76}
+      title=".zshenv"
+      lines={['PATH と fnm', '非対話でも読まれる']}
+    />
+    <FigArrow points={[[90, 106], [90, 146]]} />
+    <FigNode
+      x={0}
+      y={150}
+      w={180}
+      h={76}
+      tone="neon"
+      title=".zshrc"
+      lines={['対話シェルで読まれる']}
+    />
+    <FigArrow points={[[180, 188], [226, 188]]} tone="neon" />
+    <FigNode
+      x={230}
+      y={150}
+      w={190}
+      h={76}
+      tone="amber"
+      title="wsl.zsh"
+      lines={['/proc/version を見て', 'WSL でだけ読む']}
+    />
+    <FigArrow points={[[180, 170], [205, 170], [205, 36], [456, 36]]} tone="neon" />
+    <FigNode
+      x={460}
+      y={10}
+      w={300}
+      h={52}
+      title="sheldon"
+      lines={['プラグインを取得（版は指定しない）']}
+    />
+    <FigArrow points={[[205, 170], [205, 94], [456, 94]]} tone="neon" />
+    <FigNode
+      x={460}
+      y={68}
+      w={300}
+      h={52}
+      title="Powerlevel10k"
+      lines={['instant prompt と状態の表示']}
+    />
+    <FigArrow points={[[205, 170], [205, 152], [456, 152]]} tone="neon" />
+    <FigNode
+      x={460}
+      y={126}
+      w={300}
+      h={52}
+      title="zsh-abbr と zoxide"
+      lines={['短い綴りの展開と移動']}
+    />
+    <FigArrow points={[[205, 188], [205, 210], [456, 210]]} tone="neon" />
+    <FigNode
+      x={460}
+      y={184}
+      w={300}
+      h={52}
+      title="cmi"
+      lines={['履歴を fzf で絞り込む自前の関数']}
+    />
+  </FigSvg>
+</Figure>
+
 ## 決定理由
 
 - zsh は、所有者が持つ既存の設定（oh-my-zsh、Powerlevel10k、zsh-abbr）をそのまま使えるため、書き直しの手間なしに PRD 0005 の要求を満たせる。
@@ -103,8 +175,8 @@ ADR 0001 は、導入するものの版を固定し、何度導入してもど�
 
 ## 出典
 
-- apps/docs-hub/src/content/prd/0005_shell-setup.mdx
-- apps/docs-hub/src/content/prd/0001_environment-setup.mdx
-- apps/docs-hub/src/content/adr/0001_manage-environment-with-nix-flakes.mdx
-- apps/docs-hub/src/content/adr/0004_manage-claude-code-with-home-manager.mdx
+- [PRD 0005「シェル環境の導入」](/prd/0005_shell-setup)
+- [PRD 0001「開発環境の導入」](/prd/0001_environment-setup)
+- [ADR 0001「開発環境を Nix flakes で宣言的に管理する」](/adr/0001_manage-environment-with-nix-flakes)
+- [ADR 0004「Claude Code を Home Manager で宣言的に管理する」](/adr/0004_manage-claude-code-with-home-manager)
 - 所有者へのヒアリング（2026-09-30）

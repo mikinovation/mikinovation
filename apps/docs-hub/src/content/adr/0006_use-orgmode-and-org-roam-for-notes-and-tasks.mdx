@@ -65,6 +65,81 @@ PRD 0006 の要求のうち、プラグインの標準機能で足りない部�
 - アジェンダ: チケットを状態の順に並べる表示を加える。Claude のセッションログを置く `journal/` は対象から外す。
 - `refile.org` を開く操作、見出しへの ID の付与、選択範囲の Markdown としてのコピーに、キーを割り当てる。Markdown への変換には pandoc を使う。
 
+<Figure caption="ノートもチケットも同じリポジトリの Org 形式のファイルに置き、扱う役割をプラグインと自作の Lua で分ける。">
+  <FigSvg
+    height={230}
+    label="org リポジトリの保管場所と、それを扱うプラグインおよび自作の Lua の分担"
+  >
+    <FigNode
+      x={0}
+      y={20}
+      w={280}
+      h={190}
+      tone="ghost"
+      tag="mikinovation/org"
+    />
+    <FigNode
+      x={18}
+      y={66}
+      w={244}
+      h={56}
+      title="roam/"
+      lines={['ナレッジノート']}
+    />
+    <FigNode
+      x={18}
+      y={134}
+      w={244}
+      h={56}
+      title="roam/ の外"
+      lines={['チケットと refile.org']}
+    />
+
+    <FigArrow points={[[326, 41], [284, 41], [284, 94]]} />
+    <FigArrow points={[[326, 115], [284, 115]]} />
+    <FigArrow points={[[326, 189], [284, 189], [284, 162]]} />
+
+    <FigNode
+      x={330}
+      y={10}
+      w={200}
+      h={62}
+      title="nvim-orgmode"
+      lines={['編集・作業状態・アジェンダ']}
+    />
+    <FigNode
+      x={330}
+      y={84}
+      w={200}
+      h={62}
+      title="org-roam.nvim"
+      lines={['作成・リンク・バックリンク']}
+    />
+    <FigNode
+      x={330}
+      y={158}
+      w={200}
+      h={62}
+      tone="amber"
+      title="自作の Lua"
+      lines={['補完・一覧・状態・色・ID']}
+    />
+
+    <FigNode
+      x={560}
+      y={66}
+      w={200}
+      h={98}
+      tone="ghost"
+      lines={[
+        '「最小限」は上の2つだけ',
+        'Telescope に頼る一覧は',
+        '「すべて」でだけ設定する',
+      ]}
+    />
+  </FigSvg>
+</Figure>
+
 ## 決定理由
 
 - Neovim の中で完結し、プラグインも ADR 0002 の lazy.nvim で、ほかのプラグインと同じく管理できる。エディター内で扱う制約と、Emacs を対象外とする制約に合う。
@@ -99,11 +174,11 @@ PRD 0006 の要求のうち、プラグインの標準機能で足りない部�
 
 ## 出典
 
-- apps/docs-hub/src/content/prd/0006_note-taking.mdx
-- apps/docs-hub/src/content/prd/0001_environment-setup.mdx
-- apps/docs-hub/src/content/adr/0002_use-neovim-as-default-editor.mdx
-- apps/docs-hub/src/content/adr/0014_pin-neovim-plugins-by-commit-in-lazy-nvim-specs.mdx
+- [PRD 0006「ノートとタスクの管理」](/prd/0006_note-taking)
+- [PRD 0001「開発環境の導入」](/prd/0001_environment-setup)
+- [ADR 0002「Neovim を既定エディターにする」](/adr/0002_use-neovim-as-default-editor)
+- [ADR 0014「Neovim のプラグインを lazy.nvim で管理し、版を各プラグインの定義の commit で固定して Renovate で更新を知らせる」](/adr/0014_pin-neovim-plugins-by-commit-in-lazy-nvim-specs)
 - 所有者へのヒアリング（2026-10-02）
 - 所有者の依頼（2026-10-04、「最小限」でも Orgmode と org-roam を Neovim のプラグインとして使う）
-- nvim-orgmode のソース（`lua/orgmode/utils/treesitter/install.lua`）
-- nixpkgs のソース（`pkgs/development/lua-modules/overrides.nix` の `orgmode`）
+- [nvim-orgmode のソース](https://github.com/nvim-orgmode/orgmode)（`lua/orgmode/utils/treesitter/install.lua`）
+- [nixpkgs のソース](https://github.com/NixOS/nixpkgs)（`pkgs/development/lua-modules/overrides.nix` の `orgmode`）

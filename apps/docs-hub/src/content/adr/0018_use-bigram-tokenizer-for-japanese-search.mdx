@@ -32,6 +32,47 @@ ADR 0017 では、検索の方式を別の ADR で決めることにしていた
 VitePress 標準の検索（MiniSearch）を使う。
 MiniSearch のトークナイザーを、文字 bigram で区切る関数に差し替える。
 
+<Figure caption="語の区切りを判断せず2文字ずつに分けるため、語の途中からでも一致する。">
+  <FigSvg
+    height={200}
+    label="文書の語と検索語を同じ2文字の組に分け、重なった組で一致する仕組み"
+  >
+    <FigNode
+      x={0}
+      y={20}
+      w={220}
+      h={50}
+      title="文書の中の語"
+      lines={['ドキュメントハブ']}
+    />
+    <FigNode x={260} y={25} w={62} h={40} rx={8} title="ドキ" />
+    <FigNode x={330} y={25} w={62} h={40} rx={8} title="キュ" />
+    <FigNode x={400} y={25} w={62} h={40} rx={8} title="ュメ" />
+    <FigNode x={470} y={25} w={62} h={40} rx={8} tone="mint" title="メン" />
+    <FigNode x={540} y={25} w={62} h={40} rx={8} tone="mint" title="ント" />
+    <FigNode x={610} y={25} w={62} h={40} rx={8} title="トハ" />
+    <FigNode x={680} y={25} w={62} h={40} rx={8} title="ハブ" />
+
+    <FigArrow points={[[501, 110], [501, 70]]} tone="neon" />
+    <FigArrow points={[[571, 110], [571, 70]]} tone="neon" />
+
+    <FigNode
+      x={0}
+      y={115}
+      w={220}
+      h={50}
+      tone="neon"
+      title="検索語"
+      lines={['メント']}
+    />
+    <FigNode x={470} y={115} w={62} h={40} rx={8} tone="mint" title="メン" />
+    <FigNode x={540} y={115} w={62} h={40} rx={8} tone="mint" title="ント" />
+    <FigNote x={380} y={188}>
+      どちらも同じ区切り方で分けるため、語の一部でも組が重なる
+    </FigNote>
+  </FigSvg>
+</Figure>
+
 ## 決定理由
 
 - 文字 bigram は辞書による分割の結果に左右されない。本文にある2文字以上の語なら、文中のどこを切り出して検索しても一致する。そのため、受入条件を確実に満たせる。
@@ -55,6 +96,6 @@ MiniSearch のトークナイザーを、文字 bigram で区切る関数に差�
 
 ## 出典
 
-- apps/docs-hub/src/content/prd/0010_document-hub.mdx
-- apps/docs-hub/src/content/adr/0017_use-vitepress-for-document-hub.mdx
+- [PRD 0010「ドキュメントハブ」](/prd/0010_document-hub)
+- [ADR 0017「ドキュメントハブを VitePress で生成する」](/adr/0017_use-vitepress-for-document-hub)
 - 所有者へのヒアリング（2026-10-06）

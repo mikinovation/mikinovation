@@ -237,7 +237,7 @@ rounded:
 | hairline | 節の終わりを、見出しを使わずに区切るとき |
 | code-chip | 本文の外でファイル名や識別子を示すとき |
 | doc-body | MDX から変換した本文を囲むとき |
-| mermaid-figure | 本文の Mermaid の図を囲むとき |
+| doc-figure | 本文の図（HTML と SVG）を囲むとき |
 
 ```yaml
 components:
@@ -316,7 +316,7 @@ components:
   doc-body:
     textColor: '{colors.ink-dim}'
     typography: '{typography.body-md}'
-  mermaid-figure:
+  doc-figure:
     backgroundColor: '{colors.base-800}'
     borderColor: '{colors.line}'
     rounded: '{rounded.xl}'
@@ -335,7 +335,7 @@ components:
 | コードブロック | `base-800` の面に `xl` の角丸を付け、横に溢れさせる |
 | 表 | 見出しは `table-head`、行の区切りは `line`。hover で行に `neon` を薄く敷く |
 | 箇条書き | 行頭の記号を `neon` に寄せる |
-| 図 | Mermaid の記述を `base-800` の面に描く。描き終わるまでは記述をそのまま見せる |
+| 図 | `base-800` の面に HTML と SVG で描く。箱は `base-600`、線は `line-bright`、強調する箱だけ `neon` などの色を薄く載せる |
 
 本文に光彩と格子を重ねない。本文で使う強調は、文字色を `ink` に上げることと、`neon` の下線と縦線だけである。
 
