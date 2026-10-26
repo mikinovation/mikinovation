@@ -22,7 +22,20 @@
   },
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "import/no-unassigned-import": ["error", { "allow": ["**/*.css"] }]
+    "import/no-unassigned-import": [
+      "error",
+      {
+        "allow": ["**/*.css"]
+      }
+    ]
   },
-  "ignorePatterns": [".next", "out", "next-env.d.ts"]
+  "ignorePatterns": [".next", "out", "next-env.d.ts"],
+  "overrides": [
+    {
+      "files": ["src/components/doc.tsx"],
+      "rules": {
+        "react/no-array-index-key": "off"
+      }
+    }
+  ]
 }

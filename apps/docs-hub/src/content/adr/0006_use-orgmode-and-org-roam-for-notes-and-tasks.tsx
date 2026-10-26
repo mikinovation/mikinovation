@@ -1,0 +1,447 @@
+import {
+  Alternatives,
+  Bullets,
+  Code,
+  DocLink,
+  DocRef,
+  DocSection,
+  Item,
+  Prose,
+  Sources,
+} from '@/components/doc'
+import { FigArrow, FigNode, FigSvg, Figure } from '@/components/figure'
+
+export const meta = {
+  title:
+    'ノートとタスクを Org 形式で書き、nvim-orgmode と org-roam.nvim で扱う',
+  lead: 'ナレッジノートと開発チケットを Org 形式のファイルで書き、Neovim 上の nvim-orgmode と org-roam.nvim で扱うという決定を記録する。',
+  attributes: [
+    { label: '読者', value: '技術責任者、開発者、将来の保守者' },
+    { label: '状態', value: '採用' },
+    { label: '決定日', value: '2026-07-26' },
+  ],
+}
+
+export default function Body() {
+  return (
+    <>
+      <Prose>
+        用語は <DocRef kind="PRD" number="0006" /> と同じ意味で使う。
+        ナレッジノート、メタデータ、チケット、手番、アジェンダ、
+        <Code>refile.org</Code> の意味は <DocRef kind="PRD" number="0006" />{' '}
+        による。 「すべて」「最小限」は、
+        <DocRef kind="PRD" number="0001" /> が定める導入範囲を指す。
+      </Prose>
+      <DocSection label="Context" title="背景">
+        <Prose>
+          <DocRef kind="PRD" number="0006" />{' '}
+          は、ノートとチケットの両方に問題を挙げる。
+          ナレッジノートに種類やタグなどのメタデータがないと、ノートが増えるにつれて、人と
+          AI エージェントのどちらからもノートを探しにくくなる。
+          メタデータを付けるかどうかを所有者の注意に任せると、付け忘れたノートが残る。
+          開発チケットは未着手から完了まで11の状態を経るため、状態を順に切り替える操作や、段階ごとの色分けでは扱えない。
+        </Prose>
+        <Prose>
+          所有者は <DocRef kind="ADR" number="0002" /> の決定により、Neovim
+          を既定のエディターにしている。 所有者のナレッジノートは、2026-07-26
+          にタスクと同じ置き場所からこのリポジトリへ移し、2026-10-18 に{' '}
+          <Code>mikinovation/org</Code> の <Code>roam/</Code> へ戻した。
+        </Prose>
+      </DocSection>
+      <DocSection label="Constraints" title="制約">
+        <Prose>
+          <DocRef kind="PRD" number="0006" /> と{' '}
+          <DocRef kind="ADR" number="0002" />{' '}
+          から、選べる案は次の条件を満たす必要がある。
+        </Prose>
+        <Bullets>
+          <Item>
+            ナレッジノートとチケットを、Neovim の中で扱える。Emacs
+            でノートとタスクを扱うことは対象外とする。
+          </Item>
+          <Item>タグに複数の値を持てる。</Item>
+          <Item>
+            <DocRef kind="PRD" number="0006" />{' '}
+            の要求1から10を満たす。具体的には、作成時のメタデータの欄、種類の補完、タグのないノートの一覧、ノート同士のリンクとリンク元の表示、一覧からの状態の選択、手番による色分け、状態の順のアジェンダ、
+            <Code>refile.org</Code> を開く操作、見出しへの ID の付与、Markdown
+            としてのコピーである。
+          </Item>
+          <Item>
+            導入範囲「すべて」では要求1から10を、「最小限」では要求1と要求4から要求9を満たす。所有者のマシンだけに提供する。
+          </Item>
+          <Item>
+            導入範囲「最小限」には、
+            <DocRef kind="ADR" number="0002" />{' '}
+            のとおり、メモとタスクに関係のないプラグインと道具を入れない。
+          </Item>
+          <Item>ノートとタスクの保管場所は、所有者が事前に用意する。</Item>
+        </Bullets>
+      </DocSection>
+      <DocSection label="Decision" title="決定">
+        <Prose>
+          ナレッジノートとチケットを Org 形式のファイルで書き、Neovim
+          上の次のプラグインで扱う。
+        </Prose>
+        <Bullets>
+          <Item label="nvim-orgmode">
+            Org 形式の編集、作業状態、アジェンダを担う。
+          </Item>
+          <Item label="org-roam.nvim">
+            ナレッジノートの作成、ノート同士のリンク、バックリンクを担う。
+          </Item>
+          <Item label="org-bullets.nvim">見出しの記号を整えて表示する。</Item>
+        </Bullets>
+        <Prose>
+          プラグインは <DocRef kind="ADR" number="0002" /> の lazy.nvim
+          で取得し、版はほかのプラグインと同じく、
+          <DocRef kind="ADR" number="0014" /> のとおり各プラグインの定義の{' '}
+          <Code>commit</Code> で固定する。
+        </Prose>
+        <Prose>導入範囲ごとに読み込むプラグインは次のとおり。</Prose>
+        <Bullets>
+          <Item label="「すべて」">
+            nvim-orgmode、org-roam.nvim、org-bullets.nvim。
+          </Item>
+          <Item label="「最小限」">
+            nvim-orgmode と
+            org-roam.nvim。定義は「すべて」と同じファイルを使う。
+          </Item>
+        </Bullets>
+        <Prose>
+          タグのないノートの一覧のキーマップは Telescope に頼るため、Telescope
+          の定義が lazy.nvim にあるとき、つまり「すべて」でだけ設定する。
+        </Prose>
+        <Prose>保管場所は次のとおりとする。</Prose>
+        <Bullets>
+          <Item label="ナレッジノート">
+            <Code>mikinovation/org</Code> の <Code>roam/</Code>。
+          </Item>
+          <Item
+            label={
+              <>
+                チケットと <Code>refile.org</Code>
+              </>
+            }
+          >
+            同じ <Code>mikinovation/org</Code> の <Code>roam/</Code>{' '}
+            の外。org-roam.nvim は、これらのファイルもノートとして扱う。
+          </Item>
+        </Bullets>
+        <Prose>
+          ノートの作成テンプレートは、種類、説明、タグ、作成日時の4欄を、本文に
+          YAML のブロックとして埋め込む。 作成日時は自動で入り、ファイル名は{' '}
+          <Code>
+            {'<'}作成日時{'>'}-{'<'}slug{'>'}.org
+          </Code>{' '}
+          とする。
+        </Prose>
+        <Prose>
+          <DocRef kind="PRD" number="0006" />{' '}
+          の要求のうち、プラグインの標準機能で足りない部分は自作の Lua で補う。
+        </Prose>
+        <Bullets>
+          <Item>
+            種類の補完: blink.cmp の補完元として、YAML の <Code>type:</Code>{' '}
+            の行でだけ6つの種類を候補に出す。
+          </Item>
+          <Item>
+            タグのないノートの一覧: Telescope
+            の一覧として、タグの欄がないか空のノートを出す。
+          </Item>
+          <Item>
+            状態の選択:
+            標準の状態の切り替えを無効にし、11の状態と「なし」から絞り込んで選ぶ操作に置き換える。
+          </Item>
+          <Item>
+            色分け:
+            未着手、所有者の手番、他者の手番を別の色の帯で、完了を目立たない色で表示する。
+          </Item>
+          <Item>
+            アジェンダ: チケットを状態の順に並べる表示を加える。Claude
+            のセッションログを置く <Code>journal/</Code> は対象から外す。
+          </Item>
+          <Item>
+            <Code>refile.org</Code> を開く操作、見出しへの ID の付与、選択範囲の
+            Markdown としてのコピーに、キーを割り当てる。Markdown への変換には
+            pandoc を使う。
+          </Item>
+        </Bullets>
+        <Figure caption="ノートもチケットも同じリポジトリの Org 形式のファイルに置き、扱う役割をプラグインと自作の Lua で分ける。">
+          <FigSvg
+            height={230}
+            label="org リポジトリの保管場所と、それを扱うプラグインおよび自作の Lua の分担"
+          >
+            <FigNode
+              x={0}
+              y={20}
+              w={280}
+              h={190}
+              tone="ghost"
+              tag="mikinovation/org"
+            />
+            <FigNode
+              x={18}
+              y={66}
+              w={244}
+              h={56}
+              title="roam/"
+              lines={['ナレッジノート']}
+            />
+            <FigNode
+              x={18}
+              y={134}
+              w={244}
+              h={56}
+              title="roam/ の外"
+              lines={['チケットと refile.org']}
+            />
+
+            <FigArrow
+              points={[
+                [326, 41],
+                [284, 41],
+                [284, 94],
+              ]}
+            />
+            <FigArrow
+              points={[
+                [326, 115],
+                [284, 115],
+              ]}
+            />
+            <FigArrow
+              points={[
+                [326, 189],
+                [284, 189],
+                [284, 162],
+              ]}
+            />
+
+            <FigNode
+              x={330}
+              y={10}
+              w={200}
+              h={62}
+              title="nvim-orgmode"
+              lines={['編集・作業状態・アジェンダ']}
+            />
+            <FigNode
+              x={330}
+              y={84}
+              w={200}
+              h={62}
+              title="org-roam.nvim"
+              lines={['作成・リンク・バックリンク']}
+            />
+            <FigNode
+              x={330}
+              y={158}
+              w={200}
+              h={62}
+              tone="amber"
+              title="自作の Lua"
+              lines={['補完・一覧・状態・色・ID']}
+            />
+
+            <FigNode
+              x={560}
+              y={66}
+              w={200}
+              h={98}
+              tone="ghost"
+              lines={[
+                '「最小限」は上の2つだけ',
+                'Telescope に頼る一覧は',
+                '「すべて」でだけ設定する',
+              ]}
+            />
+          </FigSvg>
+        </Figure>
+      </DocSection>
+      <DocSection label="Rationale" title="決定理由">
+        <Bullets>
+          <Item>
+            Neovim の中で完結し、プラグインも{' '}
+            <DocRef kind="ADR" number="0002" /> の lazy.nvim
+            で、ほかのプラグインと同じく管理できる。エディター内で扱う制約と、Emacs
+            を対象外とする制約に合う。
+          </Item>
+          <Item>
+            Org
+            形式は見出しに作業状態を持ち、アジェンダで横断的に集められる。そのため、ナレッジノートとチケットを1つの形式と1つのツールで扱える。要求5と要求7がこれに当たる。
+          </Item>
+          <Item>
+            nvim-orgmode
+            は、11の状態のキーワード、状態ごとの色、アジェンダの対象、追加のアジェンダ、標準の状態の切り替えの無効化を、設定として宣言できる。見出しの取得や
+            ID の付与の API も持つため、不足する操作を小さな自作の Lua
+            で補える。要求5、6、7、9がこれに当たる。
+          </Item>
+          <Item>
+            org-roam.nvim は nvim-orgmode
+            の上で動き、リンク、バックリンク、作成テンプレートを提供する。テンプレートにメタデータの
+            YAML
+            を書くことで、ノートは作成時点でメタデータの欄を持ち、タグに複数の値を持てる。要求1と要求4、およびタグの制約がこれに当たる。
+          </Item>
+          <Item>
+            既存のノートとチケットが Org
+            形式で書かれているため、移行せずに使える。
+          </Item>
+          <Item>
+            「最小限」でも nvim-orgmode と org-roam.nvim
+            の定義を「すべて」と共有するため、壊れた環境でも同じ版と同じ設定でノートとタスクを扱え、版の記録も1つで済む。
+          </Item>
+        </Bullets>
+      </DocSection>
+      <DocSection label="Alternatives" title="代替案">
+        <Prose>次の案は、それぞれの理由で採らない。</Prose>
+        <Alternatives
+          items={[
+            {
+              option: 'Emacs と org-roam',
+              reason: (
+                <>
+                  <DocRef kind="PRD" number="0006" /> は Emacs
+                  でノートとタスクを扱うことを対象外とする。採ると、エディターを2つ保守することになる。
+                </>
+              ),
+            },
+            {
+              option: 'obsidian.nvim などの Markdown のノート',
+              reason:
+                'frontmatter でタグに複数の値を持てる。ただし見出しごとの作業状態とアジェンダがないため、チケットに別の仕組みが要る。既存の Org 形式のノートとチケットの移行も要る。',
+            },
+            {
+              option: 'zk-nvim、telekasten.nvim',
+              reason: 'Markdown のノートと同じ理由で採らない。',
+            },
+            {
+              option: 'Neorg',
+              reason:
+                'Neovim の中で完結する。ただし独自の形式であり、既存の Org 形式のノートとチケットの移行が要る。',
+            },
+            {
+              option: 'チケットを GitHub Issues などの外部サービスで管理する案',
+              reason: 'エディターの中で完結しない。',
+            },
+            {
+              option: (
+                <>
+                  「最小限」では nixpkgs の <Code>vimPlugins</Code> と Home
+                  Manager の <Code>programs.neovim.plugins</Code> で
+                  nvim-orgmode と org-roam.nvim を入れる案
+                </>
+              ),
+              reason: (
+                <>
+                  構文解析器も組み立て済みで、初回起動にネットワークがいらない。ただし、版が「すべて」の定義の{' '}
+                  <Code>commit</Code> ではなく nixpkgs
+                  に従うため、導入範囲によって版がずれ、版の記録が2つになる。所有者は、「すべて」と同じく
+                  Neovim のプラグインとして扱うことを選んだ。
+                </>
+              ),
+            },
+          ]}
+        />
+      </DocSection>
+      <DocSection label="Consequences" title="結果">
+        <Bullets>
+          <Item>
+            「最小限」には pandoc、blink.cmp、Telescope が入らないため、Markdown
+            としてのコピー、ノートの種類の補完、タグのないノートの一覧は使えない。それ以外の要求は「すべて」と同じく使える。
+          </Item>
+          <Item>
+            保管場所は <Code>~/ghq/github.com/mikinovation/org/roam</Code> と{' '}
+            <Code>~/ghq/github.com/mikinovation/org</Code>{' '}
+            の絶対パスで参照する。<Code>mikinovation/org</Code>{' '}
+            をこのパスへ事前に置く必要がある。
+          </Item>
+          <Item>
+            プラグインは lazy.nvim
+            が初回起動時に取得するため、両方の導入範囲で、初回起動にはネットワークへの接続が要る。nvim-orgmode
+            は初回起動時に tree-sitter-org も取得して組み立てるため、C
+            コンパイラーが要る。C コンパイラーは{' '}
+            <DocRef kind="ADR" number="0002" /> のとおり両方の導入範囲に入る。
+          </Item>
+          <Item>
+            nvim-orgmode と org-roam.nvim
+            の設定から、「最小限」にないプラグインを呼ぶと、「最小限」で動かない。起動時に呼ぶものは起動確認で見つかるが、キー操作から呼ぶものは見つからない。Neovim
+            をヘッドレスで起動すると <Code>VeryLazy</Code>{' '}
+            が発火しないため、起動確認ではこの2つの <Code>config</Code>{' '}
+            は実行されない。
+          </Item>
+          <Item>
+            メタデータは本文の YAML にあるため、nvim-orgmode と org-roam.nvim
+            の標準のタグ機能からは見えない。タグの読み取りと種類の補完は自作の
+            Lua に頼る。YAML
+            の解析は簡易なもので、インライン形式とブロック形式のリストだけを扱う。テンプレートより前に作ったノートは
+            YAML のブロックを持たないため、タグのないノートの一覧に出る。
+          </Item>
+          <Item>
+            状態の選択、色分け、補完、一覧の自作の Lua は、nvim-orgmode の API
+            と設定の形式に依存する。上流の変更に合わせて保守を引き受ける。
+          </Item>
+          <Item>
+            完了状態は1つにまとめるため、受け入れ済み、日常の雑務の完了、中止を区別できない。
+            <Code>journal/</Code>{' '}
+            をアジェンダから外すため、そこに残った未完了の見出しはアジェンダに出ない。
+          </Item>
+          <Item>
+            状態の色は tokyonight
+            の色の値を直接書いているため、配色を変えると色の記述も書き直すことになる。
+          </Item>
+          <Item>
+            ノート同士の関係はバックリンクでしかたどれず、ノート全体の構造は見えない。全体を俯瞰する方法は{' '}
+            <DocRef kind="PRD" number="0006" /> の未解決の問いとして残る。
+          </Item>
+        </Bullets>
+      </DocSection>
+      <DocSection label="Sources" title="出典">
+        <Sources
+          items={[
+            {
+              text: 'PRD 0006「ノートとタスクの管理」',
+              href: '/prd/0006_note-taking',
+            },
+            {
+              text: 'PRD 0001「開発環境の導入」',
+              href: '/prd/0001_environment-setup',
+            },
+            {
+              text: 'ADR 0002「Neovim を既定エディターにする」',
+              href: '/adr/0002_use-neovim-as-default-editor',
+            },
+            {
+              text: 'ADR 0014「Neovim のプラグインを lazy.nvim で管理し、版を各プラグインの定義の commit で固定して Renovate で更新を知らせる」',
+              href: '/adr/0014_pin-neovim-plugins-by-commit-in-lazy-nvim-specs',
+            },
+            { text: '所有者へのヒアリング（2026-10-02）' },
+            {
+              text: '所有者の依頼（2026-10-04、「最小限」でも Orgmode と org-roam を Neovim のプラグインとして使う）',
+            },
+            {
+              text: (
+                <>
+                  <DocLink href="https://github.com/nvim-orgmode/orgmode">
+                    nvim-orgmode のソース
+                  </DocLink>
+                  （<Code>lua/orgmode/utils/treesitter/install.lua</Code>）
+                </>
+              ),
+            },
+            {
+              text: (
+                <>
+                  <DocLink href="https://github.com/NixOS/nixpkgs">
+                    nixpkgs のソース
+                  </DocLink>
+                  （<Code>pkgs/development/lua-modules/overrides.nix</Code> の{' '}
+                  <Code>orgmode</Code>）
+                </>
+              ),
+            },
+          ]}
+        />
+      </DocSection>
+    </>
+  )
+}

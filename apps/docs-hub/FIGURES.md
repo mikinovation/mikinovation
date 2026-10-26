@@ -1,6 +1,57 @@
-# 図解の規約
+# 本文と図解の規約
 
-`src/content/` の MDX に図を入れるときの決まりを定める。PRD、ADR、設計書は原則として図を入れる。
+`src/content/` の TSX で本文と図を書くときの決まりを定める。PRD、ADR、設計書は原則として図を入れる。
+
+## 本文
+
+本文は Markdown ではなく、`src/components/doc.tsx` のコンポーネントで組む。各文書は `meta` と本文の関数を export する。
+
+```tsx
+import { Bullets, DocSection, Item, Prose } from '@/components/doc'
+
+export const meta = {
+  title: '端末多重化ツールに herdr を使う',
+  lead: 'この決定を記録する。',
+  attributes: [
+    { label: '読者', value: '開発者' },
+    { label: '状態', value: '採用' },
+  ],
+}
+
+export default function Body() {
+  return (
+    <>
+      <DocSection label="Context" title="背景">
+        <Prose>現状はこうなっている。</Prose>
+        <Bullets>
+          <Item label="手数">毎回最後まで打つ必要がある。</Item>
+          <Item>履歴をさかのぼる操作が多い。</Item>
+        </Bullets>
+      </DocSection>
+    </>
+  )
+}
+```
+
+| 名前 | 用途 |
+|---|---|
+| `DocSection` | `##` の節。`label` に英語の短い語、`title` に見出しを渡す |
+| `DocSub` / `DocPart` | `###` と `####` の節 |
+| `Prose` | 段落 |
+| `Bullets` / `Steps` / `Item` | 箇条書きと手順。項目に見出しが付く場合は `Item` の `label` に渡す |
+| `Terms` | 用語の定義。`term` と `description` の組を並べる |
+| `DocTable` | 表。`head` と `rows` を渡す |
+| `Requirements` | 要求と受入条件。番号を付けて縦に並べる |
+| `TradeOffs` | 解決案の比較。案ごとに利点と欠点を並べる |
+| `Alternatives` | 採らなかった案。案と理由の組を並べる |
+| `Sources` | 出典。`href` があればリンクになる |
+| `Code` / `Pre` | 文中のコードとコードブロック |
+| `DocLink` | 外部の URL とサイト内のパスへのリンク |
+| `DocRef` | ほかの文書への参照。`kind` と `number` を渡す |
+
+- 節の `label` は背景 Context、制約 Constraints、決定 Decision、決定理由 Rationale、代替案 Alternatives、結果 Consequences、出典 Sources、課題 Problem、解決策 Solution のように決まっている。
+- 箇条書きは1項目を1行に収める必要はないが、項目が5件を超えるなら表か `FigGrid` を検討する。
+- 文章の中で `「PRD 0007」` のように書かず、`<DocRef kind="PRD" number="0007" />` を使う。
 
 ## 形式
 
@@ -10,7 +61,7 @@
 - 箱の並び、分類、一覧、札、端末の見た目は HTML で書く。日本語が自動で折り返る。
 - 流れ、分岐、状態遷移、数直線、画面のモックは SVG で書く。線と矢印を引けるためである。
 
-書くときは `src/components/figure.tsx` のコンポーネントを使う。`src/mdx-components.tsx` に登録してあるため、MDX 側で import は要らない。
+書くときは `src/components/figure.tsx` のコンポーネントを使い、文書の冒頭で import する。
 
 ## 何を図にするか
 
@@ -85,6 +136,7 @@ ADR は「決定」の節に1枚入れ、決定した仕組みの構成や流れ
 | `FigLegend` | 凡例 | `items` |
 | `FigTerm` / `FigTermRow` | 端末の見た目 | なし |
 | `FigInk` | HTML の文字に色を付ける | `tone` |
+| `FigList` | カードの中の箇条書き | `items` |
 
 - `tone` は `neon`、`mint`、`amber`、`rose`、`flux`、`ghost` から選ぶ。`FigLegend` と `FigInk` では `ghost` の代わりに `dim` を使う。
 - `FigNode` の `title` は13px、`lines` は11px で表示され、箱の中で縦に中央揃えになる。箱の中に別の箱を置く場合は `valign="top"` で上に寄せる。
@@ -93,9 +145,9 @@ ADR は「決定」の節に1枚入れ、決定した仕組みの構成や流れ
 
 ## 書くときの注意
 
-- MDX の中では JSX として解釈される。`class` ではなく `className` を使い、`stroke-width` ではなく `strokeWidth` のようにキャメルケースで書く。
-- JSX の中ではマークダウン記法が効かない。バッククォートや `**` はそのまま文字として出る。
-- 図の前後に空行を1行ずつ置く。
+- `class` ではなく `className` を使い、`stroke-width` ではなく `strokeWidth` のようにキャメルケースで書く。
+- JSX の中ではマークダウン記法が効かない。バッククォートや `**` はそのまま文字として出る。文中のコードは `Code` で囲む。
+- JSX のテキストでは `<`、`>`、`{`、`}` をそのまま書けない。`{'<'}` のように書く。
 - 座標は幅760の `viewBox` の中で決める。表示時は画面幅に合わせて縮む。
 - 日本語は折り返らない。13px で1文字あたり13px、11px で11px を目安に幅を見積もり、箱からはみ出す長さにしない。
 
@@ -115,5 +167,6 @@ ADR は「決定」の節に1枚入れ、決定した仕組みの構成や流れ
 ## クラス
 
 コンポーネントが出力するクラスは `src/app/globals.css` にある。
-`doc-figure`、`fig-svg`、`fig-box`、`fig-edge`、`fig-head`、`fig-title`、`fig-sub`、`fig-tag`、`fig-axis`、`fig-grid`、`fig-card`、`fig-chip`、`fig-term`、`fig-legend` と、色の `fig-neon` から `fig-dim` までが並ぶ。
+本文は `doc-h2`、`doc-list`、`doc-steps`、`doc-item-label`、`doc-terms`、`doc-reqs`、`doc-trade`、`doc-alt`、`doc-sources` を使う。
+図は `doc-figure`、`fig-svg`、`fig-box`、`fig-edge`、`fig-head`、`fig-title`、`fig-sub`、`fig-tag`、`fig-axis`、`fig-grid`、`fig-card`、`fig-chip`、`fig-term`、`fig-legend` と、色の `fig-neon` から `fig-dim` までが並ぶ。
 足りない部品が出たら、個別の `style` を書かずに、クラスとコンポーネントを足す。

@@ -238,7 +238,14 @@ rounded:
 | label | 節やカードの内容の分類を、本文より小さく示すとき |
 | hairline | 節の終わりを、見出しを使わずに区切るとき |
 | code-chip | 本文の外でファイル名や識別子を示すとき |
-| doc-body | MDX から変換した本文を囲むとき |
+| doc-body | 文書の本文を囲むとき。本文の行幅の上限を `--doc-measure` で持つ |
+| doc-h2 | 本文の節の見出し。下線で節の始まりを示すとき |
+| doc-list / doc-steps | 本文の箇条書きと手順。項目ごとに区切り線と印を付ける |
+| doc-item-label | 箇条書きの項目に見出しを付けるとき |
+| doc-terms | 用語とその説明を並べるとき |
+| doc-reqs | 要求と受入条件を番号付きで並べるとき |
+| doc-trade / doc-alt | 解決案の比較と、採らなかった案をカードで並べるとき |
+| doc-sources | 出典を並べるとき |
 | doc-figure | 本文の図（HTML と SVG）を囲むとき |
 
 ```yaml

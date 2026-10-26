@@ -137,7 +137,17 @@ grilling が求める推奨回答は、提案であると明示する。ユー�
 
 設計書の保存先は、`apps/docs-hub/src/content/design/` に固定する。保存先をユーザーに問わず、japanese-review にも渡す。
 
-新規の設計書のファイル名は `<番号>_<タイトル>.mdx` とし、この規則も japanese-review に渡す。番号は保存先ディレクトリにある既存の設計書の最大番号に 1 を足した4桁のゼロ埋め（最初は `0001`）とする。タイトルは設計の対象を表す英小文字の語とし、複数語はハイフンでつなぐ。例: `0001_attendance-invoice.mdx`
+新規の設計書のファイル名は `<番号>_<タイトル>.tsx` とし、この規則も japanese-review に渡す。番号は保存先ディレクトリにある既存の設計書の最大番号に 1 を足した4桁のゼロ埋め（最初は `0001`）とする。タイトルは設計の対象を表す英小文字の語とし、複数語はハイフンでつなぐ。例: `0001_attendance-invoice.tsx`
+
+下書きは一時ディレクトリ（例: `$(mktemp -d)`）に置き、リポジトリに Markdown を残さない。japanese-review が下書きを仕上げたら、本文を `apps/docs-hub/FIGURES.md` のコンポーネントに移し替えて `apps/docs-hub/src/content/design/<番号>_<タイトル>.tsx` に保存し、索引を作り直して検査を通す。
+
+```sh
+cd apps/docs-hub
+node scripts/build-content-index.mjs
+pnpm fmt && pnpm lint && pnpm typecheck
+```
+
+更新のときも同じ流れを使う。正本の TSX を直し、日本語を書き換えるときは、その範囲だけを一時ファイルの Markdown に写して japanese-review に通し、TSX へ戻す。
 
 既存の設計書を更新する場合は、同じファイルを更新させ、新しいファイルを作らない。上の層で確定した記述を、ユーザーの承認なしに書き換えさせない。前提の ADR が置き換えられた場合は、参照を新しい ADR に改め、置き換えで変わる記述をユーザーに確かめてから更新させる。
 
