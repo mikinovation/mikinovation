@@ -4,7 +4,7 @@ function nvimTree.config()
 	return {
 		"nvim-tree/nvim-tree.lua",
 		branch = "master",
-		commit = "355bcc85a48f45b3e728219f10b880d569928965",
+		commit = "3be8cad084e79e84833ef98cef88116c26a224ff",
 		cmd = { "NvimTreeToggle", "NvimTreeOpen", "NvimTreeFindFile", "NvimTreeCollapse" },
 		-- Keep in sync with plugins/nvim-tree/keymaps.lua
 		keys = {
