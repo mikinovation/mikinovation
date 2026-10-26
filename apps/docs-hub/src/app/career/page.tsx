@@ -1,12 +1,14 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 
+import { Section } from '@/components/doc'
+import { Hero } from '@/components/doc-page'
 import {
   FigArrow,
   FigCard,
   FigChip,
   FigChips,
   FigGrid,
+  FigList,
   FigNode,
   FigNote,
   FigSvg,
@@ -136,43 +138,38 @@ const domains = [
   '公共インフラの管理',
 ]
 
+function MigrationFlow({ items }: { items: { from: string; to: string }[] }) {
+  return (
+    <div className="flex flex-col gap-2.5">
+      {items.map((item) => (
+        <div key={item.to} className="flex flex-wrap items-center gap-2.5">
+          <FigChip tone="ghost">{item.from}</FigChip>
+          <span aria-hidden="true" className="text-sm text-ink-faint">
+            →
+          </span>
+          <FigChip tone="neon">{item.to}</FigChip>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export default function CareerPage() {
   return (
     <div className="flex flex-col gap-16">
-      <section className="flex flex-col gap-5">
-        <nav className="label flex items-center gap-2">
-          <Link href="/" className="transition-colors hover:text-neon-soft">
-            Docs Hub
-          </Link>
-          <span aria-hidden="true">/</span>
-          <span className="text-ink-dim">Career</span>
-        </nav>
-        <h1 className="text-4xl leading-tight font-semibold tracking-tight sm:text-5xl">
-          <span className="bg-gradient-to-r from-neon-soft via-ink to-flux bg-clip-text text-transparent">
-            齋藤 幹大
+      <Hero
+        trail={[{ label: 'Docs Hub', href: '/' }, { label: 'Career' }]}
+        title="齋藤 幹大"
+        lead="JavaScript と TypeScript を主な言語に、Vue と React でのフロントエンド開発を受けるフリーランスのエンジニア。toB 向けの業務システムと SaaS で、設計から運用保守までを続けて担当している。"
+        badges={facts.map((fact) => (
+          <span key={fact} className="badge">
+            {fact}
           </span>
-        </h1>
-        <p className="max-w-2xl text-ink-dim">
-          JavaScript と TypeScript を主な言語に、Vue と React
-          でのフロントエンド開発を受けるフリーランスのエンジニア。toB
-          向けの業務システムと SaaS
-          で、設計から運用保守までを続けて担当している。
-        </p>
-        <div className="flex flex-wrap items-center gap-2">
-          {facts.map((fact) => (
-            <span key={fact} className="badge">
-              {fact}
-            </span>
-          ))}
-        </div>
-        <p className="max-w-2xl text-sm text-ink-faint">
-          公開用のページのため、案件ごとの期間、取引先、担当業務の詳細は載せていない。必要な場合は個別に開示する。
-        </p>
-      </section>
+        ))}
+        note="公開用のページのため、案件ごとの期間、取引先、担当業務の詳細は載せていない。必要な場合は個別に開示する。"
+      />
 
-      <section className="flex flex-col gap-5">
-        <p className="label">Strengths</p>
-        <h2 className="text-xl font-semibold">引き受けられること</h2>
+      <Section label="Strengths" title="引き受けられること">
         <FigGrid wide>
           {strengths.map((strength) => (
             <FigCard
@@ -182,11 +179,9 @@ export default function CareerPage() {
             />
           ))}
         </FigGrid>
-      </section>
+      </Section>
 
-      <section className="flex flex-col gap-5">
-        <p className="label">Scope</p>
-        <h2 className="text-xl font-semibold">担当する工程</h2>
+      <Section label="Scope" title="担当する工程">
         <Figure caption="要件定義はレビューと仕様の提案で加わり、設計から運用保守までを主に担う。">
           <FigSvg height={148} label="担当する工程の範囲" width={660}>
             {phases.map((phase, index) => (
@@ -218,60 +213,33 @@ export default function CareerPage() {
             </FigNote>
           </FigSvg>
         </Figure>
-      </section>
+      </Section>
 
-      <section className="flex flex-col gap-5">
-        <p className="label">Roles</p>
-        <h2 className="text-xl font-semibold">担ってきた役割</h2>
+      <Section label="Roles" title="担ってきた役割">
         <FigGrid wide>
           {roles.map((role) => (
             <FigCard key={role.title} title={role.title} note={role.note} />
           ))}
         </FigGrid>
-      </section>
+      </Section>
 
-      <section className="flex flex-col gap-5">
-        <p className="label">Migrations</p>
-        <h2 className="text-xl font-semibold">移行してきた技術基盤</h2>
+      <Section label="Migrations" title="移行してきた技術基盤">
         <Figure caption="移行はいずれも稼働中のプロダクトで進めた。段階を分けて出し、途中で止まらない形にする。">
-          <div className="flex flex-col gap-2.5">
-            {migrations.map((migration) => (
-              <div
-                key={migration.to}
-                className="flex flex-wrap items-center gap-2.5"
-              >
-                <FigChip tone="ghost">{migration.from}</FigChip>
-                <span aria-hidden="true" className="text-sm text-ink-faint">
-                  →
-                </span>
-                <FigChip tone="neon">{migration.to}</FigChip>
-              </div>
-            ))}
-          </div>
+          <MigrationFlow items={migrations} />
         </Figure>
-      </section>
+      </Section>
 
-      <section className="flex flex-col gap-5">
-        <p className="label">Practices</p>
-        <h2 className="text-xl font-semibold">続けて取り組んでいること</h2>
+      <Section label="Practices" title="続けて取り組んでいること">
         <FigGrid wide>
           {works.map((work) => (
             <FigCard key={work.title} title={work.title}>
-              <ul className="flex list-disc flex-col gap-1 pl-5 text-sm text-ink-dim">
-                {work.items.map((item) => (
-                  <li key={item} className="marker:text-neon">
-                    {item}
-                  </li>
-                ))}
-              </ul>
+              <FigList items={work.items} />
             </FigCard>
           ))}
         </FigGrid>
-      </section>
+      </Section>
 
-      <section className="flex flex-col gap-5">
-        <p className="label">Stack</p>
-        <h2 className="text-xl font-semibold">扱える技術</h2>
+      <Section label="Stack" title="扱える技術">
         <div className="grid gap-3 sm:grid-cols-2">
           {stacks.map((stack) => (
             <div key={stack.label} className="fig-card">
@@ -280,18 +248,14 @@ export default function CareerPage() {
             </div>
           ))}
         </div>
-      </section>
+      </Section>
 
-      <section className="flex flex-col gap-5">
-        <p className="label">Domains</p>
-        <h2 className="text-xl font-semibold">携わった領域</h2>
+      <Section label="Domains" title="携わった領域">
         <p className="text-ink-dim">案件の単位ではなく、業種の単位で示す。</p>
         <FigChips items={domains} />
-      </section>
+      </Section>
 
-      <section className="flex flex-col gap-5">
-        <p className="label">Approach</p>
-        <h2 className="text-xl font-semibold">考えていること</h2>
+      <Section label="Approach" title="考えていること">
         <div className="panel panel-glow flex flex-col gap-4 px-5 py-6 text-ink-dim sm:px-7">
           <p>
             フロントエンドを軸にしつつ、担当を実装だけに閉じたくないと考えている。仕様の検討から運用保守まで関わると、画面の裏側で何が起きているかを踏まえて設計できるため、手戻りが減る。
@@ -302,7 +266,7 @@ export default function CareerPage() {
             エージェントを前提とした開発環境の整備にも取り組んでおり、このサイトの文書もその一環として公開している。
           </p>
         </div>
-      </section>
+      </Section>
     </div>
   )
 }

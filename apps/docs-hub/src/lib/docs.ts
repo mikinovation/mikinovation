@@ -1,5 +1,6 @@
-import { existsSync, readFileSync, readdirSync } from 'node:fs'
-import { join } from 'node:path'
+import type { ReactNode } from 'react'
+
+import { docEntries } from '@/content'
 
 export const docKinds = ['prd', 'adr', 'design'] as const
 
@@ -16,25 +17,27 @@ export type DocAttribute = {
   value: string
 }
 
+export type DocEntry = {
+  kind: DocKind
+  slug: string
+  title: string
+  lead: string
+  attributes: DocAttribute[]
+  Body: () => ReactNode
+}
+
 export type DocBadge = {
   text: string
   className: string
 }
 
-export type Doc = {
-  kind: DocKind
-  slug: string
+export type Doc = DocEntry & {
   number: string
-  title: string
-  lead: string
-  attributes: DocAttribute[]
+  href: string
+  heading: string
   badge: DocBadge | null
+  details: DocAttribute[]
 }
-
-const contentRoot = join(process.cwd(), 'src', 'content')
-
-const titlePrefixPattern = /^(?:ADR|PRD|設計書|テストケース|計画)\s*[:：]\s*/
-const attributePattern = /^-\s+(.+?)\s*[:：]\s*(.+?)\s*$/
 
 const isDocKind = (value: string): value is DocKind =>
   (docKinds as readonly string[]).includes(value)
@@ -73,75 +76,59 @@ const badgeOf = (attributes: DocAttribute[]): DocBadge | null => {
   return null
 }
 
-const parse = (kind: DocKind, slug: string, source: string): Doc => {
-  const lines = source.split('\n')
-  const headingIndex = lines.findIndex((line) => line.startsWith('# '))
-  const heading = headingIndex < 0 ? slug : lines[headingIndex].slice(2).trim()
-  const body = lines.slice(headingIndex + 1)
-
-  let cursor = 0
-  while (cursor < body.length && body[cursor].trim() === '') {
-    cursor += 1
-  }
-
-  const lead: string[] = []
-  while (cursor < body.length && body[cursor].trim() !== '') {
-    lead.push(body[cursor].trim())
-    cursor += 1
-  }
-
-  while (
-    cursor < body.length &&
-    !body[cursor].startsWith('- ') &&
-    !body[cursor].startsWith('#')
-  ) {
-    cursor += 1
-  }
-
-  const attributes: DocAttribute[] = []
-  while (cursor < body.length && body[cursor].startsWith('- ')) {
-    const matched = attributePattern.exec(body[cursor])
-    if (matched !== null) {
-      attributes.push({ label: matched[1], value: matched[2] })
-    }
-    cursor += 1
-  }
+const toDoc = (entry: DocEntry): Doc => {
+  const number = entry.slug.slice(0, 4)
+  const label = docKindLabels[entry.kind]
+  const badge = badgeOf(entry.attributes)
 
   return {
-    kind,
-    slug,
-    number: slug.slice(0, 4),
-    title: heading.replace(titlePrefixPattern, ''),
-    lead: lead.join(''),
-    attributes,
-    badge: badgeOf(attributes),
+    ...entry,
+    number,
+    href: `/${entry.kind}/${entry.slug}`,
+    heading: `${label} ${number} ${entry.title}`,
+    badge,
+    details: entry.attributes.filter(
+      (attribute) => attribute.value !== badge?.text,
+    ),
   }
 }
 
-export const listDocs = (kind: DocKind): Doc[] => {
-  const directory = join(contentRoot, kind)
-  if (!existsSync(directory)) {
-    return []
-  }
+const docs: Doc[] = docEntries
+  .map(toDoc)
+  .toSorted((left, right) =>
+    left.kind === right.kind
+      ? left.slug.localeCompare(right.slug)
+      : docKinds.indexOf(left.kind) - docKinds.indexOf(right.kind),
+  )
 
-  return readdirSync(directory)
-    .filter((name) => name.endsWith('.mdx'))
-    .toSorted()
-    .map((name) =>
-      parse(
-        kind,
-        name.slice(0, -'.mdx'.length),
-        readFileSync(join(directory, name), 'utf8'),
-      ),
-    )
-}
+const hrefByReference = new Map(
+  docs.map((doc) => [`${docKindLabels[doc.kind]} ${doc.number}`, doc.href]),
+)
 
-export const listAllDocs = (): Doc[] => docKinds.flatMap(listDocs)
+export const docRefHref = (kind: string, number: string): string | undefined =>
+  hrefByReference.get(`${kind} ${number}`)
+
+export const listDocs = (kind: DocKind): Doc[] =>
+  docs.filter((doc) => doc.kind === kind)
+
+export const listAllDocs = (): Doc[] => docs
 
 export const findDoc = (kind: string, slug: string): Doc | null => {
   if (!isDocKind(kind)) {
     return null
   }
 
-  return listDocs(kind).find((doc) => doc.slug === slug) ?? null
+  return docs.find((doc) => doc.kind === kind && doc.slug === slug) ?? null
+}
+
+export const findSiblings = (
+  doc: Doc,
+): { previous: Doc | null; next: Doc | null } => {
+  const siblings = listDocs(doc.kind)
+  const position = siblings.findIndex((sibling) => sibling.slug === doc.slug)
+
+  return {
+    previous: position > 0 ? siblings[position - 1] : null,
+    next: position < siblings.length - 1 ? siblings[position + 1] : null,
+  }
 }

@@ -288,3 +288,13 @@ export function FigTermRow({ children }: { children: ReactNode }) {
 export function FigInk({ tone, children }: { tone: Ink; children: ReactNode }) {
   return <span className={`fig-${tone}`}>{children}</span>
 }
+
+export function FigList({ items }: { items: string[] }) {
+  return (
+    <ul className="fig-list">
+      {items.map((item) => (
+        <li key={item}>{item}</li>
+      ))}
+    </ul>
+  )
+}

@@ -31,7 +31,7 @@ description: 設計書から、BDD と TDD で使う振る舞いのテストケ�
 照合コマンドが読むため、次の形式を崩さない。
 
 - 保存先: `apps/docs-hub/src/content/test/`。保存先をユーザーに問わない。
-- ファイル名: 前提の設計書と同じ `<番号>_<タイトル>.md`。例: 設計書 `apps/docs-hub/src/content/design/0001_attendance-invoice.mdx` に対して `apps/docs-hub/src/content/test/0001_attendance-invoice.md`
+- ファイル名: 前提の設計書と同じ `<番号>_<タイトル>.md`。例: 設計書 `apps/docs-hub/src/content/design/0001_attendance-invoice.tsx` に対して `apps/docs-hub/src/content/test/0001_attendance-invoice.md`
 - ケース ID: `TC-<設計書の番号4桁>-<連番3桁>`。例: `TC-0001-014`
 - ケースは見出し一つで表し、見出しは ID で始める。見出しにしたケースには、すべてテストを書く。テストを書かない観点は、ケースの見出しにせず、「意図して扱わない振る舞い」か「未解決点」に置く。
 

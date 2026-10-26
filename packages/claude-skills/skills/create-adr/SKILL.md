@@ -59,9 +59,19 @@ ADR の保存先は、`apps/docs-hub/src/content/adr/` に固定する。保存�
 
 ADR には図を入れる。図は HTML と SVG で書き、Mermaid は使わない。図にする対象と、`apps/docs-hub/FIGURES.md` に従って書くことを japanese-review に渡す。
 
-出典は、参照先があるものをリンクで書く。ほかの文書は `/prd/0001_environment-setup` のようなサイト内のパスを、外部の資料は URL を指す。ヒアリングのように参照先がないものは、文字のままにする。本文中の「PRD 0007」のような文書参照は、サイト側で自動でリンクになるため、手でリンクにしない。
+出典は、参照先があるものをリンクで書く。ほかの文書は `/prd/0001_environment-setup` のようなサイト内のパスを、外部の資料は URL を指す。ヒアリングのように参照先がないものは、文字のままにする。本文中の文書参照は `<DocRef kind="PRD" number="0007" />` と書き、手でリンクにしない。
 
-ADR のファイル名は `<番号>_<タイトル>.mdx` とし、この規則も japanese-review に渡す。番号は保存先ディレクトリにある既存 ADR の最大番号に 1 を足した4桁のゼロ埋め（最初は `0001`）とする。タイトルは ADR の決定内容を表す英小文字の語とし、複数語はハイフンでつなぐ。例: `0001_use-nix-flakes.mdx`
+ADR のファイル名は `<番号>_<タイトル>.tsx` とし、この規則も japanese-review に渡す。番号は保存先ディレクトリにある既存 ADR の最大番号に 1 を足した4桁のゼロ埋め（最初は `0001`）とする。タイトルは ADR の決定内容を表す英小文字の語とし、複数語はハイフンでつなぐ。例: `0001_use-nix-flakes.tsx`
+
+下書きは一時ディレクトリ（例: `$(mktemp -d)`）に置き、リポジトリに Markdown を残さない。japanese-review が下書きを仕上げたら、本文を `apps/docs-hub/FIGURES.md` のコンポーネントに移し替えて `apps/docs-hub/src/content/adr/<番号>_<タイトル>.tsx` に保存し、索引を作り直して検査を通す。
+
+```sh
+cd apps/docs-hub
+node scripts/build-content-index.mjs
+pnpm fmt && pnpm lint && pnpm typecheck
+```
+
+既存の ADR を更新する場合は、正本の TSX を直す。日本語を書き換えるときは、その範囲だけを一時ファイルの Markdown に写して japanese-review に通し、TSX へ戻す。
 
 ## このスキルで扱わないこと
 

@@ -1,0 +1,423 @@
+import {
+  Bullets,
+  DocRef,
+  DocSection,
+  DocSub,
+  Item,
+  Prose,
+  Requirements,
+  Sources,
+  Terms,
+} from '@/components/doc'
+import {
+  FigCard,
+  FigChips,
+  FigGrid,
+  FigInk,
+  FigLegend,
+  FigTerm,
+  FigTermRow,
+  Figure,
+} from '@/components/figure'
+
+export const meta = {
+  title: 'シェル環境の導入',
+  lead: 'リポジトリの所有者が、シェルでのコマンド入力とディレクトリ移動を少ない手数で行えるようにするための要求と受入条件を定める。',
+  attributes: [
+    { label: '読者', value: 'PdM、開発者、QA担当、CS担当' },
+    {
+      label: '段階',
+      value: '5. デリバリー（要求と受入条件を確定し、実装済み）',
+    },
+  ],
+}
+
+export default function Body() {
+  return (
+    <>
+      <Prose>この PRD の用語は次の意味で使う。</Prose>
+      <Terms
+        items={[
+          {
+            term: '対象のシェル',
+            description:
+              'この PRD で設定するシェル。ほかのシェルは設定しない。',
+          },
+          {
+            term: '非対話の実行',
+            description:
+              '人が入力せず、スクリプトや AI エージェントがコマンドを動かすこと。',
+          },
+          {
+            term: '「すべて」「最小限」',
+            description: (
+              <>
+                <DocRef kind="PRD" number="0001" />
+                「開発環境の導入」で定める導入範囲。
+              </>
+            ),
+          },
+          { term: 'WSL', description: 'Windows 上で Linux を動かす機能。' },
+        ]}
+      />
+      <DocSection label="Problem" title="課題">
+        <DocSub title="問題と根拠">
+          <Prose>
+            設定を加えていないシェルでは、コマンド入力とディレクトリ移動に手数がかかる。
+            所有者はよく使うコマンドを毎回最後まで打ち、過去に打ったコマンドを探すためにキーを何度も押して履歴を遡る。
+            深い階層のディレクトリへは、移動を何度も重ねる。
+            直前のコマンドが失敗しても気付かないまま、次の操作へ進むこともある。
+            加えて WSL では、シェルでコピーした内容を Windows
+            側とやり取りできない。シェルと Windows
+            側を行き来するたびに、元の場所へ戻って再びコピーすることになる。
+          </Prose>
+        </DocSub>
+        <DocSub title="対象となる利用者">
+          <Prose>
+            リポジトリの所有者本人だけを対象とする。
+            非対話の実行は利用者に含めない。ただし、対話のために加えた機能がその実行を壊さないことは要求に含める。
+          </Prose>
+        </DocSub>
+        <DocSub title="提供する価値">
+          <Prose>
+            所有者は、短い入力と少ない操作でコマンドを打ち、過去に打ったコマンドと過去に訪れたディレクトリへ戻れる。
+            直前のコマンドが成功したかを見て判断できる。 WSL
+            では、シェルでコピーした内容を Windows 側とやり取りできる。
+            この機能は、「すべて」「最小限」のどちらを導入しても使える。
+          </Prose>
+          <Figure caption="プロンプトに現在地、ブランチ、変更の有無が出る。失敗は記号の色、長い処理は所要時間でわかる。">
+            <FigTerm>
+              <FigTermRow>
+                <FigInk tone="neon">
+                  ~/ghq/github.com/mikinovation/mikinovation
+                </FigInk>
+                <FigInk tone="flux">main</FigInk>
+                <FigInk tone="amber">✱ 変更あり</FigInk>
+              </FigTermRow>
+              <FigTermRow>
+                <FigInk tone="mint">❯</FigInk>
+                <span>g st</span>
+                <FigInk tone="dim">短い綴りが git status に展開される</FigInk>
+              </FigTermRow>
+              <FigTermRow>
+                <FigInk tone="mint">❯</FigInk>
+                <span>git co</span>
+                <FigInk tone="dim">
+                  mmit -m "fix: ..."　履歴からの続きが薄く出る
+                </FigInk>
+              </FigTermRow>
+              <FigTermRow>
+                <FigInk tone="rose">❯</FigInk>
+                <FigInk tone="dim">
+                  直前のコマンドが失敗すると記号の色が変わる
+                </FigInk>
+                <FigInk tone="amber">2.4s</FigInk>
+              </FigTermRow>
+            </FigTerm>
+          </Figure>
+        </DocSub>
+        <DocSub title="対象外">
+          <Bullets>
+            <Item>
+              対象のシェル以外のシェルで、同じ操作を使えるようにすること。
+            </Item>
+            <Item>所有者以外のユーザーに合わせた設定。</Item>
+            <Item>
+              WSL 以外の Linux で、シェルと OS のクリップボードを共有すること。
+            </Item>
+            <Item>
+              シェルで使うコマンドラインツールそのものの入手。
+              <DocRef kind="PRD" number="0001" />
+              「開発環境の導入」で扱う。
+            </Item>
+            <Item>
+              端末アプリそのものの設定と、画面の分割。
+              <DocRef kind="PRD" number="0003" />
+              「端末多重化ツールの導入」で扱う。
+            </Item>
+          </Bullets>
+        </DocSub>
+        <DocSub title="制約とトレードオフ">
+          <Prose>所有者は、次のことを受け入れる。</Prose>
+          <Bullets>
+            <Item>
+              シェルの入力補助の版は、そのマシンで初めてシェルを開いた時点のもので止まり、マシン間で揃わない。
+              <DocRef kind="PRD" number="0001" />
+              「開発環境の導入」の「何度導入しても同じ状態になる」を、入力補助については満たさない。
+            </Item>
+            <Item>
+              初めてシェルを開くときにネットワークへの接続が必要になる。接続できなければ、プロンプトと入力補助を使えない。
+            </Item>
+            <Item>
+              短い綴りの展開、履歴の絞り込み、WSL
+              のクリップボード連携は、リポジトリを決まった場所に置くことを前提とする。リポジトリを移動すると、これらは知らないうちに使えなくなる。
+            </Item>
+            <Item>
+              プロンプトのアイコン表示には、アイコンに対応したフォントを端末側で用意する必要がある。
+            </Item>
+            <Item>
+              非対話の実行を壊さないため、通常のディレクトリ移動のコマンドは置き換えない。名前の一部での移動は、別の短い入力で行う。
+            </Item>
+          </Bullets>
+        </DocSub>
+        <DocSub title="成功条件">
+          <Prose>
+            所有者が、よく使うコマンドの入力とディレクトリ移動を、設定を加えていないシェルより少ない文字数と操作回数で行える。
+            導入したあと、追加の設定や手作業をせずにシェルでの作業を始められる。
+            数値目標は設けない。
+          </Prose>
+        </DocSub>
+        <DocSub title="計測と学習の計画">
+          <Prose>
+            新規のマシンへの導入と、壊れたマシンの復旧のたびに、成功条件を満たしたかを確かめる。
+            手作業の設定や不具合が生じた場合は記録し、要求と対象外を見直す材料にする。
+          </Prose>
+        </DocSub>
+      </DocSection>
+      <DocSection label="Solution" title="解決策">
+        <DocSub title="要求と受入条件">
+          <Figure caption="14の要求のうち、課題である手数を直接減らすのは7件で、残りは状態の把握と前提を支える。">
+            <FigGrid>
+              <FigCard title="シェルが開く">
+                <FigChips
+                  items={[
+                    '1 ログイン時に開く',
+                    '2 すぐ入力できる',
+                    '14 非対話を壊さない',
+                  ]}
+                />
+              </FigCard>
+              <FigCard title="現在地と結果が見える">
+                <FigChips
+                  items={[
+                    '3 ディレクトリと Git',
+                    '4 失敗と所要時間',
+                    '7 構文の色分け',
+                  ]}
+                />
+              </FigCard>
+              <FigCard tone="neon" title="入力の手数を減らす">
+                <FigChips
+                  tone="neon"
+                  items={['5 短い綴りの展開', '6 続きの提示', '8 補完']}
+                />
+              </FigCard>
+              <FigCard tone="neon" title="履歴をたどる">
+                <FigChips
+                  tone="neon"
+                  items={['9 シェルをまたぐ履歴', '10 絞り込んで実行']}
+                />
+              </FigCard>
+              <FigCard tone="neon" title="移動の手数を減らす">
+                <FigChips
+                  tone="neon"
+                  items={['11 名前だけで移動', '12 上の階層と直前へ']}
+                />
+              </FigCard>
+              <FigCard title="OS とつなぐ">
+                <FigChips tone="amber" items={['13 Windows とのやり取り']} />
+              </FigCard>
+            </FigGrid>
+            <FigLegend
+              items={[
+                { tone: 'neon', text: '手数を直接減らす要求' },
+                { tone: 'amber', text: 'WSL だけが対象' },
+              ]}
+            />
+          </Figure>
+          <Prose>各要求と、その要求を受け入れる条件は次のとおり。</Prose>
+          <Requirements
+            items={[
+              {
+                id: '1',
+                demand: 'ログイン時に、対象のシェルが最初から開く',
+                fields: [
+                  {
+                    label: '受入条件',
+                    value:
+                      'WSL、macOS、それ以外の Linux で、端末を開くと対象のシェルが動く',
+                  },
+                ],
+              },
+              {
+                id: '2',
+                demand: 'シェルを開いてすぐ入力を始められる',
+                fields: [
+                  {
+                    label: '受入条件',
+                    value:
+                      '端末を開いた直後にプロンプトが出て、入力を受け付ける',
+                  },
+                ],
+              },
+              {
+                id: '3',
+                demand: '現在のディレクトリと Git の状態を常に見られる',
+                fields: [
+                  {
+                    label: '受入条件',
+                    value:
+                      'リポジトリ内ではディレクトリ、ブランチ、変更の有無が出る。リポジトリ外ではディレクトリだけ出る',
+                  },
+                ],
+              },
+              {
+                id: '4',
+                demand:
+                  '直前のコマンドの失敗と、長くかかった処理の所要時間が分かる',
+                fields: [
+                  {
+                    label: '受入条件',
+                    value:
+                      '失敗した直後に入力記号の色が変わり、一定時間を超えると所要時間が出る',
+                  },
+                ],
+              },
+              {
+                id: '5',
+                demand: 'よく使うコマンドを短い綴りで打てる',
+                fields: [
+                  {
+                    label: '受入条件',
+                    value:
+                      '版管理、コンテナ操作、エディターで、短い綴りが完全なコマンドに展開される',
+                  },
+                ],
+              },
+              {
+                id: '6',
+                demand: '入力中に、過去に打ったコマンドの続きが提示される',
+                fields: [
+                  {
+                    label: '受入条件',
+                    value:
+                      '打ち始めた文字に続く候補が薄く出て、そのまま採用できる',
+                  },
+                ],
+              },
+              {
+                id: '7',
+                demand: 'コマンドの構文が色で区別される',
+                fields: [
+                  {
+                    label: '受入条件',
+                    value:
+                      '存在するコマンドと存在しないコマンド、引数、文字列を色で区別する',
+                  },
+                ],
+              },
+              {
+                id: '8',
+                demand: 'コマンドと引数を補完できる',
+                fields: [
+                  {
+                    label: '受入条件',
+                    value: 'コマンド名、引数、ファイル名を補完できる',
+                  },
+                ],
+              },
+              {
+                id: '9',
+                demand: '別のシェルで打ったコマンドも履歴から呼び出せる',
+                fields: [
+                  {
+                    label: '受入条件',
+                    value:
+                      '一方のシェルで打ったコマンドを、別に開いたシェルで呼び出せる',
+                  },
+                ],
+              },
+              {
+                id: '10',
+                demand: '履歴を絞り込んで選んで実行できる',
+                fields: [
+                  {
+                    label: '受入条件',
+                    value:
+                      '絞り込んで選ぶと実行され、その実行が履歴に残る。同じコマンドは1件にまとめる',
+                  },
+                ],
+              },
+              {
+                id: '11',
+                demand:
+                  'ディレクトリ名を打つだけで移動でき、過去に訪れた場所は名前の一部でも移動できる',
+                fields: [
+                  {
+                    label: '受入条件',
+                    value:
+                      '移動コマンドを付けずに名前だけで移動でき、訪れた場所は名前の一部でも移動できる',
+                  },
+                ],
+              },
+              {
+                id: '12',
+                demand:
+                  '上の階層と、直前まで居たディレクトリへ短い入力で戻れる',
+                fields: [
+                  {
+                    label: '受入条件',
+                    value:
+                      '階層の数に応じた短い入力で上へ移動し、直前のディレクトリへ戻れる',
+                  },
+                ],
+              },
+              {
+                id: '13',
+                demand: 'シェルでコピーした内容を Windows 側とやり取りできる',
+                fields: [
+                  {
+                    label: '受入条件',
+                    value:
+                      'WSL で、シェルからコピーした内容を Windows 側に貼り付けられ、その逆もできる',
+                  },
+                ],
+              },
+              {
+                id: '14',
+                demand: 'シェルに加えた機能が、非対話の実行を壊さない',
+                fields: [
+                  {
+                    label: '受入条件',
+                    value:
+                      '非対話で実行したコマンドが、対話用の機能を理由に失敗しない',
+                  },
+                ],
+              },
+            ]}
+          />
+          <Prose>
+            要求1は、すでに対象のシェルが開くマシンでは何も変えない。 要求13は
+            WSL だけを対象とする。
+          </Prose>
+        </DocSub>
+        <DocSub title="成功条件の測定方法">
+          <Prose>
+            新規のマシンまたは復旧したマシンに導入したとき、所有者が受入条件を手作業で一つずつ確かめる。
+            あわせて、導入のほかに手作業の設定が要ったかを確かめる。
+            計測の仕組みは設けない。
+          </Prose>
+        </DocSub>
+        <DocSub title="展開計画">
+          <Prose>
+            所有者のマシンだけに提供する。 段階的な公開はしない。
+            変更は、各マシンで導入操作をやり直した時点で、そのマシンに反映される。
+          </Prose>
+        </DocSub>
+      </DocSection>
+      <DocSection label="Open Questions" title="未解決の問い">
+        <Prose>なし。</Prose>
+      </DocSection>
+      <DocSection label="Sources" title="出典">
+        <Sources
+          items={[
+            { text: '所有者へのヒアリング（2026-09-30）' },
+            {
+              text: '所有者へのヒアリング（2026-10-02）: 段階、制約とトレードオフ、計測と学習の計画、成功条件の測定方法、展開計画',
+            },
+          ]}
+        />
+      </DocSection>
+    </>
+  )
+}
