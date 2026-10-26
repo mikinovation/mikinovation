@@ -40,6 +40,13 @@ export default function RootLayout({
               </span>
             </Link>
 
+            <Link
+              href="/career"
+              className="label transition-colors hover:text-neon-soft"
+            >
+              Career
+            </Link>
+
             <div className="ml-auto hidden w-72 md:block">
               <button type="button" className="search-field" disabled>
                 <span aria-hidden="true">⌕</span>
@@ -60,6 +67,13 @@ export default function RootLayout({
         <div className="mx-auto flex max-w-7xl gap-10 px-5 py-10">
           <aside className="sticky top-24 hidden h-fit w-64 shrink-0 lg:block">
             <nav className="flex max-h-[calc(100vh-10rem)] flex-col gap-7 overflow-y-auto pr-1">
+              <div className="flex flex-col gap-1.5">
+                <p className="label px-3">Profile</p>
+                <Link href="/career" className="nav-link">
+                  <span className="truncate">経歴</span>
+                </Link>
+              </div>
+
               {sections.map((section) => (
                 <div key={section.kind} className="flex flex-col gap-1.5">
                   <p className="label px-3">
