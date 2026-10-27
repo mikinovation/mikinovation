@@ -44,6 +44,16 @@ node scripts/build-content-index.mjs
 
 日本語の検査（textlint）は Markdown にしか当たらないため、文章を書くときは一時ファイルの Markdown で下書きして japanese-review を通し、本文をコンポーネントに移し替える。下書きはリポジトリに残さない。
 
+### ポートフォリオ
+
+経歴（`/career`）とリポジトリの紹介（`/repositories`）は文書の仕組みを通さず、ページの TSX にデータを直接書く。
+
+- 正本は `src/app/career/page.tsx` と `src/app/repositories/page.tsx`
+- リポジトリの紹介は1件を `Repository` 型の値として並べ、種別、公開年、1〜2文の説明、技術、GitHub の URL を持つ
+- リポジトリは `doc-card` の小さなカードで一覧に並べ、カード自体を GitHub への外部リンクにする。詳しい説明は各リポジトリの README に任せる
+- 表示には文書と同じ `src/components/doc.tsx` と `src/components/figure.tsx` のコンポーネントを使う
+- ページを足したときは、ヘッダー（`src/components/site-header.tsx`）とサイドバー（`src/components/nav-sections.tsx`）にもリンクを足す
+
 ### テーマ
 
 暗い配色の未来的なテーマで、明暗の切り替えは持たない。配色、タイポグラフィ、各コンポーネントをいつ使うかは `DESIGN.md` に書いてある。値を変えるときは `DESIGN.md` と `src/app/globals.css` の両方を直す。
@@ -61,6 +71,6 @@ node scripts/build-content-index.mjs
 ## 未対応
 
 - 全文検索（PRD 0010 の機能要求2）
-- ポートフォリオの内容。PRD 0010 はドキュメントのみを対象としており、ポートフォリオを載せる範囲は未反映
+- ポートフォリオの範囲。PRD 0010 はドキュメントのみを対象としており、経歴とリポジトリの紹介を載せる範囲は未反映
 - テストケース（`src/content/test/`）と計画（`src/content/plan/`）の表示。この2種類は `.md` のまま運用するため、一覧に出ない
 - PRD 0010 と ADR 0017・0018 は、正本をリポジトリルートの `docs/` の Markdown とし、サイトの生成に VitePress を使うと決めている。現状の構成はどちらとも違うため、置き換えが必要
