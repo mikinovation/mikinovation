@@ -3,7 +3,7 @@
   "private": true,
   "packageManager": "pnpm@12.15.0",
   "devDependencies": {
-    "secretlint": "13.0.7",
-    "@secretlint/secretlint-rule-preset-recommend": "13.0.7"
+    "secretlint": "13.1.0",
+    "@secretlint/secretlint-rule-preset-recommend": "13.1.0"
   }
 }
