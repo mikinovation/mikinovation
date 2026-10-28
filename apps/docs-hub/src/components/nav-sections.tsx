@@ -124,6 +124,15 @@ export function NavSections({ sections }: { sections: NavSection[] }) {
         <span className="truncate">経歴</span>
       </Link>
 
+      <Link
+        href="/repositories"
+        className="nav-doc"
+        aria-current={pathname === '/repositories' ? 'page' : undefined}
+      >
+        <span className="nav-doc-number">REPO</span>
+        <span className="truncate">リポジトリ</span>
+      </Link>
+
       {sections.map((section) => (
         <NavGroup
           key={section.kind}

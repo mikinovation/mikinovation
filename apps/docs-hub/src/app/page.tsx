@@ -29,12 +29,20 @@ export default function Home() {
       />
 
       <Section title="プロフィール">
-        <DocCard
-          label="Career"
-          title="経歴"
-          note="フリーランスのエンジニアとして担ってきた役割、取り組んできたこと、扱える技術をまとめている。"
-          href="/career"
-        />
+        <div className="grid gap-3 sm:grid-cols-2">
+          <DocCard
+            label="Career"
+            title="経歴"
+            note="フリーランスのエンジニアとして担ってきた役割、取り組んできたこと、扱える技術をまとめている。"
+            href="/career"
+          />
+          <DocCard
+            label="Repositories"
+            title="リポジトリ"
+            note="公開している開発環境と、Neovim のプラグインや開発中に使う道具を紹介している。"
+            href="/repositories"
+          />
+        </div>
       </Section>
 
       {sections.map((section) => (
