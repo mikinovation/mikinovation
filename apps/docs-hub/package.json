@@ -2,7 +2,7 @@
   "name": "docs-hub",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@12.15.0",
+  "packageManager": "pnpm@12.16.1",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
