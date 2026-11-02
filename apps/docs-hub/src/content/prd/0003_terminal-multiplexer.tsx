@@ -1,9 +1,8 @@
 import {
-  Bullets,
   DocRef,
   DocSection,
   DocSub,
-  Item,
+  DocTable,
   Prose,
   Requirements,
   Sources,
@@ -11,6 +10,7 @@ import {
 } from '@/components/doc'
 import {
   FigArrow,
+  FigDot,
   FigLabel,
   FigLegend,
   FigNode,
@@ -27,6 +27,7 @@ export const meta = {
       label: '段階',
       value: '5. デリバリー（要求と受入条件を確定し、実装済み）',
     },
+    { label: '更新日', value: '2026-10-26' },
   ],
 }
 
@@ -78,31 +79,37 @@ export default function Body() {
           </Prose>
         </DocSub>
         <DocSub title="対象外">
-          <Bullets>
-            <Item>「最小限」の導入範囲でこの機能を提供すること。</Item>
-            <Item>端末を閉じたあとの画面構成の復元。</Item>
-            <Item>シェルの起動時に自動で立ち上げること。</Item>
-          </Bullets>
+          <Prose>
+            「最小限」の導入範囲でこの機能を提供すること、端末を閉じたあとの画面構成の復元、シェルの起動時に自動で立ち上げることは対象外とする。
+          </Prose>
         </DocSub>
         <DocSub title="制約とトレードオフ">
           <Prose>所有者は、次のことを受け入れる。</Prose>
-          <Bullets>
-            <Item>
-              「最小限」を軽く保つ代わりに、「最小限」ではエージェントの監視とエディターからの送信を使えない。
-            </Item>
-            <Item>
-              端末多重化ツールの完成品が手に入らない環境では、導入に時間がかかる。
-            </Item>
-            <Item>
-              エディターから立ち上げられるエージェントは、1種類に限られる。
-            </Item>
-            <Item>
-              画面の分割とタブをこの端末多重化ツールだけで行う代わりに、端末アプリ側のタブと分割は使わない。
-            </Item>
-            <Item>
-              端末を閉じると画面構成は失われ、シェルを起動しても自動では立ち上がらない。
-            </Item>
-          </Bullets>
+          <DocTable
+            head={['得られること', '引き受けること']}
+            rows={[
+              [
+                '「最小限」を軽く保てる',
+                '「最小限」ではエージェントの監視とエディターからの送信を使えない',
+              ],
+              [
+                '完成品に頼らず導入できる',
+                '端末多重化ツールの完成品が手に入らない環境では、導入に時間がかかる',
+              ],
+              [
+                'エディターからエージェントを立ち上げられる',
+                '立ち上げられるエージェントは1種類に限られる',
+              ],
+              [
+                '画面の分割とタブを1つのツールで扱える',
+                '端末アプリ側のタブと分割は使わない',
+              ],
+              [
+                '画面構成を持ち回らない',
+                '端末を閉じると画面構成は失われ、シェルを起動しても自動では立ち上がらない',
+              ],
+            ]}
+          />
         </DocSub>
         <DocSub title="成功条件">
           <Prose>
@@ -173,7 +180,7 @@ export default function Body() {
                 padX={32}
                 title="agent-1　入力待ち"
               />
-              <circle className="fig-amber" cx={44} cy={103} r={4} />
+              <FigDot x={44} y={103} tone="amber" />
               <FigNode
                 x={26}
                 y={126}
@@ -184,7 +191,7 @@ export default function Body() {
                 padX={32}
                 title="agent-2　入力待ち"
               />
-              <circle className="fig-amber" cx={44} cy={143} r={4} />
+              <FigDot x={44} y={143} tone="amber" />
               <FigNode
                 x={26}
                 y={166}
@@ -195,7 +202,7 @@ export default function Body() {
                 padX={32}
                 title="agent-3　作業中"
               />
-              <circle className="fig-neon" cx={44} cy={183} r={4} />
+              <FigDot x={44} y={183} tone="neon" />
               <FigNode
                 x={26}
                 y={206}
@@ -206,7 +213,7 @@ export default function Body() {
                 padX={32}
                 lines={['shell　通常の作業']}
               />
-              <circle className="fig-dim" cx={44} cy={223} r={4} />
+              <FigDot x={44} y={223} tone="dim" />
 
               <FigNode
                 x={236}
@@ -556,22 +563,23 @@ export default function Body() {
             </FigSvg>
           </Figure>
           <Prose>要求16と要求17の異常時の受入条件は次のとおり。</Prose>
-          <Bullets>
-            <Item>
-              端末多重化ツールの外で操作すると、理由が示され、何も起きない。
-            </Item>
-            <Item>
-              端末多重化ツールが使えない環境で操作すると、理由が示され、何も起きない。
-            </Item>
-            <Item>
-              送り先のエージェントが1つも無いとき、理由が示され、何も送られない。
-            </Item>
-            <Item>送る内容が空のとき、理由が示され、何も送られない。</Item>
-            <Item>送り先の選択や名前の入力を取り消すと、何も起きない。</Item>
-            <Item>
-              送信、起動、切り替えに失敗したとき、成功の通知は出ない。
-            </Item>
-          </Bullets>
+          <DocTable
+            head={['異常の状況', '受入条件']}
+            rows={[
+              ['端末多重化ツールの外で操作した', '理由が示され、何も起きない'],
+              [
+                '端末多重化ツールが使えない環境で操作した',
+                '理由が示され、何も起きない',
+              ],
+              [
+                '送り先のエージェントが1つも無い',
+                '理由が示され、何も送られない',
+              ],
+              ['送る内容が空', '理由が示され、何も送られない'],
+              ['送り先の選択や名前の入力を取り消した', '何も起きない'],
+              ['送信、起動、切り替えに失敗した', '成功の通知は出ない'],
+            ]}
+          />
         </DocSub>
         <DocSub title="成功条件の測定方法">
           <Prose>

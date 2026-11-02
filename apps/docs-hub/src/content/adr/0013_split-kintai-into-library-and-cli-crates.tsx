@@ -1,10 +1,9 @@
 import {
   Alternatives,
-  Bullets,
   Code,
   DocRef,
   DocSection,
-  Item,
+  DocTable,
   Prose,
   Sources,
 } from '@/components/doc'
@@ -50,12 +49,10 @@ export default function Body() {
           <DocRef kind="ADR" number="0012" />{' '}
           から、選べる案は次の条件を満たす必要がある。
         </Prose>
-        <Bullets>
-          <Item>Web API が、CLI の依存を引き込まずに部品を使える。</Item>
-          <Item>
-            Home Manager で、<Code>kintai</Code> のバイナリを導入できる。
-          </Item>
-        </Bullets>
+        <Prose>
+          Web API が CLI の依存を引き込まずに部品を使え、Home Manager で{' '}
+          <Code>kintai</Code> のバイナリを導入できる必要がある。
+        </Prose>
       </DocSection>
       <DocSection label="Decision" title="決定">
         <Prose>
@@ -112,17 +109,24 @@ export default function Body() {
         </Figure>
       </DocSection>
       <DocSection label="Rationale" title="決定理由">
-        <Bullets>
-          <Item>Web API は、ライブラリのクレートだけに依存すればよい。</Item>
-          <Item>
-            ライブラリを <Code>packages/</Code> に、アプリケーションを{' '}
-            <Code>apps/</Code> に置くと、既存の <Code>packages/dotfiles</Code>{' '}
-            の並びにそろう。
-          </Item>
-          <Item>
-            クレートが2つなので、分ける手間と、依存の管理が小さく済む。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['決定した要素', '要求を満たせる理由']}
+          rows={[
+            [
+              'ライブラリと CLI の分割',
+              'Web API は、ライブラリのクレートだけに依存すればよい',
+            ],
+            [
+              '配置先',
+              <>
+                ライブラリを <Code>packages/</Code> に、アプリケーションを{' '}
+                <Code>apps/</Code> に置くと、既存の{' '}
+                <Code>packages/dotfiles</Code> の並びにそろう
+              </>,
+            ],
+            ['クレートは2つ', '分ける手間と、依存の管理が小さく済む'],
+          ]}
+        />
       </DocSection>
       <DocSection label="Alternatives" title="代替案">
         <Prose>次の案は、それぞれの理由で採らない。</Prose>
@@ -154,20 +158,28 @@ export default function Body() {
         />
       </DocSection>
       <DocSection label="Consequences" title="結果">
-        <Bullets>
-          <Item>
-            ほかの機能が freee 連携だけを使いたくなったら、freee
-            連携を別のクレートに分け直す。
-          </Item>
-          <Item>
-            nix の <Code>buildRustPackage</Code> では、workspace の中の CLI
-            のクレートを指定してビルドする。
-          </Item>
-          <Item>
-            リポジトリのルートに、<Code>Cargo.toml</Code> と{' '}
-            <Code>Cargo.lock</Code> が置かれる。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['領域', '引き受けること']}
+          rows={[
+            [
+              '将来の分割',
+              'ほかの機能が freee 連携だけを使いたくなったら、freee 連携を別のクレートに分け直す',
+            ],
+            [
+              'nix でのビルド',
+              <>
+                <Code>buildRustPackage</Code> では、workspace の中の CLI
+                のクレートを指定してビルドする
+              </>,
+            ],
+            [
+              'リポジトリのルート',
+              <>
+                <Code>Cargo.toml</Code> と <Code>Cargo.lock</Code> が置かれる
+              </>,
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Sources" title="出典">
         <Sources

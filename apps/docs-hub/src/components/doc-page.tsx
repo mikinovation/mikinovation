@@ -1,11 +1,24 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 
-import type { Doc, DocAttribute } from '@/lib/docs'
+import { SiteLink } from '@/components/site-link'
+import type { BadgeTone, Doc, DocAttribute, DocBadge } from '@/lib/docs'
 
 type Crumb = {
   label: string
   href?: string
+}
+
+export function Badge({
+  tone = 'plain',
+  children,
+}: {
+  tone?: BadgeTone
+  children: ReactNode
+}) {
+  const className = tone === 'plain' ? 'badge' : `badge badge-${tone}`
+
+  return <span className={className}>{children}</span>
 }
 
 export function Breadcrumb({ trail }: { trail: Crumb[] }) {
@@ -68,17 +81,28 @@ export function Hero({
   )
 }
 
-export function Attributes({ attributes }: { attributes: DocAttribute[] }) {
+export function DocBadges({
+  badge,
+  attributes,
+}: {
+  badge: DocBadge | null
+  attributes: DocAttribute[]
+}) {
   return (
     <>
+      {badge !== null && <Badge tone={badge.tone}>{badge.text}</Badge>}
       {attributes.map((attribute) => (
-        <span key={attribute.label} className="badge">
+        <Badge key={attribute.label}>
           <span className="text-ink-faint">{attribute.label}</span>
           {attribute.value}
-        </span>
+        </Badge>
       ))}
     </>
   )
+}
+
+export function CardGrid({ children }: { children: ReactNode }) {
+  return <div className="grid gap-3 sm:grid-cols-2">{children}</div>
 }
 
 export function DocCard({
@@ -86,18 +110,20 @@ export function DocCard({
   number,
   title,
   note,
-  badge,
+  footer,
+  badge = null,
   href,
 }: {
   label: string
   number?: string
   title: string
   note?: string
-  badge?: ReactNode
+  footer?: string
+  badge?: DocBadge | null
   href: string
 }) {
-  return (
-    <Link href={href} className="doc-card">
+  const body = (
+    <>
       <div className="flex items-center gap-2.5">
         <span className="label text-neon-soft">{label}</span>
         {number !== undefined && (
@@ -108,8 +134,21 @@ export function DocCard({
       {note !== undefined && (
         <p className="mt-2 text-sm text-ink-dim">{note}</p>
       )}
-      {badge !== undefined && <div className="mt-3">{badge}</div>}
-    </Link>
+      {footer !== undefined && (
+        <p className="mt-3 font-mono text-xs text-ink-faint">{footer}</p>
+      )}
+      {badge !== null && (
+        <div className="mt-3">
+          <Badge tone={badge.tone}>{badge.text}</Badge>
+        </div>
+      )}
+    </>
+  )
+
+  return (
+    <SiteLink href={href} className="doc-card">
+      {body}
+    </SiteLink>
   )
 }
 

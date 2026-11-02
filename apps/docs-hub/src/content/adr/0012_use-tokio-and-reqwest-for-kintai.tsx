@@ -1,10 +1,9 @@
 import {
   Alternatives,
-  Bullets,
   Code,
   DocRef,
   DocSection,
-  Item,
+  DocTable,
   Prose,
   Sources,
 } from '@/components/doc'
@@ -51,15 +50,11 @@ export default function Body() {
           <DocRef kind="ADR" number="0008" />{' '}
           と所有者へのヒアリングから、選べる案は次の条件を満たす必要がある。
         </Prose>
-        <Bullets>
-          <Item>
-            freee 連携などの部品を、CLI と今後の Web API の両方から使える。
-          </Item>
-          <Item>集計と検出は、ユニットテストで守れる。</Item>
-          <Item>
-            導入範囲「すべて」で、所有者のマシンに Home Manager で導入できる。
-          </Item>
-        </Bullets>
+        <Prose>
+          freee 連携などの部品を CLI と今後の Web API
+          の両方から使え、集計と検出をユニットテストで守れる必要がある。導入範囲「すべて」で、所有者のマシンに
+          Home Manager で導入できることも条件になる。
+        </Prose>
       </DocSection>
       <DocSection label="Decision" title="決定">
         <Prose>
@@ -69,14 +64,17 @@ export default function Body() {
         </Prose>
         <Prose>外部と通信しない集計と検出は、同期の関数のままにする。</Prose>
         <Prose>そのほかの依存には、次のクレートを使う。</Prose>
-        <Bullets>
-          <Item label="引数の解析">clap</Item>
-          <Item label="日付と時刻">chrono</Item>
-          <Item label="Org 形式の解析">regex</Item>
-          <Item label="TOML と JSON">serde、toml、serde_json</Item>
-          <Item label="状態ファイルの置き換え">tempfile</Item>
-          <Item label="エラーの型">thiserror</Item>
-        </Bullets>
+        <DocTable
+          head={['用途', '使うクレート']}
+          rows={[
+            ['引数の解析', 'clap'],
+            ['日付と時刻', 'chrono'],
+            ['Org 形式の解析', 'regex'],
+            ['TOML と JSON', 'serde、toml、serde_json'],
+            ['状態ファイルの置き換え', 'tempfile'],
+            ['エラーの型', 'thiserror'],
+          ]}
+        />
         <Figure caption="外部と通信する処理だけを非同期にし、計算は同期のままにする。">
           <FigSvg
             height={190}
@@ -138,24 +136,27 @@ export default function Body() {
         </Figure>
       </DocSection>
       <DocSection label="Rationale" title="決定理由">
-        <Bullets>
-          <Item>
-            Rust の主な Web フレームワークは tokio の上で動くため、freee
-            連携などの部品を、今後の Web API と同じ基盤で共有できる。
-          </Item>
-          <Item>
-            非同期は呼び出し元へ広がるため、共通の部品は最初から非同期で作るほうが、後から作り直すより手戻りが小さい。
-          </Item>
-          <Item>
-            集計と検出を同期の関数に保つため、CLI と Web API
-            のどちらからも呼べ、テストも単純なままで済む。
-          </Item>
-          <Item>
-            reqwest は Rust の HTTP
-            クライアントとして広く使われ、今後ほかの外部の API
-            を呼ぶときにも使える。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['決定した要素', '要求を満たせる理由']}
+          rows={[
+            [
+              'tokio',
+              'Rust の主な Web フレームワークは tokio の上で動くため、freee 連携などの部品を、今後の Web API と同じ基盤で共有できる',
+            ],
+            [
+              '最初から非同期で作る',
+              '非同期は呼び出し元へ広がるため、共通の部品は後から作り直すより手戻りが小さい',
+            ],
+            [
+              '集計と検出は同期の関数',
+              'CLI と Web API のどちらからも呼べ、テストも単純なままで済む',
+            ],
+            [
+              'reqwest',
+              'Rust の HTTP クライアントとして広く使われ、今後ほかの外部の API を呼ぶときにも使える',
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Alternatives" title="代替案">
         <Prose>次の案は、それぞれの理由で採らない。</Prose>
@@ -175,18 +176,24 @@ export default function Body() {
         />
       </DocSection>
       <DocSection label="Consequences" title="結果">
-        <Bullets>
-          <Item>
-            同期で構成するより依存が増え、ビルドの時間とバイナリが大きくなる。
-          </Item>
-          <Item>
-            依存のクレートが多いぶん、nix 側のハッシュを更新する機会が増える。
-          </Item>
-          <Item>
-            freee を差し替えるための trait は、async のメソッドを持つ。
-          </Item>
-          <Item>CLI の入口は、tokio のランタイムの上で起動する。</Item>
-        </Bullets>
+        <DocTable
+          head={['領域', '引き受けること']}
+          rows={[
+            [
+              '依存の量',
+              '同期で構成するより依存が増え、ビルドの時間とバイナリが大きくなる',
+            ],
+            [
+              'nix 側のハッシュ',
+              '依存のクレートが多いぶん、更新する機会が増える',
+            ],
+            [
+              'テストの差し替え',
+              'freee を差し替えるための trait は、async のメソッドを持つ',
+            ],
+            ['CLI の入口', 'tokio のランタイムの上で起動する'],
+          ]}
+        />
       </DocSection>
       <DocSection label="Sources" title="出典">
         <Sources

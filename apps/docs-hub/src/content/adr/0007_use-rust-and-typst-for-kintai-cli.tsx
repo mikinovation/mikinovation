@@ -1,10 +1,9 @@
 import {
   Alternatives,
-  Bullets,
   Code,
   DocRef,
   DocSection,
-  Item,
+  DocTable,
   Prose,
   Sources,
 } from '@/components/doc'
@@ -53,17 +52,22 @@ export default function Body() {
           <DocRef kind="ADR" number="0001" />{' '}
           から、選べる案は次の条件を満たす必要がある。
         </Prose>
-        <Bullets>
-          <Item>
-            丸め、精算、日割りの計算が毎回同じ結果になり、ユニットテストで守れる。
-          </Item>
-          <Item>勤怠表の見た目を、計算の処理を変えずに差し替えられる。</Item>
-          <Item>日本語を含む表を PDF に組める。</Item>
-          <Item>Org 形式のファイルにある CLOCK 行とプロパティを読める。</Item>
-          <Item>
-            導入範囲「すべて」で、所有者のマシンに Home Manager で導入できる。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['観点', '満たすべき条件']}
+          rows={[
+            [
+              '計算',
+              '丸め、精算、日割りの計算が毎回同じ結果になり、ユニットテストで守れる',
+            ],
+            ['見た目', '勤怠表の見た目を、計算の処理を変えずに差し替えられる'],
+            ['PDF', '日本語を含む表を PDF に組める'],
+            ['入力', 'Org 形式のファイルにある CLOCK 行とプロパティを読める'],
+            [
+              '導入',
+              '導入範囲「すべて」で、所有者のマシンに Home Manager で導入できる',
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Decision" title="決定">
         <Prose>
@@ -172,30 +176,31 @@ export default function Body() {
         </Figure>
       </DocSection>
       <DocSection label="Rationale" title="決定理由">
-        <Bullets>
-          <Item>
-            Rust は単一のバイナリを作れるため、実行時に Node や Python
-            などの実行環境を用意しなくて済む。Home Manager
-            でバイナリを置くだけで導入でき、導入の制約に合う。
-          </Item>
-          <Item>
-            Typst は Rust
-            で書かれているため、ライブラリとして組み込める。外部のコマンドに頼らず、単一のバイナリのまま
-            PDF を生成できる。
-          </Item>
-          <Item>
-            集計結果をテンプレートに渡す形にすると、計算は Rust
-            の中に、見た目はテンプレートの中に分かれる。計算はユニットテストで守り、見た目は計算の処理を変えずに差し替えられる。
-          </Item>
-          <Item>
-            Typst
-            は日本語を含む表を組めるため、日本語の表の制約に合う。フォントを同梱すれば、マシンに入っているフォントにかかわらず同じ見た目になる。
-          </Item>
-          <Item>
-            読む必要があるのは CLOCK
-            行とプロパティだけなので、正規表現で足りる。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['決定した要素', '要求を満たせる理由']}
+          rows={[
+            [
+              'Rust の単一のバイナリ',
+              '実行時に Node や Python などの実行環境を用意しなくて済み、Home Manager でバイナリを置くだけで導入できる',
+            ],
+            [
+              'ライブラリとしての Typst',
+              'Typst は Rust で書かれているため組み込める。外部のコマンドに頼らず、単一のバイナリのまま PDF を生成できる',
+            ],
+            [
+              '集計結果とテンプレートの分離',
+              '計算は Rust の中、見た目はテンプレートの中に分かれる。計算はユニットテストで守り、見た目は計算の処理を変えずに差し替えられる',
+            ],
+            [
+              'Typst の日本語の組版',
+              '日本語を含む表を組める。フォントを同梱すれば、マシンに入っているフォントにかかわらず同じ見た目になる',
+            ],
+            [
+              '正規表現での解析',
+              '読む必要があるのは CLOCK 行とプロパティだけなので、正規表現で足りる',
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Alternatives" title="代替案">
         <Prose>次の案は、それぞれの理由で採らない。</Prose>
@@ -263,30 +268,41 @@ export default function Body() {
         />
       </DocSection>
       <DocSection label="Consequences" title="結果">
-        <Bullets>
-          <Item>
-            開発には Rust のツールチェーンが要る。「すべて」には rustup
-            が入るが、「最小限」では kintai を使えない。
-          </Item>
-          <Item>
-            <Code>typst</Code> のクレートは API
-            が安定していないため、版を上げるたびに、組み込む側のコードの追従を引き受ける。
-          </Item>
-          <Item>
-            Noto Sans JP を同梱するため、バイナリが数 MB 大きくなる。OFL
-            のライセンスの表示も同梱する。
-          </Item>
-          <Item>
-            <Code>buildRustPackage</Code>{' '}
-            で導入するため、依存のクレートを更新するたびに、nix
-            側のハッシュも更新する。
-          </Item>
-          <Item>勤怠表の見た目を変えるには、Typst の書き方の知識が要る。</Item>
-          <Item>
-            Org 形式の解析は、nvim-orgmode が出力する CLOCK
-            行の書式に依存する。手で書式を崩した行は読めず、エラーになる。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['領域', '引き受けること']}
+          rows={[
+            [
+              '開発と導入範囲',
+              '開発には Rust のツールチェーンが要る。「すべて」には rustup が入るが、「最小限」では kintai を使えない',
+            ],
+            [
+              'Typst の追従',
+              <>
+                <Code>typst</Code> のクレートは API
+                が安定していないため、版を上げるたびに、組み込む側のコードの追従を引き受ける
+              </>,
+            ],
+            [
+              'フォントの同梱',
+              'Noto Sans JP を同梱するため、バイナリが数 MB 大きくなる。OFL のライセンスの表示も同梱する',
+            ],
+            [
+              'nix 側のハッシュ',
+              <>
+                <Code>buildRustPackage</Code>{' '}
+                で導入するため、依存のクレートを更新するたびに更新する
+              </>,
+            ],
+            [
+              '見た目の変更',
+              '勤怠表の見た目を変えるには、Typst の書き方の知識が要る',
+            ],
+            [
+              'Org 形式の解析',
+              'nvim-orgmode が出力する CLOCK 行の書式に依存する。手で書式を崩した行は読めず、エラーになる',
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Sources" title="出典">
         <Sources

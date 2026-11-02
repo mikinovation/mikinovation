@@ -26,9 +26,23 @@ export type DocEntry = {
   Body: () => ReactNode
 }
 
+export type BadgeTone =
+  | 'plain'
+  | 'accepted'
+  | 'rejected'
+  | 'superseded'
+  | 'stage'
+  | 'review'
+
 export type DocBadge = {
   text: string
-  className: string
+  tone: BadgeTone
+}
+
+export type DocReview = {
+  updatedAt: string
+  dueAt: string
+  overdue: boolean
 }
 
 export type Doc = DocEntry & {
@@ -37,7 +51,12 @@ export type Doc = DocEntry & {
   heading: string
   badge: DocBadge | null
   details: DocAttribute[]
+  review: DocReview | null
 }
+
+export type ReviewDoc = Doc & { review: DocReview }
+
+export const reviewIntervalMonths = 6
 
 const isDocKind = (value: string): value is DocKind =>
   (docKinds as readonly string[]).includes(value)
@@ -46,15 +65,15 @@ const badgeOf = (attributes: DocAttribute[]): DocBadge | null => {
   const state = attributes.find((attribute) => attribute.label === '状態')
   if (state !== undefined) {
     if (state.value.startsWith('採用')) {
-      return { text: state.value, className: 'badge badge-accepted' }
+      return { text: state.value, tone: 'accepted' }
     }
     if (state.value.startsWith('却下')) {
-      return { text: state.value, className: 'badge badge-rejected' }
+      return { text: state.value, tone: 'rejected' }
     }
     if (state.value.startsWith('置き換え') || state.value.startsWith('廃止')) {
-      return { text: state.value, className: 'badge badge-superseded' }
+      return { text: state.value, tone: 'superseded' }
     }
-    return { text: state.value, className: 'badge' }
+    return { text: state.value, tone: 'plain' }
   }
 
   const stage = attributes.find((attribute) => attribute.label === '段階')
@@ -62,7 +81,7 @@ const badgeOf = (attributes: DocAttribute[]): DocBadge | null => {
     const number = /^\d+/.exec(stage.value)
     return {
       text: `段階 ${number === null ? stage.value : number[0]}`,
-      className: 'badge badge-stage',
+      tone: 'stage',
     }
   }
 
@@ -70,10 +89,37 @@ const badgeOf = (attributes: DocAttribute[]): DocBadge | null => {
     (attribute) => attribute.label === '到達している層',
   )
   if (layer !== undefined) {
-    return { text: layer.value, className: 'badge badge-stage' }
+    return { text: layer.value, tone: 'stage' }
   }
 
   return null
+}
+
+const today = new Date().toISOString().slice(0, 10)
+
+const pad = (value: number): string => String(value).padStart(2, '0')
+
+const addMonths = (date: string, months: number): string => {
+  const [year, month, day] = date.split('-').map(Number)
+  const shifted = year * 12 + (month - 1) + months
+  const nextYear = Math.floor(shifted / 12)
+  const nextMonth = (shifted % 12) + 1
+  const lastDay = new Date(Date.UTC(nextYear, nextMonth, 0)).getUTCDate()
+
+  return `${nextYear}-${pad(nextMonth)}-${pad(Math.min(day, lastDay))}`
+}
+
+const reviewOf = (attributes: DocAttribute[]): DocReview | null => {
+  const updated =
+    attributes.find((attribute) => attribute.label === '更新日') ??
+    attributes.find((attribute) => attribute.label === '決定日')
+  if (updated === undefined || !/^\d{4}-\d{2}-\d{2}$/.test(updated.value)) {
+    return null
+  }
+
+  const dueAt = addMonths(updated.value, reviewIntervalMonths)
+
+  return { updatedAt: updated.value, dueAt, overdue: dueAt < today }
 }
 
 const toDoc = (entry: DocEntry): Doc => {
@@ -90,6 +136,7 @@ const toDoc = (entry: DocEntry): Doc => {
     details: entry.attributes.filter(
       (attribute) => attribute.value !== badge?.text,
     ),
+    review: reviewOf(entry.attributes),
   }
 }
 
@@ -112,6 +159,13 @@ export const listDocs = (kind: DocKind): Doc[] =>
   docs.filter((doc) => doc.kind === kind)
 
 export const listAllDocs = (): Doc[] => docs
+
+export const listDocsByReview = (): ReviewDoc[] =>
+  docs
+    .filter((doc): doc is ReviewDoc => doc.review !== null)
+    .toSorted((left, right) =>
+      left.review.dueAt.localeCompare(right.review.dueAt),
+    )
 
 export const findDoc = (kind: string, slug: string): Doc | null => {
   if (!isDocKind(kind)) {

@@ -1,11 +1,10 @@
 import {
-  Bullets,
   Code,
   DocLink,
   DocRef,
   DocSection,
   DocSub,
-  Item,
+  DocTable,
   Prose,
   Requirements,
   Sources,
@@ -29,6 +28,7 @@ export const meta = {
       label: '段階',
       value: '5. デリバリー（要求と受入条件を確定した。実装は未着手）',
     },
+    { label: '更新日', value: '2026-10-26' },
   ],
 }
 
@@ -99,17 +99,11 @@ export default function Body() {
           <Prose>リポジトリの所有者本人だけを対象とする。</Prose>
         </DocSub>
         <DocSub title="仮説">
-          <Bullets>
-            <Item>
-              15分ごとに促されれば、<Code>refile.org</Code>{' '}
-              に残るメモの件数が増える。
-            </Item>
-            <Item>15分ごとに作業を中断されても、作業の効率は落ちない。</Item>
-            <Item>
-              通知だけでも、<Code>refile.org</Code>{' '}
-              に残るメモの件数が導入前より増える。
-            </Item>
-          </Bullets>
+          <Prose>
+            15分ごとに促されれば、<Code>refile.org</Code>{' '}
+            に残るメモの件数が増え、15分ごとに作業を中断されても作業の効率は落ちないと見込む。通知だけでも、
+            <Code>refile.org</Code> に残るメモの件数は導入前より増える。
+          </Prose>
         </DocSub>
         <DocSub title="提供する価値">
           <Prose>
@@ -120,27 +114,23 @@ export default function Body() {
           </Prose>
         </DocSub>
         <DocSub title="対象外">
-          <Bullets>
-            <Item>
-              <Code>refile.org</Code> のメモを分類して移す作業。
-            </Item>
-            <Item>スマートフォンなど、ほかの端末からメモを書くこと。</Item>
-            <Item>
-              促しの間隔を、作業の状況に合わせて自動で長くしたり短くしたりすること。
-            </Item>
-            <Item>エディター以外で作業しているときに促すこと。</Item>
-          </Bullets>
+          <Prose>
+            <Code>refile.org</Code>{' '}
+            のメモを分類して移す作業、スマートフォンなどほかの端末からメモを書くこと、促しの間隔を作業の状況に合わせて自動で変えること、エディター以外で作業しているときに促すことは対象外とする。
+          </Prose>
         </DocSub>
         <DocSub title="制約とトレードオフ">
           <Prose>所有者は、次のことを受け入れる。</Prose>
-          <Bullets>
-            <Item>
-              メモを書く習慣をつける代わりに、15分ごとに作業を中断される。
-            </Item>
-            <Item>
-              エディターの中で促す代わりに、エディターを開いていないときは促されない。
-            </Item>
-          </Bullets>
+          <DocTable
+            head={['得られること', '引き受けること']}
+            rows={[
+              ['メモを書く習慣がつく', '15分ごとに作業を中断される'],
+              [
+                'エディターの中で促せる',
+                'エディターを開いていないときは促されない',
+              ],
+            ]}
+          />
         </DocSub>
         <DocSub title="成功条件">
           <Prose>

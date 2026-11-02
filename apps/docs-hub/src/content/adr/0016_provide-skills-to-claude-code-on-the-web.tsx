@@ -1,10 +1,9 @@
 import {
   Alternatives,
-  Bullets,
   Code,
   DocRef,
   DocSection,
-  Item,
+  DocTable,
   Prose,
   Sources,
 } from '@/components/doc'
@@ -59,55 +58,60 @@ export default function Body() {
           <DocRef kind="PRD" number="0004" /> の要求17
           から、選べる案は次の条件を満たす必要がある。
         </Prose>
-        <Bullets>
-          <Item>
-            Nix
-            のない環境でこのリポジトリを開くと、手作業の設定なしに自作の作業手順と、それらが呼ぶ外部の作業手順が一覧に現れ、呼び出せる。
-          </Item>
-          <Item>
-            作業手順が呼ぶ側の手順を書き換えずに済むよう、呼ばれる作業手順を名前で呼べる。
-          </Item>
-        </Bullets>
-        <Prose>あわせて、次の条件を満たす必要がある。</Prose>
-        <Bullets>
-          <Item>
-            自作の作業手順の正本は <Code>packages/claude-skills/skills</Code>{' '}
-            の一か所に保つ。
-          </Item>
-          <Item>Nix で導入したマシンの振る舞いを変えない。</Item>
-        </Bullets>
+        <Prose>
+          Nix
+          のない環境でこのリポジトリを開くと、手作業の設定なしに自作の作業手順と、それらが呼ぶ外部の作業手順が一覧に現れ、呼び出せる必要がある。呼ぶ側の手順を書き換えずに済むよう、呼ばれる作業手順は名前で呼べることも条件になる。
+        </Prose>
+        <Prose>
+          あわせて、自作の作業手順の正本は{' '}
+          <Code>packages/claude-skills/skills</Code> の一か所に保ち、Nix
+          で導入したマシンの振る舞いは変えない。
+        </Prose>
       </DocSection>
       <DocSection label="Decision" title="決定">
         <Prose>自作の作業手順と外部の作業手順で、配り方を分ける。</Prose>
-        <Bullets>
-          <Item label="自作の作業手順">
-            <Code>
-              .claude/skills/{'<'}名前{'>'}
-            </Code>{' '}
-            に、
-            <Code>
-              packages/claude-skills/skills/{'<'}名前{'>'}
-            </Code>{' '}
-            を指すシンボリックリンクを置く。Claude Code
-            はこれをプロジェクトスキルとして読み込み、名前空間なしの名前で呼べる。このリポジトリでは{' '}
-            <Code>mikinovation-skills</Code> プラグインを有効にしない。
-          </Item>
-          <Item label="外部の作業手順">
-            4つのプラグインを <Code>.claude/settings.json</Code> の{' '}
-            <Code>enabledPlugins</Code> で有効にする。対象は
-            tanteki、yomiyasu、mattpocock-skills、commit-commands である。
-          </Item>
-          <Item label="導入">
-            SessionStart のフック <Code>.claude/hooks/session-start.sh</Code>{' '}
-            を置く。フックは <Code>.claude/settings.json</Code>{' '}
-            に書いたマーケットプレイスを追加し、有効にしたプラグインをプロジェクトのスコープで導入する。フックは{' '}
-            <Code>CLAUDE_CODE_REMOTE</Code> が <Code>true</Code>{' '}
-            のときだけ動き、導入が終わるまでセッションを待たせる。
-            <Code>claude plugin</Code> のコマンドが書き直す{' '}
-            <Code>.claude/settings.json</Code>{' '}
-            は、フックの終了時に元の内容へ戻す。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['対象', '決めたこと']}
+          rows={[
+            [
+              '自作の作業手順',
+              <>
+                <Code>
+                  .claude/skills/{'<'}名前{'>'}
+                </Code>{' '}
+                に、
+                <Code>
+                  packages/claude-skills/skills/{'<'}名前{'>'}
+                </Code>{' '}
+                を指すシンボリックリンクを置く。Claude Code
+                はこれをプロジェクトスキルとして読み込み、名前空間なしの名前で呼べる。このリポジトリでは{' '}
+                <Code>mikinovation-skills</Code> プラグインを有効にしない
+              </>,
+            ],
+            [
+              '外部の作業手順',
+              <>
+                4つのプラグインを <Code>.claude/settings.json</Code> の{' '}
+                <Code>enabledPlugins</Code> で有効にする。対象は
+                tanteki、yomiyasu、mattpocock-skills、commit-commands である
+              </>,
+            ],
+            [
+              '導入',
+              <>
+                SessionStart のフック{' '}
+                <Code>.claude/hooks/session-start.sh</Code> を置く。フックは{' '}
+                <Code>.claude/settings.json</Code>{' '}
+                に書いたマーケットプレイスを追加し、有効にしたプラグインをプロジェクトのスコープで導入する。フックは{' '}
+                <Code>CLAUDE_CODE_REMOTE</Code> が <Code>true</Code>{' '}
+                のときだけ動き、導入が終わるまでセッションを待たせる。
+                <Code>claude plugin</Code> のコマンドが書き直す{' '}
+                <Code>.claude/settings.json</Code>{' '}
+                は、フックの終了時に元の内容へ戻す
+              </>,
+            ],
+          ]}
+        />
         <Figure caption="自作の作業手順はリポジトリから直接読み、外部の作業手順だけをセッションの開始時に導入する。">
           <FigSvg
             height={215}
@@ -178,33 +182,44 @@ export default function Body() {
         </Figure>
       </DocSection>
       <DocSection label="Rationale" title="決定理由">
-        <Bullets>
-          <Item>
-            シンボリックリンクにすると、正本を一か所に保ったまま、作業手順の変更が導入操作なしに効く。
-          </Item>
-          <Item>
-            プロジェクトスキルは、Nix
-            で配置した場合と同じ名前で呼べる。プラグインにすると{' '}
-            <Code>mikinovation-skills:create-prd</Code>{' '}
-            のように名前空間が付き、Nix
-            で導入したマシンでは同じ作業手順が二重に並ぶ。
-          </Item>
-          <Item>
-            外部の作業手順はこのリポジトリの外にあるため、シンボリックリンクでは置けない。プラグインなら、提供元から取り込む記述を持たずに済む。
-          </Item>
-          <Item>
-            プロジェクトの設定だけではプラグインが導入されないため、導入を明示的に行う場所が要る。SessionStart
-            のフックはセッションのたびに走り、リポジトリに置ける。
-          </Item>
-          <Item>
-            フックはマーケットプレイスとプラグインの一覧を{' '}
-            <Code>.claude/settings.json</Code>{' '}
-            から読む。一覧を一か所に保つため、フックに書き写さない。
-          </Item>
-          <Item>
-            導入の前に作業手順が呼ばれて失敗しないよう、フックは同期で走らせる。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['決定した要素', '要求を満たせる理由']}
+          rows={[
+            [
+              'シンボリックリンク',
+              '正本を一か所に保ったまま、作業手順の変更が導入操作なしに効く',
+            ],
+            [
+              'プロジェクトスキル',
+              <>
+                Nix で配置した場合と同じ名前で呼べる。プラグインにすると{' '}
+                <Code>mikinovation-skills:create-prd</Code>{' '}
+                のように名前空間が付き、Nix
+                で導入したマシンでは同じ作業手順が二重に並ぶ
+              </>,
+            ],
+            [
+              '外部はプラグイン',
+              '外部の作業手順はこのリポジトリの外にあるためシンボリックリンクでは置けず、プラグインなら提供元から取り込む記述を持たずに済む',
+            ],
+            [
+              'SessionStart のフック',
+              'プロジェクトの設定だけではプラグインが導入されないため、導入を明示的に行う場所が要る。フックはセッションのたびに走り、リポジトリに置ける',
+            ],
+            [
+              '一覧を設定から読む',
+              <>
+                フックはマーケットプレイスとプラグインの一覧を{' '}
+                <Code>.claude/settings.json</Code>{' '}
+                から読む。一覧を一か所に保つため、フックに書き写さない
+              </>,
+            ],
+            [
+              '同期での実行',
+              '導入の前に作業手順が呼ばれて失敗しないようにする',
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Alternatives" title="代替案">
         <Prose>次の案は、それぞれの理由で採らない。</Prose>
@@ -250,36 +265,42 @@ export default function Body() {
         />
       </DocSection>
       <DocSection label="Consequences" title="結果">
-        <Bullets>
-          <Item>
-            Nix
-            のない環境では、マーケットプレイスとプラグインを取り込み終えるまでセッションが始まらない。
-          </Item>
-          <Item>
-            マーケットプレイスは外部のプラグインの版を固定しないため、Nix
-            のない環境では、新しいセッションごとに上流の最新が入る。Nix
-            で導入したマシンとは、作業手順の版が食い違いうる。
-          </Item>
-          <Item>
-            フックは、Nix のない環境に <Code>jq</Code> と <Code>claude</Code>{' '}
-            のコマンドがあることに依存する。
-          </Item>
-          <Item>
-            自作の作業手順を追加したときは、シンボリックリンクも手作業で追加する。追加し忘れると、Nix
-            のない環境ではその作業手順を呼び出せない。
-          </Item>
-          <Item>
-            Nix
-            で導入したマシンでこのリポジトリを開くと、同じ名前の作業手順がユーザーとプロジェクトの両方に置かれる。導入操作をやり直すまでは、両者の内容が食い違いうる。
-          </Item>
-          <Item>
-            フックの変更は、既定のブランチへ取り込んだあとに始めたセッションから効く。
-          </Item>
-          <Item>
-            このリポジトリ以外のリポジトリで Nix
-            のない環境に作業手順を配るには、そのリポジトリにプロジェクトの設定とフックを手作業で追加する。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['領域', '引き受けること']}
+          rows={[
+            [
+              'セッションの開始',
+              'Nix のない環境では、マーケットプレイスとプラグインを取り込み終えるまでセッションが始まらない',
+            ],
+            [
+              '外部の版',
+              'マーケットプレイスは外部のプラグインの版を固定しないため、Nix のない環境では新しいセッションごとに上流の最新が入る。Nix で導入したマシンとは、作業手順の版が食い違いうる',
+            ],
+            [
+              'フックの前提',
+              <>
+                Nix のない環境に <Code>jq</Code> と <Code>claude</Code>{' '}
+                のコマンドがあることに依存する
+              </>,
+            ],
+            [
+              '作業手順の追加',
+              'シンボリックリンクも手作業で追加する。追加し忘れると、Nix のない環境ではその作業手順を呼び出せない',
+            ],
+            [
+              '二重の配置',
+              'Nix で導入したマシンでこのリポジトリを開くと、同じ名前の作業手順がユーザーとプロジェクトの両方に置かれる。導入操作をやり直すまでは、両者の内容が食い違いうる',
+            ],
+            [
+              'フックの変更',
+              '既定のブランチへ取り込んだあとに始めたセッションから効く',
+            ],
+            [
+              'ほかのリポジトリ',
+              'Nix のない環境に作業手順を配るには、そのリポジトリにプロジェクトの設定とフックを手作業で追加する',
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Sources" title="出典">
         <Sources

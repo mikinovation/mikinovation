@@ -1,10 +1,9 @@
 import {
   Alternatives,
-  Bullets,
   Code,
   DocRef,
   DocSection,
-  Item,
+  DocTable,
   Prose,
   Sources,
 } from '@/components/doc'
@@ -48,17 +47,22 @@ export default function Body() {
           <DocRef kind="ADR" number="0004" />{' '}
           から、選べる案は次の条件を満たす必要がある。
         </Prose>
-        <Bullets>
-          <Item>下書きの金額が、CLI の計算結果と必ず一致する。</Item>
-          <Item>下書きを作るだけで、請求書を先方へ送付しない。</Item>
-          <Item>
-            対象月の下書きがすでにあれば、新しい下書きを作らずに止まる。
-          </Item>
-          <Item>freee の API の認証の準備は、所有者が引き受ける。</Item>
-          <Item>
-            導入範囲「すべて」で、所有者のマシンに Home Manager で導入できる。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['観点', '満たすべき条件']}
+          rows={[
+            ['金額', '下書きの金額が、CLI の計算結果と必ず一致する'],
+            ['送付', '下書きを作るだけで、請求書を先方へ送付しない'],
+            [
+              '二重作成',
+              '対象月の下書きがすでにあれば、新しい下書きを作らずに止まる',
+            ],
+            ['認証', 'freee の API の認証の準備は、所有者が引き受ける'],
+            [
+              '導入',
+              '導入範囲「すべて」で、所有者のマシンに Home Manager で導入できる',
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Decision" title="決定">
         <Prose>
@@ -128,20 +132,27 @@ export default function Body() {
         </Figure>
       </DocSection>
       <DocSection label="Rationale" title="決定理由">
-        <Bullets>
-          <Item>
-            金額が Claude を通らないため、下書きの金額は CLI
-            の計算結果と必ず一致する。
-          </Item>
-          <Item>
-            二重作成の確認が毎回同じ結果になり、ユニットテストで守れる。
-          </Item>
-          <Item>
-            Claude がなくても動き、
-            <DocRef kind="ADR" number="0007" />{' '}
-            で選んだ単一のバイナリのままで済む。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['決定した要素', '要求を満たせる理由']}
+          rows={[
+            [
+              'CLI から freee の API を呼ぶ',
+              '金額が Claude を通らないため、下書きの金額は CLI の計算結果と必ず一致する',
+            ],
+            [
+              'CLI 側での二重作成の確認',
+              '確認が毎回同じ結果になり、ユニットテストで守れる',
+            ],
+            [
+              'Claude に依存しない構成',
+              <>
+                Claude がなくても動き、
+                <DocRef kind="ADR" number="0007" />{' '}
+                で選んだ単一のバイナリのままで済む
+              </>,
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Alternatives" title="代替案">
         <Prose>次の案は、それぞれの理由で採らない。</Prose>
@@ -160,18 +171,24 @@ export default function Body() {
         />
       </DocSection>
       <DocSection label="Consequences" title="結果">
-        <Bullets>
-          <Item>
-            OAuth のトークンの更新と、freee の API との通信を Rust
-            で実装し、保守する。
-          </Item>
-          <Item>HTTP クライアントのクレートへの依存が増える。</Item>
-          <Item>
-            freee の API が変わったら、<Code>kintai</Code> を追従させる。
-          </Item>
-          <Item>テストでは、freee の API を差し替えて振る舞いを確かめる。</Item>
-          <Item>freee の認証情報の保管先は、別の ADR で決める。</Item>
-        </Bullets>
+        <DocTable
+          head={['領域', '引き受けること']}
+          rows={[
+            [
+              '実装と保守',
+              'OAuth のトークンの更新と、freee の API との通信を Rust で実装し、保守する',
+            ],
+            ['依存', 'HTTP クライアントのクレートへの依存が増える'],
+            [
+              'API の変更',
+              <>
+                freee の API が変わったら、<Code>kintai</Code> を追従させる
+              </>,
+            ],
+            ['テスト', 'freee の API を差し替えて振る舞いを確かめる'],
+            ['認証情報', '保管先は、別の ADR で決める'],
+          ]}
+        />
       </DocSection>
       <DocSection label="Sources" title="出典">
         <Sources

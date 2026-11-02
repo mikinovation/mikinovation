@@ -1,11 +1,9 @@
 import {
   Alternatives,
-  Bullets,
   Code,
   DocRef,
   DocSection,
   DocTable,
-  Item,
   Prose,
   Sources,
 } from '@/components/doc'
@@ -92,17 +90,24 @@ export default function Body() {
           <DocRef kind="ADR" number="0001" />{' '}
           から、選べる案は次の条件を満たす必要がある。
         </Prose>
-        <Bullets>
-          <Item>macOS、WSL、それ以外の Linux で同じ操作で導入できる。</Item>
-          <Item>導入範囲を「すべて」と「最小限」から選べる。</Item>
-          <Item>
-            所有者と異なるユーザー名でも、flake を書き換えずに導入できる。
-          </Item>
-          <Item>
-            CI の <Code>nix flake check</Code>{' '}
-            と試し組み立てを、マシンのユーザー名なしで実行できる。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['観点', '満たすべき条件']}
+          rows={[
+            ['導入操作', 'macOS、WSL、それ以外の Linux で同じ操作で導入できる'],
+            ['導入範囲', '「すべて」と「最小限」から選べる'],
+            [
+              'ユーザー名',
+              '所有者と異なるユーザー名でも、flake を書き換えずに導入できる',
+            ],
+            [
+              'CI',
+              <>
+                <Code>nix flake check</Code>{' '}
+                と試し組み立てを、マシンのユーザー名なしで実行できる
+              </>,
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Decision" title="決定">
         <Prose>
@@ -232,33 +237,49 @@ export default function Body() {
         </Figure>
       </DocSection>
       <DocSection label="Rationale" title="決定理由">
-        <Bullets>
-          <Item>
-            ユーザー名を環境から決めるため、flake
-            を書き換えずにどのユーザー名のマシンにも導入できる。
-          </Item>
-          <Item>
-            <Code>sudo</Code> で実行すると <Code>USER</Code> が{' '}
-            <Code>root</Code> になるが、<Code>SUDO_USER</Code>{' '}
-            に実行したユーザーが残る。この順で読めば、<Code>sudo</Code> を使う
-            WSL と macOS でも、使わないそれ以外の Linux
-            でも、利用者は同じ操作で導入できる。
-          </Item>
-          <Item>
-            <Code>root</Code> を飛ばすため、root のシェルから実行しても root
-            を通常のユーザーとして設定しない。
-          </Item>
-          <Item>
-            <Code>nix flake check</Code> などの pure
-            な評価では環境変数を読めず、<Code>nixos</Code> に決まる。CI
-            はマシンのユーザー名なしで同じ結果を得る。
-          </Item>
-          <Item>
-            出力を導入範囲だけで分けるため、出力名から選ぶものが導入範囲だけになり、
-            <DocRef kind="ADR" number="0001" />{' '}
-            の「導入範囲の選択を出力名の選択として扱う」考え方と合う。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['決定した要素', '要求を満たせる理由']}
+          rows={[
+            [
+              '環境からユーザー名を決める',
+              'flake を書き換えずに、どのユーザー名のマシンにも導入できる',
+            ],
+            [
+              <>
+                <Code>USER</Code> より <Code>SUDO_USER</Code> を先に読む
+              </>,
+              <>
+                <Code>sudo</Code> で実行すると <Code>USER</Code> が{' '}
+                <Code>root</Code> になるが、<Code>SUDO_USER</Code>{' '}
+                に実行したユーザーが残る。この順で読めば、<Code>sudo</Code>{' '}
+                を使う WSL と macOS でも、使わないそれ以外の Linux
+                でも、利用者は同じ操作で導入できる
+              </>,
+            ],
+            [
+              <>
+                <Code>root</Code> を飛ばす
+              </>,
+              'root のシェルから実行しても、root を通常のユーザーとして設定しない',
+            ],
+            [
+              'pure な評価での既定値',
+              <>
+                <Code>nix flake check</Code> などでは環境変数を読めず{' '}
+                <Code>nixos</Code> に決まるため、CI
+                はマシンのユーザー名なしで同じ結果を得る
+              </>,
+            ],
+            [
+              '出力を導入範囲だけで分ける',
+              <>
+                出力名から選ぶものが導入範囲だけになり、
+                <DocRef kind="ADR" number="0001" />{' '}
+                の「導入範囲の選択を出力名の選択として扱う」考え方と合う
+              </>,
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Alternatives" title="代替案">
         <Prose>次の案は、それぞれの理由で採らない。</Prose>
@@ -298,72 +319,106 @@ export default function Body() {
         />
       </DocSection>
       <DocSection label="Consequences" title="結果">
-        <Bullets>
-          <Item>
-            適用するたびに <Code>--impure</Code> が必要になる。
-            <Code>setup.sh</Code>{' '}
-            が付けるが、手動で適用する場合は利用者が付ける。付け忘れると{' '}
-            <Code>nixos</Code> として評価され、OS ごとに次のようになる。
-            <Bullets>
-              <Item>
-                それ以外の Linux: Home Manager
-                の適用がユーザー名の不一致で失敗し、誤った設定は入らない。
-              </Item>
-              <Item>
-                WSL: 既定ユーザーの <Code>nixos</Code>{' '}
-                で使っている場合は、付けた場合と同じ結果になる。
-              </Item>
-              <Item>
-                macOS: 存在しない <Code>nixos</Code>{' '}
-                ユーザーを前提にした構成になり、適用が失敗するおそれがある。
-              </Item>
-            </Bullets>
-          </Item>
-          <Item>
-            <Code>--impure</Code> を付けても、<Code>flake.lock</Code>{' '}
-            による依存の版の固定は外れない。ユーザー名が同じなら同じ構成になり、バイナリキャッシュもこれまでどおり使える。
-          </Item>
-          <Item>
-            impure
-            な評価では、環境変数がユーザー名を通じて評価結果に影響する。同じ{' '}
-            <Code>flake.lock</Code>{' '}
-            でも、ユーザー名が違えば別の構成になる。シェルに{' '}
-            <Code>DOTFILES_USER</Code>{' '}
-            が残っていると、意図しないユーザーで設定されるおそれがある。
-          </Item>
-          <Item>
-            CI の <Code>nix flake check</Code> と試し組み立ては pure
-            な評価のままで、ユーザー名は <Code>nixos</Code> に決まる。CI
-            はマシンごとのユーザー名とホームディレクトリの違いを検証しない。
-          </Item>
-          <Item>
-            impure な評価では、環境変数、<Code>builtins.currentSystem</Code>
-            、flake
-            の外の絶対パス、ハッシュのない取得など、環境に依存する書き方を使える。今は、ユーザー名を決める{' '}
-            <Code>builtins.getEnv</Code>{' '}
-            のほかに使っていない。ほかの箇所に加えても評価はエラーにならないため、レビューで防ぐ必要がある。
-          </Item>
-          <Item>
-            flake の評価キャッシュは pure
-            な評価でしか使われないため、適用のたびに評価をやり直す。ビルドの結果のキャッシュには影響しない。
-          </Item>
-          <Item>
-            それ以外の Linux の出力名が{' '}
-            <Code>
-              {'<'}ユーザー名{'>'}
-            </Code>{' '}
-            から <Code>linux</Code>{' '}
-            に変わるため、手動で適用する場合の出力名を改める必要がある。
-          </Item>
-          <Item>
-            マシン名とリポジトリの配置先は、この決定の対象外である。WSL
-            の出力名と、リポジトリの配置先の参照は、これまでどおり固定する。
-          </Item>
-          <Item>
-            Git のコミットに使う名前とメールアドレスは OS
-            のユーザー名とは別のものであり、この決定では変えない。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['領域', '引き受けること']}
+          rows={[
+            [
+              <>
+                <Code>--impure</Code> の指定
+              </>,
+              <>
+                適用するたびに必要になる。<Code>setup.sh</Code>{' '}
+                が付けるが、手動で適用する場合は利用者が付ける。付け忘れると{' '}
+                <Code>nixos</Code> として評価される
+              </>,
+            ],
+            [
+              '依存の版',
+              <>
+                <Code>--impure</Code> を付けても <Code>flake.lock</Code>{' '}
+                による固定は外れない。ユーザー名が同じなら同じ構成になり、バイナリキャッシュもこれまでどおり使える
+              </>,
+            ],
+            [
+              '評価への影響',
+              <>
+                impure
+                な評価では、環境変数がユーザー名を通じて評価結果に影響する。同じ{' '}
+                <Code>flake.lock</Code>{' '}
+                でもユーザー名が違えば別の構成になり、シェルに{' '}
+                <Code>DOTFILES_USER</Code>{' '}
+                が残っていると意図しないユーザーで設定されるおそれがある
+              </>,
+            ],
+            [
+              'CI の検証範囲',
+              <>
+                <Code>nix flake check</Code> と試し組み立ては pure
+                な評価のままで、ユーザー名は <Code>nixos</Code> に決まる。CI
+                はマシンごとのユーザー名とホームディレクトリの違いを検証しない
+              </>,
+            ],
+            [
+              'impure で使える書き方',
+              <>
+                環境変数、<Code>builtins.currentSystem</Code>、flake
+                の外の絶対パス、ハッシュのない取得などを使える。今はユーザー名を決める{' '}
+                <Code>builtins.getEnv</Code>{' '}
+                のほかに使っていないが、ほかの箇所に加えても評価はエラーにならないため、レビューで防ぐ必要がある
+              </>,
+            ],
+            [
+              '評価キャッシュ',
+              'flake の評価キャッシュは pure な評価でしか使われないため、適用のたびに評価をやり直す。ビルドの結果のキャッシュには影響しない',
+            ],
+            [
+              '出力名',
+              <>
+                それ以外の Linux の出力名が{' '}
+                <Code>
+                  {'<'}ユーザー名{'>'}
+                </Code>{' '}
+                から <Code>linux</Code>{' '}
+                に変わるため、手動で適用する場合の出力名を改める必要がある
+              </>,
+            ],
+            [
+              '対象外',
+              'マシン名とリポジトリの配置先はこの決定の対象外である。WSL の出力名と、リポジトリの配置先の参照は、これまでどおり固定する',
+            ],
+            [
+              'Git の設定',
+              'コミットに使う名前とメールアドレスは OS のユーザー名とは別のものであり、この決定では変えない',
+            ],
+          ]}
+        />
+        <Prose>
+          <Code>--impure</Code> を付け忘れた場合の結果は、OS
+          ごとに次のようになる。
+        </Prose>
+        <DocTable
+          head={['OS', '付け忘れたときの結果']}
+          rows={[
+            [
+              'それ以外の Linux',
+              'Home Manager の適用がユーザー名の不一致で失敗し、誤った設定は入らない',
+            ],
+            [
+              'WSL',
+              <>
+                既定ユーザーの <Code>nixos</Code>{' '}
+                で使っている場合は、付けた場合と同じ結果になる
+              </>,
+            ],
+            [
+              'macOS',
+              <>
+                存在しない <Code>nixos</Code>{' '}
+                ユーザーを前提にした構成になり、適用が失敗するおそれがある
+              </>,
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Sources" title="出典">
         <Sources

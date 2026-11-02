@@ -21,6 +21,12 @@ type ToggleState = {
   overrides: Record<string, boolean>
 }
 
+const pageItems: NavItem[] = [
+  { href: '/career', number: 'CV', title: '経歴' },
+  { href: '/repositories', number: 'REPO', title: 'リポジトリ' },
+  { href: '/review', number: 'REV', title: '見直し' },
+]
+
 function NavDocLink({ item, current }: { item: NavItem; current: boolean }) {
   return (
     <Link
@@ -115,23 +121,13 @@ export function NavSections({ sections }: { sections: NavSection[] }) {
 
   return (
     <>
-      <Link
-        href="/career"
-        className="nav-doc"
-        aria-current={pathname === '/career' ? 'page' : undefined}
-      >
-        <span className="nav-doc-number">CV</span>
-        <span className="truncate">経歴</span>
-      </Link>
-
-      <Link
-        href="/repositories"
-        className="nav-doc"
-        aria-current={pathname === '/repositories' ? 'page' : undefined}
-      >
-        <span className="nav-doc-number">REPO</span>
-        <span className="truncate">リポジトリ</span>
-      </Link>
+      {pageItems.map((item) => (
+        <NavDocLink
+          key={item.href}
+          item={item}
+          current={item.href === pathname}
+        />
+      ))}
 
       {sections.map((section) => (
         <NavGroup

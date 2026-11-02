@@ -1,14 +1,18 @@
 import {
-  Bullets,
   DocSection,
   DocSub,
   DocTable,
-  Item,
   Prose,
   Requirements,
   Sources,
 } from '@/components/doc'
-import { FigArrow, FigNode, FigSvg, Figure } from '@/components/figure'
+import {
+  FigArrow,
+  FigChips,
+  FigNode,
+  FigSvg,
+  Figure,
+} from '@/components/figure'
 
 export const meta = {
   title: '開発環境の導入',
@@ -19,6 +23,7 @@ export const meta = {
       label: '段階',
       value: '5. デリバリー（要求と受入条件を確定し、実装済み）',
     },
+    { label: '更新日', value: '2026-10-26' },
   ],
 }
 
@@ -44,39 +49,51 @@ export default function Body() {
           </Prose>
         </DocSub>
         <DocSub title="対象外">
-          <Bullets>
-            <Item>
-              導入操作の前提となるツールの準備。所有者が事前に済ませておく。
-            </Item>
-            <Item>
-              所有者と異なるマシン名、リポジトリの配置先での導入。ユーザー名は問わない（要求6）。
-            </Item>
-            <Item>
-              WSL で使う端末アプリの設定を、Windows
-              側へ配置すること。所有者が手作業で配置する。
-            </Item>
-            <Item>
-              macOS で、Claude Code
-              から操作するブラウザを導入すること。所有者が手作業で導入する。
-            </Item>
-          </Bullets>
+          <DocTable
+            head={['対象外にすること', '扱い']}
+            rows={[
+              [
+                '導入操作の前提となるツールの準備',
+                '所有者が事前に済ませておく',
+              ],
+              [
+                '所有者と異なるマシン名、リポジトリの配置先での導入',
+                'ユーザー名は問わない（要求6）',
+              ],
+              [
+                'WSL で使う端末アプリの設定を Windows 側へ配置すること',
+                '所有者が手作業で配置する',
+              ],
+              [
+                'macOS で、Claude Code から操作するブラウザを導入すること',
+                '所有者が手作業で導入する',
+              ],
+            ]}
+          />
         </DocSub>
         <DocSub title="制約とトレードオフ">
           <Prose>所有者は、次のことを受け入れる。</Prose>
-          <Bullets>
-            <Item>
-              1回の操作で導入できる代わりに、導入操作の前提となるツールを事前に準備しておく必要がある。
-            </Item>
-            <Item>
-              どのマシンでもツールの版を揃える代わりに、新しい版は、所有者が版の固定を更新するまで入らない。
-            </Item>
-            <Item>
-              所有者の環境だけを前提とする代わりに、所有者と異なるマシン名、リポジトリの配置先では導入できない。
-            </Item>
-            <Item>
-              「最小限」は、使えなくなった環境でもすぐに作業を始められる代わりに、日常的に使う開発環境の一部しか含まない。
-            </Item>
-          </Bullets>
+          <DocTable
+            head={['得られること', '引き受けること']}
+            rows={[
+              [
+                '1回の操作で導入できる',
+                '導入操作の前提となるツールを事前に準備しておく必要がある',
+              ],
+              [
+                'どのマシンでもツールの版が揃う',
+                '新しい版は、所有者が版の固定を更新するまで入らない',
+              ],
+              [
+                '所有者の環境だけを前提にできる',
+                '所有者と異なるマシン名、リポジトリの配置先では導入できない',
+              ],
+              [
+                '「最小限」で、使えなくなった環境でもすぐに作業を始められる',
+                '「最小限」は日常的に使う開発環境の一部しか含まない',
+              ],
+            ]}
+          />
         </DocSub>
         <DocSub title="成功条件">
           <Prose>
@@ -201,15 +218,17 @@ export default function Body() {
               ['最小限', '日常的に使う開発環境のうち、下に挙げるものだけ'],
             ]}
           />
-          <Prose>「最小限」に含むものは次のとおり。</Prose>
-          <Bullets>
-            <Item>シェル</Item>
-            <Item>Git</Item>
-            <Item>Claude Code</Item>
-            <Item>Node.js</Item>
-            <Item>基本的なコマンドラインツール</Item>
-            <Item>メモとタスクの管理に絞ったエディター</Item>
-          </Bullets>
+          <Prose>「最小限」に含むものは次の6つである。</Prose>
+          <FigChips
+            items={[
+              'シェル',
+              'Git',
+              'Claude Code',
+              'Node.js',
+              '基本的なコマンドラインツール',
+              'メモとタスクの管理に絞ったエディター',
+            ]}
+          />
           <Prose>
             「最小限」は、使えなくなった環境でもすぐに作業を始められるようにするための範囲である。
           </Prose>

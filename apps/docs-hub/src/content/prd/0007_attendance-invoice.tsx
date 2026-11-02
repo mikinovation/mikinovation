@@ -1,5 +1,4 @@
 import {
-  Bullets,
   Code,
   DocLink,
   DocPart,
@@ -7,7 +6,6 @@ import {
   DocSection,
   DocSub,
   DocTable,
-  Item,
   Prose,
   Requirements,
   Sources,
@@ -16,6 +14,9 @@ import {
 } from '@/components/doc'
 import {
   FigArrow,
+  FigAxis,
+  FigChips,
+  FigDot,
   FigLabel,
   FigNode,
   FigNote,
@@ -29,6 +30,7 @@ export const meta = {
   attributes: [
     { label: '読者', value: '開発者' },
     { label: '段階', value: '5. デリバリー（要求と受入条件を確定し、実装前）' },
+    { label: '更新日', value: '2026-10-26' },
   ],
 }
 
@@ -121,10 +123,9 @@ export default function Body() {
             日々の打刻を Org 形式の clock
             で記録し、月末に勤怠表と請求の内容を自動で生成すれば、次のことが起きると見込む。
           </Prose>
-          <Bullets>
-            <Item>月末の作業が、30分から5分以内に縮む。</Item>
-            <Item>計算の誤りによる差し戻しがなくなる。</Item>
-          </Bullets>
+          <Prose>
+            月末の作業が30分から5分以内に縮み、計算の誤りによる差し戻しがなくなる。
+          </Prose>
         </DocSub>
         <DocSub title="提供する価値">
           <Prose>
@@ -135,55 +136,68 @@ export default function Body() {
           </Prose>
         </DocSub>
         <DocSub title="対象外">
-          <Bullets>
-            <Item>1日のうちに複数の案件で稼働すること。</Item>
-            <Item>請求書を先方へ自動で送付すること。</Item>
-            <Item>freee を使わずに、請求書の PDF を作ること。</Item>
-            <Item>先方が指定する勤怠表の様式を再現すること。</Item>
-            <Item>祝日を判定すること。</Item>
-            <Item>日割り月の稼働率を自動で計算すること。</Item>
-            <Item>チケットごとの作業時間や作業内容を記録すること。</Item>
-            <Item>所有者以外が使うこと。</Item>
-          </Bullets>
+          <FigChips
+            tone="ghost"
+            items={[
+              '1日のうちに複数の案件で稼働すること',
+              '請求書を先方へ自動で送付すること',
+              'freee を使わずに請求書の PDF を作ること',
+              '先方が指定する勤怠表の様式を再現すること',
+              '祝日を判定すること',
+              '日割り月の稼働率を自動で計算すること',
+              'チケットごとの作業時間や作業内容を記録すること',
+              '所有者以外が使うこと',
+            ]}
+          />
         </DocSub>
         <DocSub title="制約とトレードオフ">
           <Prose>所有者は、次のことを受け入れる。</Prose>
-          <Bullets>
-            <Item>
-              休憩は案件ごとの既定値を使い、例外の日だけ明示する。その代わり、実際に取った休憩の時間は記録しない。
-            </Item>
-            <Item>
-              始業は切り上げ、終業は切り捨てて丸める。その代わり、15分未満の稼働は請求に含まれない。
-            </Item>
-            <Item>
-              日割り月の稼働率と精算幅は、先方が示した値を手で入力する。その代わり、入力の手間と入力漏れの危険を引き受ける。入力漏れは検出で補う。
-            </Item>
-            <Item>超過額と控除額は、10円未満を切り捨てる。</Item>
-            <Item>
-              freee の API
-              を使うために、認証の準備と、その情報の管理を引き受ける。
-            </Item>
-            <Item>
-              請求書の送付と、誤って作った請求書の取消は、所有者が freee
-              の画面で行う。
-            </Item>
-            <Item>
-              勤怠の記録と案件の設定は非公開のリポジトリで管理するため、このリポジトリだけでは使えない。
-            </Item>
-          </Bullets>
+          <DocTable
+            head={['得られること', '引き受けること']}
+            rows={[
+              [
+                '休憩は案件ごとの既定値を使い、例外の日だけ明示する',
+                '実際に取った休憩の時間は記録しない',
+              ],
+              [
+                '始業は切り上げ、終業は切り捨てて丸める',
+                '15分未満の稼働は請求に含まれない',
+              ],
+              [
+                '日割り月の稼働率と精算幅を先方の値どおりにできる',
+                '手で入力する手間と入力漏れの危険を引き受ける。入力漏れは検出で補う',
+              ],
+              ['超過額と控除額の端数を落とせる', '10円未満を切り捨てる'],
+              [
+                'freee の API で下書きを作れる',
+                '認証の準備と、その情報の管理を引き受ける',
+              ],
+              [
+                '送付と取消を freee の画面に任せる',
+                '請求書の送付と、誤って作った請求書の取消は、所有者が freee の画面で行う',
+              ],
+              [
+                '勤怠の記録と案件の設定を非公開にできる',
+                '非公開のリポジトリで管理するため、このリポジトリだけでは使えない',
+              ],
+            ]}
+          />
         </DocSub>
         <DocSub title="成功条件">
-          <Bullets>
-            <Item>
-              月末の作業が5分以内に終わる。作業は、勤怠表 PDF の生成から freee
-              の下書きの作成までとする。
-            </Item>
-            <Item>計算の誤りを理由に、先方から差し戻されない。</Item>
-            <Item>
-              打刻漏れがある状態や、日割り月の設定が入力されていない状態では、勤怠表
-              PDF も下書きも作られない。
-            </Item>
-          </Bullets>
+          <DocTable
+            head={['成功条件', '満たす状態']}
+            rows={[
+              [
+                '月末の作業時間',
+                '勤怠表 PDF の生成から freee の下書きの作成までが5分以内に終わる',
+              ],
+              ['差し戻し', '計算の誤りを理由に、先方から差し戻されない'],
+              [
+                '止まる条件',
+                '打刻漏れがある状態や、日割り月の設定が入力されていない状態では、勤怠表 PDF も下書きも作られない',
+              ],
+            ]}
+          />
         </DocSub>
         <DocSub title="計測と学習の計画">
           <Prose>
@@ -658,8 +672,18 @@ export default function Body() {
                 lines={['超過 ¥4,440/h']}
               />
 
-              <path className="fig-axis" d="M220 110 V126" />
-              <path className="fig-axis" d="M540 110 V126" />
+              <FigAxis
+                points={[
+                  [220, 110],
+                  [220, 126],
+                ]}
+              />
+              <FigAxis
+                points={[
+                  [540, 110],
+                  [540, 126],
+                ]}
+              />
               <FigLabel x={220} y={138}>
                 70h
               </FigLabel>
@@ -670,14 +694,24 @@ export default function Body() {
                 精算幅（日割り月に上書きした値）
               </FigLabel>
 
-              <path className="fig-axis" d="M216 60 V78" />
-              <circle className="fig-rose" cx={216} cy={56} r={4} />
+              <FigAxis
+                points={[
+                  [216, 60],
+                  [216, 78],
+                ]}
+              />
+              <FigDot x={216} y={56} tone="rose" />
               <FigNote x={216} y={38}>
                 稼働 69.75h → ¥398,580
               </FigNote>
 
-              <path className="fig-axis" d="M556 60 V78" />
-              <circle className="fig-amber" cx={556} cy={56} r={4} />
+              <FigAxis
+                points={[
+                  [556, 60],
+                  [556, 78],
+                ]}
+              />
+              <FigDot x={556} y={56} tone="amber" />
               <FigNote x={556} y={38}>
                 稼働 91h → ¥404,440
               </FigNote>
@@ -716,18 +750,23 @@ export default function Body() {
           />
         </DocSub>
         <DocSub title="成功条件の測定方法">
-          <Bullets>
-            <Item label="作業時間">
-              2026年9月分から11月分まで、skill
-              に頼んでから下書きができるまでの時間を所有者がメモに残し、5分以内かどうかで判断する。
-            </Item>
-            <Item label="差し戻し">
-              同じ3か月に、計算の誤りによる差し戻しがあったかを記録する。
-            </Item>
-            <Item label="打刻漏れと設定漏れ">
-              要求8と要求9の受入条件を満たすことで確かめる。
-            </Item>
-          </Bullets>
+          <DocTable
+            head={['測るもの', '測り方']}
+            rows={[
+              [
+                '作業時間',
+                '2026年9月分から11月分まで、skill に頼んでから下書きができるまでの時間を所有者がメモに残し、5分以内かどうかで判断する',
+              ],
+              [
+                '差し戻し',
+                '同じ3か月に、計算の誤りによる差し戻しがあったかを記録する',
+              ],
+              [
+                '打刻漏れと設定漏れ',
+                '要求8と要求9の受入条件を満たすことで確かめる',
+              ],
+            ]}
+          />
           <Prose>計測の仕組みは設けない。</Prose>
         </DocSub>
         <DocSub title="展開計画">
@@ -736,10 +775,12 @@ export default function Body() {
             開発環境を「すべて」の範囲で導入すると使える。「最小限」には含まれない。
             使う前に、所有者が次のものを用意する。
           </Prose>
-          <Bullets>
-            <Item>案件の設定と勤怠の記録を置く、非公開のリポジトリ</Item>
-            <Item>freee の API の認証</Item>
-          </Bullets>
+          <FigChips
+            items={[
+              '案件の設定と勤怠の記録を置く、非公開のリポジトリ',
+              'freee の API の認証',
+            ]}
+          />
           <Prose>
             2026年9月分は手作業と並行して作り、結果が一致したら、10月分から手作業をやめる。
             段階的な公開はしない。
@@ -747,11 +788,9 @@ export default function Body() {
         </DocSub>
       </DocSection>
       <DocSection label="Open Questions" title="未解決の問い">
-        <Bullets>
-          <Item>
-            勤怠表の様式を自前のものに切り替えることを、先方に伝えるか。
-          </Item>
-        </Bullets>
+        <Prose>
+          勤怠表の様式を自前のものに切り替えることを先方に伝えるかが、未解決のまま残っている。
+        </Prose>
       </DocSection>
       <DocSection label="Sources" title="出典">
         <Sources

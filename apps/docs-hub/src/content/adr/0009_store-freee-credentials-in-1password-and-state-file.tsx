@@ -1,10 +1,9 @@
 import {
   Alternatives,
-  Bullets,
   Code,
   DocRef,
   DocSection,
-  Item,
+  DocTable,
   Prose,
   Sources,
 } from '@/components/doc'
@@ -55,13 +54,11 @@ export default function Body() {
           <DocRef kind="ADR" number="0008" />{' '}
           から、選べる案は次の条件を満たす必要がある。
         </Prose>
-        <Bullets>
-          <Item>認証情報を、このリポジトリに置かない。</Item>
-          <Item>
-            更新されたトークンを、<Code>kintai</Code> が自分で書き戻せる。
-          </Item>
-          <Item>導入範囲「すべて」で使える。</Item>
-        </Bullets>
+        <Prose>
+          認証情報をこのリポジトリに置かず、更新されたトークンは{' '}
+          <Code>kintai</Code>{' '}
+          が自分で書き戻せる必要がある。導入範囲「すべて」で使えることも条件になる。
+        </Prose>
       </DocSection>
       <DocSection label="Decision" title="決定">
         <Prose>
@@ -156,13 +153,23 @@ export default function Body() {
         </Figure>
       </DocSection>
       <DocSection label="Rationale" title="決定理由">
-        <Bullets>
-          <Item>変わらないシークレットが、平文のファイルで残らない。</Item>
-          <Item>
-            書き換わるトークンは、1Password にサインインしなくても書き戻せる。
-          </Item>
-          <Item>トークンのファイルをなくしても、再認証すれば元に戻せる。</Item>
-        </Bullets>
+        <DocTable
+          head={['決定した要素', '要求を満たせる理由']}
+          rows={[
+            [
+              '1Password への保管',
+              '変わらないシークレットが、平文のファイルで残らない',
+            ],
+            [
+              '状態ファイルへのトークン',
+              '書き換わるトークンは、1Password にサインインしなくても書き戻せる',
+            ],
+            [
+              '再認証での復旧',
+              'トークンのファイルをなくしても、再認証すれば元に戻せる',
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Alternatives" title="代替案">
         <Prose>次の案は、それぞれの理由で採らない。</Prose>
@@ -185,18 +192,28 @@ export default function Body() {
         />
       </DocSection>
       <DocSection label="Consequences" title="結果">
-        <Bullets>
-          <Item>
-            <Code>kintai</Code> で freee の API を呼ぶには、1Password CLI
-            とそのサインインが要る。
-          </Item>
-          <Item>
-            トークンは平文のファイルで残り、その保護はファイルの権限に頼る。
-          </Item>
-          <Item>
-            最初の認証と再認証のための操作を、<Code>kintai</Code> に用意する。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['領域', '引き受けること']}
+          rows={[
+            [
+              '実行の前提',
+              <>
+                <Code>kintai</Code> で freee の API を呼ぶには、1Password CLI
+                とそのサインインが要る
+              </>,
+            ],
+            [
+              'トークンの保護',
+              'トークンは平文のファイルで残り、その保護はファイルの権限に頼る',
+            ],
+            [
+              '認証の操作',
+              <>
+                最初の認証と再認証のための操作を、<Code>kintai</Code> に用意する
+              </>,
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Sources" title="出典">
         <Sources

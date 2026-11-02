@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
-import { Attributes, DocPager, Hero } from '@/components/doc-page'
+import { DocBadges, DocPager, Hero } from '@/components/doc-page'
 import {
   docKindLabels,
   docKinds,
@@ -61,14 +61,7 @@ export default async function DocumentPage({ params }: Props) {
         title={doc.title}
         compact
         lead={doc.lead}
-        badges={
-          <>
-            {doc.badge !== null && (
-              <span className={doc.badge.className}>{doc.badge.text}</span>
-            )}
-            <Attributes attributes={doc.details} />
-          </>
-        }
+        badges={<DocBadges badge={doc.badge} attributes={doc.details} />}
       />
 
       <div className="panel panel-glow doc-body flex flex-col gap-11 px-5 py-7 sm:px-9 sm:py-10">

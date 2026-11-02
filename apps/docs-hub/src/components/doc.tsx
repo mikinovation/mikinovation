@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 
+import { SiteLink } from '@/components/site-link'
 import { docRefHref } from '@/lib/docs'
 
 type Field = {
@@ -9,22 +10,37 @@ type Field = {
 }
 
 export function Section({
+  id,
   label,
   title,
+  aside,
   rule = false,
   children,
 }: {
+  id?: string
   label?: string
   title: string
+  aside?: ReactNode
   rule?: boolean
   children: ReactNode
 }) {
+  const heading = (
+    <div className="flex flex-col gap-1.5">
+      {label !== undefined && <p className="label">{label}</p>}
+      <h2 className={rule ? 'doc-h2' : 'text-xl font-semibold'}>{title}</h2>
+    </div>
+  )
+
   return (
-    <section className="flex flex-col gap-5">
-      <div className="flex flex-col gap-1.5">
-        {label !== undefined && <p className="label">{label}</p>}
-        <h2 className={rule ? 'doc-h2' : 'text-xl font-semibold'}>{title}</h2>
-      </div>
+    <section id={id} className="flex flex-col gap-5">
+      {aside === undefined ? (
+        heading
+      ) : (
+        <div className="flex items-end justify-between gap-4">
+          {heading}
+          <p className="label">{aside}</p>
+        </div>
+      )}
       {children}
     </section>
   )
@@ -122,11 +138,7 @@ export function DocLink({
   href: string
   children: ReactNode
 }) {
-  return href.startsWith('/') ? (
-    <Link href={href}>{children}</Link>
-  ) : (
-    <a href={href}>{children}</a>
-  )
+  return <SiteLink href={href}>{children}</SiteLink>
 }
 
 export function DocRef({

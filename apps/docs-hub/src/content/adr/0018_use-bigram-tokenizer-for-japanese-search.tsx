@@ -1,10 +1,9 @@
 import {
   Alternatives,
-  Bullets,
   Code,
   DocRef,
   DocSection,
-  Item,
+  DocTable,
   Prose,
   Sources,
 } from '@/components/doc'
@@ -45,13 +44,9 @@ export default function Body() {
       </DocSection>
       <DocSection label="Constraints" title="制約">
         <Prose>選べる案は、次の条件を満たす必要がある。</Prose>
-        <Bullets>
-          <Item>
-            機能要求2の受入条件を満たす。受入条件は、既存の文書の本文にある日本語の語で検索すると、その文書が結果に出ることである。
-          </Item>
-          <Item>文書の書き方を変えない。</Item>
-          <Item>所有者一人で保守でき、運用費をかけない。</Item>
-        </Bullets>
+        <Prose>
+          機能要求2の受入条件は、既存の文書の本文にある日本語の語で検索すると、その文書が結果に出ることである。これを満たしたうえで、文書の書き方を変えず、所有者一人で保守でき、運用費をかけないことが条件になる。
+        </Prose>
       </DocSection>
       <DocSection label="Decision" title="決定">
         <Prose>
@@ -144,19 +139,23 @@ export default function Body() {
         </Figure>
       </DocSection>
       <DocSection label="Rationale" title="決定理由">
-        <Bullets>
-          <Item>
-            文字 bigram
-            は辞書による分割の結果に左右されない。本文にある2文字以上の語なら、文中のどこを切り出して検索しても一致する。そのため、受入条件を確実に満たせる。
-          </Item>
-          <Item>
-            トークナイザーを差し替えるだけで済み、検索画面も標準のものを使える。追加の依存や外部のサービスが要らないため、一人で保守し、運用費をかけないという制約を守れる。
-          </Item>
-          <Item>
-            文書は数十本の規模なので、文字 bigram
-            で索引が大きくなっても問題になりにくい。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['決定した要素', '要求を満たせる理由']}
+          rows={[
+            [
+              '文字 bigram',
+              '辞書による分割の結果に左右されない。本文にある2文字以上の語なら、文中のどこを切り出して検索しても一致するため、受入条件を確実に満たせる',
+            ],
+            [
+              'トークナイザーの差し替えだけ',
+              '検索画面も標準のものを使え、追加の依存や外部のサービスが要らないため、一人で保守し、運用費をかけないという制約を守れる',
+            ],
+            [
+              '文書の規模',
+              '数十本の規模なので、文字 bigram で索引が大きくなっても問題になりにくい',
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Alternatives" title="代替案">
         <Prose>次の案は、それぞれの理由で採らない。</Prose>
@@ -185,19 +184,24 @@ export default function Body() {
         />
       </DocSection>
       <DocSection label="Consequences" title="結果">
-        <Bullets>
-          <Item>
-            索引を作るときと検索するときに、同じトークナイザーを使う必要がある。トークナイザーの関数を自作し、保守する。
-          </Item>
-          <Item>
-            索引は単語単位で区切る場合より大きくなり、ページと一緒に配信する量が増える。
-          </Item>
-          <Item>関係の薄い文書も、検索結果に混ざりやすくなる。</Item>
-          <Item>
-            1文字だけの検索をどう扱うかと、英数字の語を2文字ずつ区切るかどうかは、この
-            ADR では決めていない。設計書で決める必要がある。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['領域', '引き受けること']}
+          rows={[
+            [
+              'トークナイザーの保守',
+              '索引を作るときと検索するときに同じトークナイザーを使う必要があり、その関数を自作して保守する',
+            ],
+            [
+              '索引の大きさ',
+              '単語単位で区切る場合より大きくなり、ページと一緒に配信する量が増える',
+            ],
+            ['検索の精度', '関係の薄い文書も、検索結果に混ざりやすくなる'],
+            [
+              '未決の論点',
+              '1文字だけの検索をどう扱うかと、英数字の語を2文字ずつ区切るかどうかは、この ADR では決めていない。設計書で決める必要がある',
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Sources" title="出典">
         <Sources
