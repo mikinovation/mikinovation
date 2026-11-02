@@ -10,7 +10,7 @@ const contentRoot = join(
   'content',
 )
 
-const kinds = ['prd', 'adr', 'design']
+const kinds = ['prd', 'adr', 'design', 'learn']
 
 const docs = kinds.flatMap((kind) =>
   readdirSync(join(contentRoot, kind))

@@ -18,7 +18,7 @@ export default function Home() {
       <Hero
         trail={[{ label: 'Portfolio / Documents' }]}
         title="Docs Hub"
-        lead="ポートフォリオと PRD、ADR、設計書を一つにまとめるサイトです。種類別に一覧からたどれます。"
+        lead="ポートフォリオと PRD、ADR、設計書、学習ノートを一つにまとめるサイトです。種類別に一覧からたどれます。"
         badges={
           <>
             <Badge tone="stage">{total} docs</Badge>

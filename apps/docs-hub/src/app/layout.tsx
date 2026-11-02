@@ -7,7 +7,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Docs Hub',
-  description: 'ポートフォリオと PRD、ADR、設計書を公開するサイト',
+  description: 'ポートフォリオと PRD、ADR、設計書、学習ノートを公開するサイト',
 }
 
 export default function RootLayout({
