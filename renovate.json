@@ -44,6 +44,18 @@
     },
     {
       "customType": "regex",
+      "description": "gh-actions-lock extension pinned in the lockfile verification workflow",
+      "managerFilePatterns": [
+        "/^\\.github/workflows/verify-lockfile\\.yml$/"
+      ],
+      "matchStrings": [
+        "gh extension install github/gh-actions-lock --pin (?<currentValue>v\\S+)"
+      ],
+      "depNameTemplate": "github/gh-actions-lock",
+      "datasourceTemplate": "github-releases"
+    },
+    {
+      "customType": "regex",
       "description": "lazy.nvim bootstrap commit",
       "managerFilePatterns": [
         "/^packages/dotfiles/nix/programs/neovim/nvim/plugins\\.lua$/"
