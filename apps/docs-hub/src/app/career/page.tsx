@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 
 import { Section } from '@/components/doc'
-import { Hero } from '@/components/doc-page'
+import { Badge, CardGrid, Hero } from '@/components/doc-page'
 import {
   FigArrow,
+  FigAxis,
   FigCard,
   FigChip,
   FigChips,
@@ -162,9 +163,7 @@ export default function CareerPage() {
         title="齋藤 幹大"
         lead="JavaScript と TypeScript を主な言語に、Vue と React でのフロントエンド開発を受けるフリーランスのエンジニア。toB 向けの業務システムと SaaS で、設計から運用保守までを続けて担当している。"
         badges={facts.map((fact) => (
-          <span key={fact} className="badge">
-            {fact}
-          </span>
+          <Badge key={fact}>{fact}</Badge>
         ))}
         note="公開用のページのため、案件ごとの期間、取引先、担当業務の詳細は載せていない。必要な場合は個別に開示する。"
       />
@@ -204,7 +203,14 @@ export default function CareerPage() {
                 ]}
               />
             ))}
-            <path className="fig-axis" d="M137 96 L137 106 L653 106 L653 96" />
+            <FigAxis
+              points={[
+                [137, 96],
+                [137, 106],
+                [653, 106],
+                [653, 96],
+              ]}
+            />
             <FigNote x={55} y={100}>
               レビューと提案
             </FigNote>
@@ -240,14 +246,13 @@ export default function CareerPage() {
       </Section>
 
       <Section label="Stack" title="扱える技術">
-        <div className="grid gap-3 sm:grid-cols-2">
+        <CardGrid>
           {stacks.map((stack) => (
-            <div key={stack.label} className="fig-card">
-              <p className="label">{stack.label}</p>
+            <FigCard key={stack.label} label={stack.label}>
               <FigChips items={stack.items} />
-            </div>
+            </FigCard>
           ))}
-        </div>
+        </CardGrid>
       </Section>
 
       <Section label="Domains" title="携わった領域">

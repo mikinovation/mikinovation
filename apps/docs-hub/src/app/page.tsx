@@ -1,5 +1,5 @@
-import { DocCard, Hero } from '@/components/doc-page'
 import { Section } from '@/components/doc'
+import { Badge, CardGrid, DocCard, Hero } from '@/components/doc-page'
 import { docKindLabels, docKinds, listDocs } from '@/lib/docs'
 
 export default function Home() {
@@ -21,15 +21,15 @@ export default function Home() {
         lead="ポートフォリオと PRD、ADR、設計書を一つにまとめるサイトです。種類別に一覧からたどれます。"
         badges={
           <>
-            <span className="badge badge-stage">{total} docs</span>
-            <span className="badge">TSX</span>
-            <span className="badge">静的書き出し</span>
+            <Badge tone="stage">{total} docs</Badge>
+            <Badge>TSX</Badge>
+            <Badge>静的書き出し</Badge>
           </>
         }
       />
 
       <Section title="プロフィール">
-        <div className="grid gap-3 sm:grid-cols-2">
+        <CardGrid>
           <DocCard
             label="Career"
             title="経歴"
@@ -42,38 +42,29 @@ export default function Home() {
             note="公開している開発環境と、Neovim のプラグインや開発中に使う道具を紹介している。"
             href="/repositories"
           />
-        </div>
+        </CardGrid>
       </Section>
 
       {sections.map((section) => (
-        <section
+        <Section
           key={section.kind}
           id={section.kind}
-          className="flex flex-col gap-5"
+          title={section.label}
+          aside={`${section.docs.length} docs`}
         >
-          <div className="flex items-end justify-between gap-4">
-            <h2 className="text-xl font-semibold">{section.label}</h2>
-            <p className="label">{section.docs.length} docs</p>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2">
+          <CardGrid>
             {section.docs.map((doc) => (
               <DocCard
                 key={doc.slug}
                 label={section.label}
                 number={doc.number}
                 title={doc.title}
-                badge={
-                  doc.badge === null ? undefined : (
-                    <span className={doc.badge.className}>
-                      {doc.badge.text}
-                    </span>
-                  )
-                }
+                badge={doc.badge}
                 href={doc.href}
               />
             ))}
-          </div>
-        </section>
+          </CardGrid>
+        </Section>
       ))}
     </div>
   )

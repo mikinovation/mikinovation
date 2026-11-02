@@ -231,7 +231,7 @@ rounded:
 | header | 全ページの上端。ブランド、経歴へのリンク、検索欄、外部リンクを並べる |
 | panel | 読み物を1つ載せるとき。文書の本文を入れる |
 | doc-card | 文書やリポジトリを一覧で並べ、1件を開かせるとき |
-| badge | ADR の状態や PRD の段階を、1語で示すとき |
+| badge | ADR の状態、PRD の段階、見直しの期限超過を、1語で示すとき |
 | nav-link | サイドバーと本文の下で、別の文書を選ばせるとき |
 | search-field | 検索を始めさせるとき。今は押せないボタンとして置く |
 | kbd | キーボードの操作を示すとき |
@@ -285,6 +285,9 @@ components:
   badge-superseded:
     borderColor: '{colors.amber}'
     textColor: '{colors.amber}'
+  badge-review:
+    borderColor: '{colors.rose}'
+    textColor: '{colors.rose}'
   badge-stage:
     borderColor: '{colors.neon}'
     textColor: '{colors.neon-soft}'

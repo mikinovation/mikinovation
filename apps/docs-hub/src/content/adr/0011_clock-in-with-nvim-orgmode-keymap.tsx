@@ -1,10 +1,9 @@
 import {
   Alternatives,
-  Bullets,
   Code,
   DocRef,
   DocSection,
-  Item,
+  DocTable,
   Prose,
   Sources,
 } from '@/components/doc'
@@ -45,13 +44,11 @@ export default function Body() {
           <DocRef kind="ADR" number="0010" />{' '}
           から、選べる案は次の条件を満たす必要がある。
         </Prose>
-        <Bullets>
-          <Item>
-            Org 形式の解析は、nvim-orgmode が出力する CLOCK 行の書式に依存する。
-          </Item>
-          <Item>Org 形式のファイルを扱う環境は、nvim-orgmode とする。</Item>
-          <Item>Org 形式の側から、案件の設定を指し示す手段が要る。</Item>
-        </Bullets>
+        <Prose>
+          Org 形式の解析は、nvim-orgmode が出力する CLOCK
+          行の書式に依存する。Org 形式のファイルを扱う環境は nvim-orgmode
+          とし、Org 形式の側から案件の設定を指し示す手段が要る。
+        </Prose>
       </DocSection>
       <DocSection label="Decision" title="決定">
         <Prose>
@@ -140,20 +137,30 @@ export default function Body() {
         </Figure>
       </DocSection>
       <DocSection label="Rationale" title="決定理由">
-        <Bullets>
-          <Item>
-            CLOCK 行を nvim-orgmode が書くため、
-            <DocRef kind="ADR" number="0007" /> が依存する書式とずれない。
-          </Item>
-          <Item>
-            <Code>kintai</Code> に Org
-            形式を書く処理が要らず、開いているバッファとの書き込みの衝突も起きない。
-          </Item>
-          <Item>
-            <DocRef kind="ADR" number="0006" /> で選んだ、Neovim
-            の中でノートとタスクを扱う流れのまま打刻できる。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['決定した要素', '要求を満たせる理由']}
+          rows={[
+            [
+              'nvim-orgmode が書く CLOCK 行',
+              <>
+                <DocRef kind="ADR" number="0007" /> が依存する書式とずれない
+              </>,
+            ],
+            [
+              <>
+                <Code>kintai</Code> が書き込まない
+              </>,
+              'Org 形式を書く処理が要らず、開いているバッファとの書き込みの衝突も起きない',
+            ],
+            [
+              'Neovim のキー操作',
+              <>
+                <DocRef kind="ADR" number="0006" /> で選んだ、Neovim
+                の中でノートとタスクを扱う流れのまま打刻できる
+              </>,
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Alternatives" title="代替案">
         <Prose>次の案は、それぞれの理由で採らない。</Prose>
@@ -181,17 +188,23 @@ export default function Body() {
         />
       </DocSection>
       <DocSection label="Consequences" title="結果">
-        <Bullets>
-          <Item>打刻は Neovim の中でしかできない。</Item>
-          <Item>
-            打刻の Lua を、Neovim の設定のほかの Lua
-            と同じくテストで守り、保守する。
-          </Item>
-          <Item>
-            案件の見出しを Lua と <Code>kintai</Code>{' '}
-            の両方が見分けられるように、案件の見出しに、案件の設定を指すプロパティを持たせる。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['領域', '引き受けること']}
+          rows={[
+            ['打刻の場所', '打刻は Neovim の中でしかできない'],
+            [
+              '打刻の Lua',
+              'Neovim の設定のほかの Lua と同じくテストで守り、保守する',
+            ],
+            [
+              '案件の見出し',
+              <>
+                Lua と <Code>kintai</Code>{' '}
+                の両方が見分けられるように、案件の見出しに、案件の設定を指すプロパティを持たせる
+              </>,
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Sources" title="出典">
         <Sources

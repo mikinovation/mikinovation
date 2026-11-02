@@ -7,7 +7,7 @@
 本文は Markdown ではなく、`src/components/doc.tsx` のコンポーネントで組む。各文書は `meta` と本文の関数を export する。
 
 ```tsx
-import { Bullets, DocSection, Item, Prose } from '@/components/doc'
+import { Code, DocSection, DocTable, Prose } from '@/components/doc'
 
 export const meta = {
   title: '端末多重化ツールに herdr を使う',
@@ -15,6 +15,7 @@ export const meta = {
   attributes: [
     { label: '読者', value: '開発者' },
     { label: '状態', value: '採用' },
+    { label: '決定日', value: '2026-10-26' },
   ],
 }
 
@@ -23,10 +24,13 @@ export default function Body() {
     <>
       <DocSection label="Context" title="背景">
         <Prose>現状はこうなっている。</Prose>
-        <Bullets>
-          <Item label="手数">毎回最後まで打つ必要がある。</Item>
-          <Item>履歴をさかのぼる操作が多い。</Item>
-        </Bullets>
+        <DocTable
+          head={['観点', '現状']}
+          rows={[
+            ['手数', <>毎回 <Code>git status</Code> を最後まで打つ</>],
+            ['履歴', '履歴をさかのぼる操作が多い'],
+          ]}
+        />
       </DocSection>
     </>
   )
@@ -38,7 +42,7 @@ export default function Body() {
 | `DocSection` | `##` の節。`label` に英語の短い語、`title` に見出しを渡す |
 | `DocSub` / `DocPart` | `###` と `####` の節 |
 | `Prose` | 段落 |
-| `Bullets` / `Steps` / `Item` | 箇条書きと手順。項目に見出しが付く場合は `Item` の `label` に渡す |
+| `Bullets` / `Steps` / `Item` | 箇条書きと手順。表にも図にもできない場合にだけ使う |
 | `Terms` | 用語の定義。`term` と `description` の組を並べる |
 | `DocTable` | 表。`head` と `rows` を渡す |
 | `Requirements` | 要求と受入条件。番号を付けて縦に並べる |
@@ -49,8 +53,12 @@ export default function Body() {
 | `DocLink` | 外部の URL とサイト内のパスへのリンク |
 | `DocRef` | ほかの文書への参照。`kind` と `number` を渡す |
 
+- `attributes` には `更新日` を `YYYY-MM-DD` で入れ、文書を更新するたびに書き換える。`決定日` がある ADR は、それが基準日になるため `更新日` を省ける。見直しの一覧（`/review`）はこの日付から期限を決めるため、日付がない文書は一覧に出ない。
 - 節の `label` は背景 Context、制約 Constraints、決定 Decision、決定理由 Rationale、代替案 Alternatives、結果 Consequences、出典 Sources、課題 Problem、解決策 Solution のように決まっている。
-- 箇条書きは1項目を1行に収める必要はないが、項目が5件を超えるなら表か `FigGrid` を検討する。
+- 列挙は箇条書きにしない。分類、対比、流れ、範囲のような構造があれば図（`FigGrid` や `FigSvg`）にし、構造がなければ表か文章にする。
+- 項目が「観点」と「内容」の組になる列挙は `DocTable` にする。得られることと引き受けることの対比は、`得られること` と `引き受けること` の2列にする。
+- 2件から3件の短い列挙は、`Prose` の1文にまとめる。短い語の並びは `FigChips` にする。
+- 列挙を導く文に「次のとおり」と書いたまま文章に直すと、同じことを二度言う形になる。導入の文と内容を1文にまとめる。
 - 文章の中で `「PRD 0007」` のように書かず、`<DocRef kind="PRD" number="0007" />` を使う。
 
 ## 形式
@@ -128,10 +136,12 @@ ADR は「決定」の節に1枚入れ、決定した仕組みの構成や流れ
 | `FigSvg` | SVG の本体。幅は760で固定し、高さだけ決める | `height`、`label`、`width` |
 | `FigNode` | SVG の箱と、その中の文字 | `x`、`y`、`w`、`h`、`tone`、`title`、`lines`、`tag`、`align`、`valign`、`padX`、`rx` |
 | `FigArrow` | SVG の線と矢印 | `points`、`tone`、`head` |
+| `FigAxis` | SVG の目盛りと範囲を示す細い線 | `points` |
+| `FigDot` | SVG の点 | `x`、`y`、`tone`、`r` |
 | `FigLabel` | SVG の小さなラベル（10px） | `x`、`y`、`align` |
 | `FigNote` | SVG の補足の文字（11px） | `x`、`y`、`align` |
 | `FigGrid` | HTML のカードを並べる格子 | `wide` |
-| `FigCard` | HTML のカード | `tone`、`title`、`note` |
+| `FigCard` | HTML のカード | `tone`、`label`、`title`、`note` |
 | `FigChips` / `FigChip` | 札の並びと、個々の札 | `tone`、`items` |
 | `FigLegend` | 凡例 | `items` |
 | `FigTerm` / `FigTermRow` | 端末の見た目 | なし |
@@ -141,7 +151,9 @@ ADR は「決定」の節に1枚入れ、決定した仕組みの構成や流れ
 - `tone` は `neon`、`mint`、`amber`、`rose`、`flux`、`ghost` から選ぶ。`FigLegend` と `FigInk` では `ghost` の代わりに `dim` を使う。
 - `FigNode` の `title` は13px、`lines` は11px で表示され、箱の中で縦に中央揃えになる。箱の中に別の箱を置く場合は `valign="top"` で上に寄せる。
 - `FigArrow` の `points` は折れ線の頂点を順に並べる。矢印の先端は最後の線分の向きから決まるため、`marker` を書かない。線だけ引くときは `head={false}` にする。
-- 円や目盛りのような1枚かぎりの部品は、`fig-` のクラスを付けた `circle` や `path` をそのまま書く。
+- `FigAxis` の `points` は `FigArrow` と同じく折れ線の頂点を順に並べる。矢印の先端は付かない。
+- `FigCard` の見出しは、`title` が15px の太字、`label` が小さな英字になる。札だけを並べるカードでは `label` を使う。
+- 上の表にない部品が要るときは、`fig-` のクラスを付けた `circle` や `path` を文書に直接書かず、`figure.tsx` にコンポーネントを足す。
 
 ## 書くときの注意
 

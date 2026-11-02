@@ -1,16 +1,22 @@
 import {
   Alternatives,
-  Bullets,
   Code,
   DocLink,
   DocRef,
   DocSection,
   DocTable,
-  Item,
   Prose,
   Sources,
 } from '@/components/doc'
-import { FigArrow, FigNode, FigSvg, Figure } from '@/components/figure'
+import {
+  FigArrow,
+  FigCard,
+  FigChips,
+  FigGrid,
+  FigNode,
+  FigSvg,
+  Figure,
+} from '@/components/figure'
 
 export const meta = {
   title: 'Neovim を既定エディターにする',
@@ -46,43 +52,54 @@ export default function Body() {
           <DocRef kind="PRD" number="0002" />{' '}
           の要求から、選べる案は次の条件を満たす必要がある。
         </Prose>
-        <Bullets>
-          <Item>
-            ほかのツールが文章の入力を求めるときに開く、既定のエディターとして使える。
-          </Item>
-          <Item>初回起動で、所有者が操作せずに編集機能が揃う。</Item>
-          <Item>
-            日常的に使う言語で、補完、診断、整形、定義への移動、名前の変更を使える。
-          </Item>
-          <Item>ファイルの検索とツリー表示を、エディター内で行える。</Item>
-          <Item>
-            Git の操作とコンフリクトの解消、GitHub の Issue と PR
-            の表示を、エディター内で行える。
-          </Item>
-          <Item>
-            テストの実行、データベースへの問い合わせ、HTTP
-            リクエストの送信、端末の開閉、メモとタスクの管理を、エディター内で行える。
-          </Item>
-          <Item>
-            AI の入力補完と、ファイルや選択範囲の AI への送信を使える。
-          </Item>
-          <Item>
-            導入範囲「最小限」でも、既定のエディターとして使え、メモとタスクを管理できる（
-            <DocRef kind="PRD" number="0002" /> の要求21）。
-          </Item>
-          <Item>
-            導入範囲「最小限」を軽く保つ。言語サーバーや、メモとタスクに関係のないプラグインと道具を入れない。
-          </Item>
-        </Bullets>
+        <Figure caption="制約は、エディター単体の条件と、エディター内に収める作業に分かれる。">
+          <FigGrid wide>
+            <FigCard
+              tone="neon"
+              title="既定のエディターとして"
+              note="ほかのツールが文章の入力を求めるときに開き、初回起動では所有者が操作せずに編集機能が揃う"
+            />
+            <FigCard title="日常的に使う言語で">
+              <FigChips
+                items={['補完', '診断', '整形', '定義への移動', '名前の変更']}
+              />
+            </FigCard>
+            <FigCard title="エディター内で行える作業">
+              <FigChips
+                items={[
+                  'ファイルの検索',
+                  'ツリー表示',
+                  'Git の操作',
+                  'コンフリクトの解消',
+                  'GitHub の Issue と PR',
+                  'テストの実行',
+                  'データベースへの問い合わせ',
+                  'HTTP リクエストの送信',
+                  '端末の開閉',
+                  'メモとタスクの管理',
+                ]}
+              />
+            </FigCard>
+            <FigCard
+              title="AI の支援"
+              note="入力補完と、ファイルや選択範囲の AI への送信を使える"
+            />
+          </FigGrid>
+        </Figure>
+        <Prose>
+          導入範囲「最小限」でも、既定のエディターとして使え、メモとタスクを管理できる必要がある（
+          <DocRef kind="PRD" number="0002" /> の要求21）。
+          あわせて「最小限」は軽く保ち、言語サーバーや、メモとタスクに関係のないプラグインと道具を入れない。
+        </Prose>
         <Prose>
           <DocRef kind="PRD" number="0001" /> の要求と{' '}
           <DocRef kind="ADR" number="0001" />{' '}
           の決定から、次の条件も満たす必要がある。
         </Prose>
-        <Bullets>
-          <Item>macOS、WSL、それ以外の Linux で同じ操作で導入できる。</Item>
-          <Item>何度導入しても同じ状態になる。</Item>
-        </Bullets>
+        <Prose>
+          どの OS
+          でも同じ操作で導入でき、何度導入しても同じ状態になることである。
+        </Prose>
       </DocSection>
       <DocSection label="Decision" title="決定">
         <Prose>
@@ -91,42 +108,60 @@ export default function Body() {
           <Code>packages/dotfiles/nix/programs/neovim</Code>{' '}
           のモジュールとして導入し、導入範囲「すべて」と「最小限」の両方に含める。
         </Prose>
-        <Bullets>
-          <Item>
-            環境変数 <Code>EDITOR</Code> と <Code>VISUAL</Code> を{' '}
-            <Code>nvim</Code> にし、<Code>vi</Code>、<Code>vim</Code>、
-            <Code>vimdiff</Code> を Neovim の別名にする。
-          </Item>
-          <Item>
-            設定は Lua で書き、Home Manager が <Code>~/.config/nvim</Code>{' '}
-            に配置する。
-          </Item>
-          <Item>
-            言語サーバー、formatter、linter、tree-sitter
-            のパーサーのビルドに使うツールは、Neovim の追加パッケージとして Nix
-            で導入する。
-          </Item>
-          <Item>
-            制約に挙げた編集機能と開発作業は、プラグインで Neovim 内に収める。
-          </Item>
-          <Item>
-            プラグインは lazy.nvim で管理し、版は{' '}
-            <DocRef kind="ADR" number="0014" /> のとおり各プラグインの定義の{' '}
-            <Code>commit</Code> で固定する。
-          </Item>
-          <Item>
-            両方の導入範囲で共通の設定を <Code>core.lua</Code> と{' '}
-            <Code>core_keymaps.lua</Code> に置く。<Code>core.lua</Code> は
-            leader、オプション、クリップボードを設定し、
-            <Code>core_keymaps.lua</Code> は Neovim
-            に組み込まれた機能だけを使うキーマップを設定する。
-          </Item>
-          <Item>
-            <Code>plugins.lua</Code> は、lazy.nvim を取得して起動する{' '}
-            <Code>setup(specs)</Code> と、「すべて」の定義の一覧を返す{' '}
-            <Code>full_specs()</Code> を持つ。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['対象', '決めたこと']}
+          rows={[
+            [
+              '環境変数',
+              <>
+                <Code>EDITOR</Code> と <Code>VISUAL</Code> を <Code>nvim</Code>{' '}
+                にし、<Code>vi</Code>、<Code>vim</Code>、<Code>vimdiff</Code> を
+                Neovim の別名にする
+              </>,
+            ],
+            [
+              '設定',
+              <>
+                Lua で書き、Home Manager が <Code>~/.config/nvim</Code>{' '}
+                に配置する
+              </>,
+            ],
+            [
+              '周辺ツール',
+              '言語サーバー、formatter、linter、tree-sitter のパーサーのビルドに使うツールを、Neovim の追加パッケージとして Nix で導入する',
+            ],
+            [
+              '編集機能と開発作業',
+              '制約に挙げたものを、プラグインで Neovim 内に収める',
+            ],
+            [
+              'プラグイン',
+              <>
+                lazy.nvim で管理し、版は <DocRef kind="ADR" number="0014" />{' '}
+                のとおり各プラグインの定義の <Code>commit</Code> で固定する
+              </>,
+            ],
+            [
+              '共通の設定',
+              <>
+                <Code>core.lua</Code> と <Code>core_keymaps.lua</Code>{' '}
+                に置く。前者は
+                leader、オプション、クリップボードを設定し、後者は Neovim
+                に組み込まれた機能だけを使うキーマップを設定する
+              </>,
+            ],
+            [
+              <>
+                <Code>plugins.lua</Code>
+              </>,
+              <>
+                lazy.nvim を取得して起動する <Code>setup(specs)</Code>{' '}
+                と、「すべて」の定義の一覧を返す <Code>full_specs()</Code>{' '}
+                を持つ
+              </>,
+            ],
+          ]}
+        />
         <Prose>導入範囲ごとの違いは次のとおり。</Prose>
         <DocTable
           head={['', 'すべて', '最小限']}
@@ -175,21 +210,29 @@ export default function Body() {
             ],
           ]}
         />
-        <Bullets>
-          <Item>
-            「最小限」のファイルは、Nix の <Code>linkFarm</Code>{' '}
-            で1つのディレクトリーにまとめて配置する。
-          </Item>
-          <Item>
-            C コンパイラーは、nvim-orgmode が tree-sitter-org
-            を組み立てるために使うため、両方の導入範囲に入れる。Linux は
-            gcc、macOS は clang とする。
-          </Item>
-          <Item>
-            起動確認のスクリプトは、同じ <Code>minimal-config-files</Code>{' '}
-            から「最小限」の配置を組み立て、空のデータのディレクトリーでプラグインを取得したあと、エラーなく起動することを確かめる。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['対象', '扱い']}
+          rows={[
+            [
+              '「最小限」の配置',
+              <>
+                Nix の <Code>linkFarm</Code>{' '}
+                で1つのディレクトリーにまとめて配置する
+              </>,
+            ],
+            [
+              'C コンパイラー',
+              'nvim-orgmode が tree-sitter-org を組み立てるために使うため、両方の導入範囲に入れる。Linux は gcc、macOS は clang とする',
+            ],
+            [
+              '起動確認',
+              <>
+                同じ <Code>minimal-config-files</Code>{' '}
+                から「最小限」の配置を組み立て、空のデータのディレクトリーでプラグインを取得したあと、エラーなく起動することを確かめる
+              </>,
+            ],
+          ]}
+        />
         <Figure caption="入口だけを分け、共通の設定とプラグインの定義は両方の導入範囲で同じものを読む。">
           <FigSvg
             height={240}
@@ -266,42 +309,44 @@ export default function Body() {
         </Figure>
       </DocSection>
       <DocSection label="Rationale" title="決定理由">
-        <Bullets>
-          <Item>
-            端末内で動くため、端末中心の作業に合い、macOS、WSL、それ以外の Linux
-            の端末から同じ操作で使える。
-          </Item>
-          <Item>
-            本体、設定、周辺ツールを Home Manager で宣言できるため、どの OS
-            でも同じ版と同じ設定になり、何度導入しても状態が変わらない。
-          </Item>
-          <Item>
-            設定を Lua で書くため、luacheck と busted で設定を検証できる。
-          </Item>
-          <Item>
-            言語サーバーのクライアントと tree-sitter
-            を内蔵しており、プラグインも豊富なため、補完、デバッグ、テストの実行をエディター内で行える。
-          </Item>
-          <Item>
-            「最小限」にも同じエディターを入れ、共通の設定を同じファイルから読み込むため、導入範囲によって操作やオプションがずれない。
-          </Item>
-          <Item>
-            「最小限」のプラグインの定義を「すべて」と共有するため、版の固定と
-            Renovate による更新の通知が両方で同じになる。
-          </Item>
-          <Item>
-            Home Manager の Neovim モジュールは、プロバイダーを無効にする{' '}
-            <Code>init.lua</Code>{' '}
-            を自動で生成する。「すべて」ではディレクトリーごと配置するため、この生成物はリポジトリの{' '}
-            <Code>init.lua</Code>{' '}
-            に隠れる。「最小限」もディレクトリーごと配置すれば、同じ仕組みで隠れ、配置先の衝突が起きない。
-          </Item>
-          <Item>
-            配置するファイルの一覧を1つのファイルにまとめるため、Nix
-            の配置と起動確認が同じ一覧を使い、一覧の漏れを CI
-            で見つけられる。起動確認は空のデータのディレクトリーで動くため、「すべて」で取得済みのプラグインに隠れて漏れを見逃すこともない。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['決定した要素', '要求を満たせる理由']}
+          rows={[
+            [
+              '端末内で動く',
+              '端末中心の作業に合い、macOS、WSL、それ以外の Linux の端末から同じ操作で使える',
+            ],
+            [
+              'Home Manager での宣言',
+              '本体、設定、周辺ツールがどの OS でも同じ版と同じ設定になり、何度導入しても状態が変わらない',
+            ],
+            ['Lua での設定', 'luacheck と busted で設定を検証できる'],
+            [
+              '言語サーバーのクライアントと tree-sitter の内蔵',
+              'プラグインも豊富なため、補完、デバッグ、テストの実行をエディター内で行える',
+            ],
+            [
+              '「最小限」にも同じエディター',
+              '共通の設定を同じファイルから読み込むため、導入範囲によって操作やオプションがずれない',
+            ],
+            [
+              'プラグインの定義の共有',
+              '版の固定と Renovate による更新の通知が、両方の導入範囲で同じになる',
+            ],
+            [
+              'ディレクトリーごとの配置',
+              <>
+                Home Manager が自動で生成する <Code>init.lua</Code>{' '}
+                がリポジトリの <Code>init.lua</Code>{' '}
+                に隠れ、配置先の衝突が起きない
+              </>,
+            ],
+            [
+              '配置するファイルの一覧の一本化',
+              'Nix の配置と起動確認が同じ一覧を使うため、一覧の漏れを CI で見つけられる。起動確認は空のデータのディレクトリーで動くため、取得済みのプラグインに隠れて漏れを見逃すこともない',
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Alternatives" title="代替案">
         <Prose>次の案は、それぞれの理由で採らない。</Prose>
@@ -315,15 +360,10 @@ export default function Body() {
               option: 'Cursor',
               reason: (
                 <>
-                  次の2点から採らない。
-                  <Bullets>
-                    <Item>端末の外で動くため、端末中心の作業に合わない。</Item>
-                    <Item>
-                      AI の入力補完と選択範囲の送信は Neovim
-                      でもプラグインで満たせるため、エディターに組み込まれた AI
-                      機能は Cursor を選ぶ理由にならない。
-                    </Item>
-                  </Bullets>
+                  端末の外で動くため、端末中心の作業に合わない。また、AI
+                  の入力補完と選択範囲の送信は Neovim
+                  でもプラグインで満たせるため、エディターに組み込まれた AI
+                  機能は Cursor を選ぶ理由にならない。
                 </>
               ),
             },
@@ -341,13 +381,8 @@ export default function Body() {
               option: 'IntelliJ IDEA',
               reason: (
                 <>
-                  次の2点から採らない。
-                  <Bullets>
-                    <Item>端末の外で動くため、端末中心の作業に合わない。</Item>
-                    <Item>
-                      設定を IDE の中で変更するため、宣言的に管理しにくい。
-                    </Item>
-                  </Bullets>
+                  端末の外で動くため、端末中心の作業に合わない。また、設定を IDE
+                  の中で変更するため、宣言的に管理しにくい。
                 </>
               ),
             },
@@ -403,34 +438,46 @@ export default function Body() {
         />
       </DocSection>
       <DocSection label="Consequences" title="結果">
-        <Bullets>
-          <Item>
-            導入範囲「最小限」の環境にも Neovim が入り、<Code>EDITOR</Code>{' '}
-            が設定される。ただし、補完、診断、ファイルの検索、Git
-            の操作など、メモとタスク以外のプラグインと言語サーバーに頼る機能は使えない。
-          </Item>
-          <Item>「最小限」には C コンパイラーが入る。</Item>
-          <Item>
-            「最小限」で使う設定を足すときは、<Code>minimal-config-files</Code>{' '}
-            に加える必要がある。加え忘れると、起動確認で見つかる。
-          </Item>
-          <Item>
-            <Code>core.lua</Code> と <Code>core_keymaps.lua</Code>{' '}
-            にプラグインに頼る設定を書くと、「最小限」の起動でエラーになる。起動確認で見つかる。
-          </Item>
-          <Item>
-            プラグインは Nix ではなく lazy.nvim
-            が初回起動時に取得するため、両方の導入範囲で、初回起動にはネットワークへの接続が必要になる。
-          </Item>
-          <Item>
-            言語サーバーなどの周辺ツールのうち nixpkgs
-            にないものは、自前のパッケージとして定義し、保守する。
-          </Item>
-          <Item>
-            OS のクリップボードとの共有は WSL と macOS でだけ設定し、それ以外の
-            Linux では設定しない。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['領域', '引き受けること']}
+          rows={[
+            [
+              '「最小限」で使える範囲',
+              <>
+                Neovim が入り <Code>EDITOR</Code>{' '}
+                が設定されるが、補完、診断、ファイルの検索、Git
+                の操作など、メモとタスク以外のプラグインと言語サーバーに頼る機能は使えない
+              </>,
+            ],
+            ['「最小限」の中身', 'C コンパイラーが入る'],
+            [
+              '「最小限」の設定を足すとき',
+              <>
+                <Code>minimal-config-files</Code>{' '}
+                に加える必要がある。加え忘れると、起動確認で見つかる
+              </>,
+            ],
+            [
+              '共通の設定の書き方',
+              <>
+                <Code>core.lua</Code> と <Code>core_keymaps.lua</Code>{' '}
+                にプラグインに頼る設定を書くと、「最小限」の起動でエラーになる。起動確認で見つかる
+              </>,
+            ],
+            [
+              '初回起動',
+              'プラグインは Nix ではなく lazy.nvim が初回起動時に取得するため、両方の導入範囲で、初回起動にはネットワークへの接続が必要になる',
+            ],
+            [
+              '周辺ツールの保守',
+              '言語サーバーなどの周辺ツールのうち nixpkgs にないものは、自前のパッケージとして定義し、保守する',
+            ],
+            [
+              'クリップボード',
+              'OS のクリップボードとの共有は WSL と macOS でだけ設定し、それ以外の Linux では設定しない',
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Sources" title="出典">
         <Sources

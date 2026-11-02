@@ -269,6 +269,12 @@
     color: var(--color-amber);
   }
 
+  .badge-review {
+    border-color: color-mix(in oklab, var(--color-rose) 45%, transparent);
+    background-color: color-mix(in oklab, var(--color-rose) 12%, transparent);
+    color: var(--color-rose);
+  }
+
   .badge-stage {
     border-color: color-mix(in oklab, var(--color-neon) 45%, transparent);
     background-color: color-mix(in oklab, var(--color-neon) 12%, transparent);

@@ -31,6 +31,7 @@ pnpm typecheck
 - 一覧とメタ情報は `src/lib/docs.ts` が `src/content/index.ts` から組み立てる。`状態` と `段階` からバッジを決め、バッジと重ならない属性をヘッダーのチップに出す
 - ページは `src/app/[kind]/[slug]/page.tsx` が描画する。URL は `/<種類>/<ファイル名>` で、`generateStaticParams` が全件を静的に書き出す
 - 本文の節、箇条書き、表、要求、代替案、出典は `src/components/doc.tsx`、図は `src/components/figure.tsx` を使う。書き方は `FIGURES.md` に定める
+- 見直しの一覧（`/review`）は、各文書の `更新日`（ADR は `決定日`）から `src/lib/docs.ts` の `reviewIntervalMonths` か月後を期限として並べる。期限を過ぎたかどうかはビルド時の日付で決まるため、判定は再デプロイで更新される
 - 文書どうしの参照は `<DocRef kind="ADR" number="0013" />` と書く。`src/lib/docs.ts` の `docRefHref` が番号から URL を引くため、参照先を改名してもリンクは壊れない
 - 外部の URL とサイト内のパスへのリンクは `DocLink` を使う。サイト内のパスは `next/link` になり `basePath` が付く
 

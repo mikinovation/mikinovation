@@ -1,12 +1,10 @@
 import {
-  Bullets,
   Code,
   DocPart,
   DocRef,
   DocSection,
   DocSub,
   DocTable,
-  Item,
   Prose,
   Requirements,
   Sources,
@@ -33,6 +31,7 @@ export const meta = {
       label: '段階',
       value: '5. デリバリー（要求と受入条件を確定し、実装済み）',
     },
+    { label: '更新日', value: '2026-10-26' },
   ],
 }
 
@@ -107,40 +106,37 @@ export default function Body() {
           </Prose>
         </DocSub>
         <DocSub title="対象外">
-          <Bullets>
-            <Item>ノート全体の関係をグラフで表示すること。</Item>
-            <Item>ノートのタグを補完すること。</Item>
-            <Item>Emacs でノートとタスクを扱うこと。</Item>
-            <Item>Claude のセッションログをアジェンダに出すこと。</Item>
-          </Bullets>
+          <Prose>
+            ノート全体の関係をグラフで表示すること、ノートのタグを補完すること、Emacs
+            でノートとタスクを扱うこと、Claude
+            のセッションログをアジェンダに出すことは対象外とする。
+          </Prose>
         </DocSub>
         <DocSub title="制約とトレードオフ">
           <Prose>所有者は、次のことを受け入れる。</Prose>
-          <Bullets>
-            <Item>
-              タグに複数の値を持たせるために、メタデータをノートのプロパティではなく、ノートの本文に
-              YAML で埋め込む。
-            </Item>
-            <Item>
-              完了状態を一つにまとめる。その代わり、受け入れ済み、日常の雑務の完了、中止を状態で区別しない。
-            </Item>
-            <Item>
-              状態の色を手番で分ける。その代わり、色からは個々の段階がわからない。
-            </Item>
-            <Item>
-              Claude
-              のセッションログをアジェンダから外す。その代わり、セッションログに残った未完了の見出しは、アジェンダでは見えない。
-            </Item>
-          </Bullets>
+          <DocTable
+            head={['得られること', '引き受けること']}
+            rows={[
+              [
+                'タグに複数の値を持たせられる',
+                'メタデータをノートのプロパティではなく、ノートの本文に YAML で埋め込む',
+              ],
+              [
+                '完了状態を一つにまとめられる',
+                '受け入れ済み、日常の雑務の完了、中止を状態で区別しない',
+              ],
+              ['状態の色で手番がわかる', '色からは個々の段階がわからない'],
+              [
+                'アジェンダがチケットだけになる',
+                'Claude のセッションログに残った未完了の見出しは、アジェンダでは見えない',
+              ],
+            ]}
+          />
         </DocSub>
         <DocSub title="成功条件">
-          <Bullets>
-            <Item>
-              新しいナレッジノートが、すべて作成時点でメタデータの欄を持つ。
-            </Item>
-            <Item>タグのないナレッジノートの一覧を空にできる。</Item>
-            <Item>開いているチケットを、手番がわかる形で一覧できる。</Item>
-          </Bullets>
+          <Prose>
+            新しいナレッジノートがすべて作成時点でメタデータの欄を持ち、タグのないナレッジノートの一覧を空にでき、開いているチケットを手番がわかる形で一覧できることを、成功条件とする。
+          </Prose>
           <Prose>数値目標は設けない。</Prose>
         </DocSub>
         <DocSub title="計測と学習の計画">
@@ -530,15 +526,9 @@ export default function Body() {
           />
         </DocSub>
         <DocSub title="成功条件の測定方法">
-          <Bullets>
-            <Item>
-              新しいノートを作るたびに、メタデータの欄が揃っているかを確かめる。
-            </Item>
-            <Item>タグのないノートの一覧を開き、空にできるかを確かめる。</Item>
-            <Item>
-              アジェンダを開き、開いているチケットが手番のわかる形で並んでいるかを確かめる。
-            </Item>
-          </Bullets>
+          <Prose>
+            新しいノートを作るたびにメタデータの欄が揃っているかを確かめ、タグのないノートの一覧を開いて空にできるかを確かめる。あわせてアジェンダを開き、開いているチケットが手番のわかる形で並んでいるかを確かめる。
+          </Prose>
           <Prose>計測の仕組みは設けない。</Prose>
         </DocSub>
         <DocSub title="展開計画">
@@ -548,11 +538,14 @@ export default function Body() {
             「最小限」の範囲では、要求1と要求4から要求9を使える。
             次の要求は、使う道具が「最小限」に入らないため使えない。
           </Prose>
-          <Bullets>
-            <Item label="要求2">補完の道具</Item>
-            <Item label="要求3">一覧の道具</Item>
-            <Item label="要求10">変換の道具</Item>
-          </Bullets>
+          <DocTable
+            head={['使えない要求', '「最小限」に入らない道具']}
+            rows={[
+              ['要求2', '補完の道具'],
+              ['要求3', '一覧の道具'],
+              ['要求10', '変換の道具'],
+            ]}
+          />
           <Prose>
             ノートとタスクの保管場所は、所有者が事前に用意する。
             段階的な公開はしない。
@@ -561,12 +554,9 @@ export default function Body() {
         </DocSub>
       </DocSection>
       <DocSection label="Open Questions" title="未解決の問い">
-        <Bullets>
-          <Item>ノートのタグを補完することを、要求にするか。</Item>
-          <Item>
-            ノートが増えたときに、ノート全体の関係を俯瞰する方法をどの案で再検討するか。
-          </Item>
-        </Bullets>
+        <Prose>
+          ノートのタグを補完することを要求にするか、ノートが増えたときにノート全体の関係を俯瞰する方法をどの案で再検討するかが、未解決のまま残っている。
+        </Prose>
       </DocSection>
       <DocSection label="Sources" title="出典">
         <Sources

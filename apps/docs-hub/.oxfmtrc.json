@@ -13,7 +13,6 @@
     "out",
     "next-env.d.ts",
     "tsconfig.tsbuildinfo",
-    "**/*.md",
-    "**/*.mdx"
+    "**/*.md"
   ]
 }

@@ -1,10 +1,9 @@
 import {
   Alternatives,
-  Bullets,
   Code,
   DocRef,
   DocSection,
-  Item,
+  DocTable,
   Prose,
   Sources,
 } from '@/components/doc'
@@ -50,15 +49,10 @@ export default function Body() {
           <DocRef kind="ADR" number="0007" />{' '}
           から、選べる案は次の条件を満たす必要がある。
         </Prose>
-        <Bullets>
-          <Item>非公開のリポジトリに置く。</Item>
-          <Item>
-            月ごとの上書きや請求の項目のような、入れ子と一覧を表せる。
-          </Item>
-          <Item>
-            Org 形式の解析は、CLOCK 行と日ごとの見出しのプロパティに限る。
-          </Item>
-        </Bullets>
+        <Prose>
+          設定は非公開のリポジトリに置き、月ごとの上書きや請求の項目のような入れ子と一覧を表せる必要がある。Org
+          形式の解析は、CLOCK 行と日ごとの見出しのプロパティに限る。
+        </Prose>
       </DocSection>
       <DocSection label="Decision" title="決定">
         <Prose>
@@ -131,19 +125,21 @@ export default function Body() {
         </Figure>
       </DocSection>
       <DocSection label="Rationale" title="決定理由">
-        <Bullets>
-          <Item>
-            型を決めて読めるため、設定の誤りを読み込みの時点で検出できる。
-          </Item>
-          <Item>
-            コメントを書けるため、先方の指示など、値の根拠を設定の横に残せる。
-          </Item>
-          <Item>表と配列で、月ごとの上書きや請求の項目を表せる。</Item>
-          <Item>
-            Org 形式の解析を、
-            <DocRef kind="ADR" number="0007" /> で決めた範囲にとどめられる。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['決定した要素', '要求を満たせる理由']}
+          rows={[
+            ['型を決めた読み込み', '設定の誤りを読み込みの時点で検出できる'],
+            ['コメント', '先方の指示など、値の根拠を設定の横に残せる'],
+            ['表と配列', '月ごとの上書きや請求の項目を表せる'],
+            [
+              'Org 形式との分離',
+              <>
+                Org 形式の解析を、
+                <DocRef kind="ADR" number="0007" /> で決めた範囲にとどめられる
+              </>,
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Alternatives" title="代替案">
         <Prose>次の案は、それぞれの理由で採らない。</Prose>
@@ -163,18 +159,25 @@ export default function Body() {
         />
       </DocSection>
       <DocSection label="Consequences" title="結果">
-        <Bullets>
-          <Item>
-            設定と打刻の記録が別のファイルに分かれるため、Org
-            形式の側から案件の設定を指し示す手段が要る。
-          </Item>
-          <Item>
-            <Code>toml</Code> のクレートへの依存が増える。
-          </Item>
-          <Item>
-            設定の項目を変えるときは、TOML の形式と Rust の型を一緒に保守する。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['領域', '引き受けること']}
+          rows={[
+            [
+              '記録との対応',
+              '設定と打刻の記録が別のファイルに分かれるため、Org 形式の側から案件の設定を指し示す手段が要る',
+            ],
+            [
+              '依存',
+              <>
+                <Code>toml</Code> のクレートへの依存が増える
+              </>,
+            ],
+            [
+              '項目の変更',
+              '設定の項目を変えるときは、TOML の形式と Rust の型を一緒に保守する',
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Sources" title="出典">
         <Sources

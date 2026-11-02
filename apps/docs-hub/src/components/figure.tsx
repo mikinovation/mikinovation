@@ -16,6 +16,9 @@ const modifier = (base: string, tone: Tone | Ink | undefined): string =>
 const alignClass = (align: Align | undefined): string =>
   align === 'start' ? ' fig-start' : align === 'end' ? ' fig-end' : ''
 
+const pathOf = (points: Point[]): string =>
+  points.map(([x, y], index) => `${index === 0 ? 'M' : 'L'}${x} ${y}`).join(' ')
+
 const anchorOf = (
   x: number,
   width: number,
@@ -138,9 +141,7 @@ export function FigArrow({
   tone?: 'neon' | 'soft'
   head?: boolean
 }) {
-  const path = points
-    .map(([x, y], index) => `${index === 0 ? 'M' : 'L'}${x} ${y}`)
-    .join(' ')
+  const path = pathOf(points)
   const lineClass = `fig-edge${tone === undefined ? '' : ` fig-edge-${tone}`}`
 
   const [fromX, fromY] = points[points.length - 2] ?? points[0]
@@ -163,6 +164,24 @@ export function FigArrow({
       )}
     </>
   )
+}
+
+export function FigAxis({ points }: { points: Point[] }) {
+  return <path className="fig-axis" d={pathOf(points)} />
+}
+
+export function FigDot({
+  x,
+  y,
+  tone,
+  r = 4,
+}: {
+  x: number
+  y: number
+  tone: Ink
+  r?: number
+}) {
+  return <circle className={`fig-${tone}`} cx={x} cy={y} r={r} />
 }
 
 export function FigLabel({
@@ -215,18 +234,21 @@ export function FigGrid({
 
 export function FigCard({
   tone,
+  label,
   title,
   note,
   children,
 }: {
   tone?: Tone
-  title: string
+  label?: string
+  title?: string
   note?: string
   children?: ReactNode
 }) {
   return (
     <div className={modifier('fig-card', tone)}>
-      <span className="fig-card-head">{title}</span>
+      {label !== undefined && <span className="label">{label}</span>}
+      {title !== undefined && <span className="fig-card-head">{title}</span>}
       {children}
       {note !== undefined && <span className="fig-card-note">{note}</span>}
     </div>

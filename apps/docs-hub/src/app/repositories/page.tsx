@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-import { Hero } from '@/components/doc-page'
+import { Badge, CardGrid, DocCard, Hero } from '@/components/doc-page'
 
 export const metadata: Metadata = {
   title: 'リポジトリ | Docs Hub',
@@ -55,22 +55,6 @@ const repositories: Repository[] = [
   },
 ]
 
-function RepoCard({ repo }: { repo: Repository }) {
-  return (
-    <a href={repo.url} className="doc-card">
-      <div className="flex items-center gap-2.5">
-        <span className="label text-neon-soft">{repo.kind}</span>
-        <span className="font-mono text-xs text-ink-faint">{repo.year}</span>
-      </div>
-      <p className="mt-1.5 leading-snug font-medium text-ink">{repo.name}</p>
-      <p className="mt-2 text-sm text-ink-dim">{repo.summary}</p>
-      <p className="mt-3 font-mono text-xs text-ink-faint">
-        {repo.stack.join(' · ')}
-      </p>
-    </a>
-  )
-}
-
 export default function RepositoriesPage() {
   return (
     <div className="flex flex-col gap-16">
@@ -80,21 +64,27 @@ export default function RepositoriesPage() {
         lead="公開しているリポジトリの紹介。自分が毎日使う開発環境と、作業の途中で欲しくなって作った小さな道具が並ぶ。"
         badges={
           <>
-            <span className="badge badge-stage">
-              {repositories.length} repos
-            </span>
-            <span className="badge">開発環境</span>
-            <span className="badge">Neovim プラグイン</span>
+            <Badge tone="stage">{repositories.length} repos</Badge>
+            <Badge>開発環境</Badge>
+            <Badge>Neovim プラグイン</Badge>
           </>
         }
         note="カードを押すと GitHub へ移動する。導入の手順と設定の項目は各リポジトリの README に置いている。"
       />
 
-      <div className="grid gap-3 sm:grid-cols-2">
+      <CardGrid>
         {repositories.map((repo) => (
-          <RepoCard key={repo.name} repo={repo} />
+          <DocCard
+            key={repo.name}
+            label={repo.kind}
+            number={repo.year}
+            title={repo.name}
+            note={repo.summary}
+            footer={repo.stack.join(' · ')}
+            href={repo.url}
+          />
         ))}
-      </div>
+      </CardGrid>
     </div>
   )
 }

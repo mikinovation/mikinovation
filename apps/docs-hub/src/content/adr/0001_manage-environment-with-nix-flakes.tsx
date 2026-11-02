@@ -1,11 +1,9 @@
 import {
   Alternatives,
-  Bullets,
   Code,
   DocRef,
   DocSection,
   DocTable,
-  Item,
   Prose,
   Sources,
 } from '@/components/doc'
@@ -43,15 +41,19 @@ export default function Body() {
           <DocRef kind="PRD" number="0001" />{' '}
           の要求から、選べる案は次の条件を満たす必要がある。
         </Prose>
-        <Bullets>
-          <Item>macOS、WSL、それ以外の Linux で同じ操作で導入できる。</Item>
-          <Item>導入範囲を「すべて」と「最小限」から選べる。</Item>
-          <Item>導入範囲の指定を誤った場合は何も導入しない。</Item>
-          <Item>何度導入しても同じ状態になる。</Item>
-          <Item>
-            対象は所有者本人だけであり、所有者と異なるユーザー名、マシン名、リポジトリの配置先には対応しない。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['観点', '満たすべき条件']}
+          rows={[
+            ['導入操作', 'macOS、WSL、それ以外の Linux で同じ操作で導入できる'],
+            ['導入範囲', '「すべて」と「最小限」から選べる'],
+            ['誤った指定', '導入範囲の指定を誤った場合は何も導入しない'],
+            ['再実行', '何度導入しても同じ状態になる'],
+            [
+              '対象',
+              '所有者本人だけを対象とし、所有者と異なるユーザー名、マシン名、リポジトリの配置先には対応しない',
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Decision" title="決定">
         <Prose>
@@ -194,28 +196,32 @@ export default function Body() {
         </Figure>
       </DocSection>
       <DocSection label="Rationale" title="決定理由">
-        <Bullets>
-          <Item>
-            1つの flake と共通の Home Manager 設定を3つの OS で使うため、どの OS
-            でも同じユーザー環境になる。
-          </Item>
-          <Item>
-            <Code>flake.lock</Code>{' '}
-            が依存の版を固定するため、どのマシンでも同じ版で導入できる。
-          </Item>
-          <Item>
-            Nix
-            は宣言した状態を適用するため、導入済みのマシンで再度導入しても状態が変わらない。
-          </Item>
-          <Item>
-            導入範囲を flake
-            の別の出力として定義できるため、導入範囲の選択を出力名の選択として扱える。
-          </Item>
-          <Item>
-            OS ごとの違いを <Code>setup.sh</Code> が吸収するため、所有者はどの
-            OS でも同じ操作で導入できる。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['決定した要素', '要求を満たせる理由']}
+          rows={[
+            [
+              '1つの flake と共通の Home Manager 設定',
+              'どの OS でも同じユーザー環境になる',
+            ],
+            [
+              <>
+                <Code>flake.lock</Code> での版の固定
+              </>,
+              'どのマシンでも同じ版で導入できる',
+            ],
+            [
+              '宣言した状態の適用',
+              '導入済みのマシンで再度導入しても状態が変わらない',
+            ],
+            ['導入範囲ごとの出力', '導入範囲の選択を出力名の選択として扱える'],
+            [
+              <>
+                <Code>setup.sh</Code> による OS の判定
+              </>,
+              '所有者はどの OS でも同じ操作で導入できる',
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Alternatives" title="代替案">
         <Prose>次の案は、それぞれの理由で採らない。</Prose>
@@ -239,20 +245,8 @@ export default function Body() {
             },
             {
               option: 'Dev Container や Docker',
-              reason: (
-                <>
-                  次の2点から採らない。
-                  <Bullets>
-                    <Item>
-                      開発環境をコンテナ内に閉じるため、ホストのシェルや設定ファイルを管理できない。
-                    </Item>
-                    <Item>
-                      コンテナの実行環境を常に動かす必要がある。macOS では Linux
-                      仮想マシンを介するため、CPU、メモリ、ファイル入出力のオーバーヘッドが生じる。
-                    </Item>
-                  </Bullets>
-                </>
-              ),
+              reason:
+                '開発環境をコンテナ内に閉じるため、ホストのシェルや設定ファイルを管理できない。また、コンテナの実行環境を常に動かす必要があり、macOS では Linux 仮想マシンを介するため、CPU、メモリ、ファイル入出力のオーバーヘッドが生じる。',
             },
             {
               option: 'mise',
@@ -263,29 +257,35 @@ export default function Body() {
         />
       </DocSection>
       <DocSection label="Consequences" title="結果">
-        <Bullets>
-          <Item>
-            導入操作の前に、Nix 本体を所有者が導入しておく必要がある。
-          </Item>
-          <Item>
-            ユーザー名とマシン名を flake
-            の出力に書くため、所有者と異なるユーザー名やマシン名では導入できない。
-          </Item>
-          <Item>
-            依存の版が <Code>flake.lock</Code> に固定されるため、版を上げるには{' '}
-            <Code>flake.lock</Code> の更新が必要になる。nixpkgs は unstable
-            を参照し、<Code>flake.lock</Code> の更新は Renovate が行う。
-          </Item>
-          <Item>
-            nixpkgs にないツールは、<Code>packages/dotfiles/nix/pkgs/</Code>{' '}
-            で自前のパッケージとして定義し、保守する。
-          </Item>
-          <Item>
-            WSL で使う端末アプリの設定を Windows 側へ配置する作業と、macOS で
-            Claude Code から操作するブラウザの導入は、Nix
-            の管理外として手作業で行う。
-          </Item>
-        </Bullets>
+        <DocTable
+          head={['領域', '引き受けること']}
+          rows={[
+            ['導入の前提', '導入操作の前に、Nix 本体を所有者が導入しておく'],
+            [
+              '対象の範囲',
+              'ユーザー名とマシン名を flake の出力に書くため、所有者と異なるユーザー名やマシン名では導入できない',
+            ],
+            [
+              '版の更新',
+              <>
+                依存の版は <Code>flake.lock</Code> に固定され、版を上げるには{' '}
+                <Code>flake.lock</Code> の更新が必要になる。nixpkgs は unstable
+                を参照し、更新は Renovate が行う
+              </>,
+            ],
+            [
+              '自前のパッケージ',
+              <>
+                nixpkgs にないツールは <Code>packages/dotfiles/nix/pkgs/</Code>{' '}
+                で定義し、保守する
+              </>,
+            ],
+            [
+              'Nix の管理外',
+              'WSL で使う端末アプリの設定を Windows 側へ配置する作業と、macOS で Claude Code から操作するブラウザの導入は、手作業で行う',
+            ],
+          ]}
+        />
       </DocSection>
       <DocSection label="Sources" title="出典">
         <Sources

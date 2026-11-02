@@ -1,4 +1,18 @@
 import Link from 'next/link'
+import type { ReactNode } from 'react'
+
+import { SiteLink } from '@/components/site-link'
+
+function HeaderLink({ href, children }: { href: string; children: ReactNode }) {
+  return (
+    <SiteLink
+      href={href}
+      className="label transition-colors hover:text-neon-soft"
+    >
+      {children}
+    </SiteLink>
+  )
+}
 
 export function SiteHeader() {
   return (
@@ -16,19 +30,11 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <Link
-          href="/career"
-          className="label transition-colors hover:text-neon-soft"
-        >
-          Career
-        </Link>
+        <HeaderLink href="/career">Career</HeaderLink>
 
-        <Link
-          href="/repositories"
-          className="label transition-colors hover:text-neon-soft"
-        >
-          Repositories
-        </Link>
+        <HeaderLink href="/repositories">Repositories</HeaderLink>
+
+        <HeaderLink href="/review">Review</HeaderLink>
 
         <div className="ml-auto hidden w-72 md:block">
           <button type="button" className="search-field" disabled>
@@ -38,12 +44,9 @@ export function SiteHeader() {
           </button>
         </div>
 
-        <a
-          href="https://github.com/mikinovation/mikinovation"
-          className="label transition-colors hover:text-neon-soft"
-        >
+        <HeaderLink href="https://github.com/mikinovation/mikinovation">
           GitHub
-        </a>
+        </HeaderLink>
       </div>
     </header>
   )
