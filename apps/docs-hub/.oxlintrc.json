@@ -6,7 +6,6 @@
     "oxc",
     "react",
     "jsx-a11y",
-    "nextjs",
     "import",
     "promise"
   ],
@@ -29,7 +28,7 @@
       }
     ]
   },
-  "ignorePatterns": [".next", "out", "next-env.d.ts"],
+  "ignorePatterns": ["dist", "src/routeTree.gen.ts"],
   "overrides": [
     {
       "files": ["src/components/doc.tsx"],

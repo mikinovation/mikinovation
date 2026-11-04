@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import type { ReactNode } from 'react'
 
 import { SiteLink } from '@/components/site-link'
@@ -166,15 +165,17 @@ export function DocRef({
   }
 
   if (links.length === 1) {
-    return <Link href={links[0].href}>{`${kind} ${links[0].value}`}</Link>
+    return (
+      <SiteLink href={links[0].href}>{`${kind} ${links[0].value}`}</SiteLink>
+    )
   }
 
   return links.map((entry, index) => (
     <span key={entry.value}>
       {index > 0 && '、'}
-      <Link href={entry.href}>
+      <SiteLink href={entry.href}>
         {index === 0 ? `${kind} ${entry.value}` : entry.value}
-      </Link>
+      </SiteLink>
     </span>
   ))
 }

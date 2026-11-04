@@ -1,8 +1,7 @@
-'use client'
-
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useRouterState } from '@tanstack/react-router'
 import { useState } from 'react'
+
+import { SiteLink } from '@/components/site-link'
 
 export type NavItem = {
   href: string
@@ -27,16 +26,12 @@ const pageItems: NavItem[] = [
   { href: '/review', number: 'REV', title: '見直し' },
 ]
 
-function NavDocLink({ item, current }: { item: NavItem; current: boolean }) {
+function NavDocLink({ item }: { item: NavItem }) {
   return (
-    <Link
-      href={item.href}
-      className="nav-doc"
-      aria-current={current ? 'page' : undefined}
-    >
+    <SiteLink href={item.href} className="nav-doc">
       <span className="nav-doc-number">{item.number}</span>
       <span className="truncate">{item.title}</span>
-    </Link>
+    </SiteLink>
   )
 }
 
@@ -59,13 +54,11 @@ function NavGroup({
   section,
   open,
   holdsCurrent,
-  currentHref,
   onToggle,
 }: {
   section: NavSection
   open: boolean
   holdsCurrent: boolean
-  currentHref: string
   onToggle: () => void
 }) {
   return (
@@ -86,11 +79,7 @@ function NavGroup({
 
       <div className="nav-group-body" hidden={!open}>
         {section.items.map((item) => (
-          <NavDocLink
-            key={item.href}
-            item={item}
-            current={item.href === currentHref}
-          />
+          <NavDocLink key={item.href} item={item} />
         ))}
       </div>
     </div>
@@ -98,7 +87,9 @@ function NavGroup({
 }
 
 export function NavSections({ sections }: { sections: NavSection[] }) {
-  const pathname = usePathname()
+  const pathname = useRouterState({
+    select: (state) => state.location.pathname,
+  })
   const [state, setState] = useState<ToggleState>({
     path: pathname,
     overrides: {},
@@ -122,11 +113,7 @@ export function NavSections({ sections }: { sections: NavSection[] }) {
   return (
     <>
       {pageItems.map((item) => (
-        <NavDocLink
-          key={item.href}
-          item={item}
-          current={item.href === pathname}
-        />
+        <NavDocLink key={item.href} item={item} />
       ))}
 
       {sections.map((section) => (
@@ -135,7 +122,6 @@ export function NavSections({ sections }: { sections: NavSection[] }) {
           section={section}
           open={isOpen(section)}
           holdsCurrent={holdsCurrent(section)}
-          currentHref={pathname}
           onToggle={() => toggle(section)}
         />
       ))}

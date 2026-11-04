@@ -1,11 +1,19 @@
-import type { Metadata } from 'next'
+import { createFileRoute } from '@tanstack/react-router'
 
 import { Badge, CardGrid, DocCard, Hero } from '@/components/doc-page'
 
-export const metadata: Metadata = {
-  title: 'リポジトリ | Docs Hub',
-  description: '公開しているリポジトリと、そこで作っている道具の紹介',
-}
+export const Route = createFileRoute('/repositories')({
+  head: () => ({
+    meta: [
+      { title: 'リポジトリ | Docs Hub' },
+      {
+        name: 'description',
+        content: '公開しているリポジトリと、そこで作っている道具の紹介',
+      },
+    ],
+  }),
+  component: RepositoriesPage,
+})
 
 type Repository = {
   name: string
@@ -55,7 +63,7 @@ const repositories: Repository[] = [
   },
 ]
 
-export default function RepositoriesPage() {
+function RepositoriesPage() {
   return (
     <div className="flex flex-col gap-16">
       <Hero

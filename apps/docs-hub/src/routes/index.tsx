@@ -1,8 +1,14 @@
+import { createFileRoute } from '@tanstack/react-router'
+
 import { Section } from '@/components/doc'
 import { Badge, CardGrid, DocCard, Hero } from '@/components/doc-page'
 import { docKindLabels, docKinds, listDocs } from '@/lib/docs'
 
-export default function Home() {
+export const Route = createFileRoute('/')({
+  component: Home,
+})
+
+function Home() {
   const sections = docKinds.map((kind) => ({
     kind,
     label: docKindLabels[kind],
