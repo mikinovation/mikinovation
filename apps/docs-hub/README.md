@@ -26,7 +26,7 @@ pnpm typecheck
 
 文書は `src/content/prd/`、`src/content/adr/`、`src/content/design/`、`src/content/learn/` に `<4桁の番号>_<タイトル>.tsx` の名前で置く。
 本文は Markdown ではなく、`src/components/doc.tsx` と `src/components/figure.tsx` のコンポーネントを組み合わせた TSX で書く。
-作成と更新は create-prd、create-adr、create-design-doc などのスキルが担い、保存先はスキル側にも書いてある。学習ノートは、プロダクトで採用したかどうかと関係なく技術を学んだ記録を残す種類で、対応するスキルはない。
+作成と更新は create-prd、create-adr、create-design-doc などのスキルが担い、保存先はスキル側にも書いてある。学習ノートは、プロダクトで採用したかどうかと関係なく技術の仕組みや考え方を学んだ記録を残す種類で、create-learning-note が担う。
 
 - 各文書は `meta`（タイトル、導入文、属性）と、本文を返す既定の関数を export する
 - `src/content/index.ts` は各文書の `meta` と本文を集めた配列で、`scripts/build-content-index.mjs` が `src/content/` を走査して生成する。手で書き足さない

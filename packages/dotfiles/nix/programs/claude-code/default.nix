@@ -243,6 +243,7 @@
       "create-adr" = ../../../../claude-skills/skills/create-adr;
       "create-branch" = ../../../../claude-skills/skills/create-branch;
       "create-design-doc" = ../../../../claude-skills/skills/create-design-doc;
+      "create-learning-note" = ../../../../claude-skills/skills/create-learning-note;
       "create-plan" = ../../../../claude-skills/skills/create-plan;
       "create-pr" = ../../../../claude-skills/skills/create-pr;
       "create-prd" = ../../../../claude-skills/skills/create-prd;
