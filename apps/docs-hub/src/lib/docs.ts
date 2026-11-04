@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 
 import { docEntries } from '@/content'
 
-export const docKinds = ['prd', 'adr', 'design'] as const
+export const docKinds = ['prd', 'adr', 'design', 'learn'] as const
 
 export type DocKind = (typeof docKinds)[number]
 
@@ -10,6 +10,7 @@ export const docKindLabels: Record<DocKind, string> = {
   prd: 'PRD',
   adr: 'ADR',
   design: '設計書',
+  learn: '学習ノート',
 }
 
 export type DocAttribute = {

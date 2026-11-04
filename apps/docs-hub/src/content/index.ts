@@ -29,6 +29,7 @@ import * as adr0016 from './adr/0016_provide-skills-to-claude-code-on-the-web'
 import * as adr0017 from './adr/0017_use-vitepress-for-document-hub'
 import * as adr0018 from './adr/0018_use-bigram-tokenizer-for-japanese-search'
 import * as design0001 from './design/0001_attendance-invoice'
+import * as learn0001 from './learn/0001_nextjs-app-router-static-export'
 
 export const docEntries: DocEntry[] = [
   {
@@ -204,5 +205,11 @@ export const docEntries: DocEntry[] = [
     slug: '0001_attendance-invoice',
     ...design0001.meta,
     Body: design0001.default,
+  },
+  {
+    kind: 'learn',
+    slug: '0001_nextjs-app-router-static-export',
+    ...learn0001.meta,
+    Body: learn0001.default,
   },
 ]
