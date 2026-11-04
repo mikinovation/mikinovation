@@ -7,18 +7,20 @@
 
 ```sh
 pnpm install
-pnpm dev           # http://localhost:3000/mikinovation
-pnpm build         # 静的書き出し（out/）
+pnpm dev           # http://localhost:5173/mikinovation
+pnpm build         # 静的書き出し（dist/client/）
 pnpm typecheck
 ```
 
 ## 構成
 
 - パッケージマネージャーは pnpm（`packageManager` フィールドで版を固定）
-- Next.js 16（App Router）、React 19、TypeScript
-- `output: 'export'` で静的ファイルに書き出す
-- 公開先が `https://mikinovation.github.io/mikinovation/` なので `basePath` に `/mikinovation` を設定している
-- スタイルは Tailwind CSS 4。トークンと共通クラスは `src/app/globals.css` に置く
+- TanStack Start（Vite）、TanStack Router、React 19、TypeScript
+- サーバーは置かず、`vite.config.ts` の `prerender` で全ページを静的な HTML に書き出す。トップページとサイドバーのリンクをたどって文書のページを見つける
+- 公開先が `https://mikinovation.github.io/mikinovation/` なので、Vite の `base` と Router の `basepath` の両方に `/mikinovation` を設定している
+- ルーティングは `src/routes/` のファイル名で決まる。`src/routeTree.gen.ts` は dev とビルドが生成する。手で書き足さないが、型検査が参照するためコミットする
+- URL が存在しないときの表示は `src/routes/404.tsx` で、`404.html` に書き出して GitHub Pages の 404 として配信する
+- スタイルは Tailwind CSS 4。トークンと共通クラスは `src/styles/globals.css` に置く
 
 ### 文書
 
@@ -29,11 +31,11 @@ pnpm typecheck
 - 各文書は `meta`（タイトル、導入文、属性）と、本文を返す既定の関数を export する
 - `src/content/index.ts` は各文書の `meta` と本文を集めた配列で、`scripts/build-content-index.mjs` が `src/content/` を走査して生成する。手で書き足さない
 - 一覧とメタ情報は `src/lib/docs.ts` が `src/content/index.ts` から組み立てる。`状態` と `段階` からバッジを決め、バッジと重ならない属性をヘッダーのチップに出す
-- ページは `src/app/[kind]/[slug]/page.tsx` が描画する。URL は `/<種類>/<ファイル名>` で、`generateStaticParams` が全件を静的に書き出す
+- ページは `src/routes/$kind.$slug.tsx` が描画する。URL は `/<種類>/<ファイル名>` で、prerender がリンクをたどって全件を静的に書き出す
 - 本文の節、箇条書き、表、要求、代替案、出典は `src/components/doc.tsx`、図は `src/components/figure.tsx` を使う。書き方は `FIGURES.md` に定める
 - 見直しの一覧（`/review`）は、各文書の `更新日`（ADR は `決定日`）から `src/lib/docs.ts` の `reviewIntervalMonths` か月後を期限として並べる。期限を過ぎたかどうかはビルド時の日付で決まるため、判定は再デプロイで更新される
 - 文書どうしの参照は `<DocRef kind="ADR" number="0013" />` と書く。`src/lib/docs.ts` の `docRefHref` が番号から URL を引くため、参照先を改名してもリンクは壊れない
-- 外部の URL とサイト内のパスへのリンクは `DocLink` を使う。サイト内のパスは `next/link` になり `basePath` が付く
+- 外部の URL とサイト内のパスへのリンクは `DocLink` を使う。サイト内のパスは `SiteLink` が Router の `Link` にし、`basepath` と現在地の `aria-current` が付く
 
 ファイル名から URL が決まるため、文書を改名すると URL も変わる。
 
@@ -49,7 +51,7 @@ node scripts/build-content-index.mjs
 
 経歴（`/career`）とリポジトリの紹介（`/repositories`）は文書の仕組みを通さず、ページの TSX にデータを直接書く。
 
-- 正本は `src/app/career/page.tsx` と `src/app/repositories/page.tsx`
+- 正本は `src/routes/career.tsx` と `src/routes/repositories.tsx`
 - リポジトリの紹介は1件を `Repository` 型の値として並べ、種別、公開年、1〜2文の説明、技術、GitHub の URL を持つ
 - リポジトリは `doc-card` の小さなカードで一覧に並べ、カード自体を GitHub への外部リンクにする。詳しい説明は各リポジトリの README に任せる
 - 表示には文書と同じ `src/components/doc.tsx` と `src/components/figure.tsx` のコンポーネントを使う
@@ -57,7 +59,7 @@ node scripts/build-content-index.mjs
 
 ### テーマ
 
-暗い配色の未来的なテーマで、明暗の切り替えは持たない。配色、タイポグラフィ、各コンポーネントをいつ使うかは `DESIGN.md` に書いてある。値を変えるときは `DESIGN.md` と `src/app/globals.css` の両方を直す。
+暗い配色の未来的なテーマで、明暗の切り替えは持たない。配色、タイポグラフィ、各コンポーネントをいつ使うかは `DESIGN.md` に書いてある。値を変えるときは `DESIGN.md` と `src/styles/globals.css` の両方を直す。
 
 - 配色、フォント、影は `@theme` のトークンで定義し、`bg-base-700` や `text-neon` のようなクラスから参照する
 - 共通クラス（`.panel`、`.doc-card`、`.badge`、`.nav-link`、`.doc-body`、`.doc-list` など）は `@layer components` に置く
@@ -65,7 +67,7 @@ node scripts/build-content-index.mjs
 
 ## 公開
 
-`main` への push で `.github/workflows/docs-hub-deploy.yml` が走り、`out/` を GitHub Pages に配信する。
+`main` への push で `.github/workflows/docs-hub-deploy.yml` が走り、`dist/client/` を GitHub Pages に配信する。
 公開先は https://mikinovation.github.io/mikinovation/ 。
 手動で流す場合は Actions から `docs-hub Deploy` を実行する。
 
@@ -74,4 +76,4 @@ node scripts/build-content-index.mjs
 - 全文検索（PRD 0010 の機能要求2）
 - ポートフォリオの範囲。PRD 0010 はドキュメントのみを対象としており、経歴とリポジトリの紹介を載せる範囲は未反映
 - テストケース（`src/content/test/`）と計画（`src/content/plan/`）の表示。この2種類は `.md` のまま運用するため、一覧に出ない
-- PRD 0010 と ADR 0017・0018 は、正本をリポジトリルートの `docs/` の Markdown とし、サイトの生成に VitePress を使うと決めている。現状の構成はどちらとも違うため、置き換えが必要
+- PRD 0010 と ADR 0017・0018 は、正本をリポジトリルートの `docs/` の Markdown とし、サイトの生成に VitePress を使うと決めている。現状は `src/content/` の TSX と TanStack Start でどちらとも違うため、決定の記録を置き換える必要がある

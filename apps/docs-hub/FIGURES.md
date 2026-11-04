@@ -184,7 +184,7 @@ ADR は「決定」の節に1枚入れ、決定した仕組みの構成や流れ
 
 ## クラス
 
-コンポーネントが出力するクラスは `src/app/globals.css` にある。
+コンポーネントが出力するクラスは `src/styles/globals.css` にある。
 本文は `doc-h2`、`doc-list`、`doc-steps`、`doc-item-label`、`doc-terms`、`doc-reqs`、`doc-trade`、`doc-alt`、`doc-sources` を使う。
 図は `doc-figure`、`fig-svg`、`fig-box`、`fig-edge`、`fig-head`、`fig-title`、`fig-sub`、`fig-tag`、`fig-axis`、`fig-grid`、`fig-card`、`fig-chip`、`fig-term`、`fig-legend` と、色の `fig-neon` から `fig-dim` までが並ぶ。
 足りない部品が出たら、個別の `style` を書かずに、クラスとコンポーネントを足す。

@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import type { ReactNode } from 'react'
 
 import { SiteLink } from '@/components/site-link'
@@ -30,12 +29,12 @@ export function Breadcrumb({ trail }: { trail: Crumb[] }) {
           {crumb.href === undefined ? (
             <span className="text-ink-dim">{crumb.label}</span>
           ) : (
-            <Link
+            <SiteLink
               href={crumb.href}
               className="transition-colors hover:text-neon-soft"
             >
               {crumb.label}
-            </Link>
+            </SiteLink>
           )}
         </span>
       ))}
@@ -164,14 +163,14 @@ export function DocPager({
       {previous === null ? (
         <span />
       ) : (
-        <Link href={previous.href} className="nav-link">
+        <SiteLink href={previous.href} className="nav-link">
           <span>← {previous.heading}</span>
-        </Link>
+        </SiteLink>
       )}
       {next !== null && (
-        <Link href={next.href} className="nav-link sm:text-right">
+        <SiteLink href={next.href} className="nav-link sm:text-right">
           <span>{next.heading} →</span>
-        </Link>
+        </SiteLink>
       )}
     </nav>
   )

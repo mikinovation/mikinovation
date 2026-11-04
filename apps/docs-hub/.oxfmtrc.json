@@ -9,9 +9,8 @@
   "arrowParens": "always",
   "sortPackageJson": false,
   "ignorePatterns": [
-    ".next",
-    "out",
-    "next-env.d.ts",
+    "dist",
+    "src/routeTree.gen.ts",
     "tsconfig.tsbuildinfo",
     "**/*.md"
   ]

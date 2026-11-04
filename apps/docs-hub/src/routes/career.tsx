@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import { createFileRoute } from '@tanstack/react-router'
 
 import { Section } from '@/components/doc'
 import { Badge, CardGrid, Hero } from '@/components/doc-page'
@@ -16,11 +16,19 @@ import {
   Figure,
 } from '@/components/figure'
 
-export const metadata: Metadata = {
-  title: '経歴 | Docs Hub',
-  description:
-    'フロントエンドを軸に、設計から運用までを一貫して受けるフリーランスのエンジニアの経歴',
-}
+export const Route = createFileRoute('/career')({
+  head: () => ({
+    meta: [
+      { title: '経歴 | Docs Hub' },
+      {
+        name: 'description',
+        content:
+          'フロントエンドを軸に、設計から運用までを一貫して受けるフリーランスのエンジニアの経歴',
+      },
+    ],
+  }),
+  component: CareerPage,
+})
 
 const facts = ['屋号 Gerunda', '個人事業主', '2018年開業', 'フロントエンド']
 
@@ -155,7 +163,7 @@ function MigrationFlow({ items }: { items: { from: string; to: string }[] }) {
   )
 }
 
-export default function CareerPage() {
+function CareerPage() {
   return (
     <div className="flex flex-col gap-16">
       <Hero

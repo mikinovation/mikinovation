@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import { createFileRoute } from '@tanstack/react-router'
 
 import { Section } from '@/components/doc'
 import { Badge, CardGrid, DocCard, Hero } from '@/components/doc-page'
@@ -10,10 +10,18 @@ import {
   reviewIntervalMonths,
 } from '@/lib/docs'
 
-export const metadata: Metadata = {
-  title: '見直し | Docs Hub',
-  description: '各文書の更新日と、次に見直す時期の一覧',
-}
+export const Route = createFileRoute('/review')({
+  head: () => ({
+    meta: [
+      { title: '見直し | Docs Hub' },
+      {
+        name: 'description',
+        content: '各文書の更新日と、次に見直す時期の一覧',
+      },
+    ],
+  }),
+  component: ReviewPage,
+})
 
 function ReviewCard({ doc }: { doc: ReviewDoc }) {
   return (
@@ -28,7 +36,7 @@ function ReviewCard({ doc }: { doc: ReviewDoc }) {
   )
 }
 
-export default function ReviewPage() {
+function ReviewPage() {
   const docs = listDocsByReview()
   const overdue = docs.filter((doc) => doc.review.overdue)
   const upcoming = docs.filter((doc) => !doc.review.overdue)

@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import type { ReactNode } from 'react'
 
 import { SiteLink } from '@/components/site-link'
@@ -18,7 +17,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-20 border-b border-line bg-base-900/70 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-6 px-5">
-        <Link
+        <SiteLink
           href="/"
           className="flex items-center gap-3 text-ink no-underline"
         >
@@ -28,7 +27,7 @@ export function SiteHeader() {
           <span className="text-[0.9375rem] font-semibold tracking-wide">
             Docs Hub
           </span>
-        </Link>
+        </SiteLink>
 
         <HeaderLink href="/career">Career</HeaderLink>
 
