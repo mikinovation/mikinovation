@@ -203,16 +203,6 @@ out/learn/0001_nextjs-app-router-static-export/__next._tree.txt
 out/learn/0001_nextjs-app-router-static-export/__next.$d$kind.$d$slug.__PAGE__.txt`}
         </Pre>
       </DocSection>
-      <DocSection label="Open questions" title="残った疑問">
-        <Prose>
-          同梱のドキュメントには <Code>__next._full.txt</Code>、
-          <Code>__next._index.txt</Code>、<Code>__next._tree.txt</Code>{' '}
-          という命名の説明がなく、使い分けはこの文書では確かめていない。
-          クライアント遷移のときにどれが取得されるのかも、ブラウザの通信を見ていないため確かめていない。
-          GitHub Pages が拡張子のない <Code>/learn/0001_...</Code> を{' '}
-          <Code>.html</Code> にどう結び付けているのかも調べていない。
-        </Prose>
-      </DocSection>
       <DocSection label="Sources" title="出典">
         <Sources
           items={[

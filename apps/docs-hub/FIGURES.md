@@ -55,7 +55,7 @@ export default function Body() {
 
 - `attributes` には `更新日` を `YYYY-MM-DD` で入れ、文書を更新するたびに書き換える。`決定日` がある ADR は、それが基準日になるため `更新日` を省ける。見直しの一覧（`/review`）はこの日付から期限を決めるため、日付がない文書は一覧に出ない。
 - 学習ノートの `attributes` は `読者`、`状態`、`更新日` とし、`状態` には `学習中` か `一巡した` を入れる。採用したかどうかは書かない。
-- 節の `label` は背景 Context、制約 Constraints、決定 Decision、決定理由 Rationale、代替案 Alternatives、結果 Consequences、出典 Sources、課題 Problem、解決策 Solution のように決まっている。学習ノートでは、動機 Motivation、要点 Summary、検証 Verification、残った疑問 Open questions、出典 Sources を使う。
+- 節の `label` は背景 Context、制約 Constraints、決定 Decision、決定理由 Rationale、代替案 Alternatives、結果 Consequences、出典 Sources、課題 Problem、解決策 Solution のように決まっている。学習ノートでは、動機 Motivation、要点 Summary、検証 Verification、出典 Sources を使う。
 - 列挙は箇条書きにしない。分類、対比、流れ、範囲のような構造があれば図（`FigGrid` や `FigSvg`）にし、構造がなければ表か文章にする。
 - 項目が「観点」と「内容」の組になる列挙は `DocTable` にする。得られることと引き受けることの対比は、`得られること` と `引き受けること` の2列にする。
 - 2件から3件の短い列挙は、`Prose` の1文にまとめる。短い語の並びは `FigChips` にする。
@@ -102,7 +102,6 @@ ADR は「決定」の節に1枚入れ、決定した仕組みの構成や流れ
 
 - 仕組みの構成要素と、その間を流れるデータや呼び出しの向き
 - 入力から出力に至る変換の段階
-- 手元で確かめた範囲と、確かめていない範囲の境目
 
 ## 書き方
 
