@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as R404RouteImport } from './routes/404'
 import { Route as CareerRouteImport } from './routes/career'
+import { Route as IssuesRouteImport } from './routes/issues'
 import { Route as RepositoriesRouteImport } from './routes/repositories'
 import { Route as ReviewRouteImport } from './routes/review'
 import { Route as KindSlugRouteImport } from './routes/$kind.$slug'
@@ -29,6 +30,11 @@ const R404Route = R404RouteImport.update({
 const CareerRoute = CareerRouteImport.update({
   id: '/career',
   path: '/career',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IssuesRoute = IssuesRouteImport.update({
+  id: '/issues',
+  path: '/issues',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RepositoriesRoute = RepositoriesRouteImport.update({
@@ -51,6 +57,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/404': typeof R404Route
   '/career': typeof CareerRoute
+  '/issues': typeof IssuesRoute
   '/repositories': typeof RepositoriesRoute
   '/review': typeof ReviewRoute
   '/$kind/$slug': typeof KindSlugRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/404': typeof R404Route
   '/career': typeof CareerRoute
+  '/issues': typeof IssuesRoute
   '/repositories': typeof RepositoriesRoute
   '/review': typeof ReviewRoute
   '/$kind/$slug': typeof KindSlugRoute
@@ -68,6 +76,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/404': typeof R404Route
   '/career': typeof CareerRoute
+  '/issues': typeof IssuesRoute
   '/repositories': typeof RepositoriesRoute
   '/review': typeof ReviewRoute
   '/$kind/$slug': typeof KindSlugRoute
@@ -75,14 +84,28 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/404' | '/career' | '/repositories' | '/review' | '/$kind/$slug'
+    | '/'
+    | '/404'
+    | '/career'
+    | '/issues'
+    | '/repositories'
+    | '/review'
+    | '/$kind/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/404' | '/career' | '/repositories' | '/review' | '/$kind/$slug'
+  to:
+    | '/'
+    | '/404'
+    | '/career'
+    | '/issues'
+    | '/repositories'
+    | '/review'
+    | '/$kind/$slug'
   id:
     | '__root__'
     | '/'
     | '/404'
     | '/career'
+    | '/issues'
     | '/repositories'
     | '/review'
     | '/$kind/$slug'
@@ -92,6 +115,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   R404Route: typeof R404Route
   CareerRoute: typeof CareerRoute
+  IssuesRoute: typeof IssuesRoute
   RepositoriesRoute: typeof RepositoriesRoute
   ReviewRoute: typeof ReviewRoute
   KindSlugRoute: typeof KindSlugRoute
@@ -118,6 +142,13 @@ declare module '@tanstack/react-router' {
       path: '/career'
       fullPath: '/career'
       preLoaderRoute: typeof CareerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/issues': {
+      id: '/issues'
+      path: '/issues'
+      fullPath: '/issues'
+      preLoaderRoute: typeof IssuesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/repositories': {
@@ -148,6 +179,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   R404Route: R404Route,
   CareerRoute: CareerRoute,
+  IssuesRoute: IssuesRoute,
   RepositoriesRoute: RepositoriesRoute,
   ReviewRoute: ReviewRoute,
   KindSlugRoute: KindSlugRoute,

@@ -35,6 +35,8 @@ export function SiteHeader() {
 
         <HeaderLink href="/review">Review</HeaderLink>
 
+        <HeaderLink href="/issues">Issues</HeaderLink>
+
         <div className="ml-auto hidden w-72 md:block">
           <button type="button" className="search-field" disabled>
             <span aria-hidden="true">⌕</span>

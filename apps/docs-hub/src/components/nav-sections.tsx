@@ -24,6 +24,7 @@ const pageItems: NavItem[] = [
   { href: '/career', number: 'CV', title: '経歴' },
   { href: '/repositories', number: 'REPO', title: 'リポジトリ' },
   { href: '/review', number: 'REV', title: '見直し' },
+  { href: '/issues', number: 'ISS', title: 'issue' },
 ]
 
 function NavDocLink({ item }: { item: NavItem }) {

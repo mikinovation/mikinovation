@@ -51,6 +51,17 @@ function Home() {
         </CardGrid>
       </Section>
 
+      <Section title="issue">
+        <CardGrid>
+          <DocCard
+            label="Issues"
+            title="issue 一覧"
+            note="このリポジトリで抱えている issue を、着手中、未着手、完了に分けて並べている。"
+            href="/issues"
+          />
+        </CardGrid>
+      </Section>
+
       {sections.map((section) => (
         <Section
           key={section.kind}

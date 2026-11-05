@@ -47,6 +47,19 @@ node scripts/build-content-index.mjs
 
 日本語の検査（textlint）は Markdown にしか当たらないため、文章を書くときは一時ファイルの Markdown で下書きして japanese-review を通し、本文をコンポーネントに移し替える。下書きはリポジトリに残さない。
 
+### issue
+
+issue は `src/content/issues.yaml` に置き、一覧（`/issues`）に状態ごとに並べる。読み書きするのは AI エージェントで、所有者はこのページから閲覧する。文書の仕組み（`src/content/index.ts`）は通さない。
+
+- 1件は `id`（4桁の連番の文字列）、`title`（短い1行）、`status`（`todo` / `doing` / `done`）の3つだけを持つ。作成日、優先度、関連する文書の番号、対象パッケージは持たせない
+- `id` は `done` を含めた既存の最大値 +1 を使い、欠番は埋めない。新しい issue は配列の末尾に足す
+- `status` は `doing` が着手しているもの、`todo` が未着手、`done` が完了である。`doing` はそのとき実際に手を付けているものに限り、同時に1件までを目安とする。`done` は PR をマージした時点で付ける
+- `done` の issue は消さずに残す。件数が増えて読み込みの負担になった時点で切る
+- 形の検証は `src/lib/issues-schema.ts` の `parseIssues` が担う。`id` が4桁の数字でない、`id` が重複する、`title` が空か60文字を超える、`status` が3値以外のいずれかに当たると検証に失敗する
+- `scripts/issues-plugin.ts` の Vite プラグインが、ビルド時に YAML を読んで `parseIssues` に通し、JavaScript のモジュールへ変換する。検証に失敗すると変換が失敗し、`pnpm build` が落ちる。prerender の最中に投げた例外は記録されるだけでビルドが成功してしまうため、検証を変換の時点に置いている
+- このサイトは公開されている。顧客名、非公開案件の内容、認証情報に触れる issue は、この仕組みに載せない
+- 状態のバッジは既存の色を流用する。`doing` は `stage`、`todo` は `plain`、`done` は `accepted` である
+
 ### ポートフォリオ
 
 経歴（`/career`）とリポジトリの紹介（`/repositories`）は文書の仕組みを通さず、ページの TSX にデータを直接書く。

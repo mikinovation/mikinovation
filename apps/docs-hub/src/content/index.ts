@@ -28,6 +28,7 @@ import * as adr0015 from './adr/0015_resolve-os-username-from-environment'
 import * as adr0016 from './adr/0016_provide-skills-to-claude-code-on-the-web'
 import * as adr0017 from './adr/0017_use-vitepress-for-document-hub'
 import * as adr0018 from './adr/0018_use-bigram-tokenizer-for-japanese-search'
+import * as adr0019 from './adr/0019_manage-issues-in-yaml'
 import * as design0001 from './design/0001_attendance-invoice'
 import * as learn0001 from './learn/0001_nextjs-app-router-static-export'
 
@@ -199,6 +200,12 @@ export const docEntries: DocEntry[] = [
     slug: '0018_use-bigram-tokenizer-for-japanese-search',
     ...adr0018.meta,
     Body: adr0018.default,
+  },
+  {
+    kind: 'adr',
+    slug: '0019_manage-issues-in-yaml',
+    ...adr0019.meta,
+    Body: adr0019.default,
   },
   {
     kind: 'design',
