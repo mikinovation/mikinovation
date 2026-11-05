@@ -1,4 +1,4 @@
-declare module '*.yaml' {
-  const data: unknown
-  export default data
+declare module '*/issues.yaml' {
+  const file: import('@/lib/issues-schema').IssueFile
+  export default file
 }

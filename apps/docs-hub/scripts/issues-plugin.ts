@@ -2,8 +2,9 @@ import type { Plugin } from 'vite'
 
 import { readFileSync } from 'node:fs'
 import { parse } from 'yaml'
+import { z } from 'zod'
 
-import { parseIssues } from '../src/lib/issues-schema'
+import { issueFileSchema } from '../src/lib/issues-schema'
 
 const suffix = 'src/content/issues.yaml'
 
@@ -15,10 +16,13 @@ export const issuesYaml = (): Plugin => ({
       return null
     }
 
-    const issues = parseIssues(parse(readFileSync(id, 'utf8')))
+    const result = issueFileSchema.safeParse(parse(readFileSync(id, 'utf8')))
+    if (!result.success) {
+      throw new Error(`${suffix}\n${z.prettifyError(result.error)}`)
+    }
 
     return {
-      code: `export default ${JSON.stringify({ issues })}`,
+      code: `export default ${JSON.stringify(result.data)}`,
       map: null,
     }
   },

@@ -7,10 +7,10 @@ import type { Issue, IssueStatus } from '@/lib/issues-schema'
 import {
   countIssues,
   issueStatusLabels,
+  issueStatusOrder,
   issueStatusTones,
   listIssues,
 } from '@/lib/issues'
-import { issueStatuses } from '@/lib/issues-schema'
 
 export const Route = createFileRoute('/issues')({
   head: () => ({
@@ -65,7 +65,7 @@ function IssuesPage() {
         lead="このリポジトリの issue を状態ごとに並べている。正本は src/content/issues.yaml で、タイトルと状態だけを持つ。"
         badges={
           <>
-            {issueStatuses.map((status) => (
+            {issueStatusOrder.map((status) => (
               <Badge key={status} tone={issueStatusTones[status]}>
                 {issueStatusLabels[status]} {listIssues(status).length}
               </Badge>
@@ -76,7 +76,7 @@ function IssuesPage() {
         note="該当する issue がない状態は、見出しを出さない。"
       />
 
-      {issueStatuses.map((status) => (
+      {issueStatusOrder.map((status) => (
         <IssueList key={status} status={status} />
       ))}
     </div>

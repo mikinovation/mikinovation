@@ -104,17 +104,19 @@ export default function Body() {
           個別のページは作らない。
         </Prose>
         <Prose>
-          形の検査は <Code>src/lib/issues-schema.ts</Code> の{' '}
-          <Code>parseIssues</Code> が行う。検査は、<Code>id</Code>{' '}
+          形の検査は <Code>src/lib/issues-schema.ts</Code> の zod
+          スキーマが行う。検査は、<Code>id</Code>{' '}
           が4桁の数字でない場合や重複する場合、<Code>title</Code>{' '}
           が空か60文字を超える場合、<Code>status</Code>{' '}
           が3値以外の場合に失敗する。
         </Prose>
         <Prose>
           <Code>scripts/issues-plugin.ts</Code> の Vite プラグインは、
-          ビルド時に YAML を <Code>parseIssues</Code> に通してから JavaScript
+          ビルド時に YAML を zod スキーマに通してから JavaScript
           のモジュールへ変換する。検査に失敗すると <Code>pnpm build</Code>{' '}
-          が終了コード1で止まる。
+          が終了コード1で止まる。表示側は zod
+          を読み込まず、型だけを使うため、クライアントのバンドルに zod
+          は入らない。
         </Prose>
       </DocSection>
       <DocSection label="Rationale" title="決定理由">

@@ -55,8 +55,9 @@ issue は `src/content/issues.yaml` に置き、一覧（`/issues`）に状態�
 - `id` は `done` を含めた既存の最大値 +1 を使い、欠番は埋めない。新しい issue は配列の末尾に足す
 - `status` は `doing` が着手しているもの、`todo` が未着手、`done` が完了である。`doing` はそのとき実際に手を付けているものに限り、同時に1件までを目安とする。`done` は PR をマージした時点で付ける
 - `done` の issue は消さずに残す。件数が増えて読み込みの負担になった時点で切る
-- 形の検証は `src/lib/issues-schema.ts` の `parseIssues` が担う。`id` が4桁の数字でない、`id` が重複する、`title` が空か60文字を超える、`status` が3値以外のいずれかに当たると検証に失敗する
-- `scripts/issues-plugin.ts` の Vite プラグインが、ビルド時に YAML を読んで `parseIssues` に通し、JavaScript のモジュールへ変換する。検証に失敗すると変換が失敗し、`pnpm build` が落ちる。prerender の最中に投げた例外は記録されるだけでビルドが成功してしまうため、検証を変換の時点に置いている
+- 形の検査は `src/lib/issues-schema.ts` の zod スキーマが担う。`id` が4桁の数字でない、`id` が重複する、`title` が空か60文字を超える、`status` が3値以外のいずれかに当たると検査に失敗する
+- `scripts/issues-plugin.ts` の Vite プラグインが、ビルド時に YAML を読んで zod スキーマに通し、検査を通った値を JavaScript のモジュールへ変換する。検査に失敗すると変換が失敗し、`pnpm build` が落ちる。prerender の最中に投げた例外は記録されるだけでビルドが成功してしまうため、検査を変換の時点に置いている
+- 表示側（`src/lib/issues.ts`、`src/routes/issues.tsx`）は zod を読み込まない。`src/types/yaml.d.ts` が YAML のモジュールに `IssueFile` 型を与えるため、型だけを使う。状態の並びは `issueStatusOrder` に持つ。zod の値を表示側から参照すると、クライアントのバンドルに zod が入る
 - このサイトは公開されている。顧客名、非公開案件の内容、認証情報に触れる issue は、この仕組みに載せない
 - 状態のバッジは既存の色を流用する。`doing` は `stage`、`todo` は `plain`、`done` は `accepted` である
 
