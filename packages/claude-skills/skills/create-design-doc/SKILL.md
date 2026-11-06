@@ -135,7 +135,7 @@ grilling が求める推奨回答は、提案であると明示する。ユー�
 - 設計書は前提の PRD を参照する。
 - リポジトリのファイルパスとコードの断片は本文に含めない。型や状態遷移のように、文章より正確に決定を表せるものは、決定に必要な部分だけを示してよい。
 
-設計書の保存先は、`apps/docs-hub/src/content/design/` に固定する。保存先をユーザーに問わず、japanese-review にも渡す。ディレクトリが無い場合は作る。
+設計書の保存先は、`apps/docs-hub/src/content/design/` に固定する。保存先をユーザーに問わず、japanese-review にも渡す。ディレクトリがない場合は作る。
 
 設計書が属するリポジトリを決め、`meta` の `repository` に書く。使える ID は `apps/docs-hub/src/lib/repositories.ts` の `repositoryIds` にある値だけで、前提にした PRD と ADR の `repository` に合わせる。判断できないときだけユーザーに聞く。
 
