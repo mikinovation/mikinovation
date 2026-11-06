@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Section } from '@/components/doc'
 import { Badge, CardGrid, DocCard, Hero } from '@/components/doc-page'
-import { docKindLabels, listAllDocs, listDocsByRepository } from '@/lib/docs'
+import { docKindLabels, listDocsByRepository } from '@/lib/docs'
 import { listRepositories } from '@/lib/repositories'
 
 export const Route = createFileRoute('/repositories')({
@@ -20,14 +20,17 @@ export const Route = createFileRoute('/repositories')({
 
 function RepositoriesPage() {
   const repositories = listRepositories()
-  const total = listAllDocs().length
+  const total = repositories.reduce(
+    (count, repository) => count + listDocsByRepository(repository.id).length,
+    0,
+  )
 
   return (
     <div className="flex flex-col gap-16">
       <Hero
         trail={[{ label: 'Docs Hub', href: '/' }, { label: 'Repositories' }]}
         title="リポジトリ"
-        lead="公開しているリポジトリの紹介。自分が毎日使う開発環境と、作業の途中で欲しくなって作った小さな道具が並ぶ。文書はリポジトリごとに書くため、各リポジトリの下にその文書を並べている。"
+        lead="公開しているリポジトリの紹介。自分が毎日使う開発環境と、作業の途中で欲しくなって作った小さな道具が並ぶ。PRD、ADR、設計書はリポジトリごとに書くため、各リポジトリの下に並べている。"
         badges={
           <>
             <Badge tone="stage">{repositories.length} repos</Badge>
@@ -36,7 +39,7 @@ function RepositoriesPage() {
             <Badge>Neovim プラグイン</Badge>
           </>
         }
-        note="各リポジトリの URL を押すと GitHub へ移動する。導入の手順と設定の項目は各リポジトリの README に置いている。"
+        note="学習ノートは特定のリポジトリに属さないため、ここには出ない。各リポジトリの URL を押すと GitHub へ移動する。導入の手順と設定の項目は各リポジトリの README に置いている。"
       />
 
       {repositories.map((repository) => {

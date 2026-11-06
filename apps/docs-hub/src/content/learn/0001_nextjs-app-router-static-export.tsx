@@ -8,18 +8,17 @@ import {
   Terms,
 } from '@/components/doc'
 import { FigArrow, FigNode, FigSvg, Figure } from '@/components/figure'
-import type { DocMeta } from '@/lib/docs'
+import type { LearnMeta } from '@/lib/docs'
 
 export const meta = {
   title: 'App Router の静的書き出しが何を出力するか',
   lead: "Next.js 16 の App Router で output: 'export' を指定したとき、何が生成されるのかを docs-hub のビルド結果から確かめた。生成物は、初回表示用の HTML と、クライアント遷移用の RSC ペイロードに分かれる。",
-  repository: 'mikinovation',
   attributes: [
     { label: '読者', value: '開発者' },
     { label: '状態', value: '学習中' },
     { label: '更新日', value: '2026-11-02' },
   ],
-} satisfies DocMeta
+} satisfies LearnMeta
 
 export default function Body() {
   return (

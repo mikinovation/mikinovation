@@ -19,18 +19,25 @@ export type DocAttribute = {
   value: string
 }
 
-export type DocMeta = {
+export type LearnMeta = {
   title: string
   lead: string
-  repository: RepositoryId
   attributes: DocAttribute[]
 }
 
-export type DocEntry = DocMeta & {
-  kind: DocKind
+export type DocMeta = LearnMeta & {
+  repository: RepositoryId
+}
+
+type EntryOf<Meta, Kind> = Meta & {
+  kind: Kind
   slug: string
   Body: () => ReactNode
 }
+
+export type DocEntry =
+  | EntryOf<DocMeta, Exclude<DocKind, 'learn'>>
+  | EntryOf<LearnMeta, 'learn'>
 
 export type BadgeTone =
   | 'plain'
@@ -165,7 +172,7 @@ export const listDocs = (kind: DocKind): Doc[] =>
   docs.filter((doc) => doc.kind === kind)
 
 export const listDocsByRepository = (repository: RepositoryId): Doc[] =>
-  docs.filter((doc) => doc.repository === repository)
+  docs.filter((doc) => doc.kind !== 'learn' && doc.repository === repository)
 
 export const listAllDocs = (): Doc[] => docs
 

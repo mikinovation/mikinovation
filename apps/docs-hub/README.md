@@ -28,8 +28,10 @@ pnpm typecheck
 本文は Markdown ではなく、`src/components/doc.tsx` と `src/components/figure.tsx` のコンポーネントを組み合わせた TSX で書く。
 作成と更新は create-prd、create-adr、create-design-doc などのスキルが担い、保存先はスキル側にも書いてある。学習ノートは、プロダクトで採用したかどうかと関係なく技術の仕組みや考え方を学んだ記録を残す種類で、create-learning-note が担う。
 
-- 各文書は `meta`（タイトル、導入文、リポジトリ、属性）と、本文を返す既定の関数を export する。`meta` には `satisfies DocMeta` を付ける
-- 文書は1つのリポジトリに属する。`meta` の `repository` に `src/lib/repositories.ts` の `repositoryIds` にある ID を書き、型検査が未知の ID を弾く。どのリポジトリにも属さない共通の筆者の思想は文書にせず、別の種類として切り出す
+- 各文書は `meta`（タイトル、導入文、属性、PRD と ADR と設計書ではリポジトリ）と、本文を返す既定の関数を export する
+- PRD、ADR、設計書は1つのリポジトリに属する。`meta` の `repository` に `src/lib/repositories.ts` の `repositoryIds` にある ID を書き、`satisfies DocMeta` を付ける。型検査が、未知の ID と書き忘れを弾く
+- 学習ノートは技術の仕組みや考え方の記録で、特定のリポジトリに属さない。`repository` を持たず、`satisfies LearnMeta` を付ける。リポジトリの一覧にも出ない
+- どのリポジトリにも属さない共通の筆者の思想は、PRD や ADR にせず、別の種類として切り出す
 - `src/content/index.ts` は各文書の `meta` と本文を集めた配列で、`scripts/build-content-index.mjs` が `src/content/` を走査して生成する。手で書き足さない。種類のディレクトリがないときは0件として扱う
 - 一覧とメタ情報は `src/lib/docs.ts` が `src/content/index.ts` から組み立てる。`状態` と `段階` からバッジを決め、バッジと重ならない属性をヘッダーのチップに出す
 - 1件も文書がない種類は、トップページ（`src/routes/index.tsx`）とサイドバー（`src/components/site-nav.tsx`）に出さない。種類の定義（`docKinds`）は残す
@@ -69,7 +71,7 @@ issue は `src/content/issues.yaml` に置き、一覧（`/issues`）に状態�
 
 - 正本は `src/routes/career.tsx` と `src/lib/repositories.ts`
 - リポジトリの紹介は1件を `Repository` 型の値として並べ、ID、名前、種別、公開年、1〜2文の説明、技術、GitHub の URL を持つ。ID は `repositoryIds` の値で、文書の `repository` から参照される
-- `/repositories` はリポジトリごとに節を作り、説明と技術と GitHub の URL を面に出し、その下にそのリポジトリに属する文書のカードを並べる。文書がないリポジトリは、その旨を1行だけ出す
+- `/repositories` はリポジトリごとに節を作り、説明と技術と GitHub の URL を面に出し、その下にそのリポジトリに属する文書のカードを並べる。文書がないリポジトリは、その旨を1行だけ出す。学習ノートはリポジトリに属さないため並ばない
 - 文書とリポジトリの紐づけはリポジトリから文書への片方向で、文書のページにリポジトリは出さない。詳しい説明は各リポジトリの README に任せる
 - 表示には文書と同じ `src/components/doc.tsx` と `src/components/figure.tsx` のコンポーネントを使う
 - ページを足したときは、ヘッダー（`src/components/site-header.tsx`）とサイドバー（`src/components/nav-sections.tsx`）にもリンクを足す

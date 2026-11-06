@@ -92,7 +92,7 @@ japanese-review が扱うのは下書きの Markdown だけである。TSX へ�
 ls apps/docs-hub/src/content/learn | sed -n 's/^\([0-9]\{4\}\)_.*/\1/p' | sort | tail -n 1
 ```
 
-ノートが属するリポジトリを決め、`meta` の `repository` に書く。使える ID は `apps/docs-hub/src/lib/repositories.ts` の `repositoryIds` にある値だけで、確かめた結果を取った場所、または当てはめた具体例があるリポジトリから決める。判断できないときだけユーザーに聞く。
+学習ノートはリポジトリに属さない。`meta` に `repository` を持たせず、`satisfies LearnMeta` を付ける。
 
 属性、節の `label`、図の決まりについては、`apps/docs-hub/FIGURES.md` の学習ノートの項が正本である。この規約に従って書くことを japanese-review に渡す。独自の用語を使う場合だけ、本文の冒頭に `Terms` を置く。
 
