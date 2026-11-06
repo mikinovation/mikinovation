@@ -8,16 +8,18 @@ import {
   Sources,
 } from '@/components/doc'
 import { FigArrow, FigNode, FigNote, FigSvg, Figure } from '@/components/figure'
+import type { DocMeta } from '@/lib/docs'
 
 export const meta = {
   title: 'ドキュメントハブの日本語検索に文字 bigram のトークナイザーを使う',
   lead: 'ドキュメントハブで日本語の全文検索をどう実現するかの決定を記録する。VitePress 標準の検索を使い、トークナイザーを文字 bigram に差し替える。',
+  repository: 'mikinovation',
   attributes: [
     { label: '読者', value: '開発者' },
     { label: '状態', value: '採用' },
     { label: '決定日', value: '2026-10-06' },
   ],
-}
+} satisfies DocMeta
 
 export default function Body() {
   return (

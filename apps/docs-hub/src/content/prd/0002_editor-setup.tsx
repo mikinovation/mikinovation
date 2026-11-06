@@ -9,10 +9,12 @@ import {
   Terms,
 } from '@/components/doc'
 import { FigCard, FigChips, FigGrid, Figure } from '@/components/figure'
+import type { DocMeta } from '@/lib/docs'
 
 export const meta = {
   title: 'エディターの導入',
   lead: '所有者が、開発環境を導入するだけで、どのマシンでも同じ操作で使えるエディターを得られるようにするための要求と受入条件を定める。',
+  repository: 'mikinovation',
   attributes: [
     { label: '読者', value: '開発者' },
     {
@@ -21,7 +23,7 @@ export const meta = {
     },
     { label: '更新日', value: '2026-10-26' },
   ],
-}
+} satisfies DocMeta
 
 export default function Body() {
   return (

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 
 import { docEntries } from '@/content'
+import type { RepositoryId } from '@/lib/repositories'
 
 export const docKinds = ['prd', 'adr', 'design', 'learn'] as const
 
@@ -18,12 +19,16 @@ export type DocAttribute = {
   value: string
 }
 
-export type DocEntry = {
-  kind: DocKind
-  slug: string
+export type DocMeta = {
   title: string
   lead: string
+  repository: RepositoryId
   attributes: DocAttribute[]
+}
+
+export type DocEntry = DocMeta & {
+  kind: DocKind
+  slug: string
   Body: () => ReactNode
 }
 
@@ -158,6 +163,9 @@ export const docRefHref = (kind: string, number: string): string | undefined =>
 
 export const listDocs = (kind: DocKind): Doc[] =>
   docs.filter((doc) => doc.kind === kind)
+
+export const listDocsByRepository = (repository: RepositoryId): Doc[] =>
+  docs.filter((doc) => doc.repository === repository)
 
 export const listAllDocs = (): Doc[] => docs
 

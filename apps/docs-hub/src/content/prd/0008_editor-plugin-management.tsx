@@ -9,10 +9,12 @@ import {
   Terms,
 } from '@/components/doc'
 import { FigArrow, FigNode, FigSvg, Figure } from '@/components/figure'
+import type { DocMeta } from '@/lib/docs'
 
 export const meta = {
   title: 'エディターのプラグイン管理',
   lead: '所有者が、どのマシンでも同じ版のプラグインを揃え、版を上げる時期を自分で決められるようにするための要求と受入条件を定める。',
+  repository: 'mikinovation',
   attributes: [
     { label: '読者', value: '開発者' },
     {
@@ -21,7 +23,7 @@ export const meta = {
     },
     { label: '更新日', value: '2026-10-26' },
   ],
-}
+} satisfies DocMeta
 
 export default function Body() {
   return (

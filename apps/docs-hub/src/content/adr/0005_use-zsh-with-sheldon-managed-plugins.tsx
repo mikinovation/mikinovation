@@ -8,16 +8,18 @@ import {
   Sources,
 } from '@/components/doc'
 import { FigArrow, FigNode, FigSvg, Figure } from '@/components/figure'
+import type { DocMeta } from '@/lib/docs'
 
 export const meta = {
   title: 'シェルに zsh を使い、プラグインを sheldon で管理する',
   lead: 'シェルとして zsh を採用し、設定を Home Manager で生成し、プラグインの取得を sheldon に任せるという決定を記録する。',
+  repository: 'mikinovation',
   attributes: [
     { label: '読者', value: '開発者' },
     { label: '状態', value: '採用' },
     { label: '決定日', value: '2026-09-27' },
   ],
-}
+} satisfies DocMeta
 
 export default function Body() {
   return (

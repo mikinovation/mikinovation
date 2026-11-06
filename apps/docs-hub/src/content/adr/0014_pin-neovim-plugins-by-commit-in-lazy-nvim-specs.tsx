@@ -9,17 +9,19 @@ import {
   Sources,
 } from '@/components/doc'
 import { FigArrow, FigNode, FigSvg, Figure } from '@/components/figure'
+import type { DocMeta } from '@/lib/docs'
 
 export const meta = {
   title:
     'Neovim のプラグインを lazy.nvim で管理し、版を各プラグインの定義の commit で固定して Renovate で更新を知らせる',
   lead: 'Neovim のプラグインの取得と読み込みを lazy.nvim に任せ、各プラグインの版を定義の commit で固定して定義を版の記録とし、新しい版を Renovate で週に1回まとめて知らせるという決定を記録する。',
+  repository: 'mikinovation',
   attributes: [
     { label: '読者', value: '開発者' },
     { label: '状態', value: '採用' },
     { label: '決定日', value: '2026-10-04' },
   ],
-}
+} satisfies DocMeta
 
 export default function Body() {
   return (

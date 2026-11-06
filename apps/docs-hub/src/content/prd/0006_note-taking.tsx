@@ -21,10 +21,12 @@ import {
   FigSvg,
   Figure,
 } from '@/components/figure'
+import type { DocMeta } from '@/lib/docs'
 
 export const meta = {
   title: 'ノートとタスクの管理',
   lead: 'リポジトリの所有者が、エディターの中でナレッジノートと開発チケットを管理するための要求と受入条件を定める。ノートを後から探しやすくし、自分が手を動かすべきチケットを一目で判別できるようにする。',
+  repository: 'mikinovation',
   attributes: [
     { label: '読者', value: '開発者' },
     {
@@ -33,7 +35,7 @@ export const meta = {
     },
     { label: '更新日', value: '2026-10-26' },
   ],
-}
+} satisfies DocMeta
 
 export default function Body() {
   return (

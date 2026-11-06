@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { readdirSync, writeFileSync } from 'node:fs'
+import { existsSync, readdirSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -12,8 +12,14 @@ const contentRoot = join(
 
 const kinds = ['prd', 'adr', 'design', 'learn']
 
+const namesOf = (kind) => {
+  const directory = join(contentRoot, kind)
+
+  return existsSync(directory) ? readdirSync(directory) : []
+}
+
 const docs = kinds.flatMap((kind) =>
-  readdirSync(join(contentRoot, kind))
+  namesOf(kind)
     .filter((name) => name.endsWith('.tsx'))
     .toSorted()
     .map((name) => ({

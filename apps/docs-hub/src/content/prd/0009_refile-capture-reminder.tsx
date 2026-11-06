@@ -18,10 +18,12 @@ import {
   FigSvg,
   Figure,
 } from '@/components/figure'
+import type { DocMeta } from '@/lib/docs'
 
 export const meta = {
   title: 'refile.org への定期的なメモの促し',
   lead: '所有者が、作業中に考えたことや気付きを refile.org に書かないまま忘れてしまう課題について、問題と仮説を整理し、まず中断の小さい通知で解くための要求と受入条件を定める。',
+  repository: 'mikinovation',
   attributes: [
     { label: '読者', value: '開発者' },
     {
@@ -30,7 +32,7 @@ export const meta = {
     },
     { label: '更新日', value: '2026-10-26' },
   ],
-}
+} satisfies DocMeta
 
 export default function Body() {
   return (

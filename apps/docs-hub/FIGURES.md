@@ -4,20 +4,22 @@
 
 ## 本文
 
-本文は Markdown ではなく、`src/components/doc.tsx` のコンポーネントで組む。各文書は `meta` と本文の関数を export する。
+本文は Markdown ではなく、`src/components/doc.tsx` のコンポーネントで組む。各文書は `meta` と本文の関数を export する。`meta` は `satisfies DocMeta` で型を検査し、`repository` にその文書が属するリポジトリの ID を書く。ID は `src/lib/repositories.ts` の `repositoryIds` にある値だけが使える。
 
 ```tsx
 import { Code, DocSection, DocTable, Prose } from '@/components/doc'
+import type { DocMeta } from '@/lib/docs'
 
 export const meta = {
   title: '端末多重化ツールに herdr を使う',
   lead: 'この決定を記録する。',
+  repository: 'mikinovation',
   attributes: [
     { label: '読者', value: '開発者' },
     { label: '状態', value: '採用' },
     { label: '決定日', value: '2026-10-26' },
   ],
-}
+} satisfies DocMeta
 
 export default function Body() {
   return (

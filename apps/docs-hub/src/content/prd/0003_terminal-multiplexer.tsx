@@ -17,10 +17,12 @@ import {
   FigSvg,
   Figure,
 } from '@/components/figure'
+import type { DocMeta } from '@/lib/docs'
 
 export const meta = {
   title: '端末多重化ツールの導入',
   lead: '所有者が、複数のエージェントを同時に走らせながら、どれに手を入れるべきかを一画面で判断できるようにするための要求と受入条件を定める。',
+  repository: 'mikinovation',
   attributes: [
     { label: '読者', value: '開発者' },
     {
@@ -29,7 +31,7 @@ export const meta = {
     },
     { label: '更新日', value: '2026-10-26' },
   ],
-}
+} satisfies DocMeta
 
 export default function Body() {
   return (

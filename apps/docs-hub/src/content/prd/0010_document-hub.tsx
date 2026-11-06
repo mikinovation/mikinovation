@@ -20,10 +20,12 @@ import {
   FigSvg,
   Figure,
 } from '@/components/figure'
+import type { DocMeta } from '@/lib/docs'
 
 export const meta = {
   title: 'ドキュメントハブ',
   lead: 'docs/ の文書を探しにくく、関連する文書をたどりにくいという課題について、問題と仮説を整理し、何を解決し何を解決しないかを定める。そのうえで、Web 上の専用サイトで解くための要求を定める。',
+  repository: 'mikinovation',
   attributes: [
     { label: '読者', value: '開発者' },
     {
@@ -32,7 +34,7 @@ export const meta = {
     },
     { label: '更新日', value: '2026-10-26' },
   ],
-}
+} satisfies DocMeta
 
 export default function Body() {
   return (
@@ -54,7 +56,7 @@ export default function Body() {
             description: (
               <>
                 本文中で別の文書を指す表記。「
-                <DocRef kind="ADR" number="0007" />
+                <DocRef kind="ADR" number="0001" />
                 」「
                 <DocRef kind="PRD" number="0004" />
                 」のように、文書の種類と番号で書く。

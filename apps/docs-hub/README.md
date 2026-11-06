@@ -28,9 +28,11 @@ pnpm typecheck
 本文は Markdown ではなく、`src/components/doc.tsx` と `src/components/figure.tsx` のコンポーネントを組み合わせた TSX で書く。
 作成と更新は create-prd、create-adr、create-design-doc などのスキルが担い、保存先はスキル側にも書いてある。学習ノートは、プロダクトで採用したかどうかと関係なく技術の仕組みや考え方を学んだ記録を残す種類で、create-learning-note が担う。
 
-- 各文書は `meta`（タイトル、導入文、属性）と、本文を返す既定の関数を export する
-- `src/content/index.ts` は各文書の `meta` と本文を集めた配列で、`scripts/build-content-index.mjs` が `src/content/` を走査して生成する。手で書き足さない
+- 各文書は `meta`（タイトル、導入文、リポジトリ、属性）と、本文を返す既定の関数を export する。`meta` には `satisfies DocMeta` を付ける
+- 文書は1つのリポジトリに属する。`meta` の `repository` に `src/lib/repositories.ts` の `repositoryIds` にある ID を書き、型検査が未知の ID を弾く。どのリポジトリにも属さない横断的な思想は文書にせず、別の種類として切り出す
+- `src/content/index.ts` は各文書の `meta` と本文を集めた配列で、`scripts/build-content-index.mjs` が `src/content/` を走査して生成する。手で書き足さない。種類のディレクトリが無いときは0件として扱う
 - 一覧とメタ情報は `src/lib/docs.ts` が `src/content/index.ts` から組み立てる。`状態` と `段階` からバッジを決め、バッジと重ならない属性をヘッダーのチップに出す
+- 1件も文書が無い種類は、トップページ（`src/routes/index.tsx`）とサイドバー（`src/components/site-nav.tsx`）に出さない。種類の定義（`docKinds`）は残す
 - ページは `src/routes/$kind.$slug.tsx` が描画する。URL は `/<種類>/<ファイル名>` で、prerender がリンクをたどって全件を静的に書き出す
 - 本文の節、箇条書き、表、要求、代替案、出典は `src/components/doc.tsx`、図は `src/components/figure.tsx` を使う。書き方は `FIGURES.md` に定める
 - 見直しの一覧（`/review`）は、各文書の `更新日`（ADR は `決定日`）から `src/lib/docs.ts` の `reviewIntervalMonths` か月後を期限として並べる。期限を過ぎたかどうかはビルド時の日付で決まるため、判定は再デプロイで更新される
@@ -65,9 +67,10 @@ issue は `src/content/issues.yaml` に置き、一覧（`/issues`）に状態�
 
 経歴（`/career`）とリポジトリの紹介（`/repositories`）は文書の仕組みを通さず、ページの TSX にデータを直接書く。
 
-- 正本は `src/routes/career.tsx` と `src/routes/repositories.tsx`
-- リポジトリの紹介は1件を `Repository` 型の値として並べ、種別、公開年、1〜2文の説明、技術、GitHub の URL を持つ
-- リポジトリは `doc-card` の小さなカードで一覧に並べ、カード自体を GitHub への外部リンクにする。詳しい説明は各リポジトリの README に任せる
+- 正本は `src/routes/career.tsx` と `src/lib/repositories.ts`
+- リポジトリの紹介は1件を `Repository` 型の値として並べ、ID、名前、種別、公開年、1〜2文の説明、技術、GitHub の URL を持つ。ID は `repositoryIds` の値で、文書の `repository` から参照される
+- `/repositories` はリポジトリごとに節を作り、説明と技術と GitHub の URL を面に出し、その下にそのリポジトリに属する文書のカードを並べる。文書が無いリポジトリは、その旨を1行だけ出す
+- 文書とリポジトリの紐づけはリポジトリから文書への片方向で、文書のページにリポジトリは出さない。詳しい説明は各リポジトリの README に任せる
 - 表示には文書と同じ `src/components/doc.tsx` と `src/components/figure.tsx` のコンポーネントを使う
 - ページを足したときは、ヘッダー（`src/components/site-header.tsx`）とサイドバー（`src/components/nav-sections.tsx`）にもリンクを足す
 
@@ -90,4 +93,7 @@ issue は `src/content/issues.yaml` に置き、一覧（`/issues`）に状態�
 - 全文検索（PRD 0010 の機能要求2）
 - ポートフォリオの範囲。PRD 0010 はドキュメントのみを対象としており、経歴とリポジトリの紹介を載せる範囲は未反映
 - テストケース（`src/content/test/`）と計画（`src/content/plan/`）の表示。この2種類は `.md` のまま運用するため、一覧に出ない
+- 文書とリポジトリの紐づけは PRD 0010 と ADR に未反映。要求と決定の記録を足す必要がある
+- リポジトリに属さない筆者の思想を置く種類は未実装。該当する文書が出た時点で足す
+- 設計書は0件。kintai を作らないと決めたため、その文書（PRD 0007、ADR 0007〜0013、設計書 0001）を削除した。ADR と PRD の番号は欠番のまま詰めない
 - PRD 0010 と ADR 0017・0018 は、正本をリポジトリルートの `docs/` の Markdown とし、サイトの生成に VitePress を使うと決めている。現状は `src/content/` の TSX と TanStack Start でどちらとも違うため、決定の記録を置き換える必要がある

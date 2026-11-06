@@ -8,16 +8,18 @@ import {
   Sources,
 } from '@/components/doc'
 import { FigCard, FigChips, FigGrid, Figure } from '@/components/figure'
+import type { DocMeta } from '@/lib/docs'
 
 export const meta = {
   title: '端末多重化ツールに herdr を使う',
   lead: '端末多重化ツールとして herdr を採用し、設定を Home Manager で管理し、Neovim から herdr のエージェントへ送る仕組みを自前で実装するという決定を記録する。',
+  repository: 'mikinovation',
   attributes: [
     { label: '読者', value: '開発者' },
     { label: '状態', value: '採用' },
     { label: '決定日', value: '2026-07-04' },
   ],
-}
+} satisfies DocMeta
 
 export default function Body() {
   return (
