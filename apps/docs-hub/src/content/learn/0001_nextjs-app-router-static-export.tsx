@@ -8,6 +8,7 @@ import {
   Terms,
 } from '@/components/doc'
 import { FigArrow, FigNode, FigSvg, Figure } from '@/components/figure'
+import type { LearnMeta } from '@/lib/docs'
 
 export const meta = {
   title: 'App Router の静的書き出しが何を出力するか',
@@ -17,7 +18,7 @@ export const meta = {
     { label: '状態', value: '学習中' },
     { label: '更新日', value: '2026-11-02' },
   ],
-}
+} satisfies LearnMeta
 
 export default function Body() {
   return (

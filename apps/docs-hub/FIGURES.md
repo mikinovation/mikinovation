@@ -4,20 +4,22 @@
 
 ## 本文
 
-本文は Markdown ではなく、`src/components/doc.tsx` のコンポーネントで組む。各文書は `meta` と本文の関数を export する。
+本文は Markdown ではなく、`src/components/doc.tsx` のコンポーネントで組む。各文書は `meta` と本文の関数を export する。PRD、ADR、設計書の `meta` は `satisfies DocMeta` で型を検査し、`repository` にその文書が属するリポジトリの ID を書く。ID は `src/lib/repositories.ts` の `repositoryIds` にある値だけが使える。学習ノートはリポジトリに属さないため、`repository` を持たず `satisfies LearnMeta` を付ける。
 
 ```tsx
 import { Code, DocSection, DocTable, Prose } from '@/components/doc'
+import type { DocMeta } from '@/lib/docs'
 
 export const meta = {
   title: '端末多重化ツールに herdr を使う',
   lead: 'この決定を記録する。',
+  repository: 'mikinovation',
   attributes: [
     { label: '読者', value: '開発者' },
     { label: '状態', value: '採用' },
     { label: '決定日', value: '2026-10-26' },
   ],
-}
+} satisfies DocMeta
 
 export default function Body() {
   return (
@@ -54,7 +56,7 @@ export default function Body() {
 | `DocRef` | ほかの文書への参照。`kind` と `number` を渡す |
 
 - `attributes` には `更新日` を `YYYY-MM-DD` で入れ、文書を更新するたびに書き換える。`決定日` がある ADR は、それが基準日になるため `更新日` を省ける。見直しの一覧（`/review`）はこの日付から期限を決めるため、日付がない文書は一覧に出ない。
-- 学習ノートの `attributes` は `読者`、`状態`、`更新日` とし、`状態` には `学習中` か `一巡した` を入れる。採用したかどうかは書かない。
+- 学習ノートの `attributes` は `読者`、`状態`、`更新日` とし、`状態` には `学習中` か `一巡した` を入れる。採用したかどうかは書かない。`repository` は持たせない。
 - 節の `label` は背景 Context、制約 Constraints、決定 Decision、決定理由 Rationale、代替案 Alternatives、結果 Consequences、出典 Sources、課題 Problem、解決策 Solution のように決まっている。学習ノートでは、動機 Motivation、要点 Summary、検証 Verification、出典 Sources を使う。
 - 列挙は箇条書きにしない。分類、対比、流れ、範囲のような構造があれば図（`FigGrid` や `FigSvg`）にし、構造がなければ表か文章にする。
 - 項目が「観点」と「内容」の組になる列挙は `DocTable` にする。得られることと引き受けることの対比は、`得られること` と `引き受けること` の2列にする。

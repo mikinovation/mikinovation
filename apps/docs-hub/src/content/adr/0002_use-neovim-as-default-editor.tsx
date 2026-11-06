@@ -17,16 +17,18 @@ import {
   FigSvg,
   Figure,
 } from '@/components/figure'
+import type { DocMeta } from '@/lib/docs'
 
 export const meta = {
   title: 'Neovim を既定エディターにする',
   lead: 'Neovim を既定エディターにし、本体、設定、周辺ツールを Home Manager で管理するという決定を記録する。導入範囲「最小限」には、メモとタスクの管理に絞った Neovim を含める。',
+  repository: 'mikinovation',
   attributes: [
     { label: '読者', value: '開発者' },
     { label: '状態', value: '採用' },
     { label: '決定日', value: '2026-09-28' },
   ],
-}
+} satisfies DocMeta
 
 export default function Body() {
   return (

@@ -135,7 +135,9 @@ grilling が求める推奨回答は、提案であると明示する。ユー�
 - 設計書は前提の PRD を参照する。
 - リポジトリのファイルパスとコードの断片は本文に含めない。型や状態遷移のように、文章より正確に決定を表せるものは、決定に必要な部分だけを示してよい。
 
-設計書の保存先は、`apps/docs-hub/src/content/design/` に固定する。保存先をユーザーに問わず、japanese-review にも渡す。
+設計書の保存先は、`apps/docs-hub/src/content/design/` に固定する。保存先をユーザーに問わず、japanese-review にも渡す。ディレクトリがない場合は作る。
+
+設計書が属するリポジトリを決め、`meta` の `repository` に書く。使える ID は `apps/docs-hub/src/lib/repositories.ts` の `repositoryIds` にある値だけで、前提にした PRD と ADR の `repository` に合わせる。判断できないときだけユーザーに聞く。
 
 新規の設計書のファイル名は `<番号>_<タイトル>.tsx` とし、この規則も japanese-review に渡す。番号は保存先ディレクトリにある既存の設計書の最大番号に 1 を足した4桁のゼロ埋め（最初は `0001`）とする。タイトルは設計の対象を表す英小文字の語とし、複数語はハイフンでつなぐ。例: `0001_attendance-invoice.tsx`
 

@@ -57,6 +57,8 @@ grilling の最終確認として、全9項目を一覧で示し、`TBD` の件�
 
 ADR の保存先は、`apps/docs-hub/src/content/adr/` に固定する。保存先をユーザーに問わず、japanese-review にも渡す。
 
+ADR が属するリポジトリを決め、`meta` の `repository` に書く。使える ID は `apps/docs-hub/src/lib/repositories.ts` の `repositoryIds` にある値だけで、決定が効くコードが置かれているリポジトリから決める。判断できないときだけユーザーに聞く。
+
 ADR には図を入れる。図は HTML と SVG で書き、Mermaid は使わない。図にする対象と、`apps/docs-hub/FIGURES.md` に従って書くことを japanese-review に渡す。
 
 出典は、参照先があるものをリンクで書く。ほかの文書は `/prd/0001_environment-setup` のようなサイト内のパスを、外部の資料は URL を指す。ヒアリングのように参照先がないものは、文字のままにする。本文中の文書参照は `<DocRef kind="PRD" number="0007" />` と書き、手でリンクにしない。

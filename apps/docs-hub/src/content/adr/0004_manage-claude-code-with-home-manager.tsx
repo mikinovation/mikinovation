@@ -15,16 +15,18 @@ import {
   FigLegend,
   Figure,
 } from '@/components/figure'
+import type { DocMeta } from '@/lib/docs'
 
 export const meta = {
   title: 'Claude Code を Home Manager で宣言的に管理する',
   lead: '端末で動かすエージェントとして Claude Code を採用し、本体の導入から設定、作業手順、参照の経路までを Home Manager で宣言するという決定を記録する。',
+  repository: 'mikinovation',
   attributes: [
     { label: '読者', value: '開発者' },
     { label: '状態', value: '採用' },
     { label: '決定日', value: '2026-09-30' },
   ],
-}
+} satisfies DocMeta
 
 export default function Body() {
   return (

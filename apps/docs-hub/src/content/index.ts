@@ -6,7 +6,6 @@ import * as prd0003 from './prd/0003_terminal-multiplexer'
 import * as prd0004 from './prd/0004_ai-agent'
 import * as prd0005 from './prd/0005_shell-setup'
 import * as prd0006 from './prd/0006_note-taking'
-import * as prd0007 from './prd/0007_attendance-invoice'
 import * as prd0008 from './prd/0008_editor-plugin-management'
 import * as prd0009 from './prd/0009_refile-capture-reminder'
 import * as prd0010 from './prd/0010_document-hub'
@@ -16,20 +15,12 @@ import * as adr0003 from './adr/0003_use-herdr-as-terminal-multiplexer'
 import * as adr0004 from './adr/0004_manage-claude-code-with-home-manager'
 import * as adr0005 from './adr/0005_use-zsh-with-sheldon-managed-plugins'
 import * as adr0006 from './adr/0006_use-orgmode-and-org-roam-for-notes-and-tasks'
-import * as adr0007 from './adr/0007_use-rust-and-typst-for-kintai-cli'
-import * as adr0008 from './adr/0008_call-freee-api-from-kintai'
-import * as adr0009 from './adr/0009_store-freee-credentials-in-1password-and-state-file'
-import * as adr0010 from './adr/0010_write-project-settings-in-toml'
-import * as adr0011 from './adr/0011_clock-in-with-nvim-orgmode-keymap'
-import * as adr0012 from './adr/0012_use-tokio-and-reqwest-for-kintai'
-import * as adr0013 from './adr/0013_split-kintai-into-library-and-cli-crates'
 import * as adr0014 from './adr/0014_pin-neovim-plugins-by-commit-in-lazy-nvim-specs'
 import * as adr0015 from './adr/0015_resolve-os-username-from-environment'
 import * as adr0016 from './adr/0016_provide-skills-to-claude-code-on-the-web'
 import * as adr0017 from './adr/0017_use-vitepress-for-document-hub'
 import * as adr0018 from './adr/0018_use-bigram-tokenizer-for-japanese-search'
 import * as adr0019 from './adr/0019_manage-issues-in-yaml'
-import * as design0001 from './design/0001_attendance-invoice'
 import * as learn0001 from './learn/0001_nextjs-app-router-static-export'
 
 export const docEntries: DocEntry[] = [
@@ -68,12 +59,6 @@ export const docEntries: DocEntry[] = [
     slug: '0006_note-taking',
     ...prd0006.meta,
     Body: prd0006.default,
-  },
-  {
-    kind: 'prd',
-    slug: '0007_attendance-invoice',
-    ...prd0007.meta,
-    Body: prd0007.default,
   },
   {
     kind: 'prd',
@@ -131,48 +116,6 @@ export const docEntries: DocEntry[] = [
   },
   {
     kind: 'adr',
-    slug: '0007_use-rust-and-typst-for-kintai-cli',
-    ...adr0007.meta,
-    Body: adr0007.default,
-  },
-  {
-    kind: 'adr',
-    slug: '0008_call-freee-api-from-kintai',
-    ...adr0008.meta,
-    Body: adr0008.default,
-  },
-  {
-    kind: 'adr',
-    slug: '0009_store-freee-credentials-in-1password-and-state-file',
-    ...adr0009.meta,
-    Body: adr0009.default,
-  },
-  {
-    kind: 'adr',
-    slug: '0010_write-project-settings-in-toml',
-    ...adr0010.meta,
-    Body: adr0010.default,
-  },
-  {
-    kind: 'adr',
-    slug: '0011_clock-in-with-nvim-orgmode-keymap',
-    ...adr0011.meta,
-    Body: adr0011.default,
-  },
-  {
-    kind: 'adr',
-    slug: '0012_use-tokio-and-reqwest-for-kintai',
-    ...adr0012.meta,
-    Body: adr0012.default,
-  },
-  {
-    kind: 'adr',
-    slug: '0013_split-kintai-into-library-and-cli-crates',
-    ...adr0013.meta,
-    Body: adr0013.default,
-  },
-  {
-    kind: 'adr',
     slug: '0014_pin-neovim-plugins-by-commit-in-lazy-nvim-specs',
     ...adr0014.meta,
     Body: adr0014.default,
@@ -206,12 +149,6 @@ export const docEntries: DocEntry[] = [
     slug: '0019_manage-issues-in-yaml',
     ...adr0019.meta,
     Body: adr0019.default,
-  },
-  {
-    kind: 'design',
-    slug: '0001_attendance-invoice',
-    ...design0001.meta,
-    Body: design0001.default,
   },
   {
     kind: 'learn',

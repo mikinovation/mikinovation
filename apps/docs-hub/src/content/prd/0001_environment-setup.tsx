@@ -13,10 +13,12 @@ import {
   FigSvg,
   Figure,
 } from '@/components/figure'
+import type { DocMeta } from '@/lib/docs'
 
 export const meta = {
   title: '開発環境の導入',
   lead: '所有者が、1回の操作でどのマシンにも同じ開発環境を導入できるようにするための要求と受入条件を定める。',
+  repository: 'mikinovation',
   attributes: [
     { label: '読者', value: 'PdM、開発者、QA担当、CS担当' },
     {
@@ -25,7 +27,7 @@ export const meta = {
     },
     { label: '更新日', value: '2026-10-26' },
   ],
-}
+} satisfies DocMeta
 
 export default function Body() {
   return (

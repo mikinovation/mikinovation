@@ -8,17 +8,19 @@ import {
   Sources,
 } from '@/components/doc'
 import { FigArrow, FigNode, FigSvg, Figure } from '@/components/figure'
+import type { DocMeta } from '@/lib/docs'
 
 export const meta = {
   title:
     'Nix のない環境ではプロジェクトスキルとセッション開始時のプラグイン導入で作業手順を配る',
   lead: 'Nix のない環境でも、このリポジトリで作業手順を呼び出せるようにする決定を記録する。自作の作業手順はプロジェクトスキルとして置き、外部の作業手順はセッションの開始時にプラグインとして導入する。',
+  repository: 'mikinovation',
   attributes: [
     { label: '読者', value: '開発者' },
     { label: '状態', value: '採用' },
     { label: '決定日', value: '2026-10-06' },
   ],
-}
+} satisfies DocMeta
 
 export default function Body() {
   return (

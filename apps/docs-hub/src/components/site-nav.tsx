@@ -2,15 +2,17 @@ import type { NavSection } from '@/components/nav-sections'
 import { NavSections } from '@/components/nav-sections'
 import { docKindLabels, docKinds, listDocs } from '@/lib/docs'
 
-const sections: NavSection[] = docKinds.map((kind) => ({
-  kind,
-  label: docKindLabels[kind],
-  items: listDocs(kind).map((doc) => ({
-    href: doc.href,
-    number: doc.number,
-    title: doc.title,
-  })),
-}))
+const sections: NavSection[] = docKinds
+  .map((kind) => ({
+    kind,
+    label: docKindLabels[kind],
+    items: listDocs(kind).map((doc) => ({
+      href: doc.href,
+      number: doc.number,
+      title: doc.title,
+    })),
+  }))
+  .filter((section) => section.items.length > 0)
 
 export function SiteNav() {
   return (
