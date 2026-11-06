@@ -1,0 +1,7 @@
+issues:
+  - id: '0001'
+    title: issues.yaml の運用を ADR に記録する
+    status: doing
+  - id: '0002'
+    title: issue 一覧の見た目を DESIGN.md の規約と突き合わせる
+    status: todo
