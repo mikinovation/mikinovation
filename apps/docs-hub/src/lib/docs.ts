@@ -41,6 +41,7 @@ export type DocEntry =
 
 export type BadgeTone =
   | 'plain'
+  | 'pending'
   | 'accepted'
   | 'rejected'
   | 'superseded'
