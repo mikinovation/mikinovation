@@ -3,6 +3,7 @@ import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import viteReact from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
+import { grillingsYaml } from './scripts/grillings-plugin'
 import { issuesYaml } from './scripts/issues-plugin'
 
 export default defineConfig({
@@ -12,6 +13,7 @@ export default defineConfig({
   },
   plugins: [
     issuesYaml(),
+    grillingsYaml(),
     tailwindcss(),
     tanstackStart({
       prerender: {

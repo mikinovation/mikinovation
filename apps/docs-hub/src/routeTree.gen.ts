@@ -12,10 +12,11 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as R404RouteImport } from './routes/404'
 import { Route as CareerRouteImport } from './routes/career'
-import { Route as IssuesRouteImport } from './routes/issues'
 import { Route as RepositoriesRouteImport } from './routes/repositories'
 import { Route as ReviewRouteImport } from './routes/review'
 import { Route as KindSlugRouteImport } from './routes/$kind.$slug'
+import { Route as IssuesIndexRouteImport } from './routes/issues.index'
+import { Route as IssuesIdRouteImport } from './routes/issues.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -30,11 +31,6 @@ const R404Route = R404RouteImport.update({
 const CareerRoute = CareerRouteImport.update({
   id: '/career',
   path: '/career',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IssuesRoute = IssuesRouteImport.update({
-  id: '/issues',
-  path: '/issues',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RepositoriesRoute = RepositoriesRouteImport.update({
@@ -52,34 +48,47 @@ const KindSlugRoute = KindSlugRouteImport.update({
   path: '/$kind/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IssuesIndexRoute = IssuesIndexRouteImport.update({
+  id: '/issues/',
+  path: '/issues/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IssuesIdRoute = IssuesIdRouteImport.update({
+  id: '/issues/$id',
+  path: '/issues/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/404': typeof R404Route
   '/career': typeof CareerRoute
-  '/issues': typeof IssuesRoute
   '/repositories': typeof RepositoriesRoute
   '/review': typeof ReviewRoute
   '/$kind/$slug': typeof KindSlugRoute
+  '/issues/$id': typeof IssuesIdRoute
+  '/issues/': typeof IssuesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/404': typeof R404Route
   '/career': typeof CareerRoute
-  '/issues': typeof IssuesRoute
   '/repositories': typeof RepositoriesRoute
   '/review': typeof ReviewRoute
   '/$kind/$slug': typeof KindSlugRoute
+  '/issues/$id': typeof IssuesIdRoute
+  '/issues': typeof IssuesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/404': typeof R404Route
   '/career': typeof CareerRoute
-  '/issues': typeof IssuesRoute
   '/repositories': typeof RepositoriesRoute
   '/review': typeof ReviewRoute
   '/$kind/$slug': typeof KindSlugRoute
+  '/issues/$id': typeof IssuesIdRoute
+  '/issues/': typeof IssuesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -87,38 +96,42 @@ export interface FileRouteTypes {
     | '/'
     | '/404'
     | '/career'
-    | '/issues'
     | '/repositories'
     | '/review'
     | '/$kind/$slug'
+    | '/issues/$id'
+    | '/issues/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/404'
     | '/career'
-    | '/issues'
     | '/repositories'
     | '/review'
     | '/$kind/$slug'
+    | '/issues/$id'
+    | '/issues'
   id:
     | '__root__'
     | '/'
     | '/404'
     | '/career'
-    | '/issues'
     | '/repositories'
     | '/review'
     | '/$kind/$slug'
+    | '/issues/$id'
+    | '/issues/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   R404Route: typeof R404Route
   CareerRoute: typeof CareerRoute
-  IssuesRoute: typeof IssuesRoute
   RepositoriesRoute: typeof RepositoriesRoute
   ReviewRoute: typeof ReviewRoute
   KindSlugRoute: typeof KindSlugRoute
+  IssuesIdRoute: typeof IssuesIdRoute
+  IssuesIndexRoute: typeof IssuesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -144,13 +157,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CareerRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/issues': {
-      id: '/issues'
-      path: '/issues'
-      fullPath: '/issues'
-      preLoaderRoute: typeof IssuesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/repositories': {
       id: '/repositories'
       path: '/repositories'
@@ -172,6 +178,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof KindSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/issues/': {
+      id: '/issues/'
+      path: '/issues'
+      fullPath: '/issues/'
+      preLoaderRoute: typeof IssuesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/issues/$id': {
+      id: '/issues/$id'
+      path: '/issues/$id'
+      fullPath: '/issues/$id'
+      preLoaderRoute: typeof IssuesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -179,10 +199,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   R404Route: R404Route,
   CareerRoute: CareerRoute,
-  IssuesRoute: IssuesRoute,
   RepositoriesRoute: RepositoriesRoute,
   ReviewRoute: ReviewRoute,
   KindSlugRoute: KindSlugRoute,
+  IssuesIdRoute: IssuesIdRoute,
+  IssuesIndexRoute: IssuesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

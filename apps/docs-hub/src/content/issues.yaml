@@ -23,6 +23,10 @@ issues:
     title: 計画の廃止を PRD 0010 と ADR 0019 に反映する
     status: proposed
     repository: mikinovation
+  - id: '0022'
+    title: 承認済み issue の論点出しを ADR 0019 に反映する
+    status: proposed
+    repository: mikinovation
   - id: '0003'
     title: ADR 0017 と 0018 を現在の構成に合わせて置き換える
     status: proposed
