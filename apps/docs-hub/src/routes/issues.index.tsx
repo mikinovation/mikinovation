@@ -28,35 +28,64 @@ export const Route = createFileRoute('/issues/')({
   component: IssuesPage,
 })
 
-const issueLinkClassName =
-  'text-neon-soft underline decoration-neon/45 decoration-1 underline-offset-[0.25em] transition-colors hover:text-white hover:decoration-neon'
+const issueRowClassName =
+  'flex items-center gap-3 border-b border-line px-5 py-3 group-last:border-b-0'
 
-function IssueRow({ issue }: { issue: Issue }) {
-  const href = hasGrilling(issue.id) ? `/issues/${issue.id}` : null
-
+function IssueRowContent({ issue, linked }: { issue: Issue; linked: boolean }) {
   return (
-    <li className="flex items-center gap-3 border-b border-line px-5 py-3 last:border-b-0">
-      <span className="font-mono text-xs text-ink-faint">
-        {href === null ? (
-          issue.id
-        ) : (
-          <SiteLink href={href} className={issueLinkClassName}>
-            {issue.id}
-          </SiteLink>
-        )}
+    <>
+      <span
+        className={
+          linked
+            ? 'font-mono text-xs text-neon-soft'
+            : 'font-mono text-xs text-ink-faint'
+        }
+      >
+        {issue.id}
       </span>
-      <span className="min-w-0 flex-1 text-ink-dim">
-        {href === null ? (
-          issue.title
-        ) : (
-          <SiteLink href={href} className={issueLinkClassName}>
-            {issue.title}
-          </SiteLink>
-        )}
+      <span
+        className={
+          linked
+            ? 'min-w-0 flex-1 text-ink underline decoration-neon/45 decoration-1 underline-offset-[0.25em] transition-colors group-hover:text-white group-hover:decoration-neon'
+            : 'min-w-0 flex-1 text-ink-dim'
+        }
+      >
+        {issue.title}
       </span>
       <span className="font-mono text-xs text-ink-faint">
         {issueRepositoryLabel(issue.repository)}
       </span>
+      {linked ? (
+        <span
+          aria-hidden="true"
+          className="font-mono text-xs text-neon-soft transition-transform group-hover:translate-x-0.5"
+        >
+          →
+        </span>
+      ) : null}
+    </>
+  )
+}
+
+function IssueRow({ issue }: { issue: Issue }) {
+  if (!hasGrilling(issue.id)) {
+    return (
+      <li className="group">
+        <div className={issueRowClassName}>
+          <IssueRowContent issue={issue} linked={false} />
+        </div>
+      </li>
+    )
+  }
+
+  return (
+    <li className="group">
+      <SiteLink
+        href={`/issues/${issue.id}`}
+        className={`${issueRowClassName} transition-colors hover:bg-neon/5`}
+      >
+        <IssueRowContent issue={issue} linked />
+      </SiteLink>
     </li>
   )
 }
@@ -100,7 +129,7 @@ function IssuesPage() {
             <Badge>{countIssues()} issues</Badge>
           </>
         }
-        note="承認待ちは、所有者が承認するまで着手しない。該当する issue がない状態は、見出しを出さない。承認済みの issue のうち、論点を出したものは id とタイトルがリンクになる。"
+        note="承認待ちは、所有者が承認するまで着手しない。該当する issue がない状態は、見出しを出さない。承認済みの issue のうち、論点を出したものは行全体がリンクになる。"
       />
 
       {issueStatusOrder.map((status) => (
