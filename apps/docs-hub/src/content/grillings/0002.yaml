@@ -1,0 +1,48 @@
+issueId: '0002'
+generatedAt: '2026-11-07'
+questions:
+  - id: q1
+    title: 一覧の1行をどの形で見せるか
+    question: '/issues は panel の中に li を並べ、border-b で区切っている。DESIGN.md は panel を読み物を1つ載せる面と定め、一覧には doc-card を当てているため、どちらに寄せるかを決める。'
+    options:
+      - 現在の行の形を保ち、DESIGN.md の Components に一覧の行の component を書き足す
+      - /review と同じ doc-card と CardGrid に置き換え、1件を1カードにする
+      - doc-body の表の見せ方に寄せ、table-head の見出しと line の区切りで組む
+    recommendation: 現在の行の形を保ち、DESIGN.md に一覧の行の component を書き足す
+    rationale: 1件は id とタイトルと repository の3項目しかなく、doc-card に載せると面が情報量に対して大きい。表にすると日本語のタイトルの折り返しで行の高さが揃わない。
+  - id: q2
+    title: 論点があることを静止時に示すか
+    question: 論点がある issue の id だけがリンクになるが、静止時は ink-faint のままで、hover で色が変わるまで押せることが分からない。
+    options:
+      - id を静止時から neon-soft にし、下線を引く
+      - 行の右端に論点のバッジを出し、id の色は変えない
+      - 行全体をリンクにし、doc-card と同じ hover の反応を付ける
+    recommendation: id を静止時から neon-soft にし、下線を引く
+    rationale: DESIGN.md がリンクに定めている見せ方と揃う。色の変化だけに頼ると、hover を使えない環境で押せる要素が分からない。
+  - id: q3
+    title: 生の余白をトークンに揃える範囲
+    question: 行の余白は px-5 py-3 で、DESIGN.md の card と panel のトークンにない値である。同じ生の値は repositories と文書のページにもある。
+    options:
+      - /issues と /issues/<id> だけをトークンに揃え、ほかのページは触らない
+      - 全ページの生の余白をトークンに揃え、DESIGN.md にない値を残さない
+      - 生の Tailwind の値を許すと DESIGN.md に書き、トークンは色と書体だけに限る
+    recommendation: /issues と /issues/<id> だけをトークンに揃える
+    rationale: 全ページを触ると差分が issue の範囲を超える。DESIGN.md は使う場面が書かれていない値を使ってよい値ではないと定めているため、許す側に倒す選択は取りにくい。
+    followUp: ほかのページの生の余白を別の issue として記録するかどうかを決める
+  - id: q4
+    title: 詳細ページも突き合わせに含めるか
+    question: 論点の詳細ページ（/issues/<id>）も panel に doc-body を入れ、生の余白で組んである。issue の表題は一覧だけを指している。
+    options:
+      - 一覧と詳細の両方を1つの PR で突き合わせる
+      - 一覧だけを直し、詳細は別の issue に分ける
+    recommendation: 一覧と詳細の両方を1つの PR で突き合わせる
+    rationale: 両者は panel と Badge と Section を共有し、片方だけ直すとページの間で面と行の見せ方がずれる。
+  - id: q5
+    title: DESIGN.md をどこまで書き足すか
+    question: 実装には DESIGN.md に書いていない振る舞いがある。panel の backdrop-filter と半透明の地色、doc-card の translateY、panel-glow の罫などで、どこまで記すかを決める。
+    options:
+      - 一覧で使う component（panel、doc-card、badge、label）の未記載分だけ書き足す
+      - 一覧で見つけた逸脱だけを記し、未記載の振る舞いは触らない
+      - 全 component を globals.css と1つずつ突き合わせ、DESIGN.md を全面的に直す
+    recommendation: 一覧で使う component の未記載分だけ書き足す
+    rationale: 全 component の洗い直しは DESIGN.md 全体の改訂になり、この issue の範囲を超える。一覧で使う範囲に限れば、突き合わせの結論が正本に残る。

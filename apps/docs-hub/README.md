@@ -64,9 +64,22 @@ issue は `src/content/issues.yaml` に置き、一覧（`/issues`）に状態�
 - 形の検査は `src/lib/issues-schema.ts` の zod スキーマが担う。`id` が4桁の数字でない、`id` が重複する、`title` が空か60文字を超える、`status` が4値以外、`repository` が `repositoryIds` と `common` のどれでもない、のいずれかに当たると検査に失敗する
 - `issues-schema.ts` から `repositories.ts` を相対パスで読んでいるのは、Vite の設定を読み込む文脈では `@/` の別名が解決されないためである
 - `scripts/issues-plugin.ts` の Vite プラグインが、ビルド時に YAML を読んで zod スキーマに通し、検査を通った値を JavaScript のモジュールへ変換する。検査に失敗すると変換が失敗し、`pnpm build` が落ちる。prerender の最中に投げた例外は記録されるだけでビルドが成功してしまうため、検査を変換の時点に置いている
-- 表示側（`src/lib/issues.ts`、`src/routes/issues.tsx`）は zod を読み込まない。`src/types/yaml.d.ts` が YAML のモジュールに `IssueFile` 型を与えるため、型だけを使う。状態の並びは `issueStatusOrder` に持つ。zod の値を表示側から参照すると、クライアントのバンドルに zod が入る
+- 表示側（`src/lib/issues.ts`、`src/routes/issues.index.tsx`）は zod を読み込まない。`src/types/yaml.d.ts` が YAML のモジュールに `IssueFile` 型を与えるため、型だけを使う。状態の並びは `issueStatusOrder` に持つ。zod の値を表示側から参照すると、クライアントのバンドルに zod が入る
 - このサイトは公開されている。顧客名、非公開案件の内容、認証情報に触れる issue は、この仕組みに載せない
 - 状態のバッジは `doing` が `stage`、`todo` が `plain`、`proposed` が `pending`（amber）、`done` が `accepted` である
+
+### issue の論点
+
+承認済み（`todo` と `doing`）の issue には、着手の前に所有者が決めることを候補と推奨案の形で並べた論点を持たせる。正本は `src/content/grillings/<id>.yaml` で、ファイル名は issue の id と同じにする。論点を書くのは AI のサブエージェントで、所有者は詳細ページ（`/issues/<id>`）から読み、選んだ候補を書き戻させる。扱いの手順は manage-issues スキルに置いてある。
+
+- 1件は `issueId`、`generatedAt`（生成した日）、`questions` を持つ。1問は `id`（`q` と数字）、`title`、`question`、`options`（2〜5個）、`recommendation` を必ず持ち、`rationale`、`followUp`（推奨案を採ったときに次に決めること）、`decision`（所有者が選んだ候補）は任意である
+- 1件の問数は6問までとする。それを超える論点が出る issue は、issue 自体が大きすぎる
+- 一覧（`/issues`）では、論点がある issue だけ `id` がリンクになる。論点がない issue はリンクを出さない
+- 形の検査は `src/lib/grillings-schema.ts` の zod スキーマが担い、`scripts/grillings-plugin.ts` の Vite プラグインがビルド時にディレクトリ内の全ファイルを通す。issue と同じ理由で、検査は変換の時点に置いている
+- 表示側（`src/lib/grillings.ts`）は `import.meta.glob` で全ファイルをまとめて読み、`issueId` で引く。zod は読み込まず型だけを使う
+- ファイル名と `issueId` のずれ、対応する issue がない孤児ファイルは、manage-issues の検査スクリプトが失敗にする。承認済みなのに論点がない issue は、承認の直後は正常な状態なので一覧に出すだけで失敗にしない
+- 見直し一覧（`/review`）には載せない。論点は文書ではなく、issue を消化した時点で役目が終わる
+- 公開してよい内容の決まりは issue と同じである。顧客名、非公開案件の内容、認証情報に触れる論点は書かない
 
 ### ポートフォリオ
 

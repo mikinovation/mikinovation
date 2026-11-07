@@ -31,3 +31,6 @@ export const listIssues = (status: IssueStatus): Issue[] =>
   issuesFile.issues.filter((issue) => issue.status === status)
 
 export const countIssues = (): number => issuesFile.issues.length
+
+export const findIssue = (id: string): Issue | null =>
+  issuesFile.issues.find((issue) => issue.id === id) ?? null
