@@ -244,12 +244,12 @@
       "create-branch" = ../../../../claude-skills/skills/create-branch;
       "create-design-doc" = ../../../../claude-skills/skills/create-design-doc;
       "create-learning-note" = ../../../../claude-skills/skills/create-learning-note;
-      "create-plan" = ../../../../claude-skills/skills/create-plan;
       "create-pr" = ../../../../claude-skills/skills/create-pr;
       "create-prd" = ../../../../claude-skills/skills/create-prd;
       "create-skill" = ../../../../claude-skills/skills/create-skill;
       "create-test-cases" = ../../../../claude-skills/skills/create-test-cases;
       "japanese-review" = ../../../../claude-skills/skills/japanese-review;
+      "manage-issues" = ../../../../claude-skills/skills/manage-issues;
       "nix-npm-update" = ./skills/nix-npm-update;
       "renovate-pr-summary" = ../../../../claude-skills/skills/renovate-pr-summary;
       "tanteki" = tanteki;

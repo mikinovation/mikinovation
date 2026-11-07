@@ -2,6 +2,84 @@ issues:
   - id: '0001'
     title: issues.yaml の運用を ADR に記録する
     status: doing
+    repository: mikinovation
   - id: '0002'
     title: issue 一覧の見た目を DESIGN.md の規約と突き合わせる
     status: todo
+    repository: mikinovation
+  - id: '0014'
+    title: プロフィールの README を書き直して docs-hub へ導く
+    status: proposed
+    repository: mikinovation
+  - id: '0006'
+    title: 全文検索を実装して検索欄を押せるようにする
+    status: proposed
+    repository: mikinovation
+  - id: '0020'
+    title: ADR 0019 に承認待ちの状態と優先度の規約を反映する
+    status: proposed
+    repository: mikinovation
+  - id: '0021'
+    title: 計画の廃止を PRD 0010 と ADR 0019 に反映する
+    status: proposed
+    repository: mikinovation
+  - id: '0003'
+    title: ADR 0017 と 0018 を現在の構成に合わせて置き換える
+    status: proposed
+    repository: mikinovation
+  - id: '0004'
+    title: 文書とリポジトリの紐づけを PRD 0010 と ADR に反映する
+    status: proposed
+    repository: mikinovation
+  - id: '0005'
+    title: ポートフォリオを載せる範囲を PRD 0010 に反映する
+    status: proposed
+    repository: mikinovation
+  - id: '0007'
+    title: main への push でも docs-hub の CI を流す
+    status: proposed
+    repository: mikinovation
+  - id: '0009'
+    title: 文書の索引の再生成漏れを CI で検出する
+    status: proposed
+    repository: mikinovation
+  - id: '0008'
+    title: docs-hub の lib に単体テストを入れる
+    status: proposed
+    repository: mikinovation
+  - id: '0010'
+    title: TSX で書いた本文に日本語の検査を当てる
+    status: proposed
+    repository: mikinovation
+  - id: '0013'
+    title: 文書の外部リンクの切れを CI で検査する
+    status: proposed
+    repository: mikinovation
+  - id: '0019'
+    title: スキルの SKILL.md の frontmatter を CI で検査する
+    status: proposed
+    repository: mikinovation
+  - id: '0011'
+    title: 各ワークフローの permissions と timeout を見直す
+    status: proposed
+    repository: mikinovation
+  - id: '0012'
+    title: 見直し一覧の期限を定期的な再デプロイで更新する
+    status: proposed
+    repository: mikinovation
+  - id: '0015'
+    title: docs-hub とリポジトリ全体のライセンスを決める
+    status: proposed
+    repository: mikinovation
+  - id: '0018'
+    title: 使っていない GitHub の issue テンプレートを整理する
+    status: proposed
+    repository: mikinovation
+  - id: '0016'
+    title: OG 画像とサイトマップと robots.txt を置く
+    status: proposed
+    repository: mikinovation
+  - id: '0017'
+    title: ink-faint のコントラスト比を測って DESIGN.md に書く
+    status: proposed
+    repository: mikinovation
