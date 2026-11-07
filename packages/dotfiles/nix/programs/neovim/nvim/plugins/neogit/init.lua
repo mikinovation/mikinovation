@@ -4,7 +4,7 @@ function neogit.config()
 	return {
 		"NeogitOrg/neogit",
 		branch = "master",
-		commit = "832a2db084ac25c2801fd73a3fab58f3c82ed2ec",
+		commit = "ba2f33b64b996ff5530c4c45a3c432fb63aaa95b",
 		cmd = { "Neogit", "NeogitResetState" },
 		dependencies = {
 			require("plugins.plenary").config(),

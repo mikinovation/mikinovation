@@ -4,7 +4,7 @@ function yanky.config()
 	return {
 		"gbprod/yanky.nvim",
 		branch = "main",
-		commit = "adcabd8512bead30184916fa9277e73c021ef099",
+		commit = "edcbe0f6d693b9e7860626094f886a2d79cfe63b",
 		event = "VeryLazy",
 		opts = {},
 		config = function()
