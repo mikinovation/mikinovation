@@ -15,6 +15,14 @@ issues:
     title: 全文検索を実装して検索欄を押せるようにする
     status: proposed
     repository: mikinovation
+  - id: '0029'
+    title: ADR の粒度の基準を決め直してガイドラインに反映する
+    status: proposed
+    repository: mikinovation
+  - id: '0032'
+    title: issue の優先度の付け方を見直して並べ直す
+    status: proposed
+    repository: mikinovation
   - id: '0020'
     title: ADR 0019 に承認待ちの状態と優先度の規約を反映する
     status: proposed
@@ -37,6 +45,10 @@ issues:
     repository: mikinovation
   - id: '0005'
     title: ポートフォリオを載せる範囲を PRD 0010 に反映する
+    status: proposed
+    repository: mikinovation
+  - id: '0027'
+    title: README の未対応節を issues.yaml に寄せて重複をなくす
     status: proposed
     repository: mikinovation
   - id: '0007'
@@ -63,6 +75,10 @@ issues:
     title: スキルの SKILL.md の frontmatter を CI で検査する
     status: proposed
     repository: mikinovation
+  - id: '0023'
+    title: Renovate の PR をまとめて週あたりの件数を減らす
+    status: proposed
+    repository: mikinovation
   - id: '0011'
     title: 各ワークフローの permissions と timeout を見直す
     status: proposed
@@ -79,6 +95,22 @@ issues:
     title: 使っていない GitHub の issue テンプレートを整理する
     status: proposed
     repository: mikinovation
+  - id: '0024'
+    title: docs-hub の左サイドメニューをなくす
+    status: proposed
+    repository: mikinovation
+  - id: '0025'
+    title: issue の論点の決定から着手用のプロンプトを生成する
+    status: proposed
+    repository: mikinovation
+  - id: '0026'
+    title: 形式手法とテストの関係を学習ノートにまとめる
+    status: proposed
+    repository: mikinovation
+  - id: '0030'
+    title: Pi のエージェントハーネスの設計を学習ノートにまとめる
+    status: proposed
+    repository: mikinovation
   - id: '0016'
     title: OG 画像とサイトマップと robots.txt を置く
     status: proposed
@@ -87,3 +119,11 @@ issues:
     title: ink-faint のコントラスト比を測って DESIGN.md に書く
     status: proposed
     repository: mikinovation
+  - id: '0028'
+    title: 使っていない src/content/tech ディレクトリを削除する
+    status: proposed
+    repository: mikinovation
+  - id: '0031'
+    title: 自作の Neovim プラグインを goda.vim で書き直す
+    status: proposed
+    repository: common
