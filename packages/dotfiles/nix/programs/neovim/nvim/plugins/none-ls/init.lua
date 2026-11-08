@@ -5,7 +5,7 @@ function noneLs.config()
 	return {
 		"nvimtools/none-ls.nvim",
 		branch = "main",
-		commit = "c4b82bb63b13856ba4d6b971b7aad3bb38fc6fe2",
+		commit = "0b281893e36fe147077b49f022bf9cd78af3ad12",
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = {
 			require("plugins.none-ls-extras").config(),
