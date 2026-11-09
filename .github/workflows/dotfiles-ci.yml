@@ -71,10 +71,21 @@ jobs:
       - uses: actions/checkout@v7.0.1
 
       - name: Install Neovim
-        uses: rhysd/action-setup-vim@v1.6.1
-        with:
-          neovim: true
-          version: v0.11.6
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NEOVIM_VERSION: v0.11.6
+          NEOVIM_ASSET: nvim-linux-x86_64.tar.gz
+        run: |
+          asset_id=$(gh api "repos/neovim/neovim/releases/tags/$NEOVIM_VERSION" \
+            --jq ".assets[] | select(.name == \"$NEOVIM_ASSET\") | .id")
+          curl -fsSL --retry 5 --retry-all-errors --retry-delay 10 \
+            -H "Accept: application/octet-stream" \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -o "$RUNNER_TEMP/$NEOVIM_ASSET" \
+            "https://api.github.com/repos/neovim/neovim/releases/assets/$asset_id"
+          tar -xzf "$RUNNER_TEMP/$NEOVIM_ASSET" -C "$RUNNER_TEMP"
+          "$RUNNER_TEMP/nvim-linux-x86_64/bin/nvim" --version | head -1
+          echo "$RUNNER_TEMP/nvim-linux-x86_64/bin" >> "$GITHUB_PATH"
 
       - name: Install luarocks and build dependencies
         run: |
