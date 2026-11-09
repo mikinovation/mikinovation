@@ -1,7 +1,7 @@
 issues:
   - id: '0001'
     title: issues.yaml の運用を ADR に記録する
-    status: doing
+    status: todo
     repository: mikinovation
   - id: '0002'
     title: issue 一覧の見た目を DESIGN.md の規約と突き合わせる
@@ -75,6 +75,10 @@ issues:
     title: スキルの SKILL.md の frontmatter を CI で検査する
     status: proposed
     repository: mikinovation
+  - id: '0033'
+    title: GitHub Codespaces を並列で動かせる devcontainer 構成を作る
+    status: todo
+    repository: mikinovation
   - id: '0023'
     title: Renovate の PR をまとめて週あたりの件数を減らす
     status: proposed
@@ -102,6 +106,10 @@ issues:
   - id: '0025'
     title: issue の論点の決定から着手用のプロンプトを生成する
     status: proposed
+    repository: mikinovation
+  - id: '0034'
+    title: issue 一覧でチェックした issue の状態更新プロンプトをコピーする
+    status: todo
     repository: mikinovation
   - id: '0026'
     title: 形式手法とテストの関係を学習ノートにまとめる
