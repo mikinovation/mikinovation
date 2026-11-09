@@ -38,7 +38,7 @@ ADR、PRD、設計書、学習ノート、テストケース、計画を読む�
 | flux | 第2のアクセント。グラデーションの終端にだけ使う |
 | mint | 状態が良いことを示す。ADR の採用 |
 | rose | 状態が否であることを示す。ADR の却下 |
-| amber | 注意を促す状態。ADR の置き換え |
+| amber | 注意を促す状態。ADR の置き換え、issue の承認待ち |
 
 ```yaml
 colors:
@@ -231,7 +231,7 @@ rounded:
 | header | 全ページの上端。ブランド、経歴へのリンク、検索欄、外部リンクを並べる |
 | panel | 読み物を1つ載せるとき。文書の本文を入れる |
 | doc-card | 文書やリポジトリを一覧で並べ、1件を開かせるとき |
-| badge | ADR の状態、PRD の段階、見直しの期限超過を、1語で示すとき |
+| badge | ADR の状態、PRD の段階、issue の状態、見直しの期限超過を、1語で示すとき |
 | nav-link | サイドバーと本文の下で、別の文書を選ばせるとき |
 | search-field | 検索を始めさせるとき。今は押せないボタンとして置く |
 | kbd | キーボードの操作を示すとき |
@@ -276,6 +276,9 @@ components:
     textColor: '{colors.ink-dim}'
     typography: '{typography.badge-mono}'
     rounded: '{rounded.full}'
+  badge-pending:
+    borderColor: '{colors.amber}'
+    textColor: '{colors.amber}'
   badge-accepted:
     borderColor: '{colors.mint}'
     textColor: '{colors.mint}'

@@ -1,6 +1,6 @@
 # claude-skills
 
-Claude Code skills for writing documents (PRD, ADR, design docs, plans, test
+Claude Code skills for writing documents (PRD, ADR, design docs, test
 cases), reviewing Japanese text, creating branches and pull requests, and
 creating new skills. Each skill is a directory under `skills/`.
 

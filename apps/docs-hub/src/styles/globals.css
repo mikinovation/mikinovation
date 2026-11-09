@@ -251,6 +251,12 @@
     white-space: nowrap;
   }
 
+  .badge-pending {
+    border-color: color-mix(in oklab, var(--color-amber) 45%, transparent);
+    background-color: color-mix(in oklab, var(--color-amber) 12%, transparent);
+    color: var(--color-amber);
+  }
+
   .badge-accepted {
     border-color: color-mix(in oklab, var(--color-mint) 45%, transparent);
     background-color: color-mix(in oklab, var(--color-mint) 12%, transparent);
