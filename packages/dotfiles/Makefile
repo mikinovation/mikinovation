@@ -5,9 +5,8 @@ SHELL := /bin/bash
 .DEFAULT_GOAL := help
 
 FLAKE_DIR := ./nix
-PROFILE ?=
 
-.PHONY: help setup setup-full setup-minimal \
+.PHONY: help setup \
 	check lint fmt fmt-fix test \
 	nix-check nix-fmt nix-fmt-fix nix-test \
 	nvim-smoke-test
@@ -18,14 +17,8 @@ help: ## Show this help
 
 # Setup
 
-setup: ## Deploy dotfiles (PROFILE=full|minimal)
-	DOTFILES_PROFILE=$(PROFILE) ./setup.sh
-
-setup-full: ## Deploy dotfiles with the full profile
-	DOTFILES_PROFILE=full ./setup.sh
-
-setup-minimal: ## Deploy dotfiles with the minimal profile
-	DOTFILES_PROFILE=minimal ./setup.sh
+setup: ## Deploy dotfiles
+	./setup.sh
 
 # Lua
 

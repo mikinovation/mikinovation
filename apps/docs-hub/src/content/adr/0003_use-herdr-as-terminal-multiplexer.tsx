@@ -17,7 +17,7 @@ export const meta = {
   attributes: [
     { label: '読者', value: '開発者' },
     { label: '状態', value: '採用' },
-    { label: '決定日', value: '2026-07-04' },
+    { label: '決定日', value: '2026-11-09' },
   ],
 } satisfies DocMeta
 
@@ -29,8 +29,6 @@ export default function Body() {
         エージェントは、指示を受けてコードを書き換える AI
         のプログラムのうち、端末の中で動かすものを指す。
         端末多重化ツールは、一つの端末画面を分割し、複数の作業を同時に表示して切り替えるツールを指す。
-        「すべて」「最小限」は、
-        <DocRef kind="PRD" number="0001" /> が定める導入範囲を指す。
       </Prose>
       <DocSection label="Context" title="背景">
         <Prose>
@@ -125,7 +123,6 @@ export default function Body() {
         <DocTable
           head={['観点', '満たすべき条件']}
           rows={[
-            ['導入範囲', '「すべて」にだけ含め、「最小限」には含めない'],
             ['導入操作', 'macOS、WSL、それ以外の Linux で同じ操作で導入できる'],
             ['再実行', '何度導入しても同じ状態になる'],
             ['導入後', '手作業で設定しなくても使える'],
@@ -134,10 +131,9 @@ export default function Body() {
       </DocSection>
       <DocSection label="Decision" title="決定">
         <Prose>
-          端末多重化ツールとして herdr を採用する。 herdr は{' '}
-          <DocRef kind="ADR" number="0001" /> の共通の Home Manager
-          設定から、flake input <Code>github:ogulcancelik/herdr</Code>{' '}
-          として導入し、導入範囲「すべて」にだけ含める。
+          端末多重化ツールとして herdr を採用する。herdr は、
+          <DocRef kind="ADR" number="0001" /> の共通の Home Manager 設定から
+          flake input <Code>github:ogulcancelik/herdr</Code> として導入する。
         </Prose>
         <DocTable
           head={['対象', '決めたこと']}
@@ -320,10 +316,6 @@ export default function Body() {
           head={['領域', '引き受けること']}
           rows={[
             [
-              '「最小限」で使える範囲',
-              'herdr も設定も入らないため、エージェントの監視とエディターからの送信を使えない',
-            ],
-            [
               '導入にかかる時間',
               'herdr は nixpkgs になく flake から取得する Rust 製のため、バイナリキャッシュが効かない環境ではソースからのビルドになり、メモリの限られた環境では導入に時間がかかる',
             ],
@@ -381,6 +373,9 @@ export default function Body() {
             {
               text: 'Claude Code の worktrees の文書',
               href: 'https://code.claude.com/docs/en/worktrees',
+            },
+            {
+              text: '所有者の依頼（2026-11-09）: 導入範囲の区別があると壊れやすいため、区別をやめて1つに統一する',
             },
           ]}
         />

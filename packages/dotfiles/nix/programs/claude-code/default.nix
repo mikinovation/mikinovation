@@ -2,7 +2,6 @@
   lib,
   pkgs,
   inputs,
-  profile,
   claudeCode,
   chromeDevtoolsMcp,
   headroom,
@@ -68,9 +67,6 @@
       deepwiki = {
         url = "https://mcp.deepwiki.com/mcp";
       };
-    }
-    # chrome-devtools は chromium を閉包に引き込むため minimal プロファイルでは外す
-    // lib.optionalAttrs (profile != "minimal") {
       chrome-devtools = {
         command = "${chromeDevtoolsMcp}/bin/chrome-devtools-mcp";
         args = [

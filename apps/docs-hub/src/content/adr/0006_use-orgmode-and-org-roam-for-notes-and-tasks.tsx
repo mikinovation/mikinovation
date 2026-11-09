@@ -19,7 +19,7 @@ export const meta = {
   attributes: [
     { label: '読者', value: '技術責任者、開発者、将来の保守者' },
     { label: '状態', value: '採用' },
-    { label: '決定日', value: '2026-07-26' },
+    { label: '決定日', value: '2026-11-09' },
   ],
 } satisfies DocMeta
 
@@ -30,8 +30,7 @@ export default function Body() {
         用語は <DocRef kind="PRD" number="0006" /> と同じ意味で使う。
         ナレッジノート、メタデータ、チケット、手番、アジェンダ、
         <Code>refile.org</Code> の意味は <DocRef kind="PRD" number="0006" />{' '}
-        による。 「すべて」「最小限」は、
-        <DocRef kind="PRD" number="0001" /> が定める導入範囲を指す。
+        による。
       </Prose>
       <DocSection label="Context" title="背景">
         <Prose>
@@ -73,15 +72,8 @@ export default function Body() {
               </>,
             ],
             [
-              '導入範囲ごとの範囲',
-              '「すべて」では要求1から10を、「最小限」では要求1と要求4から要求9を満たす。所有者のマシンだけに提供する',
-            ],
-            [
-              '「最小限」の中身',
-              <>
-                <DocRef kind="ADR" number="0002" />{' '}
-                のとおり、メモとタスクに関係のないプラグインと道具を入れない
-              </>,
+              '満たす要求の範囲',
+              '要求1から要求10を満たす。所有者のマシンだけに提供する',
             ],
             ['保管場所', '所有者が事前に用意する'],
           ]}
@@ -110,14 +102,12 @@ export default function Body() {
           <Code>commit</Code> で固定する。
         </Prose>
         <Prose>
-          導入範囲ごとに読み込むプラグインは、「すべて」には
-          nvim-orgmode、org-roam.nvim、org-bullets.nvim を入れ、「最小限」には
-          nvim-orgmode と org-roam.nvim
-          を入れる。定義は「すべて」と同じファイルを使う。
+          読み込むプラグインは、nvim-orgmode、org-roam.nvim、org-bullets.nvim
+          とする。
         </Prose>
         <Prose>
-          タグのないノートの一覧のキーマップは Telescope に頼るため、Telescope
-          の定義が lazy.nvim にあるとき、つまり「すべて」でだけ設定する。
+          タグのないノートを一覧するキーマップは Telescope に頼るため、Telescope
+          とあわせて設定する。
         </Prose>
         <Prose>
           保管場所は、ナレッジノートを <Code>mikinovation/org</Code> の{' '}
@@ -230,7 +220,7 @@ export default function Body() {
             <FigNode
               x={330}
               y={10}
-              w={200}
+              w={430}
               h={62}
               title="nvim-orgmode"
               lines={['編集・作業状態・アジェンダ']}
@@ -238,7 +228,7 @@ export default function Body() {
             <FigNode
               x={330}
               y={84}
-              w={200}
+              w={430}
               h={62}
               title="org-roam.nvim"
               lines={['作成・リンク・バックリンク']}
@@ -246,24 +236,11 @@ export default function Body() {
             <FigNode
               x={330}
               y={158}
-              w={200}
+              w={430}
               h={62}
               tone="amber"
               title="自作の Lua"
               lines={['補完・一覧・状態・色・ID']}
-            />
-
-            <FigNode
-              x={560}
-              y={66}
-              w={200}
-              h={98}
-              tone="ghost"
-              lines={[
-                '「最小限」は上の2つだけ',
-                'Telescope に頼る一覧は',
-                '「すべて」でだけ設定する',
-              ]}
             />
           </FigSvg>
         </Figure>
@@ -295,10 +272,6 @@ export default function Body() {
             [
               '既存のノートの形式',
               '既存のノートとチケットが Org 形式で書かれているため、移行せずに使える',
-            ],
-            [
-              '「最小限」との定義の共有',
-              '壊れた環境でも同じ版と同じ設定でノートとタスクを扱え、版の記録も1つで済む',
             ],
           ]}
         />
@@ -334,23 +307,6 @@ export default function Body() {
               option: 'チケットを GitHub Issues などの外部サービスで管理する案',
               reason: 'エディターの中で完結しない。',
             },
-            {
-              option: (
-                <>
-                  「最小限」では nixpkgs の <Code>vimPlugins</Code> と Home
-                  Manager の <Code>programs.neovim.plugins</Code> で
-                  nvim-orgmode と org-roam.nvim を入れる案
-                </>
-              ),
-              reason: (
-                <>
-                  構文解析器も組み立て済みで、初回起動にネットワークがいらない。ただし、版が「すべて」の定義の{' '}
-                  <Code>commit</Code> ではなく nixpkgs
-                  に従うため、導入範囲によって版がずれ、版の記録が2つになる。所有者は、「すべて」と同じく
-                  Neovim のプラグインとして扱うことを選んだ。
-                </>
-              ),
-            },
           ]}
         />
       </DocSection>
@@ -358,10 +314,6 @@ export default function Body() {
         <DocTable
           head={['領域', '引き受けること']}
           rows={[
-            [
-              '「最小限」で使える範囲',
-              'pandoc、blink.cmp、Telescope が入らないため、Markdown としてのコピー、ノートの種類の補完、タグのないノートの一覧は使えない。それ以外の要求は「すべて」と同じく使える',
-            ],
             [
               '保管場所の前提',
               <>
@@ -375,19 +327,10 @@ export default function Body() {
               '初回起動',
               <>
                 プラグインは lazy.nvim
-                が初回起動時に取得するため、両方の導入範囲で、初回起動にはネットワークへの接続が要る。nvim-orgmode
+                が初回起動時に取得するため、初回起動にはネットワークへの接続が要る。nvim-orgmode
                 は tree-sitter-org も取得して組み立てるため、C
                 コンパイラーが要る。C コンパイラーは{' '}
-                <DocRef kind="ADR" number="0002" /> のとおり両方の導入範囲に入る
-              </>,
-            ],
-            [
-              '「最小限」での呼び出し',
-              <>
-                設定から「最小限」にないプラグインを呼ぶと動かない。起動時に呼ぶものは起動確認で見つかるが、キー操作から呼ぶものは見つからない。Neovim
-                をヘッドレスで起動すると <Code>VeryLazy</Code>{' '}
-                が発火しないため、起動確認ではこの2つの <Code>config</Code>{' '}
-                は実行されない
+                <DocRef kind="ADR" number="0002" /> のとおり入る
               </>,
             ],
             [
@@ -441,9 +384,6 @@ export default function Body() {
             },
             { text: '所有者へのヒアリング（2026-10-02）' },
             {
-              text: '所有者の依頼（2026-10-04、「最小限」でも Orgmode と org-roam を Neovim のプラグインとして使う）',
-            },
-            {
               text: (
                 <>
                   <DocLink href="https://github.com/nvim-orgmode/orgmode">
@@ -463,6 +403,9 @@ export default function Body() {
                   <Code>orgmode</Code>）
                 </>
               ),
+            },
+            {
+              text: '所有者の依頼（2026-11-09）: 導入範囲の区別があると壊れやすいため、区別をやめて1つに統一する',
             },
           ]}
         />

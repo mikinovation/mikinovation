@@ -1,35 +1,24 @@
 {
-  config,
-  lib,
   pkgs,
-  profile,
   ...
 }:
 
-let
-  isMinimal = profile == "minimal";
-in
 {
-  home.packages =
-    (with pkgs; [
-      # Node.js LTS version (includes npm by default)
-      nodejs_22
+  home.packages = with pkgs; [
+    # Node.js LTS version (includes npm by default)
+    nodejs_22
 
-      pnpm
-    ])
-    ++ lib.optionals (!isMinimal) (
-      with pkgs;
-      [
-        # Package managers
-        yarn
+    pnpm
 
-        # Development tools
-        typescript
-        typescript-language-server
-        eslint
-        prettier
-      ]
-    );
+    # Package managers
+    yarn
+
+    # Development tools
+    typescript
+    typescript-language-server
+    eslint
+    prettier
+  ];
 
   # Create .npmrc configuration
   home.file.".npmrc".text = ''

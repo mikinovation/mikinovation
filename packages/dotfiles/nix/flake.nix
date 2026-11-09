@@ -170,24 +170,21 @@
         };
 
       mkHomeConfig =
-        {
-          system,
-          profile,
-        }:
+        { system }:
         home-manager.lib.homeManagerConfiguration {
           pkgs = pkgsFor system;
           modules = [ ./home.nix ] ++ homeManagerModules;
           extraSpecialArgs = (mkExtraArgs system) // {
-            inherit inputs username profile;
+            inherit inputs username;
           };
         };
 
       mkNixosConfig =
-        hostname: profile:
+        hostname:
         nixpkgs.lib.nixosSystem {
           system = linuxSystem;
           specialArgs = {
-            inherit inputs username profile;
+            inherit inputs username;
           };
           modules = [
             nixos-wsl.nixosModules.wsl
@@ -199,7 +196,7 @@
               home-manager.useUserPackages = true;
               home-manager.users.${username} = import ./home.nix;
               home-manager.extraSpecialArgs = (mkExtraArgs linuxSystem) // {
-                inherit inputs username profile;
+                inherit inputs username;
               };
               home-manager.sharedModules = homeManagerModules;
             }
@@ -207,11 +204,11 @@
         };
 
       mkDarwinConfig =
-        hostname: profile:
+        hostname:
         nix-darwin.lib.darwinSystem {
           system = darwinSystem;
           specialArgs = {
-            inherit inputs username profile;
+            inherit inputs username;
           };
           modules = [
             ./darwin/configuration.nix
@@ -223,7 +220,7 @@
               home-manager.useUserPackages = true;
               home-manager.users.${username} = import ./home.nix;
               home-manager.extraSpecialArgs = (mkExtraArgs darwinSystem) // {
-                inherit inputs username profile;
+                inherit inputs username;
               };
               home-manager.sharedModules = homeManagerModules;
             }
@@ -233,8 +230,7 @@
     {
       # NixOS system configuration (WSL)
       nixosConfigurations = {
-        nixos = mkNixosConfig "nixos" "full";
-        nixos-minimal = mkNixosConfig "nixos" "minimal";
+        nixos = mkNixosConfig "nixos";
 
         wsl-bootstrap = nixpkgs.lib.nixosSystem {
           system = linuxSystem;
@@ -247,20 +243,12 @@
 
       # nix-darwin system configuration (macOS)
       darwinConfigurations = {
-        mac = mkDarwinConfig "mac" "full";
-        mac-minimal = mkDarwinConfig "mac" "minimal";
+        mac = mkDarwinConfig "mac";
       };
 
       # Home Manager configuration (standalone, non-NixOS Linux)
       homeConfigurations = {
-        linux = mkHomeConfig {
-          system = linuxSystem;
-          profile = "full";
-        };
-        linux-minimal = mkHomeConfig {
-          system = linuxSystem;
-          profile = "minimal";
-        };
+        linux = mkHomeConfig { system = linuxSystem; };
       };
 
       # Nix formatter

@@ -1,6 +1,5 @@
 -- plugins.lua
--- Bootstraps lazy.nvim and lists the plugin specs of the full profile.
--- The minimal profile passes its own subset of specs to M.setup.
+-- Bootstraps lazy.nvim and lists the plugin specs.
 
 -- Plugin versions are pinned by the `commit` field of each spec, not by a
 -- lockfile. lazy.nvim itself is pinned here so the bootstrap matches the spec.
@@ -63,9 +62,9 @@ function M.setup(specs)
 	})
 end
 
---- Plugin specs of the full profile.
+--- Plugin specs.
 --- @return table[]
-function M.full_specs()
+function M.specs()
 	return {
 		require("plugins.blink-cmp").config(),
 		require("plugins.comment").config(),

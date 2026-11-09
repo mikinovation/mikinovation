@@ -17,7 +17,7 @@ export const meta = {
   attributes: [
     { label: '読者', value: '開発者' },
     { label: '状態', value: '採用' },
-    { label: '決定日', value: '2026-09-27' },
+    { label: '決定日', value: '2026-11-09' },
   ],
 } satisfies DocMeta
 
@@ -27,8 +27,7 @@ export default function Body() {
       <Prose>
         用語は <DocRef kind="PRD" number="0005" /> と同じ意味で使う。
         非対話の実行は、人が入力せず、スクリプトや AI
-        エージェントがコマンドを動かすことを指す。 「すべて」「最小限」は、
-        <DocRef kind="PRD" number="0001" /> が定める導入範囲を指す。
+        エージェントがコマンドを動かすことを指す。
       </Prose>
       <DocSection label="Context" title="背景">
         <Prose>
@@ -100,9 +99,8 @@ export default function Body() {
           の決定から、次の条件を満たす必要がある。
         </Prose>
         <Prose>
-          導入範囲「すべて」と「最小限」の両方に含め、macOS、WSL、それ以外の
-          Linux
-          で同じ手順で導入できる必要がある。導入後に手作業で設定しなくても使えることも条件になる。
+          macOS、WSL、それ以外の Linux
+          のどれでも同じ手順で導入できる必要がある。導入後に手作業で設定しなくても使えることも条件になる。
         </Prose>
         <Prose>
           <DocRef kind="ADR" number="0001" />{' '}
@@ -115,7 +113,6 @@ export default function Body() {
         <Prose>
           シェルとして zsh を採用し、設定は <DocRef kind="ADR" number="0001" />{' '}
           の共通の Home Manager 設定から生成する。
-          導入範囲は「すべて」「最小限」の両方に含める。
         </Prose>
         <DocTable
           head={['対象', '決めたこと']}
@@ -505,14 +502,6 @@ export default function Body() {
                 <Code>cd</Code> は組み込みのまま動き、<Code>z</Code> は使えない
               </>,
             ],
-            [
-              '「最小限」での範囲',
-              <>
-                zsh、sheldon、zoxide、fzf が入り、同じ操作を使える。fnm
-                は「すべて」にだけ入るが、<Code>.zshenv</Code> の fnm
-                の設定は存在を確かめてから動くため、「最小限」でもエラーにならない
-              </>,
-            ],
           ]}
         />
       </DocSection>
@@ -536,6 +525,9 @@ export default function Body() {
               href: '/adr/0004_manage-claude-code-with-home-manager',
             },
             { text: '所有者へのヒアリング（2026-09-30）' },
+            {
+              text: '所有者の依頼（2026-11-09）: 導入範囲の区別があると壊れやすいため、区別をやめて1つに統一する',
+            },
           ]}
         />
       </DocSection>

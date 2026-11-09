@@ -1,6 +1,6 @@
 -- core_keymaps.lua
 -- Global keymaps that use only built-in features.
--- Shared by the full profile (via keymaps.lua) and the minimal profile.
+-- Loaded via keymaps.lua.
 
 local M = {}
 

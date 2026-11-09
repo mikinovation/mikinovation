@@ -4,7 +4,6 @@
   pkgs,
   inputs,
   username,
-  profile,
   apm,
   claudeCode,
   vueLanguageServer,
@@ -14,9 +13,6 @@
   ...
 }:
 
-let
-  isMinimal = profile == "minimal";
-in
 {
   home.username = username;
   home.homeDirectory =
@@ -32,21 +28,17 @@ in
       ghq # Git repository organizer
       jq # JSON processor
       curl # HTTP client
+      fnm # Fast Node Manager
+      lsof # List open files
+      pandoc # Document format converter
     ])
-    ++ lib.optionals (!isMinimal) (
-      (with pkgs; [
-        fnm # Fast Node Manager
-        lsof # List open files
-        pandoc # Document format converter
-      ])
-      ++ [
-        apm
-        herdr
-        vueLanguageServer
-        vueTypescriptPlugin
-        difit
-      ]
-    );
+    ++ [
+      apm
+      herdr
+      vueLanguageServer
+      vueTypescriptPlugin
+      difit
+    ];
 
   imports = [
     ./programs/git
@@ -56,8 +48,6 @@ in
     ./programs/nodejs
     ./programs/agent-skills
     ./programs/neovim
-  ]
-  ++ lib.optionals (!isMinimal) [
     ./programs/herdr
     ./programs/emacs
     ./programs/ruby

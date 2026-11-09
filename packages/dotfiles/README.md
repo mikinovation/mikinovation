@@ -61,7 +61,7 @@ Run the setup script. It detects the environment and deploys the configuration:
 ```bash
 ghq get git@github.com:mikinovation/mikinovation.git
 cd ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles
-DOTFILES_PROFILE=full ./setup.sh
+./setup.sh
 ```
 
 - NixOS (WSL): applies Home Manager as a module via `sudo nixos-rebuild switch`
@@ -79,50 +79,6 @@ from the environment at evaluation time, so the same outputs work for any user:
 such as `nix flake check` and CI, it falls back to `nixos`, the NixOS-WSL default
 user. Reading the environment needs `--impure`, which `setup.sh` passes. Pass it
 yourself when you run the switch commands by hand.
-
-#### Profiles
-
-`DOTFILES_PROFILE` is required. The script exits with an error if it is unset.
-It also exits if the value is neither `full` nor `minimal`. There is deliberately
-no default. Without one, a run intended to be minimal can never silently deploy
-the full environment.
-
-| Profile | Contents |
-| --- | --- |
-| `full` | Every module. The normal day-to-day environment. |
-| `minimal` | zsh, sheldon, git, claude-code with its agent skills, Node.js with pnpm, core CLI tools, Neovim limited to org notes and tasks. |
-
-The core CLI tools in `minimal` are zoxide, fzf, ripgrep, ghq, jq, and curl.
-
-Neovim in `minimal` is still the default editor (`EDITOR`/`VISUAL`, `vi`/`vim`
-aliases). It loads the built-in part of the config (options, the keymaps that
-need no plugin, the WSL clipboard) and only two plugins: nvim-orgmode and
-org-roam.nvim, from the same pinned specs as `full`. `minimal.lua` is deployed
-as `init.lua` together with the files listed in
-`nix/programs/neovim/minimal-config-files`. The first start needs a network
-connection to fetch them, and a C compiler (installed by the module) builds the
-Org tree-sitter parser. There are no language servers, and the features that
-rely on other tools are unavailable: Markdown copy (pandoc), note type
-completion (blink.cmp), and the untagged-notes picker (telescope).
-
-Everything outside that list is skipped:
-
-- Neovim plugins other than nvim-orgmode and org-roam.nvim, language servers,
-  and the other Neovim tooling
-- herdr
-- the ruby/rust/python toolchains, and the Node.js tooling beyond node and pnpm
-  (yarn, typescript, eslint, prettier)
-- database and terraform tooling
-- wezterm and the remaining program modules
-- the chrome-devtools MCP server, which pulls in chromium
-- on NixOS, Docker and the CJK font packages
-
-Use `minimal` to get a usable shell quickly on a fresh or broken machine, then
-re-run with `full`:
-
-```bash
-DOTFILES_PROFILE=minimal ./setup.sh
-```
 
 ### Manual Installation
 
@@ -154,7 +110,7 @@ To switch:
 
 1. `ghq get git@github.com:mikinovation/mikinovation.git`
 2. `cd ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles`
-3. Run `DOTFILES_PROFILE=full ./setup.sh` (or `minimal`). This re-points the
+3. Run `./setup.sh`. This re-points the
    `~/.config/nix` symlinks, `DOTFILES_DIR`, and the Claude Code hook and
    statusline paths at the new location.
 4. Open a new shell and check `echo $DOTFILES_DIR` shows the new path.
@@ -174,7 +130,7 @@ Re-running the setup script works as well:
 
 ```bash
 cd ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles
-DOTFILES_PROFILE=full ./setup.sh
+./setup.sh
 ```
 
 ### Setting up from a WSL release image
@@ -194,13 +150,11 @@ wsl -d nixos
 ```bash
 # Inside the imported distro
 cd ~/ghq/github.com/mikinovation/mikinovation/packages/dotfiles
-DOTFILES_PROFILE=full ./setup.sh
+./setup.sh
 ```
 
 `setup.sh` runs `nixos-rebuild switch` against the embedded package. That
-rebuilds the Home Manager environment. For a shell before the full build
-finishes, run
-`DOTFILES_PROFILE=minimal ./setup.sh` first. Re-run with `full` afterwards.
+rebuilds the Home Manager environment.
 
 ### Claude Code skills
 
@@ -224,7 +178,7 @@ make check  # all of the above
 ```
 
 Run `make` (or `make help`) to list every task, including setup
-(`make setup PROFILE=full`), Nix checks (`make nix-check`), formatters
+(`make setup`), Nix checks (`make nix-check`), formatters
 (`make fmt-fix`, `make nix-fmt-fix`) and the Neovim smoke test
 (`make nvim-smoke-test`).
 

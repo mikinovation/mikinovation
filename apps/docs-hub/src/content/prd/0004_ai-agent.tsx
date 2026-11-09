@@ -1,5 +1,4 @@
 import {
-  DocRef,
   DocSection,
   DocSub,
   DocTable,
@@ -31,7 +30,7 @@ export const meta = {
       label: '段階',
       value: '5. デリバリー（要求と受入条件を確定し、実装済み）',
     },
-    { label: '更新日', value: '2026-10-26' },
+    { label: '更新日', value: '2026-11-09' },
   ],
 } satisfies DocMeta
 
@@ -54,15 +53,6 @@ export default function Body() {
             term: '作業手順',
             description:
               '特定の作業のときにエージェントが呼び出す、決まった手順の定義。',
-          },
-          {
-            term: '「すべて」「最小限」',
-            description: (
-              <>
-                <DocRef kind="PRD" number="0001" />
-                「開発環境の導入」で定める導入範囲。
-              </>
-            ),
           },
           {
             term: 'Nix のない環境',
@@ -108,9 +98,7 @@ export default function Body() {
             エージェントはコードの意味と最新の外部情報を参照して書く。
           </Prose>
           <Prose>
-            「最小限」を入れれば、壊れたマシンでもエージェントが使える。
-            復旧作業そのものをエージェントに任せられる。
-            コードの意味を引くことと、ブラウザを操作することは、「すべて」を導入した場合にだけできる。
+            マシンが壊れていてもエージェントが使えるため、復旧作業そのものをエージェントに任せられる。
           </Prose>
         </DocSub>
         <DocSub title="対象外">
@@ -120,14 +108,6 @@ export default function Body() {
               [
                 '作業手順の配布先として、他の種類のエージェントを有効にすること',
                 '取り込む仕組みは持つが、有効にする配布先は増やさない',
-              ],
-              [
-                '「最小限」でブラウザを操作すること',
-                '「すべて」だけで提供する',
-              ],
-              [
-                '「最小限」でコードの意味を引くこと',
-                '「すべて」だけで提供する',
               ],
               ['圧縮の記録を読むこと、集計すること', '記録の追記までに留める'],
               ['利用量に上限を設けて止めること', '表示までに留める'],
@@ -190,7 +170,6 @@ export default function Body() {
         <DocSub title="成功条件">
           <Prose>
             新規のマシンまたは復旧したマシンに導入したあと、手作業の設定をせずに、要求がすべて満たされた状態でエージェントを使える。
-            「最小限」を入れたマシンでも、要求10 と要求12 を除いて同じく使える。
             Nix のない環境では、このリポジトリを開いたときに要求17 を満たす。
             数値目標は設けない。
           </Prose>
@@ -204,7 +183,7 @@ export default function Body() {
       </DocSection>
       <DocSection label="Solution" title="解決策">
         <DocSub title="要求と受入条件">
-          <Figure caption="17の要求は6つのねらいに分かれる。導入範囲で差が出るのは要求10と要求12だけである。">
+          <Figure caption="17の要求は6つのねらいに分かれる。">
             <FigGrid>
               <FigCard tone="neon" title="止まらずに実行する">
                 <FigChips>
@@ -353,8 +332,7 @@ export default function Body() {
                 fields: [
                   {
                     label: '受入条件',
-                    value:
-                      '「すべて」で定義や参照を引け、「最小限」では引けない',
+                    value: '定義や参照を引ける',
                   },
                 ],
               },
@@ -369,7 +347,7 @@ export default function Body() {
                 fields: [
                   {
                     label: '受入条件',
-                    value: '「すべて」で操作でき、「最小限」では使えない',
+                    value: 'ブラウザを開いて操作できる',
                   },
                 ],
               },
@@ -424,12 +402,8 @@ export default function Body() {
               },
             ]}
           />
-          <Prose>
-            要求10 と要求12
-            以外は、「すべて」と「最小限」のどちらの導入範囲でも満たす。 要求17
-            は、導入範囲によらず、Nix のない環境で満たす。
-          </Prose>
-          <Figure caption="同じ設定と作業手順が2つの経路で届く。満たす要求の差は、導入範囲と環境によって決まる。">
+          <Prose>要求17 は、Nix のない環境で満たす。</Prose>
+          <Figure caption="同じ設定と作業手順が2つの経路で届く。満たす要求の差は環境によって決まる。">
             <FigSvg
               height={290}
               label="リポジトリの設定と作業手順が、Nix で導入したマシンと Nix のない環境の2経路に届く構成"
@@ -472,21 +446,10 @@ export default function Body() {
               <FigNode
                 x={18}
                 y={172}
-                w={148}
+                w={304}
                 h={86}
                 rx={10}
-                title="すべて"
-                lines={['17の要求を', 'すべて満たす']}
-              />
-              <FigNode
-                x={176}
-                y={172}
-                w={148}
-                h={86}
-                rx={10}
-                tone="amber"
-                title="最小限"
-                lines={['要求10と要求12を', '除いて満たす']}
+                lines={['17の要求をすべて満たす']}
               />
 
               <FigNode
@@ -577,6 +540,9 @@ export default function Body() {
             },
             {
               text: '所有者の依頼（2026-10-06）: Nix のない環境で作業手順を使うこと',
+            },
+            {
+              text: '所有者の依頼（2026-11-09）: 導入範囲の区別があると壊れやすいため、区別をやめて1つに統一する',
             },
           ]}
         />

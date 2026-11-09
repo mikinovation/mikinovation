@@ -24,7 +24,7 @@ export const meta = {
   attributes: [
     { label: '読者', value: '技術責任者、開発者、将来の保守者' },
     { label: '状態', value: '採用' },
-    { label: '決定日', value: '2026-10-06' },
+    { label: '決定日', value: '2026-11-09' },
   ],
 } satisfies DocMeta
 
@@ -96,7 +96,6 @@ export default function Body() {
           head={['観点', '満たすべき条件']}
           rows={[
             ['導入操作', 'macOS、WSL、それ以外の Linux で同じ操作で導入できる'],
-            ['導入範囲', '「すべて」と「最小限」から選べる'],
             [
               'ユーザー名',
               '所有者と異なるユーザー名でも、flake を書き換えずに導入できる',
@@ -152,10 +151,9 @@ export default function Body() {
           <Code>nixos</Code> を使う。
         </Prose>
         <Prose>
-          それ以外の Linux の出力は、ユーザー名ではなく導入範囲で分け、
-          <Code>homeConfigurations.linux</Code> と{' '}
-          <Code>homeConfigurations.linux-minimal</Code> の2つにする。 WSL と
-          macOS の出力名は変えない。
+          それ以外の Linux の出力は、ユーザー名でも導入範囲でも分けず、
+          <Code>homeConfigurations.linux</Code> の1つにする。WSL と macOS
+          の出力名は変えない。
         </Prose>
         <Prose>
           環境変数を読むには評価を impure にする必要があるため、
@@ -273,12 +271,8 @@ export default function Body() {
               </>,
             ],
             [
-              '出力を導入範囲だけで分ける',
-              <>
-                出力名から選ぶものが導入範囲だけになり、
-                <DocRef kind="ADR" number="0001" />{' '}
-                の「導入範囲の選択を出力名の選択として扱う」考え方と合う
-              </>,
+              '出力を OS ごとだけにする',
+              '出力名から選ぶのが OS だけになり、ユーザー名と導入範囲は出力名に現れない',
             ],
           ]}
         />
@@ -435,6 +429,9 @@ export default function Body() {
             },
             {
               text: '所有者の依頼（2026-10-06）: ユーザー名に依存しない設計にする',
+            },
+            {
+              text: '所有者の依頼（2026-11-09）: 導入範囲の区別をやめて1つに統一する',
             },
           ]}
         />

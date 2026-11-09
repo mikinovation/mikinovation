@@ -24,7 +24,7 @@ export const meta = {
   attributes: [
     { label: '読者', value: '開発者' },
     { label: '状態', value: '採用' },
-    { label: '決定日', value: '2026-09-30' },
+    { label: '決定日', value: '2026-11-09' },
   ],
 } satisfies DocMeta
 
@@ -37,8 +37,6 @@ export default function Body() {
         のプログラムのうち、端末の中で動かすものを指す。
         文脈は、エージェントが一度に扱える指示と履歴のまとまりを指す。
         作業手順は、特定の作業のときにエージェントが呼び出す、決まった手順の定義を指す。
-        「すべて」「最小限」は、
-        <DocRef kind="PRD" number="0001" /> が定める導入範囲を指す。
       </Prose>
       <DocSection label="Context" title="背景">
         <Prose>
@@ -101,11 +99,6 @@ export default function Body() {
         <DocTable
           head={['観点', '満たすべき条件']}
           rows={[
-            ['導入範囲', '「すべて」と「最小限」のどちらでも導入できる'],
-            [
-              '「すべて」だけの機能',
-              'ブラウザの操作と、コードの定義や参照を引く経路',
-            ],
             ['導入操作', 'macOS、WSL、それ以外の Linux で同じ操作で導入できる'],
             ['再実行', '何度導入しても同じ状態になる'],
             ['導入後', '手作業で設定しなくても使える'],
@@ -117,7 +110,7 @@ export default function Body() {
           エージェントとして Claude Code を採用する。
           本体、設定、作業手順、参照の経路は、
           <DocRef kind="ADR" number="0001" /> の共通の Home Manager
-          設定から宣言し、両方の導入範囲に含める。
+          設定から宣言する。
         </Prose>
         <DocTable
           head={['対象', '決めたこと']}
@@ -328,14 +321,6 @@ export default function Body() {
           head={['領域', '引き受けること']}
           rows={[
             [
-              '「最小限」のコード参照',
-              'LSP サーバーの本体が入らないため、コードの定義や参照を引けない。設定そのものは両方の導入範囲で書かれる',
-            ],
-            [
-              '「最小限」のブラウザ操作',
-              'chrome-devtools の MCP サーバーとブラウザが入らないため、ブラウザを操作できない',
-            ],
-            [
               'プロキシの停止',
               <>
                 headroom のプロキシが止まると、
@@ -405,6 +390,9 @@ export default function Body() {
               href: '/adr/0003_use-herdr-as-terminal-multiplexer',
             },
             { text: '所有者へのヒアリング（2026-09-30）' },
+            {
+              text: '所有者の依頼（2026-11-09）: 導入範囲の区別があると壊れやすいため、区別をやめて1つに統一する',
+            },
           ]}
         />
       </DocSection>

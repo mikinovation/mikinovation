@@ -1,5 +1,5 @@
 -- core.lua
--- Base settings shared by the full and minimal profiles.
+-- Base settings loaded before any plugin.
 -- Only built-in features are used here, so this works without any plugin.
 
 local M = {}
