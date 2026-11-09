@@ -19,6 +19,7 @@ workflows:
         - 'actions/checkout@v7.0.1'
         - 'cachix/install-nix-action@v31.11.3'
         - 'pnpm/action-setup@v6.1.1'
+        - 'rhysd/action-setup-vim@v1.6.1'
     '.github/workflows/dotfiles-wsl-release.yml':
         - 'actions/checkout@v7.0.1'
         - 'cachix/install-nix-action@v31.11.3'
@@ -70,3 +71,8 @@ dependencies:
         commit: 'sha1-73e46992e05b19abd31f2f3c20e0e7370d762115'
         owner_id: 21320719
         repo_id: 262289747
+    'rhysd/action-setup-vim@v1.6.1':
+        ref: 'v1.6.1'
+        commit: 'sha1-febef33995d6649302e9d88dda81e071b68f16a7'
+        owner_id: 823277
+        repo_id: 235934613
