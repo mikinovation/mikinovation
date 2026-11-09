@@ -7,13 +7,7 @@ import {
   Prose,
   Sources,
 } from '@/components/doc'
-import {
-  FigArrow,
-  FigLabel,
-  FigNode,
-  FigSvg,
-  Figure,
-} from '@/components/figure'
+import { FigArrow, FigNode, FigSvg, Figure } from '@/components/figure'
 import type { DocMeta } from '@/lib/docs'
 
 export const meta = {
@@ -23,7 +17,7 @@ export const meta = {
   attributes: [
     { label: '読者', value: '技術責任者、開発者、将来の保守者' },
     { label: '状態', value: '採用' },
-    { label: '決定日', value: '2026-09-27' },
+    { label: '決定日', value: '2026-11-09' },
   ],
 } satisfies DocMeta
 
@@ -37,6 +31,11 @@ export default function Body() {
           の複数マシンを使っており、手作業で揃えるとマシン間で設定がずれ、手順も漏れる。
           壊れた環境の復旧にも時間がかかる。
         </Prose>
+        <Prose>
+          以前は導入範囲を「すべて」と「最小限」に分け、flake
+          の出力とモジュールの読み込みを範囲ごとに分岐させていた。
+          分岐に手を入れるたびに片方の範囲だけが動かなくなることがあるため、設定が壊れやすかった。
+        </Prose>
       </DocSection>
       <DocSection label="Constraints" title="制約">
         <Prose>
@@ -47,8 +46,6 @@ export default function Body() {
           head={['観点', '満たすべき条件']}
           rows={[
             ['導入操作', 'macOS、WSL、それ以外の Linux で同じ操作で導入できる'],
-            ['導入範囲', '「すべて」と「最小限」から選べる'],
-            ['誤った指定', '導入範囲の指定を誤った場合は何も導入しない'],
             ['再実行', '何度導入しても同じ状態になる'],
             [
               '対象',
@@ -91,17 +88,12 @@ export default function Body() {
           ]}
         />
         <Prose>
-          導入範囲ごとに別の出力を定義し、「最小限」の出力には{' '}
-          <Code>-minimal</Code> を付ける。
-        </Prose>
-        <Prose>
           導入操作は <Code>setup.sh</Code> に一本化する。<Code>setup.sh</Code>{' '}
-          は OS
-          を判定して適用する仕組みと出力を選ぶ。導入範囲の指定が未指定または未定義の値なら、何も導入せずにエラーで終わる。
+          は OS を判定して、適用する仕組みと flake の出力を選ぶ。
         </Prose>
         <Figure caption="1つの flake と共通の設定から、OS ごとの仕組みに合わせた出力を作る。">
           <FigSvg
-            height={250}
+            height={240}
             label="setup.sh が OS を判定し、1つの flake の3種類の出力から適切なものを適用する構成"
           >
             <FigNode
@@ -191,9 +183,6 @@ export default function Body() {
               title="homeConfigurations"
               lines={['それ以外の Linux：単体で使う']}
             />
-            <FigLabel x={600} y={244}>
-              各出力に -minimal を加え、導入範囲を選べるようにする
-            </FigLabel>
           </FigSvg>
         </Figure>
       </DocSection>
@@ -215,7 +204,6 @@ export default function Body() {
               '宣言した状態の適用',
               '導入済みのマシンで再度導入しても状態が変わらない',
             ],
-            ['導入範囲ごとの出力', '導入範囲の選択を出力名の選択として扱える'],
             [
               <>
                 <Code>setup.sh</Code> による OS の判定
@@ -297,6 +285,9 @@ export default function Body() {
               href: '/prd/0001_environment-setup',
             },
             { text: '所有者へのヒアリング（2026-09-27）' },
+            {
+              text: '所有者の依頼（2026-11-09）: 導入範囲の区別があるため壊れやすく、区別をやめて1つに統一する',
+            },
           ]}
         />
       </DocSection>

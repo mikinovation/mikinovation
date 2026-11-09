@@ -6,13 +6,7 @@ import {
   Requirements,
   Sources,
 } from '@/components/doc'
-import {
-  FigArrow,
-  FigChips,
-  FigNode,
-  FigSvg,
-  Figure,
-} from '@/components/figure'
+import { FigArrow, FigNode, FigSvg, Figure } from '@/components/figure'
 import type { DocMeta } from '@/lib/docs'
 
 export const meta = {
@@ -25,7 +19,7 @@ export const meta = {
       label: '段階',
       value: '5. デリバリー（要求と受入条件を確定し、実装済み）',
     },
-    { label: '更新日', value: '2026-10-26' },
+    { label: '更新日', value: '2026-11-09' },
   ],
 } satisfies DocMeta
 
@@ -90,10 +84,6 @@ export default function Body() {
                 '所有者の環境だけを前提にできる',
                 '所有者と異なるマシン名、リポジトリの配置先では導入できない',
               ],
-              [
-                '「最小限」で、使えなくなった環境でもすぐに作業を始められる',
-                '「最小限」は日常的に使う開発環境の一部しか含まない',
-              ],
             ]}
           />
         </DocSub>
@@ -112,10 +102,10 @@ export default function Body() {
       </DocSection>
       <DocSection label="Solution" title="解決策">
         <DocSub title="要求と受入条件">
-          <Figure caption="OS が変わっても導入操作は変わらず、選んだ導入範囲だけが結果を分ける。">
+          <Figure caption="どの OS でも導入操作は同じで、同じ環境が揃う。">
             <FigSvg
-              height={220}
-              label="3種類の OS のどれでも同じ導入操作を行い、選んだ導入範囲に応じた環境が得られる流れ"
+              height={200}
+              label="3種類の OS のどれでも同じ導入操作を行い、同じ開発環境が揃う流れ"
             >
               <FigNode x={0} y={10} w={130} h={44} rx={10} title="WSL" />
               <FigNode x={0} y={78} w={130} h={44} rx={10} title="macOS" />
@@ -164,86 +154,40 @@ export default function Body() {
               />
               <FigNode
                 x={200}
-                y={40}
+                y={60}
                 w={180}
-                h={120}
+                h={80}
                 tone="neon"
                 title="1回の導入操作"
-                lines={['導入範囲を選んで実行する', '何度実行しても同じ状態']}
+                lines={['何度実行しても同じ状態']}
               />
               <FigArrow
                 points={[
                   [380, 100],
-                  [415, 100],
-                  [415, 53],
-                  [446, 53],
-                ]}
-              />
-              <FigArrow
-                points={[
-                  [380, 100],
-                  [415, 100],
-                  [415, 165],
-                  [446, 165],
+                  [446, 100],
                 ]}
               />
               <FigNode
                 x={450}
-                y={10}
+                y={60}
                 w={300}
-                h={86}
+                h={80}
                 align="start"
                 padX={24}
-                title="すべて"
-                lines={['日常的に使う開発環境の全体']}
-              />
-              <FigNode
-                x={450}
-                y={118}
-                w={300}
-                h={92}
-                align="start"
-                padX={24}
-                title="最小限"
-                lines={[
-                  'シェル、Git、Claude Code、Node.js、',
-                  '基本的なコマンドラインツール、エディター',
-                ]}
+                title="日常的に使う開発環境の全体"
               />
             </FigSvg>
           </Figure>
-          <Prose>所有者は、導入する範囲を次の2つから選ぶ。</Prose>
-          <DocTable
-            head={['導入範囲', '含むもの']}
-            rows={[
-              ['すべて', '日常的に使う開発環境の全体'],
-              ['最小限', '日常的に使う開発環境のうち、下に挙げるものだけ'],
-            ]}
-          />
-          <Prose>「最小限」に含むものは次の6つである。</Prose>
-          <FigChips
-            items={[
-              'シェル',
-              'Git',
-              'Claude Code',
-              'Node.js',
-              '基本的なコマンドラインツール',
-              'メモとタスクの管理に絞ったエディター',
-            ]}
-          />
-          <Prose>
-            「最小限」は、使えなくなった環境でもすぐに作業を始められるようにするための範囲である。
-          </Prose>
           <Prose>各要求と、その要求を受け入れる条件は次のとおり。</Prose>
           <Requirements
             items={[
               {
                 id: '1',
-                demand: '導入範囲を選び、1回の操作でその範囲を導入できる',
+                demand: '1回の操作で開発環境を導入できる',
                 fields: [
                   {
                     label: '受入条件',
-                    value: '2つの導入範囲それぞれで導入できる',
+                    value: '導入操作1回で、日常的に使う開発環境が揃う',
                   },
                 ],
               },
@@ -254,17 +198,7 @@ export default function Body() {
                 fields: [
                   {
                     label: '受入条件',
-                    value: '3種類の OS と2つの導入範囲の6通りで導入できる',
-                  },
-                ],
-              },
-              {
-                id: '3',
-                demand: '導入範囲の指定を誤った場合は何も導入しない',
-                fields: [
-                  {
-                    label: '受入条件',
-                    value: '未指定と未定義の値で、何も導入せずにエラーで終わる',
+                    value: '3種類の OS のどれでも導入できる',
                   },
                 ],
               },
@@ -301,7 +235,9 @@ export default function Body() {
               },
             ]}
           />
-          <Prose>要求3でエラーになった場合は、正しい指定方法を示す。</Prose>
+          <Prose>
+            要求3は導入範囲の指定を扱っていたため取り下げた。残る要求の番号は詰めない。
+          </Prose>
         </DocSub>
         <DocSub title="成功条件の測定方法">
           <Prose>
@@ -328,10 +264,10 @@ export default function Body() {
               text: '所有者へのヒアリング（2026-10-02）: 段階、制約とトレードオフ、計測と学習の計画、成功条件の測定方法、展開計画',
             },
             {
-              text: '所有者の依頼（2026-10-04）: 「最小限」にエディターを含め、メモとタスクの管理にも使う',
+              text: '所有者の依頼（2026-10-06）: ユーザー名に依存せずに導入できるようにする（要求6）',
             },
             {
-              text: '所有者の依頼（2026-10-06）: ユーザー名に依存せずに導入できるようにする（要求6）',
+              text: '所有者の依頼（2026-11-09）: 導入範囲の区別があると壊れやすいため、区別をやめて1つに統一する',
             },
           ]}
         />
