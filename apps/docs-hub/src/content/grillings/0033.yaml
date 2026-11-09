@@ -1,0 +1,61 @@
+issueId: '0033'
+generatedAt: '2026-11-09'
+questions:
+  - id: q1
+    title: '何を並列で動かすか'
+    question: 'タイトルの「並列」が何を指すかが決まっていない。複数の Codespace を同時に立てるのか、1つの Codespace の中で作業を並べるのかで、構成も検証の仕方も変わる。'
+    options:
+      - '1ブランチにつき Codespace を1つ立て、同時に複数の Codespace を動かす'
+      - '1つの Codespace の中に git worktree を複数置き、その中で作業を並べる'
+      - '両方を満たす構成にし、Codespace の数と worktree の数のどちらでも増やせるようにする'
+    recommendation: '1ブランチにつき Codespace を1つ立て、同時に複数の Codespace を動かす'
+    rationale: 'Codespaces は1リポジトリに複数作れ、コンテナが分かれるためポートと node_modules が衝突しない。worktree を並べる案は両方を共有し、docs-hub の dev server の 5173 を取り合う。'
+    decision: '1ブランチにつき Codespace を1つ立て、同時に複数の Codespace を動かす'
+  - id: q2
+    title: 'Codespace に入れる道具立て'
+    question: 'このリポジトリは、Node と pnpm で動く docs-hub と、Nix と Lua の道具で検査する dotfiles を持つ。Codespace でどこまでの作業を行えるようにするかを決める。'
+    options:
+      - 'docs-hub の作業に限り、Node 26 と pnpm だけの image にする'
+      - 'Nix を入れ、docs-hub は pnpm、dotfiles は flake の devShell と apps で扱う'
+      - 'Nix と Home Manager を入れ、homeConfigurations.linux を適用してローカルと同じ環境を再現する'
+    recommendation: 'Nix を入れ、docs-hub は pnpm、dotfiles は flake の devShell と apps で扱う'
+    rationale: 'home.nix は neovim、emacs、wezterm、1password、chsh を含み、ブラウザで使う使い捨ての環境には要らない。Nix を外すと dotfiles の make check と make nix-check が動かない。'
+    followUp: 'devShells.default の nodejs_22 を、docs-hub の CI と同じ Node 26 に揃えるかどうかを決める。'
+    decision: 'Nix を入れ、docs-hub は pnpm、dotfiles は flake の devShell と apps で扱う'
+  - id: q3
+    title: '立ち上げ時間への対処'
+    question: 'Nix を入れる構成では、Codespace を作るたびにパッケージの取得が走る。並列に何台も立てる前提では、1台あたりの待ち時間がそのまま積み上がる。'
+    options:
+      - 'Codespaces の prebuild を有効にし、image を作り置きする'
+      - 'prebuild は使わず、postCreateCommand で毎回 Nix を導入して待つ'
+      - 'prebuild は使わず、nixpkgs の公式バイナリキャッシュだけに頼って待ち時間を縮める'
+    recommendation: 'Codespaces の prebuild を有効にし、image を作り置きする'
+    rationale: 'prebuild は devcontainer の定義を変えたときだけ作り直すため、作成のたびの取得がなくなる。待ち時間が残ると、思い立ったときに1台増やす使い方が成り立たない。'
+  - id: q4
+    title: '作業手順を Codespace へ届ける道'
+    question: 'SessionStart のフックは CLAUDE_CODE_REMOTE が true のときだけ外部プラグインを導入する。Codespace でこの変数が立つとは限らず、ADR 0016 の経路が働かない。'
+    options:
+      - 'フックの実行条件に Codespaces の判定を足し、同じフックで導入する'
+      - 'devcontainer の postCreateCommand から同じフックを呼ぶ'
+      - 'Codespaces では外部のプラグインを入れず、.claude/skills のプロジェクトスキルだけで作業する'
+    recommendation: 'フックの実行条件に Codespaces の判定を足し、同じフックで導入する'
+    rationale: 'ADR 0016 は導入する一覧を settings.json の一か所に保つと決めている。入口を増やさず条件だけを広げれば、Nix のない環境と同じ経路で済み、直す場所も1つに留まる。'
+  - id: q5
+    title: 'devcontainer の定義を何個置くか'
+    question: 'Codespaces は定義を複数置いて作成時に選ばせられる。docs-hub と dotfiles で要る道具が違うため、1つにまとめるか分けるかを決める。'
+    options:
+      - 'ルートに1つ置き、どのパッケージの作業も同じコンテナで行う'
+      - 'docs-hub 用と dotfiles 用の定義を分けて置き、作成時に選ぶ'
+      - 'ルートの1つに加えて docs-hub だけの軽い定義を足し、既定はルートにする'
+    recommendation: 'ルートに1つ置き、どのパッケージの作業も同じコンテナで行う'
+    rationale: '定義を分けると Node と Nix の版を2か所で揃えることになり、パッケージをまたぐ変更をどちらのコンテナでも検査できなくなる。'
+  - id: q6
+    title: 'ADR 0001 との食い違いの扱い'
+    question: 'ADR 0001 は Dev Container と Docker を代替案として退け、開発環境をコンテナに閉じない理由を記している。devcontainer を足すと、この記録と実際の構成が食い違う。'
+    options:
+      - 'Codespaces の環境を devcontainer で作る決定を新しい ADR に書き、ADR 0001 から参照する'
+      - 'ADR 0001 の代替案に、Codespaces は所有者のマシンの管理とは別の用途である旨を1行添える'
+      - '記録は変えず、devcontainer の定義と README の説明だけを足す'
+    recommendation: 'Codespaces の環境を devcontainer で作る決定を新しい ADR に書き、ADR 0001 から参照する'
+    rationale: 'ADR 0001 は所有者の複数マシンを揃える決定で、使い捨てで並列に立てる環境とは制約が異なる。1つの ADR に混ぜると背景と制約が二重になる。'
+    decision: 'Codespaces の環境を devcontainer で作る決定を新しい ADR に書き、ADR 0001 から参照する'
