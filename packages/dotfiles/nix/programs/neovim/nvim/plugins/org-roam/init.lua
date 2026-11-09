@@ -34,11 +34,7 @@ function orgRoam.config()
 					},
 				},
 			})
-			-- The untagged-notes picker needs telescope, which the minimal profile
-			-- does not install.
-			if require("lazy.core.config").plugins["telescope.nvim"] then
-				require("plugins.org-roam.keymaps").setup(ROAM_DIRECTORY)
-			end
+			require("plugins.org-roam.keymaps").setup(ROAM_DIRECTORY)
 		end,
 	}
 end

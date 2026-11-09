@@ -7,7 +7,7 @@ package.path = package.path .. ";" .. config_path .. "/?.lua;" .. config_path ..
 require("core").setup()
 
 local plugins = require("plugins")
-plugins.setup(plugins.full_specs())
+plugins.setup(plugins.specs())
 
 require("lsp")
 require("keymaps")

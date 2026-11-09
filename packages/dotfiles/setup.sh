@@ -4,40 +4,6 @@ set -euo pipefail
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 NIX_CONFIG_DIR="$HOME/.config/nix"
 
-PROFILE=""
-FLAKE_SUFFIX=""
-
-usage() {
-  cat >&2 <<'EOF'
-DOTFILES_PROFILE is required. Set it to "full" or "minimal".
-
-  DOTFILES_PROFILE=full ./setup.sh      # every module (default environment)
-  DOTFILES_PROFILE=minimal ./setup.sh   # zsh, sheldon, git, claude-code, nodejs, neovim with orgmode only
-EOF
-}
-
-resolve_profile() {
-  PROFILE="${DOTFILES_PROFILE:-}"
-
-  case "$PROFILE" in
-    full)
-      FLAKE_SUFFIX=""
-      ;;
-    minimal)
-      FLAKE_SUFFIX="-minimal"
-      ;;
-    "")
-      usage
-      exit 1
-      ;;
-    *)
-      echo "Error: unknown DOTFILES_PROFILE '$PROFILE'." >&2
-      usage
-      exit 1
-      ;;
-  esac
-}
-
 # Setup nix.conf (system-level configuration)
 setup_nix_config() {
   if [ ! -d "$NIX_CONFIG_DIR" ]; then
@@ -57,29 +23,27 @@ deploy_nixos() {
   local hostname
   hostname="$(hostname)"
   echo "Deploying NixOS system configuration..."
-  sudo nixos-rebuild switch -L --impure --flake "$DOTFILES_DIR/nix#${hostname}${FLAKE_SUFFIX}"
+  sudo nixos-rebuild switch -L --impure --flake "$DOTFILES_DIR/nix#${hostname}"
 }
 
 # Deploy nix-darwin system configuration (macOS)
 deploy_darwin() {
   echo "Deploying nix-darwin system configuration..."
   if command -v darwin-rebuild >/dev/null 2>&1; then
-    sudo darwin-rebuild switch -L --impure --flake "$DOTFILES_DIR/nix#mac${FLAKE_SUFFIX}"
+    sudo darwin-rebuild switch -L --impure --flake "$DOTFILES_DIR/nix#mac"
   else
-    sudo nix run nix-darwin -- switch -L --impure --flake "$DOTFILES_DIR/nix#mac${FLAKE_SUFFIX}"
+    sudo nix run nix-darwin -- switch -L --impure --flake "$DOTFILES_DIR/nix#mac"
   fi
 }
 
 # Deploy configurations using Home Manager (standalone, for non-NixOS)
 deploy_home_manager() {
   echo "Deploying configurations with Home Manager..."
-  DOTFILES_USER="$(id -un)" nix run home-manager/master -- switch -L --impure --flake "$DOTFILES_DIR/nix#linux${FLAKE_SUFFIX}"
+  DOTFILES_USER="$(id -un)" nix run home-manager/master -- switch -L --impure --flake "$DOTFILES_DIR/nix#linux"
 }
 
 main() {
-  resolve_profile
-
-  echo "Start setup dotfiles... (profile: $PROFILE)"
+  echo "Start setup dotfiles..."
 
   if ! command -v pnpm >/dev/null 2>&1; then
     echo "Warning: pnpm is not installed or not in PATH"
