@@ -9,11 +9,13 @@ export const Route = createFileRoute('/')({
 })
 
 function Home() {
-  const sections = docKinds.map((kind) => ({
-    kind,
-    label: docKindLabels[kind],
-    docs: listDocs(kind),
-  }))
+  const sections = docKinds
+    .map((kind) => ({
+      kind,
+      label: docKindLabels[kind],
+      docs: listDocs(kind),
+    }))
+    .filter((section) => section.docs.length > 0)
   const total = sections.reduce(
     (count, section) => count + section.docs.length,
     0,
@@ -45,7 +47,7 @@ function Home() {
           <DocCard
             label="Repositories"
             title="リポジトリ"
-            note="公開している開発環境と、Neovim のプラグインや開発中に使う道具を紹介している。"
+            note="公開している開発環境と、Neovim のプラグインや開発中に使う道具を、それぞれの文書と合わせて紹介している。"
             href="/repositories"
           />
         </CardGrid>

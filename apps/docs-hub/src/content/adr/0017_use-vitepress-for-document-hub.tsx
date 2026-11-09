@@ -8,16 +8,18 @@ import {
   Sources,
 } from '@/components/doc'
 import { FigArrow, FigNode, FigSvg, Figure } from '@/components/figure'
+import type { DocMeta } from '@/lib/docs'
 
 export const meta = {
   title: 'ドキュメントハブを VitePress で生成する',
   lead: 'ドキュメントハブをどの方法で生成するかの決定を記録する。サイトの生成には VitePress を使い、docs/ の Markdown をそのまま読み込む。',
+  repository: 'mikinovation',
   attributes: [
     { label: '読者', value: '開発者' },
     { label: '状態', value: '採用' },
     { label: '決定日', value: '2026-10-06' },
   ],
-}
+} satisfies DocMeta
 
 export default function Body() {
   return (
@@ -26,7 +28,7 @@ export default function Body() {
         用語は <DocRef kind="PRD" number="0010" /> と同じ意味で使う。
         ドキュメントハブ（以下、ハブ）は、<Code>docs/</Code> の Markdown を Web
         上で閲覧できるようにするサイトを指す。 文書参照は、「
-        <DocRef kind="ADR" number="0007" />
+        <DocRef kind="ADR" number="0001" />
         」のように文書の種類と番号で別の文書を示す表記を指す。
       </Prose>
       <DocSection label="Context" title="背景">

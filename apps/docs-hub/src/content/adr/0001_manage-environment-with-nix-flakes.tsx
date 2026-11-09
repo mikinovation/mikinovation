@@ -14,16 +14,18 @@ import {
   FigSvg,
   Figure,
 } from '@/components/figure'
+import type { DocMeta } from '@/lib/docs'
 
 export const meta = {
   title: '開発環境を Nix flakes で宣言的に管理する',
   lead: '開発環境の導入と管理に Nix flakes を使い、OS ごとの仕組みから共通の Home Manager 設定を適用するという決定を記録する。',
+  repository: 'mikinovation',
   attributes: [
     { label: '読者', value: '技術責任者、開発者、将来の保守者' },
     { label: '状態', value: '採用' },
     { label: '決定日', value: '2026-09-27' },
   ],
-}
+} satisfies DocMeta
 
 export default function Body() {
   return (

@@ -96,6 +96,8 @@ grilling が求める推奨回答は、提案であると明示する。ユー�
 
 PRD の保存先は、`apps/docs-hub/src/content/prd/` に固定する。保存先をユーザーに問わず、japanese-review にも渡す。
 
+PRD が属するリポジトリを決め、`meta` の `repository` に書く。使える ID は `apps/docs-hub/src/lib/repositories.ts` の `repositoryIds` にある値だけで、逆生成の対象にしたコードが置かれているリポジトリから決める。判断できないときだけユーザーに聞く。
+
 PRD には図を入れる。図は HTML と SVG で書き、Mermaid は使わない。図にする対象と、`apps/docs-hub/FIGURES.md` に従って書くことを japanese-review に渡す。
 
 出典は、参照先があるものをリンクで書く。ほかの文書は `/prd/0001_environment-setup` のようなサイト内のパスを、外部の資料は URL を指す。ヒアリングのように参照先がないものは、文字のままにする。本文中の文書参照は `<DocRef kind="PRD" number="0007" />` と書き、手でリンクにしない。
@@ -120,5 +122,5 @@ pnpm fmt && pnpm lint && pnpm typecheck
 - textlint による検査と合格判定
 - 実装の構成、データの流れ、技術選定の記録（Design Doc、ADR の領分）
 - 見つかったバグの修正、リファクタリング
-- 作業の分担と進捗（計画、チケットの領分）
+- 作業の分担と進捗（issue の領分）
 - リリース後の計測そのもの（結果は数値や資料としてユーザーから受け取る）

@@ -7,16 +7,18 @@ import {
   Prose,
   Sources,
 } from '@/components/doc'
+import type { DocMeta } from '@/lib/docs'
 
 export const meta = {
   title: 'AI が管理する issue を docs-hub の YAML 一つで持つ',
   lead: 'AI エージェントが管理する issue を、docs-hub の src/content/issues.yaml 一つに置き、サイトの一覧ページから読めるようにするという決定を記録する。',
+  repository: 'mikinovation',
   attributes: [
     { label: '読者', value: '技術責任者、開発者、将来の保守者' },
     { label: '状態', value: '採用' },
     { label: '決定日', value: '2026-11-05' },
   ],
-}
+} satisfies DocMeta
 
 export default function Body() {
   return (
