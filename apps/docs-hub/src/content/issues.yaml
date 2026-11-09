@@ -97,7 +97,7 @@ issues:
     repository: mikinovation
   - id: '0024'
     title: docs-hub の左サイドメニューをなくす
-    status: proposed
+    status: done
     repository: mikinovation
   - id: '0025'
     title: issue の論点の決定から着手用のプロンプトを生成する

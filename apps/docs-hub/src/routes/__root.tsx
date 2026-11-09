@@ -8,7 +8,6 @@ import type { ReactNode } from 'react'
 
 import { NotFound } from '@/components/not-found'
 import { SiteHeader } from '@/components/site-header'
-import { SiteNav } from '@/components/site-nav'
 import appCss from '@/styles/globals.css?url'
 
 export const Route = createRootRoute({
@@ -41,11 +40,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 
         <SiteHeader />
 
-        <div className="mx-auto flex max-w-7xl gap-10 px-5 py-10">
-          <SiteNav />
-
-          <main className="min-w-0 flex-1">{children}</main>
-        </div>
+        <main className="mx-auto min-w-0 max-w-7xl px-5 py-10">{children}</main>
 
         <footer className="mx-auto max-w-7xl px-5 pb-12">
           <hr className="hairline" />
