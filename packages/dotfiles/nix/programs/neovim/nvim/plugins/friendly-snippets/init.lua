@@ -4,7 +4,7 @@ function friendlySnippets.config()
 	return {
 		"rafamadriz/friendly-snippets",
 		branch = "main",
-		commit = "b4d01b0fdf3c9a549961c2f9ffe8dc09be166219",
+		commit = "b2ea5c41a150ba72fb656eedb4ed0a86d138d945",
 	}
 end
 

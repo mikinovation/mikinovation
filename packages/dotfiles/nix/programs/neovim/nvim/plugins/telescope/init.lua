@@ -4,7 +4,7 @@ function telescope.config()
 	return { -- Fuzzy Finder (files, lsp, etc)
 		"nvim-telescope/telescope.nvim",
 		branch = "master",
-		commit = "40aedd8a68c78a656a10a8d62d80c54af59420fb",
+		commit = "1e1bab730218eaf97fce743be3f56e51075928ac",
 		cmd = "Telescope",
 		-- Lazy-load triggers. Keep in sync with plugins/telescope/keymaps.lua,
 		-- which registers the real mappings once the plugin is loaded.
