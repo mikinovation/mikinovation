@@ -48,10 +48,6 @@
       url = "github:anthropics/claude-code";
       flake = false;
     };
-    herdr = {
-      url = "github:ogulcancelik/herdr";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -122,7 +118,7 @@
           tanteki = pkgs.callPackage ./pkgs/tanteki.nix { };
           yomiyasu = pkgs.callPackage ./pkgs/yomiyasu.nix { };
           checkTestIds = pkgs.callPackage ./pkgs/check-test-ids.nix { };
-          herdr = inputs.herdr.packages.${system}.default;
+          herdr = pkgs.callPackage ./pkgs/herdr.nix { };
         };
 
       homeManagerModules = [
