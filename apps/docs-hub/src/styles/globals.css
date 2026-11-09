@@ -360,6 +360,65 @@
     box-shadow: var(--shadow-glow);
   }
 
+  .check-box {
+    width: 0.9375rem;
+    height: 0.9375rem;
+    appearance: none;
+    border: 1px solid var(--color-line-bright);
+    border-radius: 0.25rem;
+    background-color: color-mix(
+      in oklab,
+      var(--color-base-800) 85%,
+      transparent
+    );
+    cursor: pointer;
+    transition:
+      border-color 0.15s ease,
+      background-color 0.15s ease;
+  }
+
+  .check-box:hover {
+    border-color: color-mix(in oklab, var(--color-neon) 45%, var(--color-line));
+  }
+
+  .check-box:checked {
+    border-color: var(--color-neon);
+    background-color: color-mix(in oklab, var(--color-neon) 75%, transparent);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%2304050a' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' d='m3.75 8.5 2.75 2.75 5.75-5.75'/%3E%3C/svg%3E");
+    background-size: 100% 100%;
+  }
+
+  .action-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4375rem 0.875rem;
+    border: 1px solid var(--color-line-bright);
+    border-radius: 0.625rem;
+    background-color: color-mix(
+      in oklab,
+      var(--color-base-600) 80%,
+      transparent
+    );
+    color: var(--color-ink-dim);
+    font-size: 0.875rem;
+    transition:
+      border-color 0.2s ease,
+      color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .action-button:hover:not(:disabled) {
+    border-color: color-mix(in oklab, var(--color-neon) 40%, var(--color-line));
+    color: var(--color-ink);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .action-button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
   .kbd {
     padding: 0.0625rem 0.3125rem;
     border: 1px solid var(--color-line-bright);

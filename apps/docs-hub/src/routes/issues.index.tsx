@@ -1,9 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { useState } from 'react'
 
 import { Section } from '@/components/doc'
 import { Badge, Hero } from '@/components/doc-page'
 import { SiteLink } from '@/components/site-link'
 import { hasGrilling } from '@/lib/grillings'
+import { buildIssueApprovalPrompt } from '@/lib/issue-prompt'
 import type { Issue, IssueStatus } from '@/lib/issues-schema'
 
 import {
@@ -27,9 +29,17 @@ export const Route = createFileRoute('/issues/')({
   }),
   component: IssuesPage,
 })
-const issueRowClassName = 'flex items-baseline gap-3 px-5 py-3'
+const issueRowClassName = 'flex min-w-0 flex-1 items-baseline gap-3 py-3 pr-5'
 
-function IssueRow({ issue }: { issue: Issue }) {
+function IssueRow({
+  issue,
+  selected,
+  onToggle,
+}: {
+  issue: Issue
+  selected?: boolean
+  onToggle?: (id: string) => void
+}) {
   const href = hasGrilling(issue.id) ? `/issues/${issue.id}` : null
 
   const cells = (
@@ -47,7 +57,16 @@ function IssueRow({ issue }: { issue: Issue }) {
   )
 
   return (
-    <li className="border-b border-line last:border-b-0">
+    <li className="flex items-center border-b border-line pl-5 last:border-b-0">
+      {onToggle !== undefined && (
+        <input
+          type="checkbox"
+          className="check-box mr-3"
+          checked={selected === true}
+          onChange={() => onToggle(issue.id)}
+          aria-label={`issue ${issue.id} を選ぶ`}
+        />
+      )}
       {href === null ? (
         <div className={issueRowClassName}>{cells}</div>
       ) : (
@@ -62,10 +81,90 @@ function IssueRow({ issue }: { issue: Issue }) {
   )
 }
 
+function ProposedIssueList({ issues }: { issues: Issue[] }) {
+  const [selectedIds, setSelectedIds] = useState<readonly string[]>([])
+  const [copiedPrompt, setCopiedPrompt] = useState<string | null>(null)
+  const [uncopiedPrompt, setUncopiedPrompt] = useState<string | null>(null)
+
+  const toggle = (id: string) => {
+    setCopiedPrompt(null)
+    setUncopiedPrompt(null)
+    setSelectedIds((current) =>
+      current.includes(id)
+        ? current.filter((selectedId) => selectedId !== id)
+        : issues
+            .filter((issue) => issue.id === id || current.includes(issue.id))
+            .map((issue) => issue.id),
+    )
+  }
+
+  const copy = async () => {
+    const prompt = buildIssueApprovalPrompt(selectedIds)
+    try {
+      await navigator.clipboard.writeText(prompt)
+      setCopiedPrompt(prompt)
+      setUncopiedPrompt(null)
+    } catch {
+      setCopiedPrompt(null)
+      setUncopiedPrompt(prompt)
+    }
+  }
+
+  return (
+    <Section
+      id="proposed"
+      title={issueStatusLabels.proposed}
+      aside={`${issues.length} issues`}
+    >
+      <ul className="panel">
+        {issues.map((issue) => (
+          <IssueRow
+            key={issue.id}
+            issue={issue}
+            selected={selectedIds.includes(issue.id)}
+            onToggle={toggle}
+          />
+        ))}
+      </ul>
+
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+        <button
+          type="button"
+          className="action-button"
+          disabled={selectedIds.length === 0}
+          onClick={() => {
+            void copy()
+          }}
+        >
+          承認のプロンプトをコピー
+        </button>
+        <p className="text-sm text-ink-faint">
+          {selectedIds.length === 0
+            ? '承認する issue を選ぶと、状態の更新を頼む文面をコピーできる。'
+            : `${selectedIds.length} 件を選んでいる。${copiedPrompt === null ? '' : 'コピーした。'}`}
+        </p>
+      </div>
+
+      {uncopiedPrompt !== null && (
+        <div className="panel flex flex-col gap-2 px-5 py-4">
+          <p className="label">コピーできなかった文面</p>
+          <code className="font-mono text-sm break-all text-ink">
+            {uncopiedPrompt}
+          </code>
+        </div>
+      )}
+    </Section>
+  )
+}
+
 function IssueList({ status }: { status: IssueStatus }) {
   const issues = listIssues(status)
   if (issues.length === 0) {
     return null
+  }
+
+  if (status === 'proposed') {
+    return <ProposedIssueList issues={issues} />
   }
 
   return (
@@ -101,7 +200,7 @@ function IssuesPage() {
             <Badge>{countIssues()} issues</Badge>
           </>
         }
-        note="承認待ちは、所有者が承認するまで着手しない。該当する issue がない状態は、見出しを出さない。承認済みの issue のうち、論点を出したものは行全体がリンクになる。"
+        note="承認待ちは、所有者が承認するまで着手しない。該当する issue がない状態は、見出しを出さない。承認済みの issue のうち、論点を出したものは行全体がリンクになる。承認待ちの行は選べて、選んだ issue の承認をエージェントに頼む文面をコピーできる。"
       />
 
       {issueStatusOrder.map((status) => (
