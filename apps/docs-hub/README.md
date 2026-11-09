@@ -16,7 +16,7 @@ pnpm typecheck
 
 - パッケージマネージャーは pnpm（`packageManager` フィールドで版を固定）
 - TanStack Start（Vite）、TanStack Router、React 19、TypeScript
-- サーバーは置かず、`vite.config.ts` の `prerender` で全ページを静的な HTML に書き出す。トップページとサイドバーのリンクをたどって文書のページを見つける
+- サーバーは置かず、`vite.config.ts` の `prerender` で全ページを静的な HTML に書き出す。トップページのリンクをたどって文書のページを見つける
 - 公開先が `https://mikinovation.github.io/mikinovation/` なので、Vite の `base` と Router の `basepath` の両方に `/mikinovation` を設定している
 - ルーティングは `src/routes/` のファイル名で決まる。`src/routeTree.gen.ts` は dev とビルドが生成する。手で書き足さないが、型検査が参照するためコミットする
 - URL が存在しないときの表示は `src/routes/404.tsx` で、`404.html` に書き出して GitHub Pages の 404 として配信する
@@ -34,7 +34,7 @@ pnpm typecheck
 - どのリポジトリにも属さない共通の筆者の思想は、PRD や ADR にせず、別の種類として切り出す
 - `src/content/index.ts` は各文書の `meta` と本文を集めた配列で、`scripts/build-content-index.mjs` が `src/content/` を走査して生成する。手で書き足さない。種類のディレクトリがないときは0件として扱う
 - 一覧とメタ情報は `src/lib/docs.ts` が `src/content/index.ts` から組み立てる。`状態` と `段階` からバッジを決め、バッジと重ならない属性をヘッダーのチップに出す
-- 1件も文書がない種類は、トップページ（`src/routes/index.tsx`）とサイドバー（`src/components/site-nav.tsx`）に出さない。種類の定義（`docKinds`）は残す
+- 1件も文書がない種類は、トップページ（`src/routes/index.tsx`）に出さない。種類の定義（`docKinds`）は残す
 - ページは `src/routes/$kind.$slug.tsx` が描画する。URL は `/<種類>/<ファイル名>` で、prerender がリンクをたどって全件を静的に書き出す
 - 本文の節、箇条書き、表、要求、代替案、出典は `src/components/doc.tsx`、図は `src/components/figure.tsx` を使う。書き方は `FIGURES.md` に定める
 - 見直しの一覧（`/review`）は、各文書の `更新日`（ADR は `決定日`）から `src/lib/docs.ts` の `reviewIntervalMonths` か月後を期限として並べる。期限を過ぎたかどうかはビルド時の日付で決まるため、判定は再デプロイで更新される
@@ -90,7 +90,7 @@ issue は `src/content/issues.yaml` に置き、一覧（`/issues`）に状態�
 - `/repositories` はリポジトリごとに節を作り、説明と技術と GitHub の URL を面に出し、その下にそのリポジトリに属する文書のカードを並べる。文書がないリポジトリは、その旨を1行だけ出す。学習ノートはリポジトリに属さないため並ばない
 - 文書とリポジトリの紐づけはリポジトリから文書への片方向で、文書のページにリポジトリは出さない。詳しい説明は各リポジトリの README に任せる
 - 表示には文書と同じ `src/components/doc.tsx` と `src/components/figure.tsx` のコンポーネントを使う
-- ページを足したときは、ヘッダー（`src/components/site-header.tsx`）とサイドバー（`src/components/nav-sections.tsx`）にもリンクを足す
+- ページを足したときは、ヘッダー（`src/components/site-header.tsx`）にもリンクを足す
 
 ### テーマ
 
