@@ -109,7 +109,7 @@ issues:
     repository: mikinovation
   - id: '0034'
     title: issue 一覧でチェックした issue の状態更新プロンプトをコピーする
-    status: todo
+    status: doing
     repository: mikinovation
   - id: '0026'
     title: 形式手法とテストの関係を学習ノートにまとめる

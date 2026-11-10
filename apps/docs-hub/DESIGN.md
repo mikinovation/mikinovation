@@ -230,6 +230,9 @@ rounded:
 | badge | ADR の状態、PRD の段階、issue の状態、見直しの期限超過を、1語で示すとき |
 | nav-link | 本文の下で、別のページや文書を選ばせるとき |
 | search-field | 検索を始めさせるとき。今は押せないボタンとして置く |
+| check-box | 一覧の行を複数選ばせるとき。行のリンクの外に置く |
+| action-button | その場で終わる操作を押させるとき |
+| action-bar | 選んだ行に対する操作を、画面の下に張り付けて押させるとき |
 | kbd | キーボードの操作を示すとき |
 | label | 節やカードの内容の分類を、本文より小さく示すとき |
 | hairline | 節の終わりを、見出しを使わずに区切るとき |
@@ -307,6 +310,26 @@ components:
     rounded: '{rounded.lg}'
   search-field-hover:
     borderColor: '{colors.neon}'
+  check-box:
+    backgroundColor: '{colors.base-800}'
+    borderColor: '{colors.line-bright}'
+    rounded: '{rounded.xs}'
+  check-box-checked:
+    backgroundColor: '{colors.neon}'
+    borderColor: '{colors.neon}'
+    iconColor: '{colors.base-900}'
+  action-button:
+    backgroundColor: '{colors.base-600}'
+    borderColor: '{colors.line-bright}'
+    textColor: '{colors.ink-dim}'
+    typography: '{typography.body-sm}'
+    rounded: '{rounded.lg}'
+  action-button-hover:
+    borderColor: '{colors.neon}'
+    textColor: '{colors.ink}'
+  action-bar:
+    backgroundColor: '{colors.base-900}'
+    borderColor: '{colors.line}'
   kbd:
     backgroundColor: '{colors.base-600}'
     borderColor: '{colors.line-bright}'
@@ -333,7 +356,7 @@ components:
     rounded: '{rounded.xl}'
 ```
 
-`doc-card-hover`、`nav-link-hover`、`nav-link-current`、`search-field-hover` の `neon` は、そのままの濃さでは使わない。枠線では `line` に、面では地色に混ぜて薄く載せる。混ぜる割合は `globals.css` の `color-mix()` に書く。
+`doc-card-hover`、`nav-link-hover`、`nav-link-current`、`search-field-hover`、`action-button-hover`、`check-box-checked` の `neon` は、そのままの濃さでは使わない。枠線では `line` に、面では地色に混ぜて薄く載せる。混ぜる割合は `globals.css` の `color-mix()` に書く。
 
 `doc-body` の中では、要素ごとに次のように決める。
 

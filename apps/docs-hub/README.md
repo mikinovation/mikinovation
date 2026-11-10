@@ -65,6 +65,9 @@ issue は `src/content/issues.yaml` に置き、一覧（`/issues`）に状態�
 - `issues-schema.ts` から `repositories.ts` を相対パスで読んでいるのは、Vite の設定を読み込む文脈では `@/` の別名が解決されないためである
 - `scripts/issues-plugin.ts` の Vite プラグインが、ビルド時に YAML を読んで zod スキーマに通し、検査を通った値を JavaScript のモジュールへ変換する。検査に失敗すると変換が失敗し、`pnpm build` が落ちる。prerender の最中に投げた例外は記録されるだけでビルドが成功してしまうため、検査を変換の時点に置いている
 - 表示側（`src/lib/issues.ts`、`src/routes/issues.index.tsx`）は zod を読み込まない。`src/types/yaml.d.ts` が YAML のモジュールに `IssueFile` 型を与えるため、型だけを使う。状態の並びは `issueStatusOrder` に持つ。zod の値を表示側から参照すると、クライアントのバンドルに zod が入る
+- 一覧の承認待ちの行だけチェックボックスを持ち、1件以上選ぶと画面の下にバーが張り付く。バーのボタンが、選んだ issue の承認を頼む1行の文面をクリップボードへコピーする。文面は `src/lib/issue-prompt.ts` が組み、`/manage-issues` の呼び出しと id だけを並べる。状態の遷移の指示は書かず、manage-issues スキルの手順に委ねる
+- 選べるのは承認だけである。`doing` は同時1件までの目安があり、`done` は PR のマージの確認が要るため、一覧の選択では進めない
+- このページは `useState` と `navigator.clipboard` を使う唯一のページである。クリップボードが拒否された環境では、文面を画面に出して手でコピーしてもらう
 - このサイトは公開されている。顧客名、非公開案件の内容、認証情報に触れる issue は、この仕組みに載せない
 - 状態のバッジは `doing` が `stage`、`todo` が `plain`、`proposed` が `pending`（amber）、`done` が `accepted` である
 
