@@ -131,6 +131,10 @@ issues:
     title: 使っていない src/content/tech ディレクトリを削除する
     status: proposed
     repository: mikinovation
+  - id: '0035'
+    title: エージェントの端末管理を herdr から herdr-core へ乗り換える
+    status: proposed
+    repository: mikinovation
   - id: '0031'
     title: 自作の Neovim プラグインを goda.vim で書き直す
     status: proposed
