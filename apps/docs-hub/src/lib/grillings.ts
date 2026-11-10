@@ -14,4 +14,22 @@ export const findGrilling = (issueId: string): GrillingFile | null =>
 
 export const hasGrilling = (issueId: string): boolean => grillings.has(issueId)
 
+export type GrillingProgress = { decided: number; total: number }
+
+export const findGrillingProgress = (
+  issueId: string,
+): GrillingProgress | null => {
+  const grilling = grillings.get(issueId)
+  if (grilling === undefined) {
+    return null
+  }
+
+  return {
+    decided: grilling.questions.filter(
+      (question) => question.decision !== undefined,
+    ).length,
+    total: grilling.questions.length,
+  }
+}
+
 export const countGrillings = (): number => grillings.size

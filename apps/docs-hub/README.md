@@ -78,6 +78,7 @@ issue は `src/content/issues.yaml` に置き、一覧（`/issues`）に状態�
 - 1件は `issueId`、`generatedAt`（生成した日）、`questions` を持つ。1問は `id`（`q` と数字）、`title`、`question`、`options`（2〜5個）、`recommendation` を必ず持ち、`rationale`、`followUp`（推奨案を採ったときに次に決めること）、`decision`（所有者が選んだ候補）は任意である
 - 1件の問数は6問までとする。それを超える論点が出る issue は、issue 自体が大きすぎる
 - 一覧（`/issues`）では、論点がある issue だけ行全体がリンクになる。論点がない issue はリンクを出さない
+- 一覧の行には、論点の答えた割合を `決めた問数/全体の問数` の形で出す。`decision` がある問を決めた問として数え、論点がない issue には何も出さない。数は `src/lib/grillings.ts` の `findGrillingProgress` が数える
 - 形の検査は `src/lib/grillings-schema.ts` の zod スキーマが担い、`scripts/grillings-plugin.ts` の Vite プラグインがビルド時にディレクトリ内の全ファイルを通す。issue と同じ理由で、検査は変換の時点に置いている
 - 表示側（`src/lib/grillings.ts`）は `import.meta.glob` で全ファイルをまとめて読み、`issueId` で引く。zod は読み込まず型だけを使う
 - ファイル名と `issueId` のずれ、対応する issue がない孤児ファイルは、manage-issues の検査スクリプトが失敗にする。承認済みなのに論点がない issue は、承認の直後は正常な状態なので一覧に出すだけで失敗にしない
