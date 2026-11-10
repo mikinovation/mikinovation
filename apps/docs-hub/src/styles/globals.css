@@ -414,9 +414,18 @@
     box-shadow: var(--shadow-glow);
   }
 
-  .action-button:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
+  .action-bar {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 30;
+    border-top: 1px solid var(--color-line);
+    background-color: color-mix(
+      in oklab,
+      var(--color-base-900) 88%,
+      transparent
+    );
+    backdrop-filter: blur(12px);
   }
 
   .kbd {

@@ -81,7 +81,76 @@ function IssueRow({
   )
 }
 
-function ProposedIssueList({ issues }: { issues: Issue[] }) {
+function IssueList({
+  status,
+  selectedIds,
+  onToggle,
+}: {
+  status: IssueStatus
+  selectedIds: readonly string[]
+  onToggle: (id: string) => void
+}) {
+  const issues = listIssues(status)
+  if (issues.length === 0) {
+    return null
+  }
+
+  const selectable = status === 'proposed'
+
+  return (
+    <Section
+      id={status}
+      title={issueStatusLabels[status]}
+      aside={`${issues.length} issues`}
+    >
+      <ul className="panel">
+        {issues.map((issue) => (
+          <IssueRow
+            key={issue.id}
+            issue={issue}
+            selected={selectable ? selectedIds.includes(issue.id) : undefined}
+            onToggle={selectable ? onToggle : undefined}
+          />
+        ))}
+      </ul>
+    </Section>
+  )
+}
+
+function ActionBar({
+  count,
+  copied,
+  uncopiedPrompt,
+  onCopy,
+}: {
+  count: number
+  copied: boolean
+  uncopiedPrompt: string | null
+  onCopy: () => void
+}) {
+  return (
+    <div className="action-bar">
+      <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-4 gap-y-2 px-5 py-3">
+        <button type="button" className="action-button" onClick={onCopy}>
+          承認のプロンプトをコピー
+        </button>
+        <p className="text-sm text-ink-faint">
+          {count} 件を選んでいる。{copied ? 'コピーした。' : ''}
+        </p>
+        {uncopiedPrompt !== null && (
+          <p className="min-w-0 basis-full text-sm text-ink-faint">
+            コピーできなかった。次の文面を手で写してほしい。
+            <code className="ml-2 font-mono break-all text-ink">
+              {uncopiedPrompt}
+            </code>
+          </p>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function IssuesPage() {
   const [selectedIds, setSelectedIds] = useState<readonly string[]>([])
   const [copiedPrompt, setCopiedPrompt] = useState<string | null>(null)
   const [uncopiedPrompt, setUncopiedPrompt] = useState<string | null>(null)
@@ -92,7 +161,7 @@ function ProposedIssueList({ issues }: { issues: Issue[] }) {
     setSelectedIds((current) =>
       current.includes(id)
         ? current.filter((selectedId) => selectedId !== id)
-        : issues
+        : listIssues('proposed')
             .filter((issue) => issue.id === id || current.includes(issue.id))
             .map((issue) => issue.id),
     )
@@ -111,80 +180,9 @@ function ProposedIssueList({ issues }: { issues: Issue[] }) {
   }
 
   return (
-    <Section
-      id="proposed"
-      title={issueStatusLabels.proposed}
-      aside={`${issues.length} issues`}
+    <div
+      className={`flex flex-col gap-16 ${selectedIds.length === 0 ? '' : 'pb-24'}`}
     >
-      <ul className="panel">
-        {issues.map((issue) => (
-          <IssueRow
-            key={issue.id}
-            issue={issue}
-            selected={selectedIds.includes(issue.id)}
-            onToggle={toggle}
-          />
-        ))}
-      </ul>
-
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-        <button
-          type="button"
-          className="action-button"
-          disabled={selectedIds.length === 0}
-          onClick={() => {
-            void copy()
-          }}
-        >
-          承認のプロンプトをコピー
-        </button>
-        <p className="text-sm text-ink-faint">
-          {selectedIds.length === 0
-            ? '承認する issue を選ぶと、状態の更新を頼む文面をコピーできる。'
-            : `${selectedIds.length} 件を選んでいる。${copiedPrompt === null ? '' : 'コピーした。'}`}
-        </p>
-      </div>
-
-      {uncopiedPrompt !== null && (
-        <div className="panel flex flex-col gap-2 px-5 py-4">
-          <p className="label">コピーできなかった文面</p>
-          <code className="font-mono text-sm break-all text-ink">
-            {uncopiedPrompt}
-          </code>
-        </div>
-      )}
-    </Section>
-  )
-}
-
-function IssueList({ status }: { status: IssueStatus }) {
-  const issues = listIssues(status)
-  if (issues.length === 0) {
-    return null
-  }
-
-  if (status === 'proposed') {
-    return <ProposedIssueList issues={issues} />
-  }
-
-  return (
-    <Section
-      id={status}
-      title={issueStatusLabels[status]}
-      aside={`${issues.length} issues`}
-    >
-      <ul className="panel">
-        {issues.map((issue) => (
-          <IssueRow key={issue.id} issue={issue} />
-        ))}
-      </ul>
-    </Section>
-  )
-}
-
-function IssuesPage() {
-  return (
-    <div className="flex flex-col gap-16">
       <Hero
         trail={[{ label: 'Docs Hub', href: '/' }, { label: 'issue' }]}
         title="issue"
@@ -200,12 +198,28 @@ function IssuesPage() {
             <Badge>{countIssues()} issues</Badge>
           </>
         }
-        note="承認待ちは、所有者が承認するまで着手しない。該当する issue がない状態は、見出しを出さない。承認済みの issue のうち、論点を出したものは行全体がリンクになる。承認待ちの行は選べて、選んだ issue の承認をエージェントに頼む文面をコピーできる。"
+        note="承認待ちは、所有者が承認するまで着手しない。該当する issue がない状態は、見出しを出さない。承認済みの issue のうち、論点を出したものは行全体がリンクになる。承認待ちの行を選ぶと、画面の下に出るバーから、状態の更新を頼む文面をコピーできる。"
       />
 
       {issueStatusOrder.map((status) => (
-        <IssueList key={status} status={status} />
+        <IssueList
+          key={status}
+          status={status}
+          selectedIds={selectedIds}
+          onToggle={toggle}
+        />
       ))}
+
+      {selectedIds.length > 0 && (
+        <ActionBar
+          count={selectedIds.length}
+          copied={copiedPrompt !== null}
+          uncopiedPrompt={uncopiedPrompt}
+          onCopy={() => {
+            void copy()
+          }}
+        />
+      )}
     </div>
   )
 }

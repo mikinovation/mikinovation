@@ -231,7 +231,8 @@ rounded:
 | nav-link | 本文の下で、別のページや文書を選ばせるとき |
 | search-field | 検索を始めさせるとき。今は押せないボタンとして置く |
 | check-box | 一覧の行を複数選ばせるとき。行のリンクの外に置く |
-| action-button | その場で終わる操作を押させるとき。選べるものがないときは無効にする |
+| action-button | その場で終わる操作を押させるとき |
+| action-bar | 選んだ行に対する操作を、画面の下に張り付けて押させるとき |
 | kbd | キーボードの操作を示すとき |
 | label | 節やカードの内容の分類を、本文より小さく示すとき |
 | hairline | 節の終わりを、見出しを使わずに区切るとき |
@@ -326,6 +327,9 @@ components:
   action-button-hover:
     borderColor: '{colors.neon}'
     textColor: '{colors.ink}'
+  action-bar:
+    backgroundColor: '{colors.base-900}'
+    borderColor: '{colors.line}'
   kbd:
     backgroundColor: '{colors.base-600}'
     borderColor: '{colors.line-bright}'
