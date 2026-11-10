@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Section } from '@/components/doc'
 import { Badge, Hero } from '@/components/doc-page'
 import { SiteLink } from '@/components/site-link'
-import { hasGrilling } from '@/lib/grillings'
+import { findGrillingProgress } from '@/lib/grillings'
 import { buildIssueApprovalPrompt } from '@/lib/issue-prompt'
 import type { Issue, IssueStatus } from '@/lib/issues-schema'
 
@@ -40,7 +40,8 @@ function IssueRow({
   selected?: boolean
   onToggle?: (id: string) => void
 }) {
-  const href = hasGrilling(issue.id) ? `/issues/${issue.id}` : null
+  const progress = findGrillingProgress(issue.id)
+  const href = progress === null ? null : `/issues/${issue.id}`
 
   const cells = (
     <>
@@ -50,6 +51,11 @@ function IssueRow({
       >
         {issue.title}
       </span>
+      {progress !== null && (
+        <span className="font-mono text-xs text-ink-faint">
+          {progress.decided}/{progress.total}
+        </span>
+      )}
       <span className="font-mono text-xs text-ink-faint">
         {issueRepositoryLabel(issue.repository)}
       </span>
@@ -198,7 +204,7 @@ function IssuesPage() {
             <Badge>{countIssues()} issues</Badge>
           </>
         }
-        note="承認待ちは、所有者が承認するまで着手しない。該当する issue がない状態は、見出しを出さない。承認済みの issue のうち、論点を出したものは行全体がリンクになる。承認待ちの行を選ぶと、画面の下に出るバーから、状態の更新を頼む文面をコピーできる。"
+        note="承認待ちは、所有者が承認するまで着手しない。該当する issue がない状態は、見出しを出さない。承認済みの issue のうち、論点を出したものは行全体がリンクになり、決めた問の数を全体の問数との割合で出す。承認待ちの行を選ぶと、画面の下に出るバーから、状態の更新を頼む文面をコピーできる。"
       />
 
       {issueStatusOrder.map((status) => (
