@@ -17,12 +17,12 @@ workflows:
     '.github/workflows/dotfiles-ci.yml':
         - 'actions/cache@v6.1.0'
         - 'actions/checkout@v7.0.1'
-        - 'cachix/install-nix-action@v31.11.3'
+        - 'cachix/install-nix-action@v31.11.5'
         - 'pnpm/action-setup@v6.1.1'
         - 'rhysd/action-setup-vim@v1.6.1'
     '.github/workflows/dotfiles-wsl-release.yml':
         - 'actions/checkout@v7.0.1'
-        - 'cachix/install-nix-action@v31.11.3'
+        - 'cachix/install-nix-action@v31.11.5'
     '.github/workflows/secretlint.yml':
         - 'actions/checkout@v7.0.1'
         - 'pnpm/action-setup@v6.1.1'
@@ -61,9 +61,9 @@ dependencies:
         repo_id: 496012378
         uses:
             - 'actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f'
-    'cachix/install-nix-action@v31.11.3':
-        ref: 'v31.11.3'
-        commit: 'sha1-75c75c31ebece974e48ebc36b4ad125bd97bd97b'
+    'cachix/install-nix-action@v31.11.5':
+        ref: 'v31.11.5'
+        commit: 'sha1-3dc140bfc76c49fbd4dd958429132e3746bcb086'
         owner_id: 36824654
         repo_id: 212301524
     'pnpm/action-setup@v6.1.1':

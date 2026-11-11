@@ -26,7 +26,7 @@ jobs:
           sudo docker image prune --all --force || true
           df -h /
 
-      - uses: cachix/install-nix-action@v31.11.3
+      - uses: cachix/install-nix-action@v31.11.5
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
