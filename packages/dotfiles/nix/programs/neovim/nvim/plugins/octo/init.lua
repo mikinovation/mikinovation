@@ -4,7 +4,7 @@ function octo.config()
 	return {
 		"pwntester/octo.nvim",
 		branch = "master",
-		commit = "419e67aee457406423e7cb4fc41d721ecda61bcd",
+		commit = "0ddca04c02aab8ba18d2072f9b855f3806adad54",
 		cmd = "Octo",
 		dependencies = {
 			require("plugins.plenary").config(),

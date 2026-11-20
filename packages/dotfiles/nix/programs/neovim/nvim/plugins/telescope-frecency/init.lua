@@ -4,7 +4,7 @@ function telescopeFrecency.config()
 	return {
 		"nvim-telescope/telescope-frecency.nvim",
 		branch = "master",
-		commit = "5479d8a269e30479280c59e44f805396127653e6",
+		commit = "2c145e1240fea3eed03a9d9ee99f1bbd9c52a3dd",
 		dependencies = {
 			require("plugins.sqlite").config(),
 		},
