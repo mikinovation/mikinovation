@@ -4,7 +4,7 @@ function orgmode.config()
 	return {
 		"nvim-orgmode/orgmode",
 		branch = "master",
-		commit = "ec85b9a4fdf634467f512526c90cbb10f95f872e",
+		commit = "e29856da93af4b68f8d5f204f6c584c29b035470",
 		event = "VeryLazy",
 		config = function()
 			local workflow = require("plugins.orgmode.workflow")
