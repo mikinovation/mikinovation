@@ -28,7 +28,7 @@
     "oxlint": "1.92.0",
     "tailwindcss": "4.3.5",
     "typescript": "7.0.2",
-    "vite": "8.3.6",
+    "vite": "8.3.8",
     "yaml": "2.9.1",
     "zod": "4.6.7"
   }
