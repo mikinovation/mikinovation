@@ -4,7 +4,7 @@ function vimArgwrap.config()
 	return {
 		"FooSoft/vim-argwrap",
 		branch = "master",
-		commit = "03615d1eed248408567bc8fa6a5a8c94ef3cd170",
+		commit = "663707b64000857d03690ec935bf885341fc93d9",
 		cmd = "ArgWrap",
 		-- Keep in sync with plugins/vim-argwrap/keymaps.lua
 		keys = {

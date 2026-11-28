@@ -4,7 +4,7 @@ function indentBlankline.config()
 	return {
 		"lukas-reineke/indent-blankline.nvim",
 		branch = "master",
-		commit = "f1e186e44d3b7f9ae918008e2c28ce37c6023d2d",
+		commit = "fbc6d88222b5f75613cb95a22e89aa2f4e318a81",
 		main = "ibl",
 		event = { "BufReadPost", "BufNewFile" },
 		opts = {},

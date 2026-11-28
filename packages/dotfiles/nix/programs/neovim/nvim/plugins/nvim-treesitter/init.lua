@@ -4,7 +4,7 @@ function nvimTreesitter.config()
 	return { -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
 		branch = "main",
-		commit = "19bdfc04f40ed2ccb3340591d125f759b0406875",
+		commit = "52773f0d13a0c11d0c3ef33c14ab6ecc1c17148b",
 		lazy = false,
 		build = ":TSUpdate",
 		config = function()

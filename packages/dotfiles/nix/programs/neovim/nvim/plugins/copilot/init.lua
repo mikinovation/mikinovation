@@ -4,7 +4,7 @@ function copilot.config()
 	return {
 		"zbirenbaum/copilot.lua",
 		branch = "master",
-		commit = "1d674b416df08e5c54e442503b7703a0df462acf",
+		commit = "59403aefb11f2522217ac3926c9f262a2cf789d8",
 		cmd = "Copilot",
 		event = "InsertEnter",
 		config = function()
